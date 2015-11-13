@@ -79,8 +79,8 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                             </thead>
                                             <tbody>
                                                 <?php
-                                                $sql = "SELECT idproduct ,code_product,name_product,name_factory,price_product,amount_product,type_product,(price_product * amount_product / 100)AS A FROM product INNER JOIN  factory ON product.factory_id_factory = factory.id_factory;";
-                                                $result = $conn->query($sql);
+                                                //$sql = "SELECT idproduct ,code_product,name_product,name_factory,price_product,amount_product,type_product,(price_product * amount_product / 100)AS A FROM product INNER JOIN  factory ON product.factory_id_factory = factory.id_factory;";
+                                                //$result = $conn->query($sql);
 
                                                 if ($result->num_rows > 0) {
                                                     // output data of each row
