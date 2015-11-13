@@ -9,7 +9,7 @@ $re = mysql_fetch_array($result);
 if (empty($re)) {
     header('Location: index.php?error=2');
 } else {
-    header('Location: ../project/interface_history_order/history_order.php');
+    header('Location: interface_history_order/history_order.php');
     $_SESSION['username'] = $re;
 }
 
