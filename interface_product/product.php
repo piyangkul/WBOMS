@@ -165,6 +165,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                         <a class="btn btn-danger"  href="#" role="button">ลบ</a>
                                                     </td>
                                                 </tr>
+                                            </tbody>
                                         </table>
 
                                     </div>
