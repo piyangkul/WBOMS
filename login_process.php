@@ -12,5 +12,4 @@ if (empty($re)) {
     header('Location: interface_history_order/history_order.php');
     $_SESSION['username'] = $re;
 }
-
 ?>
