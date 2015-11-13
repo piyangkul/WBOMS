@@ -18,6 +18,9 @@
                 <a <?php if($p=="shop") echo 'class="active-menu"';?> href="../interface_shop/shop.php"><i class="fa fa-table fa-3x"></i> Shop </a>
             </li>
             <li>
+                <a <?php if($p=="transport") echo 'class="active-menu"';?> href="../transport/transport.php"><i class="fa fa-qrcode fa-3x"></i> Transport </a>
+            </li>
+            <li>
                 <a <?php if($p=="membership") echo 'class="active-menu"';?> href="../membership/membership.php"><i class="fa fa-qrcode fa-3x"></i> Membership </a>
             </li>
             <!--
