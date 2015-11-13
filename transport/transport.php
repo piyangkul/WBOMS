@@ -35,8 +35,8 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                 <div id="page-inner">
                     <div class="row">
                         <div class="col-md-12">
-                            <h2> Membership </h2>   
-                            <h5> จัดการสมาชิก </h5>
+                            <h2> Transport </h2>   
+                            <h5> จัดการขนส่ง </h5>
                         </div>
                     </div>
                     <!-- /. ROW  -->
