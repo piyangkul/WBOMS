@@ -82,31 +82,31 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                 //$sql = "SELECT idproduct ,code_product,name_product,name_factory,price_product,amount_product,type_product,(price_product * amount_product / 100)AS A FROM product INNER JOIN  factory ON product.factory_id_factory = factory.id_factory;";
                                                 //$result = $conn->query($sql);
 
-                                                if ($result->num_rows > 0) {
-                                                    // output data of each row
-                                                    while ($row = $result->fetch_assoc()) {
-                                                        echo "<tr><td>" . $row["idproduct"] . "</td><td>" . $row["code_product"] . "</td><td>" . $row["name_product"] . "</td><td>" . $row["name_factory"] . "</td><td>" . $row["price_product"] . "</td><td>" . $row["amount_product"] . "</td><td>" . $row["type_product"] . "</td>";
-                                                        if ($row["type_product"] == "PERCENT") {
-                                                            echo "<td>" . $row["A"] . "</td>";
-                                                        } else if ($row["type_product"] == "NON") {
-                                                            echo "<td>" . $row["price_product"] . "</td>";
-                                                        }
-                                                        echo '<td>                                                           
-                                                                <a href="popup_product_detail.php" class="btn btn-success" data-toggle="modal" data-target="#myModal">
-                                                                    <span class="glyphicon glyphicon-list-alt"></span>
-                                                                </a>
-
-                                                                <a href="edit_product.php" class="btn btn-warning " >
-                                                                    <span class="glyphicon glyphicon-edit"></span>
-                                                                </a>
-                                                                
-                                                                <a href="#" class="btn btn-danger " data-toggle="modal" data-target="#myModal">
-                                                                    <span class="glyphicon glyphicon-trash"></span>
-                                                                </a>
-                                                                
-                                                            </td></tr>';
-                                                    }
-                                                }
+//                                                if ($result->num_rows > 0) {
+//                                                    // output data of each row
+//                                                    while ($row = $result->fetch_assoc()) {
+//                                                        echo "<tr><td>" . $row["idproduct"] . "</td><td>" . $row["code_product"] . "</td><td>" . $row["name_product"] . "</td><td>" . $row["name_factory"] . "</td><td>" . $row["price_product"] . "</td><td>" . $row["amount_product"] . "</td><td>" . $row["type_product"] . "</td>";
+//                                                        if ($row["type_product"] == "PERCENT") {
+//                                                            echo "<td>" . $row["A"] . "</td>";
+//                                                        } else if ($row["type_product"] == "NON") {
+//                                                            echo "<td>" . $row["price_product"] . "</td>";
+//                                                        }
+//                                                        echo '<td>                                                           
+//                                                                <a href="popup_product_detail.php" class="btn btn-success" data-toggle="modal" data-target="#myModal">
+//                                                                    <span class="glyphicon glyphicon-list-alt"></span>
+//                                                                </a>
+//
+//                                                                <a href="edit_product.php" class="btn btn-warning " >
+//                                                                    <span class="glyphicon glyphicon-edit"></span>
+//                                                                </a>
+//                                                                
+//                                                                <a href="#" class="btn btn-danger " data-toggle="modal" data-target="#myModal">
+//                                                                    <span class="glyphicon glyphicon-trash"></span>
+//                                                                </a>
+//                                                                
+//                                                            </td></tr>';
+//                                                    }
+//                                                }
                                                 ?>
                                                 <tr>
                                                     <td>1</td>
@@ -165,6 +165,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                         <a class="btn btn-danger"  href="#" role="button">ลบ</a>
                                                     </td>
                                                 </tr>
+                                            </tbody>
                                         </table>
 
                                     </div>
