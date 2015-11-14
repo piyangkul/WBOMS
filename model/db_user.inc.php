@@ -94,6 +94,7 @@ function del_shop($getIDshop) {
     $res = $con->query("DELETE FROM shop WHERE idshop = '$getIDshop'");
     return $res;
 }
+
 //province and region
 function get_province($getIDregion){
     global $con;
