@@ -18,7 +18,7 @@ $bigestPriceResult = $_POST['bigestPriceResult'];
 $units = $_SESSION["unit"];
 //สิ้นสุดกลุ่มรับค่า
 //
-//กลุ่มคำสั่งำทำอะไร
+//กลุ่มคำสั่งทำอะไร
 $idproduct = addProduct($factoryID, $productName, "", "", $difference_amount); //idproductของระบบ
 if ($idproduct > 0) {
     $idUnit[1] = addUnit($idproduct, 0, $units[1]['NameUnit'], $units[1]['price'], $units[1]['type']);

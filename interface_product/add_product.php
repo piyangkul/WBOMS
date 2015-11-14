@@ -66,7 +66,17 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                             <br/>
                                             <div>
                                                 <label for="exampleInputName3"> ชื่อโรงงาน </label>
-                                                <input type="text" class="form-control" id="factoryName" name="factoryName" placeholder="กรอกชื่อโรงงาน">
+                                                <select class="form-control" id="factoryName" name="factoryName" >
+                                                    <?php
+                                                    require_once '../interface_factory/function/func_factory.php';
+                                                    $getFactorys = getFactorys();
+                                                    foreach ($getFactorys as $value) {
+                                                        $val_idfactory = $value['idfactory'];
+                                                        $val_name_factory = $value['name_factory'];
+                                                        ?>
+                                                    <option value="<?php echo $val_idfactory; ?>"><?php echo $val_name_factory; ?></option>
+                                                    <?php } ?>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
