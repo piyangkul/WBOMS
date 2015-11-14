@@ -33,6 +33,20 @@ if ($_GET['p'] == "getPriceUnit") {
 //    echo "$id ";
     echo $_SESSION["unit"][$id]["price"];
 }
+if ($_GET['p'] == "getBigestUnit") {
+    if (isset($_SESSION["countUnit"])) {
+        echo $_SESSION["unit"][1]["NameUnit"];
+    } else {
+        echo "-1";
+    }
+}
+if ($_GET['p'] == "getBigestPrice") {
+    if (isset($_SESSION["countUnit"])) {
+        echo $_SESSION["unit"][1]["price"];
+    } else {
+        echo "-1";
+    }
+}
 if ($_GET['p'] == "showUnit") {
     ?>
     <table class="table table-striped table-bordered table-hover text-center" id="dataTables-example">
@@ -47,27 +61,31 @@ if ($_GET['p'] == "showUnit") {
         </thead>
         <tbody>
             <?php
-            for ($i = 1; $i <= $_SESSION["countUnit"]; $i++) {
-                $j = $_SESSION["unit"][$i]["under_unit"];
-                if ($j == "") {
-                    continue;
+            if (isset($_SESSION["countUnit"])) {
+                for ($i = 1; $i <= $_SESSION["countUnit"]; $i++) {
+                    $j = $_SESSION["unit"][$i]["under_unit"];
+                    if ($j == "") {
+                        continue;
+                    }
+                    ?>
+                    <tr>
+                        <td>1</td>
+                        <td><?php echo $_SESSION["unit"][$j]["NameUnit"]; ?></td>
+                        <td><?php echo $_SESSION["unit"][$i]["AmountPerUnit"]; ?></td>
+                        <td><?php echo $_SESSION["unit"][$i]["NameUnit"]; ?></td>
+                        <td>
+                            <a href="popup_edit_product_unit.php" class="btn btn-warning " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="แก้ไข">
+                                <span class="glyphicon glyphicon-edit"></span>
+                            </a>
+                            <a href="popup_delete_product_unit.php" class="btn btn-danger " data-toggle="modal" data-target="#myModal3" data-toggle="tooltip" title="ลบ">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </a>
+                        </td>
+                    </tr>
+                    <?php
                 }
-                ?>
-                <tr>
-                    <td>1</td>
-                    <td><?php echo $_SESSION["unit"][$j]["NameUnit"]; ?></td>
-                    <td><?php echo $_SESSION["unit"][$i]["AmountPerUnit"]; ?></td>
-                    <td><?php echo $_SESSION["unit"][$i]["NameUnit"]; ?></td>
-                    <td>
-                        <a href="popup_edit_product_unit.php" class="btn btn-warning " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="แก้ไข">
-                            <span class="glyphicon glyphicon-edit"></span>
-                        </a>
-                        <a href="popup_delete_product_unit.php" class="btn btn-danger " data-toggle="modal" data-target="#myModal3" data-toggle="tooltip" title="ลบ">
-                            <span class="glyphicon glyphicon-trash"></span>
-                        </a>
-                    </td>
-                </tr>
-            <?php } ?>
+            }
+            ?>
     </table>
     <?php
 }
