@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__) . '/../../config/connect.php';
 
-function addProduct($idfactory,$name_product,$detail_product,$code_product,$amount_product) {
+function addProduct($idfactory, $name_product, $detail_product, $code_product, $amount_product) {
     $conn = dbconnect();
     $SQLCommand = "INSERT INTO `product`(`idfactory`, `name_product`, `detail_product`, `code_product`, `amount_product`) "
             . "VALUES (:idfactory, :name_product, :detail_product, :code_product, :amount_product)";
@@ -21,6 +21,7 @@ function addProduct($idfactory,$name_product,$detail_product,$code_product,$amou
     if ($SQLPrepare->rowCount() > 0) {
         return $conn->lastInsertId();
     } else {
+//        echo $SQLCommand;
         return false;
     }
 }

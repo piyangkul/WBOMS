@@ -27,7 +27,12 @@ if ($idproduct > 0) {
         $underIdUnit = $idUnit[$under_unit];
         $idUnit[$i] = addUnit($idproduct, $underIdUnit, $units[$i]['NameUnit'], $units[$i]['price'], $units[$i]['type']);
     }
-    echo "finished";
-} else
-    echo "error";
+    unset($_SESSION["unit"]);
+    unset($_SESSION["countUnit"]);
+    header("location: ../product.php?p=product&para=addCompleted");
+//    echo "finished";
+} else{
+    header("location: ../product.php?p=product&para=addError");
+//    echo "error";
+}
 //สิ้นสุดกลุ่มคำสั่งทำอะไร
