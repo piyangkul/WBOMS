@@ -84,16 +84,16 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                         <td><?php echo $i; ?></td>
                                                         <td><?php echo $shop->name_shop; ?></td>
                                                         <td><?php echo $shop->tel_shop; ?></td>                                                     
-                                                        <td><?php echo $shop->name_province ?></td>  
                                                         <td><?php echo $shop->name_region ?></td>
+                                                        <td><?php echo $shop->name_province ?></td>
                                                         <td>
                                                             <a href="popup_detail_shop.php" class="btn btn-success " data-toggle="modal" data-target="#myModal2" data-toggle="tooltip" title="รายละเอียด">
                                                                 <span class="glyphicon glyphicon-list-alt"></span>
                                                             </a>
-                                                            <a href="popup_edit_shop.php" class="btn btn-warning " data-toggle="modal" data-target="#myModal2" data-toggle="tooltip" title="แก้ไข">
+                                                            <a href="popup_edit_shop.php?idshop_edit=<?php echo $shop->idshop; ?>" class="btn btn-warning " data-toggle="modal" data-target="#myModal2" data-toggle="tooltip" title="แก้ไข">
                                                                 <span class="glyphicon glyphicon-edit"></span>
                                                             </a>
-                                                            <a href="popup_delete_shop.php" class="btn btn-danger " data-toggle="modal" data-target="#myModal3" data-toggle="tooltip" title="ลบ">
+                                                            <a href="shop_process.php?idshop=<?php echo $shop->idshop; ?>" onclick ="return confirm('คุณต้องการที่จะลบข้อมูลของ <?php echo $shop->name_shop; ?> หรือไม่?');" class="btn btn-danger"  data-toggle="tooltip" title="ลบ" >
                                                                 <span class="glyphicon glyphicon-trash"></span>
                                                             </a>
                                                         </td>
@@ -125,6 +125,11 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
         <script src="../assets/js/bootstrap.min.js"></script>
         <!-- METISMENU SCRIPTS -->
         <script src="../assets/js/jquery.metisMenu.js"></script>
+        <script>
+            $(document.body).on('hidden.bs.modal', function () {
+                $('#myModal2').removeData('bs.modal')
+            });
+        </script>
         <!-- DATA TABLE SCRIPTS -->
         <script src="../assets/js/dataTables/jquery.dataTables.js"></script>
         <script src="../assets/js/dataTables/dataTables.bootstrap.js"></script>
