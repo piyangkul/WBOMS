@@ -91,6 +91,8 @@ session_start();
                 $("#under_unit").val("");
             }
         });
+        getBigestUnit();
+        getBigestPrice();
     }
     chkUnitAdd();
     function chkUnitAdd() { // Check to add the first time 
