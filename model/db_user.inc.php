@@ -62,25 +62,37 @@ function del_factory() {
 }
 
 //Shop
+//Shop
 function get_shop() {
     global $con;
     $res = $con->query("SELECT *FROM shop INNER JOIN province ON shop.idprovince = province.idprovince INNER JOIN region ON region.idregion = province.idregion");
     return $res;
 }
 
-function add_shop($getName,$getIDProvince,$getTel,$getAddress,$getDetail) {
+function get_shop_id($idshop) {
+    global $con;
+    $res = $con->query("SELECT * FROM shop where idshop = '$idshop'");
+    return $res;
+}
+
+function add_shop($getName, $getIDProvince, $getTel, $getAddress, $getDetail) {
     global $con;
     $res = $con->exec("INSERT INTO shop (name_shop,idprovince,tel_shop,address_shop,detail_shop)
-        VALUE('$getName','$getIDProvince','$getTel','$getAddress','$getDetail')");         
+        VALUE('$getName','$getIDProvince','$getTel','$getAddress','$getDetail')");
     return exec;
 }
 
-function edit_shop() {
-    
+function edit_shop($getName, $getIDProvince, $getTel, $getAddress, $getDetail, $getIDshop) {
+    global $con;
+    $res = $con->exec("UPDATE shop SET  name_shop='$getName',idprovince = '$getIDProvince' , tel_shop='$getTel',address_shop='$getAddress',detail_shop='$getDetail'
+                WHERE idshop = '$getIDshop'");
+    return $res;
 }
 
-function del_shop() {
-    
+function del_shop($getIDshop) {
+    global $con;
+    $res = $con->query("DELETE FROM shop WHERE idshop = '$getIDshop'");
+    return $res;
 }
 
 //province and region
