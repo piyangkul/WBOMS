@@ -59,49 +59,58 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
 
                             <span>
                                 <?php
-                                if (isset($_REQUEST['del_id'])) {
-                                    $getid = $_POST['del_id'];
-                                    $countd = del_member($getid);
-                                    if ($countd === false) {
-                                        die(print_r($con->errorInfo(), true));
-                                    } else {
-                                        echo $countd . " rows Del <br/>";
-                                    }
-                                }
+//                                if (isset($_REQUEST['del_id'])) {
+//                                    $getid = $_POST['del_id'];
+//                                    $countd = del_member($getid);
+//                                    if ($countd === false) {
+//                                        die(print_r($con->errorInfo(), true));
+//                                    } else {
+//                                        echo $countd . " rows Del <br/>";
+//                                    }
+//                                }
+//
+//                                if (isset($_REQUEST['sumbit']) && $_REQUEST['sumbit'] == "addMem") {//แต่ละช่องมีค่าใช่ไหม และมากจากปุ่มadd
+//                                    $getName = $_POST['name_member'];
+//                                    $getLastname = $_POST['lastname_member'];
+//                                    $getUsername = $_POST['username'];
+//                                    $getPassword = $_POST['password'];
+//                                    $count = add_member($getName, $getLastname, $getUsername, $getPassword);
+//
+//                                    if ($count === false) {
+//                                        die(print_r($con->errorInfo(), true));
+//                                    } else {
+//                                        
+                                ?>
 
-                                if (isset($_REQUEST['sumbit']) && $_REQUEST['sumbit'] == "addMem") {//แต่ละช่องมีค่าใช่ไหม และมากจากปุ่มadd
-                                    $getName = $_POST['name_member'];
-                                    $getLastname = $_POST['lastname_member'];
-                                    $getUsername = $_POST['username'];
-                                    $getPassword = $_POST['password'];
-                                    $count = add_member($getName, $getLastname, $getUsername, $getPassword);
+                                <?php
+//                                        echo "<center><h4>คุณได้ทำการเพิ่มสำเร็จแล้ว</h4></center>";
+//                                    }
+//                                }
+//
+//                                if (isset($_REQUEST['sumbit']) && $_REQUEST['sumbit'] == "updateMem") {//แต่ละช่องมีค่าใช่ไหม และมากจากปุ่มupdate
+//                                    $getName = $_POST['name_member'];
+//                                    $getLastname = $_POST['lastname_member'];
+//                                    $getPassword = $_POST['password'];
+//                                    $getid = $_GET['id'];
+//                                    $count = edit_member($getid, $getPassword, $getName, $getLastname);
+//
+//                                    if ($count === false) {
+//                                        die(print_r($con->errorInfo(), true));
+//                                    } else {
+//                                        
+                                ?>
 
-                                    if ($count === false) {
-                                        die(print_r($con->errorInfo(), true));
-                                    } else {
-                                        ?>
-
-                                        <?php
+                                <?php
+                                if (isset($_GET['action'])) {
+                                    if ($_GET['action'] == "completed") {
                                         echo "<center><h4>คุณได้ทำการเพิ่มสำเร็จแล้ว</h4></center>";
-                                    }
-                                }
-
-                                if (isset($_REQUEST['sumbit']) && $_REQUEST['sumbit'] == "updateMem") {//แต่ละช่องมีค่าใช่ไหม และมากจากปุ่มupdate
-                                    $getName = $_POST['name_member'];
-                                    $getLastname = $_POST['lastname_member'];
-                                    $getPassword = $_POST['password'];
-                                    $getid = $_GET['id'];
-                                    $count = edit_member($getid, $getPassword, $getName, $getLastname);
-
-                                    if ($count === false) {
-                                        die(print_r($con->errorInfo(), true));
                                     } else {
-                                        ?>
-
-                                        <?php
-                                        echo "<center><h4>คุณได้ทำการอัพเดทสำเร็จแล้ว</h4></center>";
+                                        echo "<center><h4>ผิดพลาด!! ไม่สามารถเพิ่มได้</h4></center>";
                                     }
                                 }
+//                                        
+//                                    }
+//                                }
                                 ?>
                             </span>
                             <!-- ตารางสมาชิก -->
