@@ -6,11 +6,12 @@ print_r($_POST);
 echo '</pre>';
 
 $idtransport = $_GET['idtransport'];
+$code_transport = $_POST['code_transport'];
 $name_transport = $_POST['name_transport'];
 $tel_transport = $_POST['tel_transport'];
 $address_transport = $_POST['address_transport'];
 
-$checkEditTransport = editTransport($idtransport, $name_transport, $tel_transport, $address_transport);
+$checkEditTransport = editTransport($code_transport, $name_transport, $tel_transport, $address_transport, $idtransport);
 if ($checkEditTransport) {
     header("location: ../transport.php?action=editCompleted");
 } else {

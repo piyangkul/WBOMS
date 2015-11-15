@@ -12,7 +12,7 @@
                     <label for="idtransport">รหัสขนส่ง</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-circle-o-notch"  ></i></span>
-                        <input type="text" class="form-control" name="idtransport" placeholder="กรุณากรอกรหัสขนส่ง" required=""/>
+                        <input type="text" class="form-control" name="code_transport" placeholder="กรุณากรอกรหัสขนส่ง" required=""/>
                     </div>
                 </div>
                 <div class="form-group col-xs-12">

@@ -81,6 +81,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                     <th><div align="center">รหัสขนส่ง</div></th>
                                                     <th><div align="center">ชื่อขนส่ง</div></th>
                                                     <th><div align="center">เบอร์โทรศัพท์</div></th>
+                                                    <th><div align="center">ที่อยู่</div></th>
                                                     <th><div align="center">การกระทำ</div></th>
                                                 </tr>
                                             </thead>
@@ -93,15 +94,17 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                 foreach ($getTransports as $value) {
                                                     $i++;
                                                     $val_idtransport = $value['idtransport'];
+                                                    $val_code_transport = $value['code_transport'];
                                                     $val_name_transport = $value['name_transport'];
                                                     $val_tel_transport = $value['tel_transport'];
                                                     $val_address_transport = $value['address_transport'];
                                                     ?>
                                                     <tr>
                                                         <td><?php echo $i; ?></td>
-                                                        <td><?php echo $val_idtransport; ?></td>
+                                                        <td><?php echo $val_code_transport; ?></td>
                                                         <td><?php echo $val_name_transport; ?></td>
                                                         <td><?php echo $val_tel_transport; ?></td>
+                                                        <td><?php echo $val_address_transport;?></td>
                                                         <td>
                                                             <a href="popup_edit_transport.php?idtransport=<?php echo $val_idtransport; ?>" class="btn btn-warning " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="แก้ไข">
                                                                 <span class="glyphicon glyphicon-edit"></span>

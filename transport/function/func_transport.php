@@ -4,7 +4,8 @@ require_once dirname(__FILE__) . '/../../config/connect.php';
 
 function getTransports() {
     $conn = dbconnect();
-    $SQLCommand = "SELECT `idtransport`, "
+    $SQLCommand = "SELECT `idtransport`,"
+            . " `code_transport`, "
             . "`name_transport`, "
             . "`tel_transport`, "
             . "`address_transport` "
@@ -23,6 +24,7 @@ function getTransports() {
 function getTransportByID($idtransport) {
     $conn = dbconnect();
     $SQLCommand = "SELECT `idtransport`, "
+            . " `code_transport`, "
             . "`name_transport`, "
             . "`tel_transport`, "
             . "`address_transport` "
@@ -40,9 +42,10 @@ function getTransportByID($idtransport) {
     return $result;
 }
 
-function editTransport($name_transport, $tel_transport, $address_transport, $idtransport) {
+function editTransport($code_transport, $name_transport, $tel_transport, $address_transport, $idtransport) {
     $conn = dbconnect();
     $SQLCommand = "UPDATE `transport` SET "
+            . "`code_transport`=:code_transport,"
             . "`name_transport`=:name_transport,"
             . "`tel_transport`=:tel_transport,"
             . "`address_transport`=:address_transport "
@@ -51,6 +54,7 @@ function editTransport($name_transport, $tel_transport, $address_transport, $idt
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
+                ":code_transport" => $code_transport,
                 ":name_transport" => $name_transport,
                 ":tel_transport" => $tel_transport,
                 ":address_transport" => $address_transport,
@@ -83,14 +87,15 @@ function delTransport($idtransport) {
     }
 }
 
-function addTransport($name_transport, $tel_transport, $address_transport) {
+function addTransport($code_transport,$name_transport, $tel_transport, $address_transport) {
     $conn = dbconnect();
-    $SQLCommand = "INSERT INTO `transport`(`name_transport`, `tel_transport`, `address_transport`) "
-            . "VALUES (:name_transport, :tel_transport, :address_transport)";
+    $SQLCommand = "INSERT INTO `transport`(`code_transport`, `name_transport`, `tel_transport`, `address_transport`) "
+            . "VALUES (:code_transport, :name_transport, :tel_transport, :address_transport)";
 
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
+                ":code_transport" => $code_transport,
                 ":name_transport" => $name_transport,
                 ":tel_transport" => $tel_transport,
                 ":address_transport" => $address_transport
