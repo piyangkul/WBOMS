@@ -1,5 +1,4 @@
 ﻿<?php
-//require '../model/db_user.inc.php';
 require_once 'function/func_factory.php';
 session_start();
 if (!isset($_SESSION['member']))
@@ -32,9 +31,6 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
 
             <!--  NAV SIDE  -->
             <?php include '../interface_template/template_nav_side.php'; ?>
-
-            <!--  CONNECT DATABASE  -->
-
 
             <div id="page-wrapper" >
                 <div id="page-inner">
@@ -72,27 +68,6 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                 }
                                 ?>
                             </span>
-                            <?php
-//                            if (isset($_REQUEST['name_factory'])) {
-//                                $getName = $_POST['name_factory'];
-//                                $getTel = $_POST['tel_factory'];
-//                                $getAddress = $_POST['address_factory'];
-//                                $getContact = $_POST['contact_factory'];
-//                                $getDiff = $_POST['difference_amount_factory'];
-//                                $getDetail = $_POST['detail_factory'];
-//                                $count = add_factory($getName, $getTel, $getAddress, $getContact, $getDiff, $getDetail);
-//
-//
-//                                if ($count === false) {
-//                                    die(print_r($con->errorInfo(), true));
-//                                } else {
-//                                    ?>
-
-                                    <?php
-//                                    echo "<center><h4>คุณได้ทำการเพิ่มสำเร็จแล้ว</h4></center>";
-//                                }
-//                            }
-//                            ?>
                             <!-- ตารางโรงงาน -->
                             <div class="panel panel-primary">
                                 <div class="panel-heading">
