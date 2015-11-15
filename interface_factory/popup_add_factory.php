@@ -13,16 +13,16 @@
                     <input type="text" class="form-control" name="name_factory" placeholder="กรอกชื่อโรงงาน"  required=""/>
                 </div>
                 <div class="form-group col-xs-12">
-                    <label for="tel">เบอร์โทรศัพท์</label>
+                    <label for="tel_factory">เบอร์โทรศัพท์</label>
                     <input type="text" class="form-control" name="tel_factory" placeholder="กรอกเบอร์โทรศัพท์" value="" required=""/>
                 </div>
                 <div class="form-group col-xs-12">
-                    <label for="address">ที่อยู่</label>
-                    <textarea rows="4" cols="50" id="address" name="address_factory" class="form-control" placeholder="กรอกที่อยู่โรงงาน"value="" required=""/></textarea>
+                    <label for="address_factory">ที่อยู่</label>
+                    <textarea rows="4" cols="50" id="address_factory" name="address_factory" class="form-control" placeholder="กรอกที่อยู่โรงงาน"value="" required=""/></textarea>
                 </div>
                 <div class="form-group col-xs-12">
                     <label for="contact_factory">ผู้ติดต่อ</label>
-                    <input type="text" class="form-control" name="contact_factory" placeholder="กรอกผู้ติดต่อ"/>
+                    <input type="text" class="form-control" name="contact_factory" placeholder="กรอกผู้ติดต่อ" value="" required=""/>
                 </div>
                 <div class="form-group col-xs-12">
                     <label for="difference_amount_factory">ส่วนลดต้นทุนมาตราฐานของโรงงานเป็น%</label>

@@ -1,4 +1,19 @@
-﻿<form class="form">
+<?php
+require_once 'function/func_factory.php';
+?>
+<?php
+if (isset($_GET['idfactory'])) {
+    $idfactory = $_GET['idfactory'];
+    $getFactorys = getFactoryByID($idfactory);
+    $val_name_factory = $getFactorys['name_factory'];
+    $val_tel_factory = $getFactorys['tel_factory'];
+    $val_address_factory = $getFactorys['address_factory'];
+    $val_contact_factory = $getFactorys['contact_factory'];
+    $val_difference_amount = $getFactorys['difference_amount_factory'];
+    $val_detail_factory = $getFactorys['detail_factory'];
+}
+?>
+﻿<form class="form" action="action/action_editFactory.php?idfactory=<?php echo $idfactory; ?>" method="get">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">รายละเอียดโรงงาน</h4>
@@ -7,27 +22,30 @@
         <div class="col-md-12 col-sm-12 ">
             <div class="form-group col-xs-12">
                 <div class="form-group col-xs-12">
-                    
                 </div>
                 <div class="form-group col-xs-12">
-                    <label for="exampleInputName1">ชื่อโรงงาน</label>
-                    <input type="text" class="form-control" id="name_factory" placeholder="ชื่อโรงงาน" disabled>
+                    <label for="name_factory">ชื่อโรงงาน</label>
+                    <input type="text" class="form-control" id="name_factory" name="name_factory" value="<?php echo $val_name_factory;?> "disabled="">
                 </div>
                 <div class="form-group col-xs-12">
-                    <label for="exampleInputName3">เบอร์โทรศัพท์</label>
-                    <input type="text" class="form-control" id="Tel" placeholder="เบอร์โทรศัพท์" disabled>
+                    <label for="tel_factory">เบอร์โทรศัพท์</label>
+                    <input type="text" class="form-control" id="tel_factory" name="tel_factory" value="<?php echo $val_tel_factory;?>" disabled="">
                 </div>
                 <div class="form-group col-xs-12">
-                    <label for="address">ที่อยู่</label>
-                    <textarea rows="4" cols="50" name="address" form="usrform" class="form-control" placeholder="ที่อยู่" disabled></textarea>
+                    <label for="address_factory">ที่อยู่</label>
+                    <textarea rows="4" cols="50" class="form-control" id="address_factory" name="address_factory" disabled=""><?php echo $val_address_factory; ?></textarea>
                 </div>
                 <div class="form-group col-xs-12">
-                    <label for="exampleInputName2">ผู้ติดต่อ</label>
-                    <input type="text" class="form-control" id="contact" placeholder="ผู้ติดต่อ" disabled>
+                    <label for="contact_factory">ผู้ติดต่อ</label>
+                    <input type="text" class="form-control" id="contact_factory" name="contact_factory" value="<?php echo $val_contact_factory;?>" disabled="" >
                 </div>
                 <div class="form-group col-xs-12">
-                    <label for="Other">รายละเอียดอื่นๆ</label>
-                    <textarea rows="4" cols="50" name="Other" form="usrform" class="form-control" placeholder="รายละเอียดอื่นๆ" disabled></textarea>
+                    <label for="difference_amount_factory">ส่วนลดต้นทุนมาตราฐานของโรงงานเป็น%</label>
+                    <input type="text" class="form-control" id="difference_amount_factory" name="difference_amount_factory" value="<?php echo $val_difference_amount;?>" disabled="">
+                </div>
+                <div class="form-group col-xs-12">
+                    <label for="detail_factory">รายละเอียดอื่นๆ</label>
+                    <textarea rows="4" cols="50" class="form-control" id="detail_factory" name="detail_factory" disabled=""><?php echo $val_detail_factory;?></textarea>
                 </div>
             </div>
         </div>

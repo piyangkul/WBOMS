@@ -129,13 +129,15 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                         <td><?php echo $val_contact_factory; ?></td>
 
                                                         <td>
-                                                            <a href="popup_detail_factory.php" class="btn btn-success " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="รายละเอียด">
+                                                            <a href="popup_detail_factory.php?idfactory=<?php echo $val_idfactory; ?>" class="btn btn-success " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="รายละเอียด">
                                                                 <span class="glyphicon glyphicon-list-alt"></span>
                                                             </a>
                                                             <a href="popup_edit_factory.php?idfactory=<?php echo $val_idfactory; ?>" class="btn btn-warning " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="แก้ไข">
                                                                 <span class="glyphicon glyphicon-edit"></span>
                                                             </a>
-                                                            <a href="popup_delete_factory.php" class="btn btn-danger " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="ลบ">
+                                                            <a href="action/action_delFactory.php?idfactory=<?php echo $val_idfactory; ?>" onclick="if (!confirm('คุณต้องการลบหรือไม่')) {
+                                                                        return false;
+                                                                    }" class="btn btn-danger " title="ลบ">
                                                                 <span class="glyphicon glyphicon-trash"></span>
                                                             </a>
                                                         </td>

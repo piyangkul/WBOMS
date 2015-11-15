@@ -18,8 +18,8 @@ $detail_factory = $_POST['detail_factory'];
 //กลุ่มคำสั่งทำอะไร
 $idfactory = addFactory($name_factory, $tel_factory, $address_factory, $contact_factory, $difference_amount_factory, $detail_factory);
 if ($idfactory > 0) {
-    header("location: ../factory.php?p=factory&para=addCompleted");
+    header("location: ../factory.php?p=factory&action=addCompleted");
 } else {
-    header("location: ../factory.php?p=factory&para=addError");
+    header("location: ../factory.php?p=factory&action=addError");
 }
 //สิ้นสุดกลุ่มคำสั่งทำอะไร
