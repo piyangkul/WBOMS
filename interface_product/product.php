@@ -1,6 +1,6 @@
 ﻿﻿<?php
 session_start();
-if (!isset($_SESSION['username']))
+if (!isset($_SESSION['member']))
     header('Location: ../index.php');
 
 $p = 'product';
@@ -30,9 +30,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
 
             <!--  NAV SIDE  -->
             <?php include '../interface_template/template_nav_side.php'; ?>
-
-            <!--  CONNECT DATABASE  -->
-            <?php include '../config/connect.php'; ?>
+          
 
             <div id="page-wrapper" >
                 <div id="page-inner">
@@ -40,7 +38,6 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                         <div class="col-md-12">
                             <h2> Product </h2>   
                             <h5> สินค้า </h5>
-
                         </div>
                     </div>
                     <!-- /. ROW  -->

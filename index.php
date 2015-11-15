@@ -55,7 +55,7 @@
                 <div class="col-md-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <form name="login_form" method="post" action="login_process.php" >
+                            <form name="login_form" method="post" action="login/action/action_login.php" >
                                 <div class="form-group">
                                     <label>Username :</label>
                                     <input type="text" class="form-control" placeholder="Enter Username" name="username" value="" required=""/>       
