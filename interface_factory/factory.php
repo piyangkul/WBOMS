@@ -53,6 +53,25 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                             </a>
                             <br/>
                             <br/>
+                            <span>
+                                <?php
+                                if (isset($_GET['action'])) {
+                                    if ($_GET['action'] == "addCompleted") {
+                                        echo "<center><h4>คุณได้ทำการเพิ่มสำเร็จแล้ว</h4></center>";
+                                    } else if ($_GET['action'] == "addError") {
+                                        echo "<center><h4>ผิดพลาด!! ไม่สามารถเพิ่มได้</h4></center>";
+                                    } else if ($_GET['action'] == "editCompleted") {
+                                        echo "<center><h4>คุณได้ทำการแก้ไขสำเร็จแล้ว</h4></center>";
+                                    } else if ($_GET['action'] == "editError") {
+                                        echo "<center><h4>ผิดพลาด!! ไม่สามารถแก้ไขได้</h4></center>";
+                                    } else if ($_GET['action'] == "delCompleted") {
+                                        echo "<center><h4>คุณได้ทำการลบสำเร็จแล้ว</h4></center>";
+                                    } else if ($_GET['action'] == "delError") {
+                                        echo "<center><h4>ผิดพลาด!! ไม่สามารถลบได้</h4></center>";
+                                    }
+                                }
+                                ?>
+                            </span>
                             <?php
 //                            if (isset($_REQUEST['name_factory'])) {
 //                                $getName = $_POST['name_factory'];
@@ -113,7 +132,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                             <a href="popup_detail_factory.php" class="btn btn-success " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="รายละเอียด">
                                                                 <span class="glyphicon glyphicon-list-alt"></span>
                                                             </a>
-                                                            <a href="popup_edit_factory.php" class="btn btn-warning " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="แก้ไข">
+                                                            <a href="popup_edit_factory.php?idfactory=<?php echo $val_idfactory; ?>" class="btn btn-warning " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="แก้ไข">
                                                                 <span class="glyphicon glyphicon-edit"></span>
                                                             </a>
                                                             <a href="popup_delete_factory.php" class="btn btn-danger " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="ลบ">
