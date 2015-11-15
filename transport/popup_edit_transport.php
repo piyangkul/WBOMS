@@ -57,6 +57,6 @@ if (isset($_GET['idtransport'])) {
     <div class="modal-footer">
         <p id="alertPass"></p>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="submit" id="submit" name="sumbit" class="btn btn-primary">Save changes</button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
     </div>
 </form>

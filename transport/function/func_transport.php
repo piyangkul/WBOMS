@@ -53,7 +53,7 @@ function editTransport($name_transport, $tel_transport, $address_transport, $idt
             array(
                 ":name_transport" => $name_transport,
                 ":tel_transport" => $tel_transport,
-                ":name_transport" => $address_transport,
+                ":address_transport" => $address_transport,
                 ":idtransport" => $idtransport
             )
     );
