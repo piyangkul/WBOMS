@@ -7,6 +7,7 @@ require_once 'function/func_transport.php';
 if (isset($_GET['idtransport'])) {
     $idtransport = $_GET['idtransport'];
     $getTransports = getTransportByID($idtransport);
+    $val_idtransport = $getTransports['idtransport'];
     $val_name_transport = $getTransports['name_transport'];
     $val_tel_transport = $getTransports['tel_transport'];
     $val_address_transport = $getTransports['address_transport'];
@@ -26,7 +27,7 @@ if (isset($_GET['idtransport'])) {
                     <label>รหัสขนส่ง</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-circle-o-notch"  ></i></span>
-                        <input type="text" class="form-control" name="idtransport" value="<?php echo $idtransport; ?>" />
+                        <input type="text" class="form-control" name="idtransport" value="<?php echo $val_idtransport; ?>" />
                     </div>
                 </div>
                 <div class="form-group col-xs-12">
@@ -56,6 +57,6 @@ if (isset($_GET['idtransport'])) {
     <div class="modal-footer">
         <p id="alertPass"></p>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="submit" id="submit" name="sumbit" value="updateTransport" class="btn btn-primary">Save changes</button>
+        <button type="submit" id="submit" name="sumbit" class="btn btn-primary">Save changes</button>
     </div>
 </form>

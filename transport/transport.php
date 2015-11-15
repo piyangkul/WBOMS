@@ -95,6 +95,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                     $val_idtransport = $value['idtransport'];
                                                     $val_name_transport = $value['name_transport'];
                                                     $val_tel_transport = $value['tel_transport'];
+                                                    $val_address_transport = $value['address_transport'];
                                                     ?>
                                                     <tr>
                                                         <td><?php echo $i; ?></td>
@@ -102,10 +103,10 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                         <td><?php echo $val_name_transport; ?></td>
                                                         <td><?php echo $val_tel_transport; ?></td>
                                                         <td>
-                                                            <a href="popup_edit_transport.php?idmember=<?php echo $val_idtransport; ?>" class="btn btn-warning " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="แก้ไข">
+                                                            <a href="popup_edit_transport.php?idtransport=<?php echo $val_idtransport; ?>" class="btn btn-warning " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="แก้ไข">
                                                                 <span class="glyphicon glyphicon-edit"></span>
                                                             </a>
-                                                            <a href="action/action_delTransport.php?idmember=<?php echo $val_idtransport; ?>" onclick="if (!confirm('คุณต้องการลบหรือไม่')) {
+                                                            <a href="action/action_delTransport.php?idtransport=<?php echo $val_idtransport; ?>" onclick="if (!confirm('คุณต้องการลบหรือไม่')) {
                                                                         return false;
                                                                     }" class="btn btn-danger " title="ลบ">
                                                                 <span class="glyphicon glyphicon-trash"></span>

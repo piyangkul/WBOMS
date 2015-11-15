@@ -12,7 +12,7 @@ $address_transport = $_POST['address_transport'];
 
 $checkEditTransport = editTransport($idtransport, $name_transport, $tel_transport, $address_transport);
 if ($checkEditTransport) {
-    header("location: ../transport.php?action=editCompleted");
+ //   header("location: ../transport.php?action=editCompleted");
 } else {
-    header("location: ../transport.php?action=editError");
+  //  header("location: ../transport.php?action=editError");
 }
