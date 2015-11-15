@@ -1,7 +1,7 @@
 ﻿<?php
-require '../model/db_user.inc.php';
+require_once 'function/func_shop.php';
 session_start();
-if (!isset($_SESSION['username']))
+if (!isset($_SESSION['member']))
     header('Location: ../index.php');
 
 $p = 'shop';
@@ -51,6 +51,25 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                 <span class="glyphicon glyphicon-plus"></span> เพิ่มร้านค้า
                             </a>
                             <br/>
+                            <span>
+                                <?php
+                                if (isset($_GET['action'])) {
+                                    if ($_GET['action'] == "addCompleted") {
+                                        echo "<center><h4>คุณได้ทำการเพิ่มสำเร็จแล้ว</h4></center>";
+                                    } else if ($_GET['action'] == "addError") {
+                                        echo "<center><h4>ผิดพลาด!! ไม่สามารถเพิ่มได้</h4></center>";
+                                    } else if ($_GET['action'] == "editCompleted") {
+                                        echo "<center><h4>คุณได้ทำการแก้ไขสำเร็จแล้ว</h4></center>";
+                                    } else if ($_GET['action'] == "editError") {
+                                        echo "<center><h4>ผิดพลาด!! ไม่สามารถแก้ไขได้</h4></center>";
+                                    } else if ($_GET['action'] == "delCompleted") {
+                                        echo "<center><h4>คุณได้ทำการลบสำเร็จแล้ว</h4></center>";
+                                    } else if ($_GET['action'] == "delError") {
+                                        echo "<center><h4>ผิดพลาด!! ไม่สามารถลบได้</h4></center>";
+                                    }
+                                }
+                                ?>
+                            </span>
                             <br/>
                             <!-- ตารางร้านค้า -->
                             <div class="panel panel-primary">
@@ -72,37 +91,41 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                             </thead>
                                             <tbody>
                                                 <?php
-                                                //ดึงข้อมูลจากตาราง
-                                                $i = 1;
-                                                $result = get_shop();
-                                                while ($shop = $result->fetch(PDO::FETCH_OBJ)) {
+                                                $getShops = getShops();
+                                                foreach ($getShops as $value) {
+                                                    $val_idshop = $value['idshop'];
+                                                    $val_name_shop = $value['name_shop'];
+                                                    $val_tel_shop = $value['tel_shop'];
+                                                    $val_name_region = $value['name_region'];
+                                                    $val_name_province = $value['name_province'];
                                                     ?>
                                                     <tr>
-                                                        <td><?php echo $i; ?></td>
-                                                        <td><?php echo $shop->name_shop; ?></td>
-                                                        <td><?php echo $shop->tel_shop; ?></td>                                                     
-                                                        <td><?php echo $shop->name_region ?></td>
-                                                        <td><?php echo $shop->name_province ?></td>
+                                                        <td><?php echo $val_idshop; ?></td>
+                                                        <td><?php echo $val_name_shop; ?></td>
+                                                        <td><?php echo $val_tel_shop; ?></td>
+                                                        <td><?php echo $val_name_region; ?></td>
+                                                        <td><?php echo $val_name_province; ?></td>
+
                                                         <td>
-                                                            <!--
-                                                            <a href="popup_detail_shop.php" class="btn btn-success " data-toggle="modal" data-target="#myModal2" data-toggle="tooltip" title="รายละเอียด">
+                                                            <a href="popup_detail_shop.php?idfactory=<?php echo $val_idshop; ?>" class="btn btn-success " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="รายละเอียด">
                                                                 <span class="glyphicon glyphicon-list-alt"></span>
                                                             </a>
-                                                            -->
-                                                            <a href="popup_edit_shop.php?idshop_edit=<?php echo $shop->idshop; ?>" class="btn btn-warning " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="แก้ไข">
+                                                            <a href="popup_edit_shop.php?idfactory=<?php echo $val_idshop; ?>" class="btn btn-warning " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="แก้ไข">
                                                                 <span class="glyphicon glyphicon-edit"></span>
                                                             </a>
-                                                            <a href="shop_process.php?idshop=<?php echo $shop->idshop; ?>" onclick ="return confirm('คุณต้องการที่จะลบข้อมูลของ <?php echo $shop->name_shop; ?> หรือไม่?');" class="btn btn-danger"  data-toggle="tooltip" title="ลบ" >
+                                                            <a href="action/action_delShop.php?idfactory=<?php echo $val_idshop; ?>" onclick="if (!confirm('คุณต้องการลบหรือไม่')) {
+                                                                        return false;
+                                                                    }" class="btn btn-danger " title="ลบ">
                                                                 <span class="glyphicon glyphicon-trash"></span>
                                                             </a>
                                                         </td>
                                                     </tr>
-
                                                     <?php
-                                                    $i++;
                                                 }
-                                                ?>  
+                                                ?> 
+
                                         </table>
+
                                     </div>
                                 </div>
                             </div>
@@ -125,17 +148,17 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
         <!-- METISMENU SCRIPTS -->
         <script src="../assets/js/jquery.metisMenu.js"></script>
         <script>
-            $(document.body).on('hidden.bs.modal', function () {
-                $('#myModal2').removeData('bs.modal')
-            });
+                                                            $(document.body).on('hidden.bs.modal', function () {
+                                                                $('#myModal2').removeData('bs.modal')
+                                                            });
         </script>
         <!-- DATA TABLE SCRIPTS -->
         <script src="../assets/js/dataTables/jquery.dataTables.js"></script>
         <script src="../assets/js/dataTables/dataTables.bootstrap.js"></script>
         <script>
-            $(document).ready(function () {
-                $('#dataTables-example').dataTable();
-            });
+                                                            $(document).ready(function () {
+                                                                $('#dataTables-example').dataTable();
+                                                            });
         </script>
         <!-- CUSTOM SCRIPTS -->
         <script src="../assets/js/custom.js"></script>

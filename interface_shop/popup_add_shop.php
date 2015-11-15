@@ -1,3 +1,4 @@
+<?php require_once 'function/func_shop.php'; ?>
 <form class="form" action="action/action_addShop.php" method="post">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -34,11 +35,18 @@
                     <div class="btn-group">
                         <select id="aaa" name ="idprovince_shop_add" class="form-control">
                             <?php
-                            $res = get_province();
-                            while ($pro = $res->fetch(PDO::FETCH_OBJ)) {
-                                echo "<option name ='idprovince_shop_add' value = $pro->idprovince>$pro->name_province</option>";
+                            $getProvince = getProvince();
+                            foreach ($getShops as $value) {
+                                $val_idprovince = $value["idprovince"];
+                                $val_name_province = $value["name_province"];
+                                
                             }
+                            
+                                echo "<option name ='idprovince_shop_add' value = $val_idprovince>$val_name_province</option>";
+                                
+                            
                             ?>
+                            <option>เชียงราย</option>>
                         </select>
                     </div>
                 </div>
