@@ -20,7 +20,22 @@ if ($_GET['p'] == "addUnit") {
 
     echo "1";
 }
-if ($_GET['p'] == "chkUnitAdd") {
+else if ($_GET['p'] == "editUnit") {
+    $idUnit = $_GET['idUnit'];
+    $NameUnit = $_GET['NameUnit'];
+    $AmountPerUnit = $_GET['AmountPerUnit'];
+    $under_unit = $_GET['under_unit'];
+    $price = $_GET['price'];
+    $type = $_GET['type'];
+
+    $_SESSION["unit"][$idUnit]["NameUnit"] = $NameUnit;
+    $_SESSION["unit"][$idUnit]["AmountPerUnit"] = $AmountPerUnit;
+    $_SESSION["unit"][$idUnit]["under_unit"] = $under_unit;
+    $_SESSION["unit"][$idUnit]["price"] = $price;
+    $_SESSION["unit"][$idUnit]["type"] = $type;
+
+    echo "1";
+} else if ($_GET['p'] == "chkUnitAdd") {
 
 //    echo $_SESSION["countUnit"];
     if (isset($_SESSION["countUnit"])) {
@@ -28,26 +43,23 @@ if ($_GET['p'] == "chkUnitAdd") {
     } else
         echo 0;
 }
-if ($_GET['p'] == "getPriceUnit") {
+else if ($_GET['p'] == "getPriceUnit") {
     $id = $_GET['id'];
 //    echo "$id ";
     echo $_SESSION["unit"][$id]["price"];
-}
-if ($_GET['p'] == "getBigestUnit") {
+} else if ($_GET['p'] == "getBigestUnit") {
     if (isset($_SESSION["countUnit"])) {
         echo $_SESSION["unit"][1]["NameUnit"];
     } else {
         echo "-1";
     }
-}
-if ($_GET['p'] == "getBigestPrice") {
+} else if ($_GET['p'] == "getBigestPrice") {
     if (isset($_SESSION["countUnit"])) {
         echo $_SESSION["unit"][1]["price"];
     } else {
         echo "-1";
     }
-}
-if ($_GET['p'] == "showUnit") {
+} else if ($_GET['p'] == "showUnit") {
     ?>
     <table class="table table-striped table-bordered table-hover text-center" id="dataTables-example">
         <thead>
@@ -74,10 +86,10 @@ if ($_GET['p'] == "showUnit") {
                         <td><?php echo $_SESSION["unit"][$i]["AmountPerUnit"]; ?></td>
                         <td><?php echo $_SESSION["unit"][$i]["NameUnit"]; ?></td>
                         <td>
-                            <a href="popup_edit_product_unit.php" class="btn btn-warning " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="แก้ไข">
+                            <a href="popup_edit_product_unit.php?idUnit=<?php echo $i; ?>" class="btn btn-warning " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="แก้ไข">
                                 <span class="glyphicon glyphicon-edit"></span>
                             </a>
-                            <a href="popup_delete_product_unit.php" class="btn btn-danger " data-toggle="modal" data-target="#myModal3" data-toggle="tooltip" title="ลบ">
+                            <a href="popup_delete_product_unit.php?idUnit=<?php echo $i; ?>" class="btn btn-danger " data-toggle="modal" data-target="#myModal3" data-toggle="tooltip" title="ลบ">
                                 <span class="glyphicon glyphicon-trash"></span>
                             </a>
                         </td>

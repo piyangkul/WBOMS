@@ -9,9 +9,10 @@ print_r($_SESSION["unit"]);
 echo "</pre>";
 //กลุ่มรับค่า
 //ส่งข้อมูล หน้า add product มาหน้านี้ 
-$productID = $_POST['productID'];
+$productCode = $_POST['productCode'];
 $productName = $_POST['productName'];
 $factoryID = $_POST['factoryName'];
+$productDetail = $_POST['porductDetail'];
 $difference_amount = $_POST['difference_amount'];
 $bigestPriceResult = $_POST['bigestPriceResult'];
 //ส่งข้อมูล หน่วยสินค้า มาหน้านี้
@@ -19,7 +20,7 @@ $units = $_SESSION["unit"];
 //สิ้นสุดกลุ่มรับค่า
 //
 //กลุ่มคำสั่งทำอะไร
-$idproduct = addProduct($factoryID, $productName, "", "", $difference_amount); //idproductของระบบ
+$idproduct = addProduct($factoryID, $productName, $productDetail, $productCode, $difference_amount); //idproductของระบบ
 if ($idproduct > 0) {
     $idUnit[1] = addUnit($idproduct, 0, $units[1]['NameUnit'], $units[1]['price'], $units[1]['type']);
     for ($i = 2; $i <= count($units); $i++) {
@@ -31,7 +32,7 @@ if ($idproduct > 0) {
     unset($_SESSION["countUnit"]);
     header("location: ../product.php?p=product&para=addCompleted");
 //    echo "finished";
-} else{
+} else {
     header("location: ../product.php?p=product&para=addError");
 //    echo "error";
 }
