@@ -141,10 +141,10 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
         <!-- DATA TABLE SCRIPTS -->
         <script src="../assets/js/dataTables/jquery.dataTables.js"></script>
         <script src="../assets/js/dataTables/dataTables.bootstrap.js"></script>
-        <script>
-                                                            $(document).ready(function () {
-                                                                $('#dataTables-example').dataTable();
-                                                            });
+         <script>
+            $(document).ready(function () {
+                $('#dataTables-example').dataTable();
+            });
         </script>
         <script>
             $(function () {
