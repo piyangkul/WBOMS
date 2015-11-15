@@ -86,7 +86,7 @@ function delTransport($idtransport) {
 function addTransport($name_transport, $tel_transport, $address_transport) {
     $conn = dbconnect();
     $SQLCommand = "INSERT INTO `transport`(`name_transport`, `tel_transport`, `address_transport`) "
-            . "VALUES (:name_transport, :tel_transport, :address_transport";
+            . "VALUES (:name_transport, :tel_transport, :address_transport)";
 
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(

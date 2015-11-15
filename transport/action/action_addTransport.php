@@ -13,7 +13,7 @@ $address_transport = $_POST['address_transport'];
 
 $transportID = addTransport($name_transport, $tel_transport, $address_transport);
 if ($transportID > 0) {
-   // header("location: ../transport.php?action=addCompleted");
+    header("location: ../transport.php?action=addCompleted");
 } else {
-   // header("location: ../transport.php?action=addError");
+    header("location: ../transport.php?action=addError");
 }
