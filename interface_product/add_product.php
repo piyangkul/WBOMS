@@ -54,19 +54,32 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                 <div class="panel panel-default">
                                     <div class="panel-heading ">
                                         <div class="table-responsive">
-                                            <div>
-                                                <label for="exampleInputName1">รหัสสินค้า</label>
-                                                <input type="text" class="form-control" id="productID" name="productID" placeholder="กรอกรหัสสินค้า" >
+                                            <div class="form-group">
+                                                <label for="productCode">รหัสสินค้า</label>
+                                                <input type="text" class="form-control" id="productCode" name="productCode" placeholder="กรอกรหัสสินค้า" >
                                             </div>
-                                            <br/>
-                                            <div>
-                                                <label for="exampleInputName2"> ชื่อสินค้า </label>
+                                            <div class="form-group">
+                                                <label for="productName"> ชื่อสินค้า </label>
                                                 <input type="text" class="form-control" id="productName" name="productName" placeholder="กรอกชื่อสินค้า">
                                             </div>
-                                            <br/>
-                                            <div>
-                                                <label for="exampleInputName3"> ชื่อโรงงาน </label>
-                                                <input type="text" class="form-control" id="factoryName" name="factoryName" placeholder="กรอกชื่อโรงงาน">
+                                            <div class="form-group">
+                                                <label for="factoryName"> ชื่อโรงงาน </label>
+                                                <select class="form-control" id="factoryName" name="factoryName" >
+                                                    <option selected>Choose</option>
+                                                    <?php
+                                                    require_once '../interface_factory/function/func_factory.php';
+                                                    $getFactorys = getFactorys();
+                                                    foreach ($getFactorys as $value) {
+                                                        $val_idfactory = $value['idfactory'];
+                                                        $val_name_factory = $value['name_factory'];
+                                                        ?>
+                                                        <option value="<?php echo $val_idfactory; ?>"><?php echo $val_name_factory; ?></option>
+                                                    <?php } ?>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="porductDetail">รายละเอียด</label>
+                                                <textarea class="form-control" id="porductDetail" name="porductDetail" placeholder="รายละเอียดของสินค้า"></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -158,7 +171,8 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
         <script>
                                                     $(document.body).on('hidden.bs.modal', function () {
                                                         $('#myModal').removeData('bs.modal');
-                                                    });</script>
+                                                    });
+        </script>
         <script>
             showUnit();
             function showUnit() {

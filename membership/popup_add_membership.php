@@ -1,4 +1,4 @@
-<form class="form" action="membership.php" method="post">
+<form class="form" action="action/action_addMember.php" method="post">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">เพิ่มสมาชิก</h4>
@@ -75,5 +75,3 @@
         }
     }
 </script>
-
-

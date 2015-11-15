@@ -26,25 +26,27 @@ function addProduct($idfactory, $name_product, $detail_product, $code_product, $
     }
 }
 
-function addUnit($idproduct, $idunit_big, $name_unit, $price_unit, $type_unit) {
+function addFactory($name_factory, $tel_factory, $address_factory, $contact_factory, $difference_amount_factory, $detail_factory) {
     $conn = dbconnect();
-    $SQLCommand = "INSERT INTO `unit`(`idproduct`, `idunit_big`, `name_unit`, `price_unit`, `type_unit`) "
-            . "VALUES (:idproduct, :idsmall_unit, :idunit_big, :price_unit, :type_unit)";
+    $SQLCommand = "INSERT INTO `factory`(`name_factory`, `tel_factory`, `address_factory`, `contact_factory`, `difference_amount_factory`, `detail_factory`) "
+            . "VALUES (:name_factory, :tel_factory, :address_factory, :contact_factory, :difference_amount_factory, :detail_factory)";
 
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
-                ":idproduct" => $idproduct,
-                ":idunit_big" => $idunit_big,
-                ":name_unit" => $name_unit,
-                ":price_unit" => $price_unit,
-                ":type_unit" => $type_unit
+                ":name_factory" => $name_factory,
+                ":tel_factory" => $tel_factory,
+                ":address_factory" => $address_factory,
+                ":code_product" => $code_product,
+                ":difference_amount_product" => $difference_amount_product,
+                ":detail_factory" => $detail_factory
             )
     );
 
     if ($SQLPrepare->rowCount() > 0) {
         return $conn->lastInsertId();
     } else {
+//        echo $SQLCommand;
         return false;
     }
 }
@@ -103,6 +105,26 @@ function getProduct_detail_1($idproduct) {//รับค่าpara
     );
     $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
     return $result;
+}
+
+function getFactorys() {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT `idfactory`, "
+            . "`name_factory`, "
+            . "`tel_factory`, "
+            . "`address_factory`, "
+            . "`contact_factory`, "
+            . "`difference_amount_factory`, "
+            . "`detail_factory` FROM `factory` ";
+
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+    );
+    $resultArr = array();
+    while ($result = $SQLPrepare->fetch(PDO::FETCH_ASSOC)) {
+        array_push($resultArr, $result);
+    }
+    return $resultArr;
 }
 
 function add($p1, $p2, $p3) {

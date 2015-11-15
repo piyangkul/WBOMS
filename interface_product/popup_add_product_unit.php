@@ -48,7 +48,7 @@ session_start();
                         <div class="panel-body">
                             <div class="table-responsive ">
                                 <label class="radio-inline">
-                                    <input type="radio" name="type" id="type" checked value="primary"> ขาย
+                                    <input type="radio" name="type" id="type" value="primary"> ขาย
                                 </label>
                                 <label class="radio-inline">
                                     <input type="radio" name="type" id="type" value="second"> ไม่ขาย
@@ -73,7 +73,7 @@ session_start();
         var AmountPerUnit = $("#AmountPerUnit").val();
         var under_unit = $("#under_unit").val();
         var price = $("#price").val();
-        var type = $("#type").val();
+        var type = $("input:radio[name=type]:checked").val();
 
         var p = "&NameUnit=" + NameUnit + "&AmountPerUnit=" + AmountPerUnit + "&under_unit=" + under_unit + "&price=" + price + "&type=" + type;
 //        alert(p);
