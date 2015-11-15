@@ -72,6 +72,42 @@ function delMember($idmember) {
     }
 }
 
+function getMembers() {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT `idmember`, `name`, `lastname`, `username`, `password`, `status_member` FROM `member`";
+
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute();
+
+    $resultArr = array();
+    while ($result = $SQLPrepare->fetch(PDO::FETCH_ASSOC)) {
+        array_push($resultArr, $result);
+    }
+    return $resultArr;
+}
+
+function getMemberByID($idmember) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT `idmember`, "
+            . "`name`, "
+            . "`lastname`, "
+            . "`username`, "
+            . "`password`, "
+            . "`status_member` "
+            . "FROM `member` "
+            . "WHERE `idmember`=:idmember ";
+
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idmember" => $idmember,
+            )
+    );
+
+       $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
+    return $result;
+}
+
 function add($p1, $p2, $p3) {
     $conn = dbconnect();
     $SQLCommand = "";
