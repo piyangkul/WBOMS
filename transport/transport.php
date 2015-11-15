@@ -1,5 +1,4 @@
 ﻿<?php
-require '../model/db_user.inc.php';
 session_start();
 if (!isset($_SESSION['member']))
     header('Location: ../index.php');
@@ -49,65 +48,29 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
 
                             <br/>
                             <br/>
-                            <?php
-                            //การแสดงผลตอบสนองการเพิ่ม
-                            /* if (isset($_COOKIE['p']) && $_COOKIE['p'] == "successfully")
-                              echo "<center><h4>คุณได้ทำการเพิ่มสำเร็จแล้ว</h4></center>";
-                              else if (isset($_COOKIE['p']) && $_COOKIE['p'] == "error")
-                              echo "<center><h4>ผิดพลาด!! ไม่สามารถเพิ่มได้ </h4></center>"; */
-                            ?>
-
                             <span>
                                 <?php
-                                if (isset($_REQUEST['del_id'])) {
-                                    $getid = $_POST['del_id'];
-                                    $countd = del_member($getid);
-                                    if ($countd === false) {
-                                        die(print_r($con->errorInfo(), true));
-                                    } else {
-                                        echo $countd . " rows Del <br/>";
-                                    }
-                                }
-
-                                if (isset($_REQUEST['sumbit']) && $_REQUEST['sumbit'] == "addMem") {//แต่ละช่องมีค่าใช่ไหม และมากจากปุ่มadd
-                                    $getName = $_POST['name_member'];
-                                    $getLastname = $_POST['lastname_member'];
-                                    $getUsername = $_POST['username'];
-                                    $getPassword = $_POST['password'];
-                                    $count = add_member($getName, $getLastname, $getUsername, $getPassword);
-
-                                    if ($count === false) {
-                                        die(print_r($con->errorInfo(), true));
-                                    } else {
-                                        ?>
-
-                                        <?php
+                                if (isset($_GET['action'])) {
+                                    if ($_GET['action'] == "addCompleted") {
                                         echo "<center><h4>คุณได้ทำการเพิ่มสำเร็จแล้ว</h4></center>";
-                                    }
-                                }
-
-                                if (isset($_REQUEST['sumbit']) && $_REQUEST['sumbit'] == "updateMem") {//แต่ละช่องมีค่าใช่ไหม และมากจากปุ่มupdate
-                                    $getName = $_POST['name_member'];
-                                    $getLastname = $_POST['lastname_member'];
-                                    $getPassword = $_POST['password'];
-                                    $getid = $_GET['id'];
-                                    $count = edit_member($getid, $getPassword, $getName, $getLastname);
-
-                                    if ($count === false) {
-                                        die(print_r($con->errorInfo(), true));
-                                    } else {
-                                        ?>
-
-                                        <?php
-                                        echo "<center><h4>คุณได้ทำการอัพเดทสำเร็จแล้ว</h4></center>";
+                                    } else if ($_GET['action'] == "addError") {
+                                        echo "<center><h4>ผิดพลาด!! ไม่สามารถเพิ่มได้</h4></center>";
+                                    } else if ($_GET['action'] == "editCompleted") {
+                                        echo "<center><h4>คุณได้ทำการแก้ไขสำเร็จแล้ว</h4></center>";
+                                    } else if ($_GET['action'] == "editError") {
+                                        echo "<center><h4>ผิดพลาด!! ไม่สามารถแก้ไขได้</h4></center>";
+                                    } else if ($_GET['action'] == "delCompleted") {
+                                        echo "<center><h4>คุณได้ทำการลบสำเร็จแล้ว</h4></center>";
+                                    } else if ($_GET['action'] == "delError") {
+                                        echo "<center><h4>ผิดพลาด!! ไม่สามารถลบได้</h4></center>";
                                     }
                                 }
                                 ?>
                             </span>
-                            <!-- ตารางสมาชิก -->
+                            <!-- ตารางขนส่ง -->
                             <div class="panel panel-primary">
                                 <div class="panel-heading">
-                                    <h5>ตารางสมาชิก</h5>
+                                    <h5>ตารางขนส่ง</h5>
                                 </div>
                                 <div class="panel-body">
                                     <div class="table-responsive">
@@ -124,28 +87,32 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                             <tbody>
                                                 <?php
                                                 //ดึงข้อมูลจากตาราง
-                                                $i = 1;
-                                                $result = get_transport();
-                                                while ($user = $result->fetch(PDO::FETCH_OBJ)) {
+                                                require_once 'function/func_transport.php';
+                                                $getTransports = getTransports();
+                                                $i = 0;
+                                                foreach ($getTransports as $value) {
+                                                    $i++;
+                                                    $val_idtransport = $value['idtransport'];
+                                                    $val_name_transport = $value['name_transport'];
+                                                    $val_tel_transport = $value['tel_transport'];
                                                     ?>
                                                     <tr>
                                                         <td><?php echo $i; ?></td>
-                                                        <td><?php echo $user->idtransport; ?></td>
-                                                        <td><?php echo $user->name_transport; ?></td>
-                                                        <td><?php echo $user->tel_transport; ?></td>
+                                                        <td><?php echo $val_idtransport; ?></td>
+                                                        <td><?php echo $val_name_transport; ?></td>
+                                                        <td><?php echo $val_tel_transport; ?></td>
                                                         <td>
-                                                            <a href="popup_edit_membership.php?idmember=<?php echo $user->idmember; ?>" class="btn btn-warning " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="แก้ไข">
+                                                            <a href="popup_edit_transport.php?idmember=<?php echo $val_idtransport; ?>" class="btn btn-warning " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="แก้ไข">
                                                                 <span class="glyphicon glyphicon-edit"></span>
                                                             </a>
-                                                            <a href="popup_delete_membership.php" class="btn btn-danger " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="ลบ">
+                                                            <a href="action/action_delTransport.php?idmember=<?php echo $val_idtransport; ?>" onclick="if (!confirm('คุณต้องการลบหรือไม่')) {
+                                                                        return false;
+                                                                    }" class="btn btn-danger " title="ลบ">
                                                                 <span class="glyphicon glyphicon-trash"></span>
                                                             </a>
                                                         </td>
                                                     </tr>
-                                                    <?php
-                                                    $i++;
-                                                }
-                                                ?>  
+                                                <?php } ?>  
                                         </table>
                                     </div>
                                 </div>
