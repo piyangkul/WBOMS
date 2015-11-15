@@ -1,4 +1,4 @@
-<form class="form" action="factory.php" method="post">
+<form class="form" action="action/action_addFactory.php" method="post">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">เพิ่มโรงงาน</h4>
@@ -25,7 +25,7 @@
                     <input type="text" class="form-control" name="contact_factory" placeholder="กรอกผู้ติดต่อ"/>
                 </div>
                 <div class="form-group col-xs-12">
-                    <label for="difference_amount">ส่วนลดต้นทุนมาตราฐานของโรงงานเป็น%</label>
+                    <label for="difference_amount_factory">ส่วนลดต้นทุนมาตราฐานของโรงงานเป็น%</label>
                     <input type="text" class="form-control" name="difference_amount_factory" placeholder="0" value="" required=""/>
                 </div>
                 <div class="form-group col-xs-12">

@@ -13,8 +13,8 @@ function addFactory($name_factory, $tel_factory, $address_factory, $contact_fact
                 ":name_factory" => $name_factory,
                 ":tel_factory" => $tel_factory,
                 ":address_factory" => $address_factory,
-                ":code_product" => $code_product,
-                ":difference_amount_product" => $difference_amount_product,
+                ":contact_factory" => $contact_factory,
+                ":difference_amount_factory" => $difference_amount_factory,
                 ":detail_factory" => $detail_factory
             )
     );

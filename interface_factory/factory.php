@@ -1,5 +1,6 @@
 ﻿<?php
-require '../model/db_user.inc.php';
+//require '../model/db_user.inc.php';
+require_once 'function/func_factory.php';
 session_start();
 if (!isset($_SESSION['username']))
     header('Location: ../index.php');
@@ -53,26 +54,26 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                             <br/>
                             <br/>
                             <?php
-                            if (isset($_REQUEST['name_factory'])) {
-                                $getName = $_POST['name_factory'];
-                                $getTel = $_POST['tel_factory'];
-                                $getAddress = $_POST['address_factory'];
-                                $getContact = $_POST['contact_factory'];
-                                $getDiff = $_POST['difference_amount_factory'];
-                                $getDetail = $_POST['detail_factory'];
-                                $count = add_factory($getName, $getTel, $getAddress, $getContact, $getDiff, $getDetail);
-                                
-
-                                if ($count === false) {
-                                    die(print_r($con->errorInfo(), true));
-                                } else {
-                                    ?>
+//                            if (isset($_REQUEST['name_factory'])) {
+//                                $getName = $_POST['name_factory'];
+//                                $getTel = $_POST['tel_factory'];
+//                                $getAddress = $_POST['address_factory'];
+//                                $getContact = $_POST['contact_factory'];
+//                                $getDiff = $_POST['difference_amount_factory'];
+//                                $getDetail = $_POST['detail_factory'];
+//                                $count = add_factory($getName, $getTel, $getAddress, $getContact, $getDiff, $getDetail);
+//
+//
+//                                if ($count === false) {
+//                                    die(print_r($con->errorInfo(), true));
+//                                } else {
+//                                    ?>
 
                                     <?php
-                                    echo "<center><h4>คุณได้ทำการเพิ่มสำเร็จแล้ว</h4></center>";
-                                }
-                            }
-                            ?>
+//                                    echo "<center><h4>คุณได้ทำการเพิ่มสำเร็จแล้ว</h4></center>";
+//                                }
+//                            }
+//                            ?>
                             <!-- ตารางโรงงาน -->
                             <div class="panel panel-primary">
                                 <div class="panel-heading">
@@ -93,15 +94,20 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                             <tbody>
                                                 <?php
                                                 //ดึงข้อมูลจากตาราง
-                                                $i = 1;
-                                                $result = get_factory();
-                                                while ($factory = $result->fetch(PDO::FETCH_OBJ)) {
+                                                
+                                                $getFactorys = getFactorys();
+                                                foreach ($getFactorys as $value) {
+                                                    $val_idfactory = $value['idfactory'];
+                                                    $val_name_factory = $value['name_factory'];
+                                                    $val_tel_factory = $value['tel_factory'];
+                                                    $val_contact_factory = $value['contact_factory'];
+                                                    
                                                     ?>
                                                     <tr>
-                                                        <td><?php echo $i; ?></td>
-                                                        <td><?php echo $factory->name_factory; ?></td>
-                                                        <td><?php echo $factory->tel_factory; ?></td>
-                                                        <td><?php echo $factory->contact_factory; ?></td>
+                                                        <td><?php echo $val_idfactory; ?></td>
+                                                        <td><?php echo $val_name_factory; ?></td>
+                                                        <td><?php echo $val_tel_factory; ?></td>
+                                                        <td><?php echo $val_contact_factory; ?></td>
 
                                                         <td>
                                                             <a href="popup_detail_factory.php" class="btn btn-success " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="รายละเอียด">
@@ -117,7 +123,6 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                     </tr>
 
                                                     <?php
-                                                    $i++;
                                                 }
                                                 ?>  
                                         </table>
