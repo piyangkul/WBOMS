@@ -34,9 +34,6 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
 
             <!--  NAV SIDE  -->
             <?php include '../interface_template/template_nav_side.php'; ?>  
-
-           
-
             <div id="page-wrapper" >
                 <div id="page-inner">
                     <div class="row">
@@ -50,7 +47,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                     <hr />
                     <div class="row">
                         <div class="col-md-12">
-                            <a href="popup_add_shop.php" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal1">
+                            <a href="popup_add_shop.php" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">
                                 <span class="glyphicon glyphicon-plus"></span> เพิ่มร้านค้า
                             </a>
                             <br/>
@@ -87,10 +84,12 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                         <td><?php echo $shop->name_region ?></td>
                                                         <td><?php echo $shop->name_province ?></td>
                                                         <td>
+                                                            <!--
                                                             <a href="popup_detail_shop.php" class="btn btn-success " data-toggle="modal" data-target="#myModal2" data-toggle="tooltip" title="รายละเอียด">
                                                                 <span class="glyphicon glyphicon-list-alt"></span>
                                                             </a>
-                                                            <a href="popup_edit_shop.php?idshop_edit=<?php echo $shop->idshop; ?>" class="btn btn-warning " data-toggle="modal" data-target="#myModal2" data-toggle="tooltip" title="แก้ไข">
+                                                            -->
+                                                            <a href="popup_edit_shop.php?idshop_edit=<?php echo $shop->idshop; ?>" class="btn btn-warning " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="แก้ไข">
                                                                 <span class="glyphicon glyphicon-edit"></span>
                                                             </a>
                                                             <a href="shop_process.php?idshop=<?php echo $shop->idshop; ?>" onclick ="return confirm('คุณต้องการที่จะลบข้อมูลของ <?php echo $shop->name_shop; ?> หรือไม่?');" class="btn btn-danger"  data-toggle="tooltip" title="ลบ" >
@@ -142,75 +141,24 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
         <script src="../assets/js/custom.js"></script>
     </body>
 </html>
-<!-- Modalเพิ่ม -->
-<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="myModal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-            </div>
-            <div class="modal-body">
-                ...
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
+        <div class="modal-content modal-lg">
+            <!-- Content -->
         </div>
     </div>
 </div>
-<!-- Modalรายละเอียด -->
-<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="myModal-sm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-            </div>
-            <div class="modal-body">
-                ...
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
+        <div class="modal-content modal-sm">
+            <!-- Content -->
         </div>
     </div>
 </div>
-<!-- Modalแก้ไข -->
-<div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-            </div>
-            <div class="modal-body">
-                ...
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Modalลบ -->
-<div class="modal fade" id="myModal4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-            </div>
-            <div class="modal-body">
-                ...
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
+            <!-- Content -->
         </div>
     </div>
 </div>

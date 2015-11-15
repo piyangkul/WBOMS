@@ -96,9 +96,9 @@ function del_shop($getIDshop) {
 }
 
 //province and region
-function get_province($getIDregion){
+function get_province(){
     global $con;
-    $res = $con->query("SELECT * FROM province WHERE idregion = '$getIDregion'");
+    $res = $con->query("SELECT * FROM province");
     return $res;
 }
 
