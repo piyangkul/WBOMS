@@ -33,6 +33,8 @@ if ($idproduct > 0) {
     header("location: ../product.php?p=product&para=addCompleted");
 //    echo "finished";
 } else {
+    unset($_SESSION["unit"]);
+    unset($_SESSION["countUnit"]);
     header("location: ../product.php?p=product&para=addError");
 //    echo "error";
 }
