@@ -1,4 +1,5 @@
 <?php
+
 require_once dirname(__FILE__) . '/../function/func_shop.php';
 
 echo "<pre>";
@@ -7,14 +8,14 @@ echo "</pre>";
 //กลุ่มรับค่า
 //ส่งข้อมูล หน้า add factory มาหน้านี้ 
 $name_shop = $_POST['name_shop'];
+$idprovince = $_POST['idprovince'];
 $tel_shop = $_POST['tel_shop'];
 $address_shop = $_POST['address_shop'];
-$idprovince = $_POST['idprovince'];
 $detail_shop = $_POST['detail_shop'];
 //สิ้นสุดกลุ่มรับค่า
 //
 //กลุ่มคำสั่งทำอะไร
-$idfactory = addShop($name_shop, $tel_shop, $address_shop, $idprovince, $detail_shop);
+$idshop = addShop($name_shop, $idprovince, $tel_shop, $address_shop, $detail_shop);
 if ($idfactory > 0) {
     header("location: ../shop.php?p=shop&action=addCompleted");
 } else {

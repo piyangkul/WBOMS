@@ -33,20 +33,16 @@
                 <div class="form-group col-xs-12">
                     <label for="province">จังหวัด</label>
                     <div class="btn-group">
-                        <select id="aaa" name ="idprovince_shop_add" class="form-control">
+                        <select id="aaa" name ="idprovince" class="form-control">
                             <?php
                             $getProvince = getProvince();
-                            foreach ($getShops as $value) {
+                            foreach ($getProvince as $value) {
                                 $val_idprovince = $value["idprovince"];
                                 $val_name_province = $value["name_province"];
-                                
-                            }
-                            
-                                echo "<option name ='idprovince_shop_add' value = $val_idprovince>$val_name_province</option>";
-                                
-                            
+                                echo "<option name ='idprovince' value = $val_idprovince>$val_name_province</option>";
+                            }  
                             ?>
-                            <option>เชียงราย</option>>
+                            
                         </select>
                     </div>
                 </div>
@@ -55,7 +51,7 @@
                     <label for="detail_shop">รายละเอียด</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-lock"  ></i></span>
-                        <textarea rows="4" cols="50" id="detail_factory" name="detail_shop_add" class="form-control" placeholder="กรอกรายละเอียดอื่นๆ" value="" required=""/></textarea>
+                        <textarea rows="4" cols="50" id="detail_factory" name="detail_shop" class="form-control" placeholder="กรอกรายละเอียดอื่นๆ" value="" required=""/></textarea>
                     </div>
                 </div>
             </div>
@@ -64,7 +60,7 @@
     <div class="modal-footer">
         <p id="alertPass"></p>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="submit" id="submit" name="sumbit" value="addMem" class="btn btn-primary">Save changes</button>
+        <button type="submit" id="submit" name="sumbit" value="addShop" class="btn btn-primary">Save changes</button>
     </div>
 </form>
 
