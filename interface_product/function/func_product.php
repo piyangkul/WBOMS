@@ -5,7 +5,7 @@ require_once dirname(__FILE__) . '/../../config/connect.php';
 function addProduct($idfactory, $name_product, $detail_product, $code_product, $difference_amount_product) {
     $conn = dbconnect();
     $SQLCommand = "INSERT INTO `product`(`idfactory`, `name_product`, `detail_product`, `code_product`, `difference_amount_product`) "
-            . "VALUES (:idfactory, :name_product, :detail_product, :code_product, :amount_product)";
+            . "VALUES (:idfactory, :name_product, :detail_product, :code_product, :difference_amount_product )";
 
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
@@ -29,7 +29,7 @@ function addProduct($idfactory, $name_product, $detail_product, $code_product, $
 function addUnit($idproduct, $idunit_big, $name_unit, $price_unit, $type_unit) {
     $conn = dbconnect();
     $SQLCommand = "INSERT INTO `unit`(`idproduct`, `idunit_big`, `name_unit`, `price_unit`, `type_unit`) "
-            . "VALUES (:idproduct, :idsmall_unit, :idunit_big, :price_unit, :type_unit)";
+            . "VALUES (:idproduct, :idunit_big, :name_unit, :price_unit, :type_unit)";
 
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
