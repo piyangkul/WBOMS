@@ -92,15 +92,16 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                             <tbody>
                                                 <?php
                                                 $getShops = getShops();
+                                                $i=0;
                                                 foreach ($getShops as $value) {
-                                                    $val_idshop = $value['idshop'];
+                                                    $i++;
                                                     $val_name_shop = $value['name_shop'];
                                                     $val_tel_shop = $value['tel_shop'];
                                                     $val_name_region = $value['name_region'];
                                                     $val_name_province = $value['name_province'];
                                                     ?>
                                                     <tr>
-                                                        <td><?php echo $val_idshop; ?></td>
+                                                        <td><?php echo $i; ?></td>
                                                         <td><?php echo $val_name_shop; ?></td>
                                                         <td><?php echo $val_tel_shop; ?></td>
                                                         <td><?php echo $val_name_region; ?></td>
