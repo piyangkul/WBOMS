@@ -95,6 +95,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                 $i=0;
                                                 foreach ($getShops as $value) {
                                                     $i++;
+                                                    $val_idshop =  $value['idshop'];
                                                     $val_name_shop = $value['name_shop'];
                                                     $val_tel_shop = $value['tel_shop'];
                                                     $val_name_region = $value['name_region'];
@@ -108,13 +109,13 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                         <td><?php echo $val_name_province; ?></td>
 
                                                         <td>
-                                                            <a href="popup_detail_shop.php?idfactory=<?php echo $val_idshop; ?>" class="btn btn-success " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="รายละเอียด">
+                                                            <a href="popup_detail_shop.php?idshop=<?php echo $val_idshop; ?>" class="btn btn-success " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="รายละเอียด">
                                                                 <span class="glyphicon glyphicon-list-alt"></span>
                                                             </a>
-                                                            <a href="popup_edit_shop.php?idfactory=<?php echo $val_idshop; ?>" class="btn btn-warning " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="แก้ไข">
+                                                            <a href="popup_edit_shop.php?idshop=<?php echo $val_idshop; ?>" class="btn btn-warning " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="แก้ไข">
                                                                 <span class="glyphicon glyphicon-edit"></span>
                                                             </a>
-                                                            <a href="action/action_delShop.php?idfactory=<?php echo $val_idshop; ?>" onclick="if (!confirm('คุณต้องการลบหรือไม่')) {
+                                                            <a href="action/action_delShop.php?idshop=<?php echo $val_idshop; ?>" onclick="if (!confirm('คุณต้องการลบหรือไม่')) {
                                                                         return false;
                                                                     }" class="btn btn-danger " title="ลบ">
                                                                 <span class="glyphicon glyphicon-trash"></span>
