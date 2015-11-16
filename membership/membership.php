@@ -82,7 +82,6 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                     <th><div align="center">ชื่อ</div></th>
                                                     <th><div align="center">นามสกุล</div></th>
                                                     <th><div align="center">Username</div></th>
-                                                    <th><div align="center">Password</div></th>
                                                     <th><div align="center">การกระทำ</div></th>
                                                 </tr>
                                             </thead>
@@ -98,14 +97,12 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                     $val_name = $value['name'];
                                                     $val_lastname = $value['lastname'];
                                                     $val_username = $value['username'];
-                                                    $val_password = $value['password'];
                                                     ?>
                                                     <tr>
                                                         <td><?php echo $i; ?></td>
                                                         <td><?php echo $val_name; ?></td>
                                                         <td><?php echo $val_lastname; ?></td>
                                                         <td><?php echo $val_username; ?></td>
-                                                        <td><?php echo $val_password; ?></td> 
                                                         <td>
                                                             <a href="popup_edit_membership.php?idmember=<?php echo $val_idmember; ?>" class="btn btn-warning " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="แก้ไข">
                                                                 <span class="glyphicon glyphicon-edit"></span>

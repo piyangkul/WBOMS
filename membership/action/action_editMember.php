@@ -8,10 +8,9 @@ echo '</pre>';
 $idmember = $_GET['idmember'];
 $name = $_POST['name_member'];
 $lastname_member = $_POST['lastname_member'];
-$username = $_POST['username'];
 $password = $_POST['confirm_password'];
 
-$checkEdit = editMember($name, $lastname_member, $username, $password, "", $idmember);
+$checkEdit = editMember($name, $lastname_member,$password, "", $idmember);
 if ($checkEdit) {
     header("location: ../membership.php?action=editCompleted");
 } else {

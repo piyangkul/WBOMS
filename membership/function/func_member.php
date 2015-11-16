@@ -25,12 +25,12 @@ function addMember($name, $lastname, $username, $password, $status_member) {
     }
 }
 
-function editMember($name, $lastname, $username, $password, $status_member, $idmember) {
+function editMember($name, $lastname, $password, $status_member, $idmember) {
     $conn = dbconnect();
     $SQLCommand = "UPDATE `member` SET "
             . "`name`=:name,"
             . "`lastname`=:lastname,"
-            . "`username`=:username,"
+            
             . "`password`=:password,"
             . "`status_member`=:status_member "
             . "WHERE `idmember`=:idmember";
@@ -40,7 +40,7 @@ function editMember($name, $lastname, $username, $password, $status_member, $idm
             array(
                 ":name" => $name,
                 ":lastname" => $lastname,
-                ":username" => $username,
+    
                 ":password" => $password,
                 ":status_member" => $status_member,
                 ":idmember" => $idmember
