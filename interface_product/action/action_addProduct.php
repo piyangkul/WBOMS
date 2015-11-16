@@ -30,12 +30,12 @@ if ($idproduct > 0) {
     }
     unset($_SESSION["unit"]);
     unset($_SESSION["countUnit"]);
-    header("location: ../product.php?p=product&para=addCompleted");
+    header("location: ../product.php?p=product&action=addCompleted");
 //    echo "finished";
 } else {
     unset($_SESSION["unit"]);
     unset($_SESSION["countUnit"]);
-    header("location: ../product.php?p=product&para=addError");
+    header("location: ../product.php?p=product&action=addError");
 //    echo "error";
 }
 //สิ้นสุดกลุ่มคำสั่งทำอะไร

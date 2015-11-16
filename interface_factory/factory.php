@@ -53,17 +53,17 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                 <?php
                                 if (isset($_GET['action'])) {
                                     if ($_GET['action'] == "addCompleted") {
-                                        echo "<center><h4>คุณได้ทำการเพิ่มสำเร็จแล้ว</h4></center>";
+                                        echo '<center><h4 class="text-success">คุณได้ทำการเพิ่มสำเร็จแล้ว</h4></center>';
                                     } else if ($_GET['action'] == "addError") {
-                                        echo "<center><h4>ผิดพลาด!! ไม่สามารถเพิ่มได้</h4></center>";
+                                        echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถเพิ่มได้</h4></center>';
                                     } else if ($_GET['action'] == "editCompleted") {
-                                        echo "<center><h4>คุณได้ทำการแก้ไขสำเร็จแล้ว</h4></center>";
+                                        echo '<center><h4 class="text-success">คุณได้ทำการแก้ไขสำเร็จแล้ว</h4></center>';
                                     } else if ($_GET['action'] == "editError") {
-                                        echo "<center><h4>ผิดพลาด!! ไม่สามารถแก้ไขได้</h4></center>";
+                                        echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถแก้ไขได้</h4></center>';
                                     } else if ($_GET['action'] == "delCompleted") {
-                                        echo "<center><h4>คุณได้ทำการลบสำเร็จแล้ว</h4></center>";
+                                        echo '<center><h4 class="text-success">คุณได้ทำการลบสำเร็จแล้ว</h4></center>';
                                     } else if ($_GET['action'] == "delError") {
-                                        echo "<center><h4>ผิดพลาด!! ไม่สามารถลบได้</h4></center>";
+                                        echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถลบได้</h4></center>';
                                     }
                                 }
                                 ?>

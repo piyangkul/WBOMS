@@ -35,7 +35,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                     <div class="row">
                         <div class="col-md-12">
                             <h2> Transport </h2>   
-                            <h5> จัดการขนส่ง </h5>
+                            <h5> จัดการบริษัทขนส่ง </h5>
                         </div>
                     </div>
                     <!-- /. ROW  -->
@@ -43,7 +43,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                     <div class="row">
                         <div class="col-md-12">
                             <a href="popup_add_transport.php" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">
-                                <span class="glyphicon glyphicon-plus"></span> เพิ่มขนส่ง
+                                <span class="glyphicon glyphicon-plus"></span> เพิ่มบริษัทขนส่ง
                             </a>
 
                             <br/>
@@ -52,17 +52,17 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                 <?php
                                 if (isset($_GET['action'])) {
                                     if ($_GET['action'] == "addCompleted") {
-                                        echo "<center><h4>คุณได้ทำการเพิ่มสำเร็จแล้ว</h4></center>";
+                                        echo '<center><h4 class="text-success">คุณได้ทำการเพิ่มสำเร็จแล้ว</h4></center>';
                                     } else if ($_GET['action'] == "addError") {
-                                        echo "<center><h4>ผิดพลาด!! ไม่สามารถเพิ่มได้</h4></center>";
+                                        echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถเพิ่มได้</h4></center>';
                                     } else if ($_GET['action'] == "editCompleted") {
-                                        echo "<center><h4>คุณได้ทำการแก้ไขสำเร็จแล้ว</h4></center>";
+                                        echo '<center><h4 class="text-success">คุณได้ทำการแก้ไขสำเร็จแล้ว</h4></center>';
                                     } else if ($_GET['action'] == "editError") {
-                                        echo "<center><h4>ผิดพลาด!! ไม่สามารถแก้ไขได้</h4></center>";
+                                        echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถแก้ไขได้</h4></center>';
                                     } else if ($_GET['action'] == "delCompleted") {
-                                        echo "<center><h4>คุณได้ทำการลบสำเร็จแล้ว</h4></center>";
+                                        echo '<center><h4 class="text-success">คุณได้ทำการลบสำเร็จแล้ว</h4></center>';
                                     } else if ($_GET['action'] == "delError") {
-                                        echo "<center><h4>ผิดพลาด!! ไม่สามารถลบได้</h4></center>";
+                                        echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถลบได้</h4></center>';
                                     }
                                 }
                                 ?>
@@ -78,8 +78,8 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                             <thead>
                                                 <tr>
                                                     <th><div align="center">ลำดับ</div></th>
-                                                    <th><div align="center">รหัสขนส่ง</div></th>
-                                                    <th><div align="center">ชื่อขนส่ง</div></th>
+                                                    <th><div align="center">รหัสบริษัทขนส่ง</div></th>
+                                                    <th><div align="center">ชื่อ</div></th>
                                                     <th><div align="center">เบอร์โทรศัพท์</div></th>
                                                     <th><div align="center">ที่อยู่</div></th>
                                                     <th><div align="center">การกระทำ</div></th>
