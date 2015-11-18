@@ -1,4 +1,4 @@
-﻿﻿<?php
+<?php
 session_start();
 if (!isset($_SESSION['member']))
     header('Location: ../index.php');
@@ -30,8 +30,6 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
 
             <!--  NAV SIDE  -->
             <?php include '../interface_template/template_nav_side.php'; ?>
-          
-
             <div id="page-wrapper" >
                 <div id="page-inner">
                     <div class="row">
@@ -42,7 +40,6 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                     </div>
                     <!-- /. ROW  -->
                     <hr />
-
                     <div class="row">
                         <div class="col-md-12">
                             <a href="add_product.php" class="btn btn-info btn-lg">
@@ -50,22 +47,22 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                             </a>
                             <br/><br/>
                             <?php
-                                if (isset($_GET['action'])) {
-                                    if ($_GET['action'] == "addCompleted") {
-                                        echo '<center><h4 class="text-success">คุณได้ทำการเพิ่มสำเร็จแล้ว</h4></center>';
-                                    } else if ($_GET['action'] == "addError") {
-                                        echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถเพิ่มได้</h4></center>';
-                                    } else if ($_GET['action'] == "editCompleted") {
-                                        echo '<center><h4 class="text-success">คุณได้ทำการแก้ไขสำเร็จแล้ว</h4></center>';
-                                    } else if ($_GET['action'] == "editError") {
-                                        echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถแก้ไขได้</h4></center>';
-                                    } else if ($_GET['action'] == "delCompleted") {
-                                        echo '<center><h4 class="text-success">คุณได้ทำการลบสำเร็จแล้ว</h4></center>';
-                                    } else if ($_GET['action'] == "delError") {
-                                        echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถลบได้</h4></center>';
-                                    }
+                            if (isset($_GET['action'])) {
+                                if ($_GET['action'] == "addCompleted") {
+                                    echo '<center><h4 class="text-success">คุณได้ทำการเพิ่มสำเร็จแล้ว</h4></center>';
+                                } else if ($_GET['action'] == "addError") {
+                                    echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถเพิ่มได้</h4></center>';
+                                } else if ($_GET['action'] == "editCompleted") {
+                                    echo '<center><h4 class="text-success">คุณได้ทำการแก้ไขสำเร็จแล้ว</h4></center>';
+                                } else if ($_GET['action'] == "editError") {
+                                    echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถแก้ไขได้</h4></center>';
+                                } else if ($_GET['action'] == "delCompleted") {
+                                    echo '<center><h4 class="text-success">คุณได้ทำการลบสำเร็จแล้ว</h4></center>';
+                                } else if ($_GET['action'] == "delError") {
+                                    echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถลบได้</h4></center>';
                                 }
-                                ?>
+                            }
+                            ?>
                             <!-- ตารางสินค้า -->
                             <div class="panel panel-primary">
                                 <div class="panel-heading">
@@ -131,15 +128,12 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                 <?php } ?>
                                             </tbody>
                                         </table>
-
                                     </div>
-
                                 </div>
                             </div>
                             <!--End Advanced Tables -->
                         </div>
                     </div>
-
                 </div>
                 <!-- /. PAGE INNER  -->
             </div>
@@ -168,7 +162,6 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
         </script>
     </body>
 </html>
-
 <div class="modal fade" id="myModal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content modal-lg">
