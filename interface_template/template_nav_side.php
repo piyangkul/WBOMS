@@ -21,8 +21,12 @@
                 <a <?php if($p=="transport") echo 'class="active-menu"';?> href="../transport/transport.php"><i class="fa fa-truck fa-3x"></i> Transport </a>
             </li>
             <li>
+                <a <?php if($p=="shipment") echo 'class="active-menu"';?> href="../shipment/shipment1.php"><i class="fa fa-road fa-3x"></i> Shipment </a>
+            </li>
+            <li>
                 <a <?php if($p=="membership") echo 'class="active-menu"';?> href="../membership/membership.php"><i class="fa fa-users fa-3x"></i> Membership </a>
             </li>
+            
             <!--
             <li>
                 <a href="#"><i class="fa fa-sitemap fa-3x"></i> Multi-Level Dropdown<span class="fa arrow"></span></a>
