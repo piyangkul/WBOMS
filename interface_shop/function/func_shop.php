@@ -27,15 +27,15 @@ function addShop($name_shop, $idprovince, $tel_shop, $address_shop, $detail_shop
 
 function editShop($name_shop, $idprovince, $tel_shop, $address_shop, $detail_shop, $idshop) {
     $conn = dbconnect();
-    $SQLCommand = "UPDATE shop SET  name_shop='$name_shop',idprovince = '$idprovince' , tel_shop='$tel_shop',address_shop='$address_shop',detail_shop='$detail_shop'
-                WHERE idshop = '$idshop'";
+    $SQLCommand = "UPDATE shop SET  name_shop= :name_shop,idprovince = :idprovince , tel_shop= :tel_shop ,address_shop= :address_shop ,detail_shop= :detail_shop
+                WHERE idshop = :idshop ";
 
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
-                ":name_shop" => $idshop,
+                ":idshop" => $idshop,
                 ":name_shop" => $name_shop,
-                ":province" => $idprovince,
+                ":idprovince" => $idprovince,
                 ":tel_shop" => $tel_shop,
                 ":address_shop" => $address_shop,
                 ":detail_shop" => $detail_shop
@@ -43,7 +43,7 @@ function editShop($name_shop, $idprovince, $tel_shop, $address_shop, $detail_sho
     );
 
     if ($SQLPrepare->rowCount() > 0) {
-        return $conn->lastInsertId();
+        return true;
     } else {
         return false;
     }
@@ -79,6 +79,21 @@ function getShops() {
         array_push($resultArr, $result);
     }
     return $resultArr;
+}
+
+function getShopByID($idshop) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT idshop,name_shop, tel_shop , address_shop ,detail_shop, name_province,name_region FROM shop INNER JOIN province ON shop.idprovince = province.idprovince INNER JOIN region ON region.idregion = province.idregion WHERE idshop = :idshop";
+
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idshop" => $idshop,
+            )
+    );
+
+    $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
+    return $result;
 }
 
 function getProvince() {
