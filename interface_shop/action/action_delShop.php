@@ -6,7 +6,7 @@ $idshop = $_GET['idshop'];
 
 $checkDel = delShop($idshop);
 if ($checkDel) {
-   header("location: ../membership.php?action=delCompleted");
+   header("location: ../shop.php?action=delCompleted");
 } else {
-   header("location: ../membership.php?action=delError");
+   header("location: ../shop.php?action=delError");
 }
