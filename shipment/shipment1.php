@@ -1,4 +1,5 @@
 ﻿<?php
+require_once 'function/func_shipment.php';
 session_start();
 if (!isset($_SESSION['member']))
     header('Location: ../index.php');
@@ -99,7 +100,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                         </div>
                                         <div class="form-group">
                                             <center>
-                                                <a href="#" class="btn btn-info btn-lg">
+                                                <a href="shipment2.php" class="btn btn-info btn-lg">
                                                     <span class="glyphicon glyphicon-search"></span> เลือก
                                                 </a>
                                                 <a href="../interface_history_order/history_order.php" class="btn btn-danger btn-lg text-center">
