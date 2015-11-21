@@ -19,7 +19,7 @@
                     <label for="tel_factory">เบอร์โทรศัพท์</label><label class="text-danger">*</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-phone"  ></i></span>
-                        <input type="text" class="form-control" name="tel_factory" placeholder="กรอกเบอร์โทรศัพท์" value="" required=""/>
+                        <input type="text" maxlength="10" class="form-control" name="tel_factory" placeholder="กรอกเบอร์โทรศัพท์" value="" required=""/>
                     </div>
                 </div>
                 <div class="form-group col-xs-12">

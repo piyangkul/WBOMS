@@ -34,7 +34,7 @@ if (isset($_GET['idfactory'])) {
                     <label for="tel_factory">เบอร์โทรศัพท์</label><label class="text-danger">*</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-phone"></i></span>
-                        <input type="text" class="form-control" id="tel_factory" name="tel_factory" value="<?php echo $val_tel_factory; ?>">
+                        <input type="text" maxlength="10" class="form-control" id="tel_factory" name="tel_factory" value="<?php echo $val_tel_factory; ?>">
                     </div>
                 </div>
                 <div class="form-group col-xs-12">

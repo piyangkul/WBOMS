@@ -41,7 +41,7 @@ if (isset($_GET['idtransport'])) {
                     <label>เบอร์โทรศัพท์</label><label class="text-danger">*</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-phone"  ></i></span>
-                        <input type="text" class="form-control" name="tel_transport" value="<?php echo $val_tel_transport; ?>" required=""/>
+                        <input type="text" maxlength="10" class="form-control" name="tel_transport" value="<?php echo $val_tel_transport; ?>" required=""/>
                     </div>
                 </div>
                 <div class="form-group col-xs-12">

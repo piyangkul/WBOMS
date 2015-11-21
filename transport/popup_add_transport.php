@@ -26,7 +26,7 @@
                     <label for="tel_transport">เบอร์โทรศัพท์</label><label class="text-danger">*</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-phone"  ></i></span>
-                        <input type="text" class="form-control" name="tel_transport" placeholder="กรุณากรอกเบอร์โทรศัพท์" required=""/>
+                        <input type="text" maxlength="10" class="form-control" name="tel_transport" placeholder="กรุณากรอกเบอร์โทรศัพท์" required=""/>
                     </div>
                 </div>
                 <div class="form-group col-xs-12">

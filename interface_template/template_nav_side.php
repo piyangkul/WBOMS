@@ -18,7 +18,7 @@
                 <a <?php if($p=="shop") echo 'class="active-menu"';?> href="../interface_shop/shop.php"><i class="fa fa-shopping-cart fa-3x"></i> Shop </a>
             </li>
             <li>
-                <a <?php if($p=="transport") echo 'class="active-menu"';?> href="../transport/transport.php"><i class="fa fa-truck fa-3x"></i> Transport </a>
+                <a <?php if($p=="transport") echo 'class="active-menu"';?> href="../transport/transport.php"><i class="fa fa-truck fa-3x"></i> Transportation </a>
             </li>
             <li>
                 <a <?php if($p=="shipment") echo 'class="active-menu"';?> href="../shipment/shipment1.php"><i class="fa fa-road fa-3x"></i> Shipment </a>

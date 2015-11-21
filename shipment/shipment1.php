@@ -23,8 +23,6 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
         <link href="../assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
         <!-- CUSTOM STYLES-->
         <link href="../assets/css/custom.css" rel="stylesheet" />
-        <!-- GOOGLE FONTS-->
-        <link href='../http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
     </head>
     <body>
         <div id="wrapper">
@@ -49,13 +47,25 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                         <div class="col-md-3"></div>
                         <div class="col-md-6 ">
                             <!-- บิล -->
+                            <form class="form" action="shipment2.php" method="POST">
                             <div class="panel panel-default">
                                 <div class="panel-heading ">
                                     <div class="table-responsive">
                                         <div class="form-group">
-                                            <label for="name_factory">โรงงาน</label>
-                                            <input type="text" class="form-control" id="productCode" name="name_factory" placeholder="กรอกชื่อโรงงาน" required="">
-                                        </div>
+                                                <label for="factoryName"> ชื่อโรงงาน </label><label class="text-danger">*</label>
+                                                <select class="form-control" id="factoryName" name="factoryName" >
+                                                    <option selected>Choose</option>
+                                                    <?php
+                                                    require_once '../interface_factory/function/func_factory.php';
+                                                    $getFactorys = getFactorys();
+                                                    foreach ($getFactorys as $value) {
+                                                        $val_idfactory = $value['idfactory'];
+                                                        $val_name_factory = $value['name_factory'];
+                                                        ?>
+                                                        <option value="<?php echo $val_idfactory; ?>"><?php echo $val_name_factory; ?></option>
+                                                    <?php } ?>
+                                                </select>
+                                            </div>
                                         <div class="form-group">
                                             <div class="col-md-12 col-sm-12 ">
                                                 <div class="panel panel-primary">
@@ -65,33 +75,20 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                     <div class="panel-body">
                                                         <div class="table-responsive">
                                                             <div class="form-group col-xs-12">
-                                                                <label>ตั้งแต่วันที่ <input type="text" id="datepicker1"></label>
+                                                                <label>ตั้งแต่วันที่</label>
+                                                                <input type="date" class="form-control" id="date_start" name="date_start" required onchange="getmonth();">
                                                             </div>
-                                                            <div class ="form-group col-xs-12">
-                                                                <script>
-                                                                    var currentTime = new Date();
-                                                                    var hours = currentTime.getHours();
-                                                                    var minutes = currentTime.getMinutes();
-                                                                    if (minutes < 10) {
-                                                                        minutes = "0" + minutes;
-                                                                    }
-                                                                </script>
-                                                            </div>
+
                                                             <div class="form-group col-xs-12">
-                                                                <label>ถึงวันที่ <input type="text" id="datepicker2"></label>
+                                                                <label>ถึงวันที่ </label>
+                                                                <input type="date" class="form-control" id="date_end" name="date_end" required onchange="getmonth();">
                                                             </div>
-                                                            <div class ="form-group col-xs-12">
-                                                                <script>
-                                                                    var currentTime = new Date();
-                                                                    var hours = currentTime.getHours();
-                                                                    var minutes = currentTime.getMinutes();
-                                                                    if (minutes < 10) {
-                                                                        minutes = "0" + minutes;
-                                                                    }
-                                                                </script>
-                                                            </div>
+
                                                             <div class="form-group col-xs-12">
-                                                                <label> ประจำเดือน .... </label>
+                                                                <label> ประจำเดือน </label>
+                                                                <select class="form-control" id="monthly" name="monthly" >
+                                                                    <option selected value="">Choose</option>
+                                                                </select>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -100,9 +97,9 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                         </div>
                                         <div class="form-group">
                                             <center>
-                                                <a href="shipment2.php" class="btn btn-info btn-lg">
+                                                <button type="submit" class="btn btn-info btn-lg">
                                                     <span class="glyphicon glyphicon-search"></span> เลือก
-                                                </a>
+                                                </button>
                                                 <a href="../interface_history_order/history_order.php" class="btn btn-danger btn-lg text-center">
                                                     <span class="glyphicon glyphicon-floppy-remove"></span> ยกเลิก
                                                 </a>
@@ -112,6 +109,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                     </div>
                                 </div>
                             </div>
+                            </form>
                             <!--End บิล -->
                         </div>
                     </div>
@@ -129,24 +127,27 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
             <!-- DATA TABLE SCRIPTS -->
             <script src="../assets/js/dataTables/jquery.dataTables.js"></script>
             <script src="../assets/js/dataTables/dataTables.bootstrap.js"></script>
-            <!-- Date Picker -->
-            <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"/>
-            <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-            <link rel="stylesheet" href="/resources/demos/style.css"/>
+
+
             <script>
-                                                                    $(function () {
-                                                                        $("#datepicker1").datepicker();
-                                                                        $("#datepicker2").datepicker();
-                                                                    });
+                function getmonth() {
+                    var date_start = $("#date_start").val();
+                    var datearr_start = date_start.split("-");
+                    var date_end = $("#date_end").val();
+                    var datearr_end = date_end.split("-");
+//                    alert(datearr_start[1] + " " + datearr_end[1]);
+                    var optionhtml = '<option selected value="">Choose</option><option value="'+datearr_start[1]+'">'+datearr_start[1]+'</option><option value="'+datearr_end[1]+'">'+datearr_end[1]+'</option>';
+                    $("#monthly").html(optionhtml);
+                }
             </script>
             <script>
                 $(function () {
-                    $('[data-toggle="tooltip"]').tooltip()
-                })
+                    $('[data-toggle="tooltip"]').tooltip();
+                });
             </script>
             <script>
                 $(document.body).on('hidden.bs.modal', function () {
-                    $('#myModal').removeData('bs.modal')
+                    $('#myModal').removeData('bs.modal');
                 });
             </script>
     </body>

@@ -8,6 +8,10 @@ $p = 'shipment';
 if (isset($_GET['p']) && !empty($_GET['p'])) {
     $p = $_GET['p'];
 }
+//echo "<pre>";
+//print_r($_POST);
+//echo "</pre>";
+$monthly = $_POST['monthly'];
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -23,8 +27,6 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
         <link href="../assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
         <!-- CUSTOM STYLES-->
         <link href="../assets/css/custom.css" rel="stylesheet" />
-        <!-- GOOGLE FONTS-->
-        <link href='../http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
 
     </head>
     <body>
@@ -46,9 +48,9 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                     <hr />
                     <div class="row">
                         <div class="col-md-12">
-                            <center><h4>บิลของโรงงาน... <?php ?> &nbsp;&nbsp;&nbsp;&nbsp; ประจำเดือน ...</h4></center>
+                            <center><h4>บิลของโรงงาน... <?php ?> &nbsp;&nbsp;&nbsp;&nbsp; ประจำเดือน <?php echo $monthly;?></h4></center>
                             <a href="popup_add_shipment.php" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">
-                                <span class="glyphicon glyphicon-plus"></span> เพิ่มข้อมูลการส่งสินค้า
+                                <span class="glyphicon glyphicon-plus"></span> เพิ่ม/อัพเดทข้อมูลการส่งสินค้า
                             </a>
 
                             <br/>
@@ -72,7 +74,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                 ?>
                             </span>
                             <h5>คำชี้แจง : ตรวจสอบรายการสินค้าที่สั่งซื้อและเพิ่มข้อมูลการส่งสินค้า</h5>
-
+                            <h5>หมายเหตุ : เมื่อเพิ่มข้อมูลการส่งสินค้าแล้ว คุณจะไม่สามารถแก้ไข หรือลบจำนวนสินค้าได้ เพราะเมื่อกดเพิ่มแล้ว ปุ่มแก้ไขและลบจะหายไป</h5>
                             <!-- ตารางรายการสินค้า -->
                             <div class="panel panel-primary">
                                 <div class="panel-heading">
@@ -80,25 +82,23 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                 </div>
                                 <div class="panel-body">
                                     <div class="table-responsive">
-                                        <table class="table table-striped table-bordered table-hover text-center" id="dataTables-example">
+                                        <table class="table table-striped table-bordered table-hover text-center " id="dataTables-example">
                                             <thead>
                                                 <tr>
-                                                    <th><div align="center">เลือก</div></th>
-                                                    <th><div align="center">วันที่สั่ง</div></th>
-                                                    <th><div align="center">ร้านค้า</div></th>
-                                                    <th><div align="center">ชื่อสินค้า</div></th>
-                                                    <th><div align="center">หน่วยสินค้า</div></th>
-                                                    <th><div align="center">ราคาเปิดต่อหน่วย</div></th>
-                                                    <th><div align="center">จำนวน</div></th>
-                                                    <th colspan="3"><div align="center">ข้อมูลการขนส่ง</div></th>
-                                                    <th><div align="center">การกระทำ</div></th>
+                                                    <th rowspan="2" valign="middle"><div align="center">เลือก</div></th>
+                                                    <th rowspan="2"><div align="center">วันที่สั่ง</div></th>
+                                                    <th rowspan="2"><div align="center">ร้านค้า</div></th>
+                                                    <th rowspan="2"><div align="center">ชื่อสินค้า</div></th>
+                                                    <th rowspan="2"><div align="center">หน่วยสินค้า</div></th>
+                                                    <th rowspan="2"><div align="center">ราคาเปิดต่อหน่วย</div></th>
+                                                    <th rowspan="2"><div align="center">จำนวน</div></th>
+                                                    <th colspan="3"><div align="center">ข้อมูลการส่งสินค้า</div></th>
+                                                    <th rowspan="2"><div align="center">การกระทำ</div></th>
                                                 </tr>
                                                 <tr>
-                                                    <th></th><th></th><th></th><th></th><th></th><th></th><th></th>
                                                     <th><div align="center">วันที่ส่ง</div></th>
                                                     <th><div align="center">ชื่อ/เล่มที่/เลขที่</div></th>
                                                     <th><div align="center">ค่าส่ง</div></th>
-                                                    <th></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -119,12 +119,11 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                         <td><?php echo $val_tel_shop; ?></td>
                                                         <td><?php echo $val_name_region; ?></td>
                                                         <td><?php echo $val_name_province; ?></td>
-
                                                         <td>
-                                                            <a href="popup_detail_shop.php?idshop=<?php echo $val_idshop; ?>" class="btn btn-success " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="รายละเอียด">
+                                                            <a href="popup_detail_shipment.php?idshop=<?php echo $val_idshop; ?>" class="btn btn-success " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="รายละเอียด">
                                                                 <span class="glyphicon glyphicon-list-alt"></span>
                                                             </a>
-                                                            <a href="popup_edit_shop.php?idshop=<?php echo $val_idshop; ?>" class="btn btn-warning " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="แก้ไข">
+                                                            <a href="popup_edit_amount_product_order.php?idshop=<?php echo $val_idshop; ?>" class="btn btn-warning " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="แก้ไข">
                                                                 <span class="glyphicon glyphicon-edit"></span>
                                                             </a>
                                                             <a href="action/action_delShop.php?idshop=<?php echo $val_idshop; ?>" onclick="if (!confirm('คุณต้องการลบหรือไม่')) {
@@ -143,7 +142,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                     </div>
                                 </div>
                             </div>
-                            <!--End ตารางร้านค้า -->
+                            <!--End ตารางรายการสินค้า -->
 
                         </div>
                     </div>
@@ -163,7 +162,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
         <script src="../assets/js/jquery.metisMenu.js"></script>
         <script>
                                                                 $(document.body).on('hidden.bs.modal', function () {
-                                                                    $('#myModal2').removeData('bs.modal')
+                                                                    $('#myModal').removeData('bs.modal');
                                                                 });
         </script>
         <!-- DATA TABLE SCRIPTS -->

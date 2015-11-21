@@ -150,7 +150,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
         </script>
         <script>
             $(document.body).on('hidden.bs.modal', function () {
-                $('#myModal').removeData('bs.modal')
+                $('#myModal').removeData('bs.modal');
             });
         </script>
     </body>

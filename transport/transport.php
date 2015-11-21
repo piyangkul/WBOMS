@@ -34,7 +34,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                 <div id="page-inner">
                     <div class="row">
                         <div class="col-md-12">
-                            <h2> Transport </h2>   
+                            <h2> Transportation </h2>   
                             <h5> จัดการบริษัทขนส่ง </h5>
                         </div>
                     </div>
@@ -152,7 +152,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
         </script>
         <script>
             $(document.body).on('hidden.bs.modal', function () {
-                $('#myModal').removeData('bs.modal')
+                $('#myModal').removeData('bs.modal');
             });
         </script>
     </body>
