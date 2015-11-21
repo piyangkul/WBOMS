@@ -1,4 +1,4 @@
-﻿﻿<?php
+<?php 
 session_start();
 if (!isset($_SESSION['member']))
     header('Location: ../index.php');
@@ -22,6 +22,8 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
         <link href="../assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
         <!-- CUSTOM STYLES-->
         <link href="../assets/css/custom.css" rel="stylesheet" />
+        <!-- GOOGLE FONTS-->
+        <link href='../http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
     </head>
     <body>
         <div id="wrapper">
@@ -30,7 +32,6 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
 
             <!--  NAV SIDE  -->
             <?php include '../interface_template/template_nav_side.php'; ?>
-
 
             <div id="page-wrapper" >
                 <div id="page-inner">
@@ -171,7 +172,6 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
         </script>
     </body>
 </html>
-
 <div class="modal fade" id="myModal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content modal-lg">
