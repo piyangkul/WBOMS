@@ -22,11 +22,11 @@ $units = $_SESSION["unit"];
 //กลุ่มคำสั่งทำอะไร
 $idproduct = addProduct($factoryID, $productName, $productDetail, $productCode, $difference_amount); //idproductของระบบ
 if ($idproduct > 0) {
-    $idUnit[1] = addUnit($idproduct, 0, $units[1]['NameUnit'], $units[1]['price'], $units[1]['type']);
+    $idUnit[1] = addUnit($idproduct, 0, $units[1]['AmountPerUnit'], $units[1]['NameUnit'], $units[1]['price'], $units[1]['type']);
     for ($i = 2; $i <= count($units); $i++) {
         $under_unit = $units[$i]['under_unit'];
         $underIdUnit = $idUnit[$under_unit];
-        $idUnit[$i] = addUnit($idproduct, $underIdUnit, $units[$i]['NameUnit'], $units[$i]['price'], $units[$i]['type']);
+        $idUnit[$i] = addUnit($idproduct, $underIdUnit, $units[$i]['AmountPerUnit'], $units[$i]['NameUnit'], $units[$i]['price'], $units[$i]['type']);
     }
     unset($_SESSION["unit"]);
     unset($_SESSION["countUnit"]);

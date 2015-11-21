@@ -1,4 +1,4 @@
-<?php
+﻿﻿<?php
 session_start();
 if (!isset($_SESSION['member']))
     header('Location: ../index.php');
@@ -30,6 +30,8 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
 
             <!--  NAV SIDE  -->
             <?php include '../interface_template/template_nav_side.php'; ?>
+
+
             <div id="page-wrapper" >
                 <div id="page-inner">
                     <div class="row">
@@ -40,6 +42,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                     </div>
                     <!-- /. ROW  -->
                     <hr />
+
                     <div class="row">
                         <div class="col-md-12">
                             <a href="add_product.php" class="btn btn-info btn-lg">
@@ -90,6 +93,9 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                 $getProducts = getProducts();
                                                 $i = 0;
                                                 foreach ($getProducts as $value) {
+                                                    if ($value['idunit_big'] != NULL) {
+                                                        continue;
+                                                    }
                                                     $i++;
                                                     $val_idproduct = $value['idproduct'];
                                                     $val_code_product = $value['code_product'];
@@ -120,7 +126,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                             <a href="edit_product.php?idproduct=<?php echo $val_idproduct; ?>" class="btn btn-warning " >
                                                                 <span class="glyphicon glyphicon-edit"></span>
                                                             </a>
-                                                            <a href="popup_delete_product.php" class="btn btn-danger " data-toggle="modal" data-target="#myModal">
+                                                            <a onclick="return confirm('Are you sure Delete that.')" href="action/action_delProduct.php?idproduct=<?php echo $val_idproduct; ?>" class="btn btn-danger">
                                                                 <span class="glyphicon glyphicon-trash"></span>
                                                             </a>
                                                         </td>
@@ -128,12 +134,15 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                 <?php } ?>
                                             </tbody>
                                         </table>
+
                                     </div>
+
                                 </div>
                             </div>
                             <!--End Advanced Tables -->
                         </div>
                     </div>
+
                 </div>
                 <!-- /. PAGE INNER  -->
             </div>
@@ -151,9 +160,9 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
         <script src="../assets/js/dataTables/jquery.dataTables.js"></script>
         <script src="../assets/js/dataTables/dataTables.bootstrap.js"></script>
         <script>
-            $(document).ready(function () {
-                $('#dataTables-example').dataTable();
-            });
+                                                                $(document).ready(function () {
+                                                                    $('#dataTables-example').dataTable();
+                                                                });
         </script>
         <script>
             $(document.body).on('hidden.bs.modal', function () {
@@ -162,6 +171,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
         </script>
     </body>
 </html>
+
 <div class="modal fade" id="myModal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content modal-lg">

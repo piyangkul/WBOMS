@@ -47,7 +47,7 @@ function getFactorys() {
     return $resultArr;
 }
 
-function getFactoryByID($idfactory){
+function getFactoryByID($idfactory) {
     $conn = dbconnect();
     $SQLCommand = "SELECT `idfactory`, "
             . "`name_factory`, "
@@ -92,7 +92,7 @@ function editFactory($name_factory, $tel_factory, $address_factory, $contact_fac
                 ":idfactory" => $idfactory
             )
     );
-    
+
     if ($SQLPrepare->rowCount() > 0) {
         return TRUE;
     } else {
@@ -118,23 +118,22 @@ function delFactory($idfactory) {
     }
 }
 
-
-function add($p1, $p2, $p3) {
-    $conn = dbconnect();
-    $SQLCommand = "";
-
-    $SQLPrepare = $conn->prepare($SQLCommand);
-    $SQLPrepare->execute(
-            array(
-                "p1" => $p1,
-                "p2" => $p2,
-                "p3" => $p3
-            )
-    );
-
-    if ($SQLPrepare->rowCount() > 0) {
-        return $conn->lastInsertId();
-    } else {
-        return false;
-    }
-}
+//function add($p1, $p2, $p3) {
+//    $conn = dbconnect();
+//    $SQLCommand = "";
+//
+//    $SQLPrepare = $conn->prepare($SQLCommand);
+//    $SQLPrepare->execute(
+//            array(
+//                "p1" => $p1,
+//                "p2" => $p2,
+//                "p3" => $p3
+//            )
+//    );
+//
+//    if ($SQLPrepare->rowCount() > 0) {
+//        return $conn->lastInsertId();
+//    } else {
+//        return false;
+//    }
+//}

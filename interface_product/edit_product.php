@@ -7,6 +7,19 @@ $p = 'product';
 if (isset($_GET['p']) && !empty($_GET['p'])) {
     $p = $_GET['p'];
 }
+
+require_once 'function/func_product.php';
+$val_idproduct = $_GET['idproduct']; //ส่งค่าpara
+$getProductDetail = getProductDetail($val_idproduct);
+$getProductUnit = getProductUnit($val_idproduct);
+//echo "<pre>";
+//print_r($getProductDetail);
+//echo "</pre>";
+$val_code_product = $getProductDetail['code_product'];
+$val_name_product = $getProductDetail['name_product'];
+$val_name_factoryID = $getProductDetail['idfactory'];
+$val_name_factory = $getProductDetail['name_factory'];
+$val_difference_amount_product = $getProductDetail['difference_amount_product'];
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -58,16 +71,27 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                             <div class="table-responsive ">
                                                 <form class="form">
                                                     <div class="form-group col-xs-12">
-                                                        <label for="exampleInputName4">รหัสสินค้า</label>
-                                                        <input type="text" class="form-control" id="exampleInputName4" placeholder="A001" >
+                                                        <label for="productCode">รหัสสินค้า</label>
+                                                        <input type="text" class="form-control" id="productCode" name="productCode" value="<?php echo $val_code_product; ?>">
                                                     </div>
                                                     <div class="form-group col-xs-12">
-                                                        <label for="disabledInput2"> ชื่อสินค้า </label>
-                                                        <input type="text" class="form-control" id="disabledInput2" placeholder="เยลลี่ 5 บาท" disabled>
+                                                        <label for="productName"> ชื่อสินค้า </label>
+                                                        <input type="text" class="form-control" id="productName" name="productName" value="<?php echo $val_name_product; ?>">
                                                     </div>
                                                     <div class="form-group col-xs-12">
-                                                        <label for="disabledInput3"> ชื่อโรงงาน </label>
-                                                        <input type="text" class="form-control" id="disabledInput3" placeholder="A" disabled>
+                                                        <label for="factoryName"> ชื่อโรงงาน </label>
+                                                        <select class="form-control" id="factoryName" name="factoryName" >
+                                                            <option selected>Choose</option>
+                                                            <?php
+                                                            require_once '../interface_factory/function/func_factory.php';
+                                                            $getFactorys = getFactorys();
+                                                            foreach ($getFactorys as $value) {
+                                                                $val_idfactory = $value['idfactory'];
+                                                                $val_name_factory = $value['name_factory'];
+                                                                ?>
+                                                                <option <?php echo $val_idfactory == $val_name_factoryID ? "selected" : "" ?> value="<?php echo $val_idfactory; ?>"><?php echo $val_name_factory; ?></option>
+                                                            <?php } ?>
+                                                        </select>
                                                     </div>
                                                 </form>
                                             </div>
@@ -101,44 +125,33 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>มัด</td>
-                                                    <td>2</td>
-                                                    <td>กล่อง</td>
-                                                    <td> 
-                                                        <!-- Button trigger modal -->
-                                                        <a href="popup_edit_product_unit.php" class="btn btn-warning" data-toggle="modal" data-target="#myModal2" data-toggle="tooltip" title="แก้ไข">
-                                                            <span class="glyphicon glyphicon-edit"></span> 
-                                                        </a>
-                                                        <a href="popup_delete_product_unit.php" class="btn btn-danger" data-toggle="modal" data-target="#myModal3" data-toggle="tooltip" title="ลบ">
-                                                            <span class="glyphicon glyphicon-trash"></span>
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>กล่อง</td>
-                                                    <td>12</td>
-                                                    <td>แพ็ค</td>
-                                                    <td> 
-                                                        <a class="btn btn-warning"  href="#" role="button">แก้ไข</a>
-                                                        <a class="btn btn-danger"  href="#" role="button">ลบ</a>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>แพ็ค</td>
-                                                    <td>6</td>
-                                                    <td>ชิ้น</td>
-                                                    <td> 
-                                                        <a class="btn btn-warning"  href="#" role="button">แก้ไข</a>
-                                                        <a class="btn btn-danger"  href="#" role="button">ลบ</a>
-                                                    </td>
-                                                </tr>
+                                                <?php
+                                                foreach ($getProductUnit as $value) {
+                                                    if ($value['name_big'] == NULL) {
+                                                        continue;
+                                                    }
+                                                    $valUnit = $value['name'];
+                                                    $valAmount = $value['amount_unit'];
+                                                    $valBigUnit = $value['name_big'];
+                                                    ?>
+                                                    <tr>
+                                                        <td>1</td>
+                                                        <td><?php echo $valUnit; ?></td>
+                                                        <td><?php echo $valAmount; ?></td>
+                                                        <td><?php echo $valBigUnit; ?></td>
+                                                        <td> 
+                                                            <!-- Button trigger modal -->
+                                                            <a href="popup_edit_product_unit.php" class="btn btn-warning" data-toggle="modal" data-target="#myModal2" data-toggle="tooltip" title="แก้ไข">
+                                                                <span class="glyphicon glyphicon-edit"></span> 
+                                                            </a>
+                                                            <a href="popup_delete_product_unit.php" class="btn btn-danger" data-toggle="modal" data-target="#myModal3" data-toggle="tooltip" title="ลบ">
+                                                                <span class="glyphicon glyphicon-trash"></span>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                <?php } ?>
                                         </table>
                                     </div>
-
                                 </div>
                             </div>
                         </div>

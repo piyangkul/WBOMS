@@ -26,10 +26,10 @@ function addProduct($idfactory, $name_product, $detail_product, $code_product, $
     }
 }
 
-function addUnit($idproduct, $idunit_big, $name_unit, $price_unit, $type_unit) {
+function addUnit($idproduct, $idunit_big, $amount_unit, $name_unit, $price_unit, $type_unit) {
     $conn = dbconnect();
-    $SQLCommand = "INSERT INTO `unit`(`idproduct`, `idunit_big`, `name_unit`, `price_unit`, `type_unit`) "
-            . "VALUES (:idproduct, :idunit_big, :name_unit, :price_unit, :type_unit)";
+    $SQLCommand = "INSERT INTO `unit`(`idproduct`, `idunit_big`, `name_unit`, `price_unit`, `type_unit`, `amount_unit`) "
+            . "VALUES (:idproduct, :idunit_big, :name_unit, :price_unit, :type_unit, :amount_unit)";
 
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
@@ -38,7 +38,8 @@ function addUnit($idproduct, $idunit_big, $name_unit, $price_unit, $type_unit) {
                 ":idunit_big" => $idunit_big,
                 ":name_unit" => $name_unit,
                 ":price_unit" => $price_unit,
-                ":type_unit" => $type_unit
+                ":type_unit" => $type_unit,
+                ":amount_unit" => $amount_unit
             )
     );
 
@@ -76,25 +77,19 @@ function getProducts() {
     return $resultArr;
 }
 
-function getProduct_detail_1($idproduct) {//รับค่าpara
+function getProductDetail($idproduct) {//รับค่าpara
     $conn = dbconnect();
     $SQLCommand = "SELECT "
             . "`idproduct`, "
-            . "`idfactory`, "
+            . "`product`.`idfactory`, "
+            . "`factory`.`name_factory`, "
             . "`name_product`, "
             . "`detail_product`, "
             . "`code_product`, "
-            . "`difference_amount_product`,"
-            . "`difference_amount_factory`, "
-            . "`name_factory`, "
-            . "`idunit`, "
-            . "`name`, "
-            . "`idunit_big`, "
-            . "`name_big`,"
-            . "price_unit "
-            . "FROM `view_product`"
+            . "`difference_amount_product` "
+            . "FROM `product` LEFT JOIN `factory` ON `factory`.`idfactory`=`product`.`idfactory` "
             . "WHERE `idproduct`=:idproduct";
-
+//    echo $SQLCommand;
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
@@ -105,6 +100,75 @@ function getProduct_detail_1($idproduct) {//รับค่าpara
     return $result;
 }
 
+function getProductUnit($idproduct) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT "
+            . "`idproduct`, "
+            . "`idfactory`, "
+            . "`name_product`, "
+            . "`detail_product`, "
+            . "`code_product`, "
+            . "`difference_amount_product`, "
+            . "`difference_amount_factory`, "
+            . "`name_factory`, "
+            . "`idunit`, "
+            . "`name`, "
+            . "`idunit_big`, "
+            . "`name_big`, "
+            . "`price_unit`, "
+            . "`amount_unit`"
+            . "FROM `view_product` "
+            . "WHERE `idproduct`=:idproduct";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idproduct" => $idproduct
+            )
+    );
+
+    $resultArr = array();
+    while ($result = $SQLPrepare->fetch(PDO::FETCH_ASSOC)) {
+        array_push($resultArr, $result);
+    }
+    return $resultArr;
+}
+
+function deleteProduct($idproduct) {
+    $conn = dbconnect();
+    $SQLCommand = "DELETE FROM `product` WHERE `idproduct`=:idproduct";
+
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idproduct" => $idproduct
+            )
+    );
+
+    if ($SQLPrepare->rowCount() > 0) {
+        return TRUE;
+    } else {
+        return FALSE;
+    }
+}
+
+function deleteProductUnit($idproduct) {
+    $conn = dbconnect();
+    $SQLCommand = "DELETE FROM `unit` WHERE `idproduct`=:idproduct";
+
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idproduct" => $idproduct
+            )
+    );
+
+    if ($SQLPrepare->rowCount() > 0) {
+        return TRUE;
+    } else {
+        return FALSE;
+    }
+}
+
 function add($p1, $p2, $p3) {
     $conn = dbconnect();
     $SQLCommand = "";
@@ -112,9 +176,9 @@ function add($p1, $p2, $p3) {
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
-                "p1" => $p1,
-                "p2" => $p2,
-                "p3" => $p3
+                ":p1" => $p1,
+                ":p2" => $p2,
+                ":p3" => $p3
             )
     );
 
