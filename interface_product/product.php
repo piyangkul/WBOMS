@@ -101,7 +101,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                     $val_code_product = $value['code_product'];
                                                     $val_name_product = $value['name_product'];
                                                     $val_name_factory = $value['name_factory'];
-                                                    $val_name_big = $value['name_big'];
+                                                    $val_name = $value['name'];
                                                     $val_price_unit = $value['price_unit'];
                                                     if ($value['difference_amount_product'] == null) {
                                                         $val_difference_amount = $value['difference_amount_factory'];
@@ -115,7 +115,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                         <td><?php echo $val_code_product; ?></td>
                                                         <td><?php echo $val_name_product; ?></td>
                                                         <td><?php echo $val_name_factory; ?></td>
-                                                        <td><?php echo $val_name_big; ?></td>
+                                                        <td><?php echo $val_name; ?></td>
                                                         <td class="text-right"><?php echo number_format($val_price_unit, 2, '.', ''); ?></td>
                                                         <td><?php echo $val_difference_amount . "%"; ?></td>
                                                         <td class="text-right"><?php echo number_format($cost, 2, '.', '') ?></td>
