@@ -1,4 +1,5 @@
 ﻿<?php
+require_once 'function/func_order.php';
 session_start();
 if (!isset($_SESSION['member']))
     header('Location: ../index.php');
@@ -37,8 +38,8 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                 <div id="page-inner">
                     <div class="row">
                         <div class="col-md-12">
-                            <h2> History Order </h2>   
-                            <h5> ประวัติคำสั่งซื้อ </h5>
+                            <h2> Order </h2>   
+                            <h5> คำสั่งซื้อ </h5>
 
                         </div>
                     </div>
@@ -73,71 +74,51 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>Bill003</td>
-                                                    <td>3/04/2015</td>
-                                                    <td>9:00AM</td>
-                                                    <td>AA</td>
-                                                    <td>3</td>
-                                                    <td>10000</td>
-                                                    <td>ยังไม่เก็บเงิน</td>
-                                                    <td> 
+                                                <?php
+                                                $getOrder = getOrder();
+                                                $i = 0;
+                                                foreach ($getOrder as $value) {
+                                                    $i++;
+                                                    $val_date_order_p = $value['date_order_p'];
+                                                    $val_time_order_p = $value['time_order_p'];
+                                                    $val_name_shop = $value['name_shop'];
+                                                    $val_count_idproduct_order = $value['count_idproduct_order'];
+                                                    $val_status_order_p = $value['status_order_p'];
+                                                    ?>
+                                                    <tr>
+                                                        <td><?php echo $i; ?></td>
+                                                        <td><?php echo $val_date_order_p; ?></td>
+                                                        <td><?php echo $val_time_order_p; ?></td>
+                                                        <td><?php echo $val_name_shop; ?></td>
+                                                        <td><?php echo $val_count_idproduct_order; ?></td>
+                                                        <td><?php  ?></td>
+                                                        <td><?php
+                                                            if ($val_status_order_p == 'uncheck') {
+                                                                echo "ยังไม่ตรวจสอบ";
+                                                            }
+                                                            elseif ($val_status_order_p == 'check') {
+                                                                echo "ตรวจสอบแล้ว";
+                                                            }
+                                                            ?></td>
+                                                        <td> 
 
-                                                        <a href="#" class="btn btn-success" data-toggle="modal" data-target="#myModal1" data-toggle="tooltip" title="รายละเอียด">
-                                                            <span class="glyphicon glyphicon-list-alt"></span>
-                                                        </a>
-                                                        <a href="popup_edit_order.php" class="btn btn-warning " data-toggle="modal" data-target="#myModal2" data-toggle="tooltip" title="แก้ไข">
-                                                            <span class="glyphicon glyphicon-edit"></span>
-                                                        </a>
-                                                        <a href="popup_delete_history_order.php" class="btn btn-danger " data-toggle="modal" data-target="#myModal3" data-toggle="tooltip" title="ลบ">
-                                                            <span class="glyphicon glyphicon-trash"></span>
-                                                        </a>
+                                                            <a href="#" class="btn btn-success" data-toggle="modal" data-target="#myModal1" data-toggle="tooltip" title="รายละเอียด">
+                                                                <span class="glyphicon glyphicon-list-alt"></span>
+                                                            </a>
+                                                            <a href="popup_edit_order.php" class="btn btn-warning " data-toggle="modal" data-target="#myModal2" data-toggle="tooltip" title="แก้ไข">
+                                                                <span class="glyphicon glyphicon-edit"></span>
+                                                            </a>
+                                                            <a href="popup_delete_history_order.php" class="btn btn-danger " data-toggle="modal" data-target="#myModal3" data-toggle="tooltip" title="ลบ">
+                                                                <span class="glyphicon glyphicon-trash"></span>
+                                                            </a>
 
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Bill002</td>
-                                                    <td>3/04/2015</td>
-                                                    <td>13:00PM</td>
-                                                    <td>AA</td>
-                                                    <td>2</td>
-                                                    <td>5000</td>
-                                                    <td>ยังไม่เก็บเงิน</td>
-                                                    <td> 
-                                                        <a href="#" class="btn btn-success" data-toggle="modal " data-target="#myModal">
-                                                            <span class="glyphicon glyphicon-list-alt"></span>
-                                                        </a>
-                                                        <a href="#" class="btn btn-warning " data-toggle="modal " data-target="#myModal">
-                                                            <span class="glyphicon glyphicon-edit"></span>
-                                                        </a>
-                                                        <a href="#" class="btn btn-danger " data-toggle="modal " data-target="#myModal">
-                                                            <span class="glyphicon glyphicon-trash"></span>
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Bill001</td>
-                                                    <td>2/04/2015</td>
-                                                    <td>14:00PM</td>
-                                                    <td>BB</td>
-                                                    <td>4</td>
-                                                    <td>12000</td>
-                                                    <td>ยังไม่เก็บเงิน</td>
-                                                    <td> 
-                                                        <a href="#" class="btn btn-success" data-toggle="modal " data-target="#myModal">
-                                                            <span class="glyphicon glyphicon-list-alt"></span>
-                                                        </a>
-                                                        <a href="#" class="btn btn-warning " data-toggle="modal " data-target="#myModal">
-                                                            <span class="glyphicon glyphicon-edit"></span>
-                                                        </a>
-                                                        <a href="#" class="btn btn-danger " data-toggle="modal " data-target="#myModal">
-                                                            <span class="glyphicon glyphicon-trash"></span>
-                                                        </a>
-                                                    </td>
-                                                </tr>
+                                                        </td>
+                                                    </tr>
+                                                    <?php
+                                                }
+                                                ?>
                                         </table>
                                     </div>
-
                                 </div>
                             </div>
                             <!--End Advanced Tables -->

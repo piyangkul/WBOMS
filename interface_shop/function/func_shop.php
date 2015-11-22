@@ -83,7 +83,7 @@ function getShops() {
 
 function getShopByID($idshop) {
     $conn = dbconnect();
-    $SQLCommand = "SELECT idshop,name_shop, tel_shop , address_shop ,detail_shop, name_province,name_region FROM shop INNER JOIN province ON shop.idprovince = province.idprovince INNER JOIN region ON region.idregion = province.idregion WHERE idshop = :idshop";
+    $SQLCommand = "SELECT idshop,name_shop, tel_shop , address_shop ,detail_shop, name_province,name_region,shop.idprovince AS idprovince_s,province.name_province AS name_province_s FROM shop INNER JOIN province ON shop.idprovince = province.idprovince INNER JOIN region ON region.idregion = province.idregion WHERE idshop = :idshop";
 
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
