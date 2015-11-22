@@ -169,21 +169,19 @@ function deleteProductUnit($idproduct) {
     }
 }
 
-function add($p1, $p2, $p3) {
+function checkcode($code_product) {
     $conn = dbconnect();
-    $SQLCommand = "";
+    $SQLCommand = "SELECT * FROM `product` WHERE `code_product`LIKE :code_product ";
 
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
-                ":p1" => $p1,
-                ":p2" => $p2,
-                ":p3" => $p3
+                ":code_product" => $code_product
             )
     );
 
     if ($SQLPrepare->rowCount() > 0) {
-        return $conn->lastInsertId();
+        return TRUE;
     } else {
         return false;
     }

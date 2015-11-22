@@ -53,8 +53,8 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                     <div class="table-responsive">
                                         <div class="form-group">
                                                 <label for="factoryName"> ชื่อโรงงาน </label><label class="text-danger">*</label>
-                                                <select class="form-control" id="factoryName" name="factoryName" >
-                                                    <option selected>Choose</option>
+                                                <select class="form-control" id="factoryName" name="factoryName" required="">
+                                                    <option>Choose</option>
                                                     <?php
                                                     require_once '../interface_factory/function/func_factory.php';
                                                     $getFactorys = getFactorys();
