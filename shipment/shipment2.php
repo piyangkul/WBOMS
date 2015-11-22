@@ -8,9 +8,10 @@ $p = 'shipment';
 if (isset($_GET['p']) && !empty($_GET['p'])) {
     $p = $_GET['p'];
 }
-//echo "<pre>";
-//print_r($_POST);
-//echo "</pre>";
+echo "<pre>";
+print_r($_POST);
+echo "</pre>";
+$name_factory = $_POST['factoryName'];
 $monthly = $_POST['monthly'];
 ?>
 <!DOCTYPE html>
@@ -48,7 +49,7 @@ $monthly = $_POST['monthly'];
                     <hr />
                     <div class="row">
                         <div class="col-md-12">
-                            <center><h4>บิลของโรงงาน... <?php ?> &nbsp;&nbsp;&nbsp;&nbsp; ประจำเดือน <?php echo $monthly;?></h4></center>
+                            <center><h4>บิลของโรงงาน <?php echo $name_factory; ?> &nbsp;&nbsp;&nbsp;&nbsp; ประจำเดือน <?php echo $monthly; ?></h4></center>
                             <a href="popup_add_shipment.php" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">
                                 <span class="glyphicon glyphicon-plus"></span> เพิ่ม/อัพเดทข้อมูลการส่งสินค้า
                             </a>
@@ -89,7 +90,6 @@ $monthly = $_POST['monthly'];
                                                     <th rowspan="2"><div align="center">วันที่สั่ง</div></th>
                                                     <th rowspan="2"><div align="center">ร้านค้า</div></th>
                                                     <th rowspan="2"><div align="center">ชื่อสินค้า</div></th>
-                                                    <th rowspan="2"><div align="center">หน่วยสินค้า</div></th>
                                                     <th rowspan="2"><div align="center">ราคาเปิดต่อหน่วย</div></th>
                                                     <th rowspan="2"><div align="center">จำนวน</div></th>
                                                     <th colspan="3"><div align="center">ข้อมูลการส่งสินค้า</div></th>
@@ -127,8 +127,8 @@ $monthly = $_POST['monthly'];
                                                                 <span class="glyphicon glyphicon-edit"></span>
                                                             </a>
                                                             <a href="action/action_delShop.php?idshop=<?php echo $val_idshop; ?>" onclick="if (!confirm('คุณต้องการลบหรือไม่')) {
-                                                                            return false;
-                                                                        }" class="btn btn-danger " title="ลบ">
+                                                                        return false;
+                                                                    }" class="btn btn-danger " title="ลบ">
                                                                 <span class="glyphicon glyphicon-trash"></span>
                                                             </a>
                                                         </td>
@@ -161,17 +161,17 @@ $monthly = $_POST['monthly'];
         <!-- METISMENU SCRIPTS -->
         <script src="../assets/js/jquery.metisMenu.js"></script>
         <script>
-                                                                $(document.body).on('hidden.bs.modal', function () {
-                                                                    $('#myModal').removeData('bs.modal');
-                                                                });
+                                                            $(document.body).on('hidden.bs.modal', function () {
+                                                                $('#myModal').removeData('bs.modal');
+                                                            });
         </script>
         <!-- DATA TABLE SCRIPTS -->
         <script src="../assets/js/dataTables/jquery.dataTables.js"></script>
         <script src="../assets/js/dataTables/dataTables.bootstrap.js"></script>
         <script>
-                                                                $(document).ready(function () {
-                                                                    $('#dataTables-example').dataTable();
-                                                                });
+                                                            $(document).ready(function () {
+                                                                $('#dataTables-example').dataTable();
+                                                            });
         </script>
     </body>
 </html>

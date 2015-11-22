@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__) . '/../../config/connect.php';
 
-function getShipment($p1, $p2, $p3) {
+function getShipment() {
     $conn = dbconnect();
     $SQLCommand = "";
 
