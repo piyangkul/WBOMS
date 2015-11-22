@@ -54,18 +54,18 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                             <span>
                                 <?php
                                 if (isset($_GET['action'])) {
-                                    if ($_GET['action'] == "addCompleted") {
-                                        echo "<center><h4>คุณได้ทำการเพิ่มสำเร็จแล้ว</h4></center>";
-                                    } else if ($_GET['action'] == "addError") {
-                                        echo "<center><h4>ผิดพลาด!! ไม่สามารถเพิ่มได้</h4></center>";
+                                    if ($_GET['action'] == "completed") {
+                                        echo '<center><h4 class="text-success">คุณได้ทำการเพิ่มสำเร็จแล้ว</h4></center>';
+                                    } else if ($_GET['action'] == "error") {
+                                        echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถเพิ่มได้</h4></center>';
                                     } else if ($_GET['action'] == "editCompleted") {
-                                        echo "<center><h4>คุณได้ทำการแก้ไขสำเร็จแล้ว</h4></center>";
+                                        echo '<center><h4 class="text-success">คุณได้ทำการแก้ไขสำเร็จแล้ว</h4></center>';
                                     } else if ($_GET['action'] == "editError") {
-                                        echo "<center><h4>ผิดพลาด!! ไม่สามารถแก้ไขได้</h4></center>";
+                                        echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถแก้ไขได้</h4></center>';
                                     } else if ($_GET['action'] == "delCompleted") {
-                                        echo "<center><h4>คุณได้ทำการลบสำเร็จแล้ว</h4></center>";
+                                        echo '<center><h4 class="text-success">คุณได้ทำการลบสำเร็จแล้ว</h4></center>';
                                     } else if ($_GET['action'] == "delError") {
-                                        echo "<center><h4>ผิดพลาด!! ไม่สามารถลบได้</h4></center>";
+                                        echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถลบได้</h4></center>';
                                     }
                                 }
                                 ?>
@@ -92,10 +92,10 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                             <tbody>
                                                 <?php
                                                 $getShops = getShops();
-                                                $i=0;
+                                                $i = 0;
                                                 foreach ($getShops as $value) {
                                                     $i++;
-                                                    $val_idshop =  $value['idshop'];
+                                                    $val_idshop = $value['idshop'];
                                                     $val_name_shop = $value['name_shop'];
                                                     $val_tel_shop = $value['tel_shop'];
                                                     $val_name_region = $value['name_region'];
@@ -116,8 +116,8 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                                 <span class="glyphicon glyphicon-edit"></span>
                                                             </a>
                                                             <a href="action/action_delShop.php?idshop=<?php echo $val_idshop; ?>" onclick="if (!confirm('คุณต้องการลบหรือไม่')) {
-                                                                        return false;
-                                                                    }" class="btn btn-danger " title="ลบ">
+                                                                            return false;
+                                                                        }" class="btn btn-danger " title="ลบ">
                                                                 <span class="glyphicon glyphicon-trash"></span>
                                                             </a>
                                                         </td>
@@ -149,18 +149,23 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
         <script src="../assets/js/bootstrap.min.js"></script>
         <!-- METISMENU SCRIPTS -->
         <script src="../assets/js/jquery.metisMenu.js"></script>
-        <script>
-                                                            $(document.body).on('hidden.bs.modal', function () {
-                                                                $('#myModal2').removeData('bs.modal')
-                                                            });
-        </script>
         <!-- DATA TABLE SCRIPTS -->
         <script src="../assets/js/dataTables/jquery.dataTables.js"></script>
         <script src="../assets/js/dataTables/dataTables.bootstrap.js"></script>
+         <script>
+            $(document).ready(function () {
+                $('#dataTables-example').dataTable();
+            });
+        </script>
         <script>
-                                                            $(document).ready(function () {
-                                                                $('#dataTables-example').dataTable();
-                                                            });
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip()
+            })
+        </script>
+        <script>
+            $(document.body).on('hidden.bs.modal', function () {
+                $('#myModal').removeData('bs.modal');
+            });
         </script>
         <!-- CUSTOM SCRIPTS -->
         <script src="../assets/js/custom.js"></script>
