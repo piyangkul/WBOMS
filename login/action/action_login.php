@@ -11,7 +11,7 @@ $checkLogin = login($username, $password);
 print_r($checkLogin);
 if ($checkLogin !== FALSE) {
     $_SESSION['member'] = $checkLogin;
-    header('Location: ../../interface_history_order/history_order.php');
+    header('Location: ../../interface_order/order.php');
     
 } else {
     header('Location: ../../index.php?error=2');
