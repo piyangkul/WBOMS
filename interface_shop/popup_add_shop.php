@@ -20,7 +20,7 @@
                     <label for="tel_shop">เบอร์โทรศัพท์</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-circle-o-notch"  ></i></span>
-                        <input type="text" class="form-control" placeholder="กรอกเบอร์โทรศัพท์" name="tel_shop" required=""/>
+                        <input type="text" maxlength="10" class="form-control" placeholder="กรอกเบอร์โทรศัพท์" name="tel_shop" required=""/>
                     </div>
                 </div>
                 <div class="form-group col-xs-12">
