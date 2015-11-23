@@ -54,7 +54,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                         <div class="form-group">
                                                 <label for="factoryName"> ชื่อโรงงาน </label><label class="text-danger">*</label>
                                                 <select class="form-control" id="factoryName" name="factoryName" required="">
-                                                    <option>Choose</option>
+                                                    <option selected value="">Choose</option>
                                                     <?php
                                                     require_once '../interface_factory/function/func_factory.php';
                                                     $getFactorys = getFactorys();
@@ -62,7 +62,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                         $val_idfactory = $value['idfactory'];
                                                         $val_name_factory = $value['name_factory'];
                                                         ?>
-                                                        <option value="<?php echo $val_idfactory; ?>"><?php echo $val_name_factory; ?></option>
+                                                        <option value="<?php echo $val_name_factory; ?>"><?php echo $val_name_factory; ?></option>
                                                     <?php } ?>
                                                 </select>
                                             </div>
@@ -136,7 +136,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                     var date_end = $("#date_end").val();
                     var datearr_end = date_end.split("-");
 //                    alert(datearr_start[1] + " " + datearr_end[1]);
-                    var optionhtml = '<option selected value="">Choose</option><option value="'+datearr_start[1]+'">'+datearr_start[1]+'</option><option value="'+datearr_end[1]+'">'+datearr_end[1]+'</option>';
+                    var optionhtml = '<option value="'+datearr_start[1]+'">'+datearr_start[1]+'</option><option value="'+datearr_end[1]+'">'+datearr_end[1]+'</option>';
                     $("#monthly").html(optionhtml);
                 }
             </script>
