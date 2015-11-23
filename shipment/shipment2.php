@@ -11,8 +11,8 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
 //echo "<pre>";
 //print_r($_POST);
 //echo "</pre>";
-//$name_factory = $_POST['factoryName'];
-//$monthly = $_POST['monthly'];
+$name_factory = $_POST['factoryName'];
+$monthly = $_POST['monthly'];
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
