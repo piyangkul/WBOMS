@@ -16,7 +16,7 @@ $detail_shop = $_POST['detail_shop'];
 //
 //กลุ่มคำสั่งทำอะไร
 $idshop = addShop($name_shop, $idprovince, $tel_shop, $address_shop, $detail_shop);
-if ($idfactory > 0) {
+if ($idshop > 0) {
     header("location: ../shop.php?p=shop&action=addCompleted");
 } else {
     header("location: ../shop.php?p=shop&action=addError");
