@@ -86,7 +86,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
 
                                                             <div class="form-group col-xs-12">
                                                                 <label> ประจำเดือน </label>
-                                                                <select class="form-control" id="monthly" name="monthly" >
+                                                                <select class="form-control" id="monthly" name="monthly" required>
                                                                     <option selected value="">Choose</option>
                                                                 </select>
                                                             </div>
@@ -136,7 +136,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                     var date_end = $("#date_end").val();
                     var datearr_end = date_end.split("-");
 //                    alert(datearr_start[1] + " " + datearr_end[1]);
-                    var optionhtml = '<option value="'+datearr_start[1]+'">'+datearr_start[1]+'</option><option value="'+datearr_end[1]+'">'+datearr_end[1]+'</option>';
+                    var optionhtml = '<option selected value="">Choose</option><option value="'+datearr_start[1]+'">'+datearr_start[1]+'</option><option value="'+datearr_end[1]+'">'+datearr_end[1]+'</option>';
                     $("#monthly").html(optionhtml);
                 }
             </script>
