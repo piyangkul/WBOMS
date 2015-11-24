@@ -59,17 +59,17 @@ $monthly = $_POST['monthly'];
                                 <?php
                                 if (isset($_GET['action'])) {
                                     if ($_GET['action'] == "addCompleted") {
-                                        echo "<center><h4>คุณได้ทำการเพิ่มสำเร็จแล้ว</h4></center>";
+                                        echo '<center><h4 class="text-success">คุณได้ทำการเพิ่มสำเร็จแล้ว</h4></center>';
                                     } else if ($_GET['action'] == "addError") {
-                                        echo "<center><h4>ผิดพลาด!! ไม่สามารถเพิ่มได้</h4></center>";
+                                        echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถเพิ่มได้</h4></center>';
                                     } else if ($_GET['action'] == "editCompleted") {
-                                        echo "<center><h4>คุณได้ทำการแก้ไขสำเร็จแล้ว</h4></center>";
+                                        echo '<center><h4 class="text-success">คุณได้ทำการแก้ไขสำเร็จแล้ว</h4></center>';
                                     } else if ($_GET['action'] == "editError") {
-                                        echo "<center><h4>ผิดพลาด!! ไม่สามารถแก้ไขได้</h4></center>";
+                                        echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถแก้ไขได้</h4></center>';
                                     } else if ($_GET['action'] == "delCompleted") {
-                                        echo "<center><h4>คุณได้ทำการลบสำเร็จแล้ว</h4></center>";
+                                        echo '<center><h4 class="text-success">คุณได้ทำการลบรายการสินค้าสำเร็จแล้ว</h4></center>';
                                     } else if ($_GET['action'] == "delError") {
-                                        echo "<center><h4>ผิดพลาด!! ไม่สามารถลบได้</h4></center>";
+                                        echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถลบรายการสินค้าได้</h4></center>';
                                     }
                                 }
                                 ?>
@@ -103,36 +103,47 @@ $monthly = $_POST['monthly'];
                                             </thead>
                                             <tbody>
                                                 <?php
-                                                $getShops = getShop();
+                                                $getShipments = getShipments();
                                                 $i = 0;
-                                                foreach ($getShops as $value) {
+                                                foreach ($getShipments as $value) {
                                                     $i++;
-                                                    $val_idshop = $value['idshop'];
+                                                    $val_idproduct_order = $value['idproduct_order'];
+                                                    $val_date_order_p = $value['date_order_p'];
                                                     $val_name_shop = $value['name_shop'];
-                                                    $val_tel_shop = $value['tel_shop'];
-                                                    $val_name_region = $value['name_region'];
-                                                    $val_name_province = $value['name_province'];
+                                                    $val_name_product = $value['name_product'];
+                                                    $val_price_unit = $value['price_unit'];
+                                                    $val_amount_product_order = $value['amount_product_order'];
+                                                    $val_name_unit = $value['name_unit'];
+                                                    $val_date_transport = $value['date_transport'];
+                                                    $val_name_transport = $value['name_transport'];
+                                                    $val_volume = $value['volume'];
+                                                    $val_number = $value['number'];
+                                                    $val_price_transport = $value['price_transport'];
                                                     ?>
                                                     <tr>
                                                         <td><?php echo $i; ?></td>
+                                                        <td><?php echo $val_date_order_p; ?></td>
                                                         <td><?php echo $val_name_shop; ?></td>
-                                                        <td><?php echo $val_tel_shop; ?></td>
-                                                        <td><?php echo $val_name_region; ?></td>
-                                                        <td><?php echo $val_name_province; ?></td>
+                                                        <td><?php echo $val_name_product; ?></td>
+                                                        <td><?php echo $val_amount_product_order + $val_name_unit; ?></td>
+                                                        <td><?php echo $val_date_transport; ?></td>
+                                                        <td><?php echo $val_name_transport/$val_volume/$val_number; ?></td>
+                                                        <td><?php echo $val_price_transport; ?></td>
                                                         <td>
-                                                            <a href="popup_detail_shipment.php?idshop=<?php echo $val_idshop; ?>" class="btn btn-success " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="รายละเอียด">
+                                                            <a href="popup_detail_shipment.php?idproduct_order=<?php echo $val_idproduct_order; ?>" class="btn btn-success " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="รายละเอียด">
                                                                 <span class="glyphicon glyphicon-list-alt"></span>
                                                             </a>
-                                                            <a href="popup_edit_amount_product_order.php?idshop=<?php echo $val_idshop; ?>" class="btn btn-warning " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="แก้ไข">
+                                                            <a href="popup_edit_amount_product_order.php?idproduct_order=<?php echo $val_idproduct_order; ?>" class="btn btn-warning " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="แก้ไข">
                                                                 <span class="glyphicon glyphicon-edit"></span>
                                                             </a>
-                                                            <a href="action/action_delShop.php?idshop=<?php echo $val_idshop; ?>" onclick="if (!confirm('คุณต้องการลบหรือไม่')) {
-                                                                        return false;
-                                                                    }" class="btn btn-danger " title="ลบ">
+                                                            <a href="action/action_delShop.php?idproduct_order=<?php echo $val_idproduct_order; ?>" onclick="if (!confirm('คุณต้องการลบหรือไม่')) {
+                                                                            return false;
+                                                                        }" class="btn btn-danger " title="ลบ">
                                                                 <span class="glyphicon glyphicon-trash"></span>
                                                             </a>
                                                         </td>
                                                     </tr>
+                                                    
                                                     <?php
                                                 }
                                                 ?> 
@@ -161,17 +172,17 @@ $monthly = $_POST['monthly'];
         <!-- METISMENU SCRIPTS -->
         <script src="../assets/js/jquery.metisMenu.js"></script>
         <script>
-                                                            $(document.body).on('hidden.bs.modal', function () {
-                                                                $('#myModal').removeData('bs.modal');
-                                                            });
+                                                                $(document.body).on('hidden.bs.modal', function () {
+                                                                    $('#myModal').removeData('bs.modal');
+                                                                });
         </script>
         <!-- DATA TABLE SCRIPTS -->
         <script src="../assets/js/dataTables/jquery.dataTables.js"></script>
         <script src="../assets/js/dataTables/dataTables.bootstrap.js"></script>
         <script>
-                                                            $(document).ready(function () {
-                                                                $('#dataTables-example').dataTable();
-                                                            });
+                                                                $(document).ready(function () {
+                                                                    $('#dataTables-example').dataTable();
+                                                                });
         </script>
     </body>
 </html>
