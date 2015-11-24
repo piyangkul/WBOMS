@@ -52,18 +52,26 @@
 </form>
 <script>
     $(document).ready(function () {
-        $("#check_price").change(function () {
-            if ($("#check_price").val() !== $("#check_price").val()) {
-                $("#price_transport").prop('disabled', false);
-
-            }
-        });
+//        $("#check_price").change(function () {
+//            if ($("#check_price").val() !== $("#check_price").val()) {
+//                $("#price_transport").prop('disabled', false);
+//
+//            }
+//        });
+        var check_price = $("#check_price:checked").length > 0;
+        var price_transport = $("#price_transport").val();
+        if (check_price) {
+            $("#price_transport").prop('disabled', false);
+        }
+        else {
+            $("#price_transport").prop('disabled', true);
+        }
     });
 
     function chkPrice_transport() {
-        var check_price = $("#check_price").val();
+        var check_price = $("#check_price:checked").length > 0;
         var price_transport = $("#price_transport").val();
-        if (check_price !== check_price) {
+        if (check_price) {
             $("#price_transport").prop('disabled', false);
         }
         else {
