@@ -66,8 +66,9 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                     echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถลบได้</h4></center>';
                                 } else if ($_GET['action'] == "addErrorDuplicateCode") {
                                     echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถเพิ่มได้เนื่องจากรหัสสินค้าซ้ำ</h4></center>';
-                                }
-                                
+                                } else if ($_GET['action'] == "delProductdError") {
+                                    echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถลบได้เนื่องจากมีคำสั่งซื้ออยู่</h4></center>';
+                                }                                
                             }
                             ?>
                             <!-- ตารางสินค้า -->
