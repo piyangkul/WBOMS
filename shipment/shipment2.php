@@ -49,11 +49,9 @@ $monthly = $_POST['monthly'];
                     <hr />
                     <div class="row">
                         <div class="col-md-12">
-                            <center><h4>บิลของโรงงาน <?php echo $name_factory; ?> &nbsp;&nbsp;&nbsp;&nbsp; ประจำเดือน <?php echo $monthly; ?></h4></center>
-                            <a href="popup_add_shipment.php" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">
-                                <span class="glyphicon glyphicon-plus"></span> เพิ่ม/อัพเดทข้อมูลการส่งสินค้า
-                            </a>
-
+                            <center><h4>บิลโรงงาน <?php echo $name_factory; ?> &nbsp;&nbsp;&nbsp;&nbsp; ประจำเดือน <?php echo $monthly; ?></h4></center>
+                            <button href="popup_add_shipment.php" type="submit" name="check_shipment" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal"> 
+                                <span class="glyphicon glyphicon-plus"></span> เพิ่ม/อัพเดทข้อมูลการส่งสินค้า</button>
                             <br/>
                             <span>
                                 <?php
@@ -93,7 +91,7 @@ $monthly = $_POST['monthly'];
                                                     <th rowspan="2"><div align="center">ราคาเปิดต่อหน่วย</div></th>
                                                     <th rowspan="2"><div align="center">จำนวน</div></th>
                                                     <th colspan="3"><div align="center">ข้อมูลการส่งสินค้า</div></th>
-                                                    <th rowspan="2"><div align="center">การกระทำ</div></th>
+                                                    <th rowspan="2"><div align="center">การกระทำสินค้าที่สั่งซื้อ</div></th>
                                                 </tr>
                                                 <tr>
                                                     <th><div align="center">วันที่ส่ง</div></th>
@@ -103,6 +101,7 @@ $monthly = $_POST['monthly'];
                                             </thead>
                                             <tbody>
                                                 <?php
+                                                //มีเงื่อนไข การกำหนดช่วงเวลาที่สั่ง
                                                 $getShipments = getShipments();
                                                 $i = 0;
                                                 foreach ($getShipments as $value) {
@@ -121,13 +120,14 @@ $monthly = $_POST['monthly'];
                                                     $val_price_transport = $value['price_transport'];
                                                     ?>
                                                     <tr>
-                                                        <td><?php echo $i; ?></td>
+                                                        <td><?php echo "" ?> <input type="checkbox" name="check_shipment[]" id="check_shipment" value="$val_idproduct_order" /> <? ; ?></td>
                                                         <td><?php echo $val_date_order_p; ?></td>
                                                         <td><?php echo $val_name_shop; ?></td>
                                                         <td><?php echo $val_name_product; ?></td>
-                                                        <td><?php echo $val_amount_product_order + $val_name_unit; ?></td>
+                                                        <td><?php echo $val_price_unit; ?></td>
+                                                        <td><?php echo $val_amount_product_order . " " . $val_name_unit; ?></td>
                                                         <td><?php echo $val_date_transport; ?></td>
-                                                        <td><?php echo $val_name_transport/$val_volume/$val_number; ?></td>
+                                                        <td><?php echo $val_name_transport . "/" . $val_volume . "/" . $val_number; ?></td>
                                                         <td><?php echo $val_price_transport; ?></td>
                                                         <td>
                                                             <a href="popup_detail_shipment.php?idproduct_order=<?php echo $val_idproduct_order; ?>" class="btn btn-success " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="รายละเอียด">
@@ -136,18 +136,18 @@ $monthly = $_POST['monthly'];
                                                             <a href="popup_edit_amount_product_order.php?idproduct_order=<?php echo $val_idproduct_order; ?>" class="btn btn-warning " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="แก้ไข">
                                                                 <span class="glyphicon glyphicon-edit"></span>
                                                             </a>
-                                                            <a href="action/action_delShop.php?idproduct_order=<?php echo $val_idproduct_order; ?>" onclick="if (!confirm('คุณต้องการลบหรือไม่')) {
+                                                            <a href="action/action_delProduct_order.php?idproduct_order=<?php echo $val_idproduct_order; ?>" onclick="if (!confirm('คุณต้องการลบรายการสินค้าหรือไม่')) {
                                                                             return false;
                                                                         }" class="btn btn-danger " title="ลบ">
                                                                 <span class="glyphicon glyphicon-trash"></span>
                                                             </a>
                                                         </td>
                                                     </tr>
-                                                    
+
                                                     <?php
                                                 }
                                                 ?> 
-
+                                            </tbody>
                                         </table>
 
                                     </div>

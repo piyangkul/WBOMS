@@ -2,18 +2,15 @@
 require_once 'function/func_shipment.php';
 ?>
 <?php
-if (isset($_GET['idfactory'])) {
-    $idfactory = $_GET['idfactory'];
-    $getFactorys = getFactoryByID($idfactory);
-    $val_name_factory = $getFactorys['name_factory'];
-    $val_tel_factory = $getFactorys['tel_factory'];
-    $val_address_factory = $getFactorys['address_factory'];
-    $val_contact_factory = $getFactorys['contact_factory'];
-    $val_difference_amount = $getFactorys['difference_amount_factory'];
-    $val_detail_factory = $getFactorys['detail_factory'];
+if (isset($_GET['idproduct_order'])) {
+    $idproduct_order = $_GET['idproduct_order'];
+    $getProduct_order = getProduct_orderByID($idproduct_order);
+    $val_name_product = $getProduct_order['name_product'];
+    echo $val_name_product;
+    $val_amount_product_order = $getProduct_order['amount_product_order'];
 }
 ?>
-﻿<form class="form" action="action/action_edit_amount_product_order.php?idfactory=<?php echo $idfactory; ?>" method="post">
+﻿<form class="form" action="action/action_edit_amount_product_order.php?idproduct_order=<?php echo $idproduct_order; ?>" method="post">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">แก้ไขจำนวนสินค้า</h4>
@@ -27,21 +24,33 @@ if (isset($_GET['idfactory'])) {
                     <label for="name_product">ชื่อสินค้า</label><label class="text-danger">*</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-cube"></i></span>
-                        <input type="text" class="form-control" id="name_product" name="name_product" value="<?php echo $val_name_factory; ?>">
+                        <input type="text" class="form-control" id="name_product" name="name_product" value="<?php echo $val_name_product; ?>">
                     </div>
                 </div>
                 <div class="form-group col-xs-12">
                     <label for="amount_product_order">จำนวน</label><label class="text-danger">*</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-circle-o-notch"></i></span>
-                        <input type="text" class="form-control" id="amount_product_order" name="amount_product_order" value="<?php echo $val_tel_factory; ?>">
+                        <input type="text" class="form-control" id="amount_product_order" name="amount_product_order" value="<?php echo $val_amount_product_order; ?>">
                     </div>
                 </div>
                 <div class="form-group col-xs-12">
                     <label for="name_unit">หน่วยสินค้า</label><label class="text-danger">*</label>
                     <div class="form-group input-group">
-                        <span class="input-group-addon"><i class="fa fa-circle-o-notch"></i></span>
-                        <input type="text" class="form-control" id="name_unit" name="name_unit" value="<?php echo $val_contact_factory; ?>" >
+                        <span class="input-group-addon"><i class="fa fa-circle-o-notch"  ></i></span>
+                        <select class="form-control" id="name_transport" name="name_transport" required >
+                            <option selected value="">กรุณาเลือกหน่วยสินค้า</option>
+                            <?php
+                            require_once '../product/function/func_product.php';
+                            
+                            $getProductUnit = getProductUnit($idproduct);
+                            foreach ($getProductUnit as $value) {
+                                $val_idunit_big = $value['idunit_big'];
+                                $val_name_big = $value['name_big'];
+                                ?>
+                                <option value="<?php echo $val_idunit_big; ?>"><?php echo $val_name_big; ?></option>
+                            <?php } ?>
+                        </select>
                     </div>
                 </div>
             </div>

@@ -54,7 +54,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                         <div class="form-group">
                                                 <label for="factoryName"> ชื่อโรงงาน </label><label class="text-danger">*</label>
                                                 <select class="form-control" id="factoryName" name="factoryName" required="">
-                                                    <option selected value="">Choose</option>
+                                                    <option selected value="">กรุณาเลือกโรงงาน</option>
                                                     <?php
                                                     require_once '../interface_factory/function/func_factory.php';
                                                     $getFactorys = getFactorys();
@@ -87,7 +87,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                             <div class="form-group col-xs-12">
                                                                 <label> ประจำเดือน </label>
                                                                 <select class="form-control" id="monthly" name="monthly" required>
-                                                                    <option selected value="">Choose</option>
+                                                                    <option selected value="">กรุณาเลือกเดือนตัดบัญชีโรงงาน</option>
                                                                 </select>
                                                             </div>
                                                         </div>

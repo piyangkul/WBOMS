@@ -9,14 +9,28 @@
                 <div class="form-group col-xs-12">
                 </div>
                 <div class="form-group col-xs-12">
-                    <label>วันที่ส่งสินค้า<label class="text-danger">*</label></label>
-                    <input type="date" class="form-control" id="date_end" name="date_end" required />
+                    <label for="date_transport">วันที่ส่งสินค้า<label class="text-danger">*</label></label>
+                    <div class="form-group input-group">
+                        <span class="input-group-addon"><i class="fa fa-calendar-o"  ></i></span>
+                        <input type="date" class="form-control" id="date_transport" name="date_transport" required />
+                    </div>
                 </div>
                 <div class="form-group col-xs-12">
                     <label for="name_transport">ชื่อบริษัทขนส่ง</label><label class="text-danger">*</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-truck"  ></i></span>
-                        <input type="text" class="form-control" placeholder="กรุณากรอกชื่อบริษัทขนส่ง" name="name_transport" required=""/>
+                        <select class="form-control" id="name_transport" name="name_transport" required >
+                            <option selected value="">กรุณาเลือกบริษัทขนส่ง</option>
+                            <?php
+                            require_once '../transport/function/func_transport.php';
+                            $getTransports = getTransports();
+                            foreach ($getTransports as $value) {
+                                $val_idtransport = $value['idtransport'];
+                                $val_name_transport = $value['name_transport'];
+                                ?>
+                                <option value="<?php echo $val_idtransport; ?>"><?php echo $val_name_transport; ?></option>
+                            <?php } ?>
+                        </select>
                     </div>
                 </div>
                 <div class="form-group col-xs-12">
@@ -37,8 +51,9 @@
                     <input type="checkbox" onchange="chkPrice_transport()" id="check_price" value="" />
                     <label for="price_transport">ค่าส่งสินค้า</label>
                     <div class="form-group input-group">
-                        <span class="input-group-addon"><i class="fa fa-dollar"  ></i></span>
+                        <span class="input-group-addon"><i class="fa fa-dollar" ></i></span>
                         <input type="text" onchange="chkPrice_transport()" class="form-control" id="price_transport" placeholder="กรุณากรอกค่าส่งสินค้า" name ="price_transport" disabled/>
+                        <span class="input-group-addon">.00</span>
                     </div>
                 </div>
             </div>
@@ -52,12 +67,6 @@
 </form>
 <script>
     $(document).ready(function () {
-//        $("#check_price").change(function () {
-//            if ($("#check_price").val() !== $("#check_price").val()) {
-//                $("#price_transport").prop('disabled', false);
-//
-//            }
-//        });
         var check_price = $("#check_price:checked").length > 0;
         var price_transport = $("#price_transport").val();
         if (check_price) {
