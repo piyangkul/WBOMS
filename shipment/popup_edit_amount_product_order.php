@@ -6,7 +6,6 @@ if (isset($_GET['idproduct_order'])) {
     $idproduct_order = $_GET['idproduct_order'];
     $getProduct_order = getProduct_orderByID($idproduct_order);
     $val_name_product = $getProduct_order['name_product'];
-    echo $val_name_product;
     $val_amount_product_order = $getProduct_order['amount_product_order'];
 }
 ?>
@@ -24,7 +23,7 @@ if (isset($_GET['idproduct_order'])) {
                     <label for="name_product">ชื่อสินค้า</label><label class="text-danger">*</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-cube"></i></span>
-                        <input type="text" class="form-control" id="name_product" name="name_product" value="<?php echo $val_name_product; ?>">
+                        <input type="text" class="form-control" id="name_product" name="name_product" value="<?php echo $val_name_product; ?>" disabled>
                     </div>
                 </div>
                 <div class="form-group col-xs-12">
@@ -34,25 +33,28 @@ if (isset($_GET['idproduct_order'])) {
                         <input type="text" class="form-control" id="amount_product_order" name="amount_product_order" value="<?php echo $val_amount_product_order; ?>">
                     </div>
                 </div>
-                <div class="form-group col-xs-12">
+<!--                <div class="form-group col-xs-12">
                     <label for="name_unit">หน่วยสินค้า</label><label class="text-danger">*</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-circle-o-notch"  ></i></span>
                         <select class="form-control" id="name_transport" name="name_transport" required >
                             <option selected value="">กรุณาเลือกหน่วยสินค้า</option>
-                            <?php
-                            require_once '../product/function/func_product.php';
-                            
-                            $getProductUnit = getProductUnit($idproduct);
-                            foreach ($getProductUnit as $value) {
-                                $val_idunit_big = $value['idunit_big'];
-                                $val_name_big = $value['name_big'];
-                                ?>
-                                <option value="<?php echo $val_idunit_big; ?>"><?php echo $val_name_big; ?></option>
-                            <?php } ?>
+                            //<?php
+//                            require_once '../product/function/func_product.php';
+//                            $val_idproduct = $_GET['idproduct'];
+//                            $getProductUnit = getProductUnit($val_idproduct);
+//                            foreach ($getProductUnit as $value) {
+//                                if ($value['name_big'] == NULL) {
+//                                    continue;
+//                                }
+//                                $valUnit = $value['name'];
+//                                
+//                                ?>
+                                <option value="//<?php echo $val_idunit; ?>"><?php echo $valUnit; ?></option>
+                            <?php  ?>
                         </select>
                     </div>
-                </div>
+                </div>-->
             </div>
         </div>
     </div>

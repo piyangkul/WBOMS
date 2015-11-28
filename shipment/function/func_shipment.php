@@ -17,7 +17,7 @@ function getShipments() {
 
 function getProduct_orderByID($idproduct_order) {
     $conn = dbconnect();
-    $SQLCommand = "SELECT * FROM `view_shipment`"
+    $SQLCommand = "SELECT * FROM `view_shipmentbyid`"
             . "WHERE `idproduct_order`=:idproduct_order ";
 
     $SQLPrepare = $conn->prepare($SQLCommand);
@@ -72,16 +72,16 @@ function addShipment($idtransport ,$date_transport, $volume, $number, $price_tra
     }
 }
 //ยังไม่เสร็จ
-function editProduct_order($idproduct_order, $idname_product, $idamount_product_order) {
+function editProduct_order($idproduct_order, $idamount_product_order) {
     $conn = dbconnect();
-    $SQLCommand = "";
+    $SQLCommand = "UPDATE `product_order` SET `amount_product_order`=:amount_product_order "
+            . "WHERE `idproduct_order`=:idproduct_order";
 
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
-                "p1" => $idproduct_order,
-                "p2" => $idname_product,
-                "p3" => $idamount_product_order
+                ":idproduct_order" => $idproduct_order,
+                ":amount_product_order" => $idamount_product_order
             )
     );
 
