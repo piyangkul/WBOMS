@@ -178,29 +178,11 @@ $val_difference_amount_product = $getProductDetail['difference_amount_product'];
                                                 <input type="text" class="form-control" id="exampleInputName4" placeholder="560">
                                             </div>
                                             <div class="form-group col-xs-12">
-                                                <div class="col-md-12 col-sm-12 ">
-                                                    <div class="panel panel-info">
-                                                        <div class="panel-heading">
-                                                            <label>ต้นทุนลด</label>
-                                                        </div>
-                                                        <div class="panel-body">
-                                                            <div class="table-responsive ">
-                                                                <form class="form">
-                                                                    <label class="radio">
-                                                                        <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> ต้นทุนลดเปอร์เซ็นต์
-                                                                            <input type="text" class="form-control" placeholder="กรอก%ต้นทุนลด" id="userName" name="username" value="" /> 
-                                                                    </label>
-                                                                    <label class="radio">
-                                                                        <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> ต้นทุนสุทธิไม่ลด
-                                                                    </label>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <label for="difference_amount">ต้นทุนลดเป็น% (%ที่โรงงานลดให้เรา)//ลด10%</label>
+                                                <input type="text" class="form-control" id="difference_amount" name="difference_amount" placeholder="0" value="0" required="" onchange="calBigestPrice();" >
                                             </div>
                                             <div class="form-group col-xs-12">
-                                                <label for="exampleInputName2"> ราคาต้นทุน </label>
+                                                <label for="exampleInputName2"> ดังนั้นราคาต้นทุนต่อหน่วยใหญ่สุด//ระบบคำนวณอัตโนมัติ </label>
                                                 <input type="text" class="form-control" id="exampleInputName2" placeholder="504">
                                             </div>
                                         </form>
