@@ -60,47 +60,45 @@ $val_difference_amount_product = $getProductDetail['difference_amount_product'];
                     <hr />
                     <div class="row">
                         <div class="col-md-3"></div>
-                        <div class="col-md-6">
-                            <div class="form-group col-xs-12">
-                                <div class="col-md-12 col-sm-12 ">
-                                    <div class="panel panel-primary">
-                                        <div class="panel-heading">
-                                            <label>สินค้า</label>
+                        <div class="col-md-6 ">
+                            <!-- บิล -->
+                            <div class="panel panel-default">
+                                <div class="panel-heading ">
+                                    <div class="table-responsive">
+                                        <div class="form-group col-xs-12">
+                                            <label for="productCode">รหัสสินค้า</label>
+                                            <input type="text" class="form-control" id="productCode" name="productCode" value="<?php echo $val_code_product; ?>">
                                         </div>
-                                        <div class="panel-body">
-                                            <div class="table-responsive ">
-                                                <form class="form">
-                                                    <div class="form-group col-xs-12">
-                                                        <label for="productCode">รหัสสินค้า</label>
-                                                        <input type="text" class="form-control" id="productCode" name="productCode" value="<?php echo $val_code_product; ?>">
-                                                    </div>
-                                                    <div class="form-group col-xs-12">
-                                                        <label for="productName"> ชื่อสินค้า </label>
-                                                        <input type="text" class="form-control" id="productName" name="productName" value="<?php echo $val_name_product; ?>">
-                                                    </div>
-                                                    <div class="form-group col-xs-12">
-                                                        <label for="factoryName"> ชื่อโรงงาน </label>
-                                                        <select class="form-control" id="factoryName" name="factoryName" >
-                                                            <option selected>Choose</option>
-                                                            <?php
-                                                            require_once '../interface_factory/function/func_factory.php';
-                                                            $getFactorys = getFactorys();
-                                                            foreach ($getFactorys as $value) {
-                                                                $val_idfactory = $value['idfactory'];
-                                                                $val_name_factory = $value['name_factory'];
-                                                                ?>
-                                                                <option <?php echo $val_idfactory == $val_name_factoryID ? "selected" : "" ?> value="<?php echo $val_idfactory; ?>"><?php echo $val_name_factory; ?></option>
-                                                            <?php } ?>
-                                                        </select>
-                                                    </div>
-                                                </form>
-                                            </div>
+                                        <div class="form-group col-xs-12">
+                                            <label for="productName"> ชื่อสินค้า </label>
+                                            <input type="text" class="form-control" id="productName" name="productName" value="<?php echo $val_name_product; ?>">
+                                        </div>
+                                        <div class="form-group col-xs-12">
+                                            <label for="factoryName"> ชื่อโรงงาน </label>
+                                            <select class="form-control" id="factoryName" name="factoryName" >
+                                                <option selected>Choose</option>
+                                                <?php
+                                                require_once '../interface_factory/function/func_factory.php';
+                                                $getFactorys = getFactorys();
+                                                foreach ($getFactorys as $value) {
+                                                    $val_idfactory = $value['idfactory'];
+                                                    $val_name_factory = $value['name_factory'];
+                                                    ?>
+                                                    <option <?php echo $val_idfactory == $val_name_factoryID ? "selected" : "" ?> value="<?php echo $val_idfactory; ?>"><?php echo $val_name_factory; ?></option>
+                                                <?php } ?>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="porductDetail">รายละเอียด</label>
+                                            <textarea class="form-control" id="porductDetail" name="porductDetail" placeholder="รายละเอียดของสินค้า"></textarea>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <!--End บิล -->
                         </div>
                     </div>
+                    
                     <!-- หน่วยสินค้า -->
                     <div class="row">
                         <div class="col-md-12 col-sm-12 ">
