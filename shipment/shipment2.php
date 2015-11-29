@@ -51,7 +51,13 @@ $monthly = $_POST['monthly'];
                         <div class="col-md-12">
                             <center><h4>บิลโรงงาน <?php echo $name_factory; ?> &nbsp;&nbsp;&nbsp;&nbsp; ประจำเดือน <?php echo $monthly; ?></h4></center>
                             <button href="popup_add_shipment.php" type="submit" name="check_shipment" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal"> 
-                                <span class="glyphicon glyphicon-plus"></span> เพิ่ม/อัพเดทข้อมูลการส่งสินค้า</button>
+                                <span class="fa fa-truck"></span> เพิ่ม/อัพเดทข้อมูลการส่งสินค้า</button>
+                            <a href="popup_add_payfactory.php" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">
+                                <span class="fa fa-building-o"></span> เพิ่มข้อมูลการจ่ายเงินโรงงาน
+                            </a>
+                            <a href="popup_edit_payfactory.php" class="btn btn-warning btn-lg" data-toggle="modal" data-target="#myModal">
+                                <span class="fa fa-building-o"></span> แก้ไขข้อมูลการจ่ายเงินโรงงาน
+                            </a>
                             <br/>
                             <span>
                                 <?php
@@ -154,7 +160,7 @@ $monthly = $_POST['monthly'];
                                 </div>
                             </div>
                             <!--End ตารางรายการสินค้า -->
-
+                            
                         </div>
                     </div>
                 </div>
