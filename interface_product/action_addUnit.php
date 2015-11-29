@@ -59,6 +59,14 @@ else if ($_GET['p'] == "getPriceUnit") {
     } else {
         echo "-1";
     }
+} else if ($_GET['p'] == "resetUnit") {
+    if (isset($_SESSION["countUnit"])) {
+        unset($_SESSION["countUnit"]);
+        unset($_SESSION["unit"]);
+        echo 1;
+    } else {
+        echo -1;
+    }
 } else if ($_GET['p'] == "showUnit") {
     ?>
     <table class="table table-striped table-bordered table-hover text-center" id="dataTables-example">

@@ -100,6 +100,9 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                             <a href="popup_add_product_unit.php" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">
                                                 <span class="glyphicon glyphicon-plus"></span> เพิ่มหน่วยสินค้า
                                             </a>
+                                            <button class="btn btn-warning btn-lg" type="button" onclick="resetUnit();">
+                                                <span class="glyphicon glyphicon-minus"></span> ลบหน่วยสินค้าทั้งหมด
+                                            </button>
                                             <br/><br/>
                                             <div id="showUnit"></div>
                                         </div>
@@ -189,6 +192,21 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                     }
                     else {
                         $("#bigestUnit").val("n/a");
+                    }
+                });
+            }
+            
+            function resetUnit() {
+                $.get("action_addUnit.php?p=resetUnit", function (data, status) {
+                    if (data != "-1") {
+                        showUnit();
+                        getBigestUnit();
+                        getBigestPrice();
+                        alert("ลบหน่วยทั้งหมดแล้ว");
+                    }
+                    else {
+                        alert("ไม่สามารถลบหน่อยได้");
+                        
                     }
                 });
             }
