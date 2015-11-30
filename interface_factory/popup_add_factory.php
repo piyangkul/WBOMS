@@ -5,8 +5,14 @@
     </div>
     <div class="row">
         <div class="col-md-12 col-sm-12 ">
-            <div class="form-group col-xs-12">                
+            <div class="form-group col-xs-12">
+                <div class="form-group col-xs-12"></div>
                 <div class="form-group col-xs-12">
+                    <label for="code_factory">รหัสโรงงาน</label><label class="text-danger">*</label>
+                    <div class="form-group input-group">
+                        <span class="input-group-addon"><i class="fa fa-circle-o-notch" ></i></span>
+                        <input type="text" maxlength="4" class="form-control" name="code_factory" placeholder="กรอกรหัสโรงงาน"  required=""/>
+                    </div>
                 </div>
                 <div class="form-group col-xs-12">
                     <label for="name_factory">ชื่อโรงงาน</label><label class="text-danger">*</label>

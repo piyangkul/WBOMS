@@ -92,13 +92,14 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                 $getFactorys = getFactorys();
                                                 foreach ($getFactorys as $value) {
                                                     $val_idfactory = $value['idfactory'];
+                                                    $val_code_factory = $value['code_factory'];
                                                     $val_name_factory = $value['name_factory'];
                                                     $val_tel_factory = $value['tel_factory'];
                                                     $val_contact_factory = $value['contact_factory'];
                                                     
                                                     ?>
                                                     <tr>
-                                                        <td><?php echo $val_idfactory; ?></td>
+                                                        <td><?php echo $val_code_factory; ?></td>
                                                         <td><?php echo $val_name_factory; ?></td>
                                                         <td><?php echo $val_tel_factory; ?></td>
                                                         <td><?php echo $val_contact_factory; ?></td>

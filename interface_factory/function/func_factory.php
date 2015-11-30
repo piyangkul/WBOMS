@@ -2,14 +2,15 @@
 
 require_once dirname(__FILE__) . '/../../config/connect.php';
 
-function addFactory($name_factory, $tel_factory, $address_factory, $contact_factory, $difference_amount_factory, $detail_factory) {
+function addFactory($code_factory,$name_factory, $tel_factory, $address_factory, $contact_factory, $difference_amount_factory, $detail_factory) {
     $conn = dbconnect();
-    $SQLCommand = "INSERT INTO `factory`(`name_factory`, `tel_factory`, `address_factory`, `contact_factory`, `difference_amount_factory`, `detail_factory`) "
-            . "VALUES (:name_factory, :tel_factory, :address_factory, :contact_factory, :difference_amount_factory, :detail_factory)";
+    $SQLCommand = "INSERT INTO `factory`(`code_factory`, `name_factory`, `tel_factory`, `address_factory`, `contact_factory`, `difference_amount_factory`, `detail_factory`) "
+            . "VALUES (:code_factory, :name_factory, :tel_factory, :address_factory, :contact_factory, :difference_amount_factory, :detail_factory)";
 
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
+                ":code_factory" => $code_factory,
                 ":name_factory" => $name_factory,
                 ":tel_factory" => $tel_factory,
                 ":address_factory" => $address_factory,
@@ -30,6 +31,7 @@ function addFactory($name_factory, $tel_factory, $address_factory, $contact_fact
 function getFactorys() {
     $conn = dbconnect();
     $SQLCommand = "SELECT `idfactory`, "
+            . "`code_factory`, "
             . "`name_factory`, "
             . "`tel_factory`, "
             . "`address_factory`, "
@@ -50,6 +52,7 @@ function getFactorys() {
 function getFactoryByID($idfactory) {
     $conn = dbconnect();
     $SQLCommand = "SELECT `idfactory`, "
+            . "`code_factory`, "
             . "`name_factory`, "
             . "`tel_factory`, "
             . "`address_factory`, "
@@ -69,9 +72,10 @@ function getFactoryByID($idfactory) {
     return $result;
 }
 
-function editFactory($name_factory, $tel_factory, $address_factory, $contact_factory, $difference_amount_factory, $detail_factory, $idfactory) {
+function editFactory($code_factory, $name_factory, $tel_factory, $address_factory, $contact_factory, $difference_amount_factory, $detail_factory, $idfactory) {
     $conn = dbconnect();
     $SQLCommand = "UPDATE `factory` SET "
+            . "`code_factory`=:code_factory,"
             . "`name_factory`=:name_factory,"
             . "`tel_factory`=:tel_factory,"
             . "`address_factory`=:address_factory,"
@@ -83,6 +87,7 @@ function editFactory($name_factory, $tel_factory, $address_factory, $contact_fac
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
+                ":code_factory" => $code_factory,
                 ":name_factory" => $name_factory,
                 ":tel_factory" => $tel_factory,
                 ":address_factory" => $address_factory,
