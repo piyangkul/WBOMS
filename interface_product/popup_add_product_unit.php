@@ -36,7 +36,7 @@ session_start();
 
             <div class="form-group col-xs-12">
                 <label for="price">ราคาต่อหน่วยสินค้า</label>
-                <input type="text" class="form-control" id="price" name="price" placeholder="0" value="0" readonly>
+                <input type="text" class="form-control" id="price" name="price" placeholder="0" value="" readonly>
 
             </div>
             <div class="form-group col-xs-12">

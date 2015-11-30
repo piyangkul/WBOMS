@@ -8,6 +8,7 @@ $getProductUnit = getProductUnit($val_idproduct);
 //echo "</pre>";
 $val_code_product = $getProductDetail['code_product'];
 $val_name_product = $getProductDetail['name_product'];
+$val_detail_product = $getProductDetail['detail_product'];
 $val_name_factory = $getProductDetail['name_factory'];
 $val_difference_amount_product = $getProductDetail['difference_amount_product'];
 ?>
@@ -31,9 +32,14 @@ $val_difference_amount_product = $getProductDetail['difference_amount_product'];
                 <input type = "text" class = "form-control" id = "disabledInput2" value="<?php echo $val_name_product; ?>" disabled>
             </div>
             <div class = "form-group col-xs-12">
+                <label for = "disabledInput3"> รายละเอียดสินค้า </label>
+                <textarea type = "text" class = "form-control" id = "disabledInput3" disabled> <?php echo $val_detail_product; ?></textarea> 
+            </div>
+            <div class = "form-group col-xs-12">
                 <label for = "disabledInput3"> ชื่อโรงงาน </label>
                 <input type = "text" class = "form-control" id = "disabledInput3" value="<?php echo $val_name_factory; ?>" disabled>
             </div>
+            
             <!--หน่วยสินค้า -->
             <div class = "row">
                 <div class = "col-md-2 col-sm-2 "></div>

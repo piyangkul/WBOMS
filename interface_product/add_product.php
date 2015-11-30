@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 session_start();
 if (!isset($_SESSION['member']))
     header('Location: ../index.php');
@@ -100,8 +100,8 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                             <a href="popup_add_product_unit.php" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">
                                                 <span class="glyphicon glyphicon-plus"></span> เพิ่มหน่วยสินค้า
                                             </a>
-                                            <button class="btn btn-warning btn-lg" type="button" onclick="resetUnit();">
-                                                <span class="glyphicon glyphicon-minus"></span> ลบหน่วยสินค้าทั้งหมด
+                                            <button class="btn btn-danger btn-lg" type="button" onclick="resetUnit();">
+                                                <span class="glyphicon glyphicon-trash"></span> ลบหน่วยสินค้าทั้งหมด
                                             </button>
                                             <br/><br/>
                                             <div id="showUnit"></div>
@@ -132,11 +132,11 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                             </div>
                                             <div class="form-group col-xs-12">
                                                 <label for="difference_amount">ต้นทุนลดเป็น% (%ที่โรงงานลดให้เรา)//ลด10%</label><label class="text-danger">*</label>
-                                                <input type="text" class="form-control" id="difference_amount" name="difference_amount" placeholder="0" value="0" required="" onchange="calBigestPrice();" >
+                                                <input type="text" class="form-control" id="difference_amount" name="difference_amount" placeholder="0" value="" required onchange="calBigestPrice();" >
                                             </div>
                                             <div class="form-group col-xs-12">
                                                 <label for="bigestPriceResult"> ดังนั้นราคาต้นทุนต่อหน่วยใหญ่สุด//ระบบคำนวณอัตโนมัติ </label>
-                                                <input type="text" class="form-control" id="bigestPriceResult" name="bigestPriceResult">
+                                                <input type="text" class="form-control" id="bigestPriceResult" name="bigestPriceResult" readonly>
                                             </div>
                                         </div>
                                     </div>
@@ -205,7 +205,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                         alert("ลบหน่วยทั้งหมดแล้ว");
                     }
                     else {
-                        alert("ไม่สามารถลบหน่อยได้");
+                        alert("ไม่สามารถลบหน่วยได้");
 
                     }
                 });

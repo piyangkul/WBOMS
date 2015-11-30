@@ -97,9 +97,6 @@ else if ($_GET['p'] == "getPriceUnit") {
                             <a href="popup_edit_product_unit.php?idUnit=<?php echo $i; ?>" class="btn btn-warning " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="แก้ไข">
                                 <span class="glyphicon glyphicon-edit"></span>
                             </a>
-                            <a href="popup_delete_product_unit.php?idUnit=<?php echo $i; ?>" class="btn btn-danger " data-toggle="modal" data-target="#myModal3" data-toggle="tooltip" title="ลบ">
-                                <span class="glyphicon glyphicon-trash"></span>
-                            </a>
                         </td>
                     </tr>
                     <?php

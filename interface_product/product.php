@@ -131,7 +131,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                             <a href="edit_product.php?idproduct=<?php echo $val_idproduct; ?>" class="btn btn-warning " >
                                                                 <span class="glyphicon glyphicon-edit"></span>
                                                             </a>
-                                                            <a onclick="return confirm('Are you sure Delete that.')" href="action/action_delProduct.php?idproduct=<?php echo $val_idproduct; ?>" class="btn btn-danger">
+                                                            <a onclick="return confirm('คุณต้องการลบหรือไม่')" href="action/action_delProduct.php?idproduct=<?php echo $val_idproduct; ?>" class="btn btn-danger">
                                                                 <span class="glyphicon glyphicon-trash"></span>
                                                             </a>
                                                         </td>
