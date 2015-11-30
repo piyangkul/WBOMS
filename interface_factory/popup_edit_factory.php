@@ -5,6 +5,7 @@ require_once 'function/func_factory.php';
 if (isset($_GET['idfactory'])) {
     $idfactory = $_GET['idfactory'];
     $getFactorys = getFactoryByID($idfactory);
+    $val_code_factory = $getFactorys['code_factory'];
     $val_name_factory = $getFactorys['name_factory'];
     $val_tel_factory = $getFactorys['tel_factory'];
     $val_address_factory = $getFactorys['address_factory'];
@@ -22,6 +23,13 @@ if (isset($_GET['idfactory'])) {
         <div class="col-md-12 col-sm-12 ">
             <div class="form-group col-xs-12">
                 <div class="form-group col-xs-12">
+                </div>
+                <div class="form-group col-xs-12">
+                    <label for="code_factory">รหัสโรงงาน</label><label class="text-danger">*</label>
+                    <div class="form-group input-group">
+                        <span class="input-group-addon"><i class="fa fa-circle-o-notch" ></i></span>
+                        <input type="text" maxlength="4" class="form-control" name="code_factory" value="<?php echo $val_code_factory; ?>" >
+                    </div>
                 </div>
                 <div class="form-group col-xs-12">
                     <label for="name_factory">ชื่อโรงงาน</label><label class="text-danger">*</label>

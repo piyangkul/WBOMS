@@ -6,7 +6,7 @@ print_r($_POST);
 echo '</pre>';
 
 $idfactory = $_GET['idfactory'];
-$code_factory = $_GET['codefactory'];
+$code_factory = $_POST['code_factory'];
 $name_factory = $_POST['name_factory'];
 $tel_factory = $_POST['tel_factory'];
 $address_factory = $_POST['address_factory'];

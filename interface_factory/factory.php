@@ -78,32 +78,37 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                         <table class="table table-striped table-bordered table-hover text-center" id="dataTables-example">
                                             <thead>
                                                 <tr>
+                                                    <th><div align="center">ลำดับ</div></th>
                                                     <th><div align="center">รหัสโรงงาน</div></th>
                                                     <th><div align="center">ชื่อโรงงาน</div></th>
                                                     <th><div align="center">เบอร์โทรศัพท์</div></th>
                                                     <th><div align="center">ผู้ติดต่อ</div></th>
+                                                    <th><div align="center">ส่วนลดต้นทุนมาตราฐาน</div></th>
                                                     <th><div align="center">การกระทำ</div></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <?php
                                                 //ดึงข้อมูลจากตาราง
-                                                
+
                                                 $getFactorys = getFactorys();
+                                                $i = 0;
                                                 foreach ($getFactorys as $value) {
+                                                    $i++;
                                                     $val_idfactory = $value['idfactory'];
                                                     $val_code_factory = $value['code_factory'];
                                                     $val_name_factory = $value['name_factory'];
                                                     $val_tel_factory = $value['tel_factory'];
                                                     $val_contact_factory = $value['contact_factory'];
-                                                    
+                                                    $val_difference_amount_factory = $value['difference_amount_factory'];
                                                     ?>
                                                     <tr>
+                                                        <td><?php echo $i; ?></td>
                                                         <td><?php echo $val_code_factory; ?></td>
                                                         <td><?php echo $val_name_factory; ?></td>
                                                         <td><?php echo $val_tel_factory; ?></td>
                                                         <td><?php echo $val_contact_factory; ?></td>
-
+                                                        <td><?php echo $val_difference_amount_factory; ?></td>
                                                         <td>
                                                             <a href="popup_detail_factory.php?idfactory=<?php echo $val_idfactory; ?>" class="btn btn-success " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="รายละเอียด">
                                                                 <span class="glyphicon glyphicon-list-alt"></span>
@@ -146,9 +151,9 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
         <script src="../assets/js/dataTables/jquery.dataTables.js"></script>
         <script src="../assets/js/dataTables/dataTables.bootstrap.js"></script>
         <script>
-            $(document).ready(function () {
-                $('#dataTables-example').dataTable();
-            });
+                                                            $(document).ready(function () {
+                                                                $('#dataTables-example').dataTable();
+                                                            });
         </script>
         <script>
             $(function () {
