@@ -55,8 +55,8 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                     <div class="panel-heading ">
                                         <div class="table-responsive">
                                             <div class="form-group">
-                                                <label for="productCode">รหัสสินค้า</label><label class="text-danger">*</label>
-                                                <input type="text" class="form-control" id="productCode" name="productCode" placeholder="กรอกรหัสสินค้า" required="">
+                                                <label for="productCode">รหัสสินค้า//ระบบกำหนดให้เมื่อเลือกโรงงาน</label>
+                                                <input type="text" maxlength="7" class="form-control" id="productCode" name="productCode" readonly>
                                             </div>
                                             <div class="form-group">
                                                 <label for="productName"> ชื่อสินค้า </label><label class="text-danger">*</label>
@@ -131,8 +131,8 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                 <input type="text" class="form-control" id="bigestPrice" readonly>
                                             </div>
                                             <div class="form-group col-xs-12">
-                                                <label for="difference_amount">ต้นทุนลดเป็น% (%ที่โรงงานลดให้เรา)//ลด10%</label><label class="text-danger">*</label>
-                                                <input type="text" class="form-control" id="difference_amount" name="difference_amount" placeholder="0" value="" required onchange="calBigestPrice();" >
+                                                <label for="difference_amount">ต้นทุนลดเป็น% //ดีงdifference_amount_factory</label><label class="text-danger">*</label>
+                                                <input type="text" class="form-control" id="difference_amount" name="difference_amount" value="" required onchange="calBigestPrice();" >
                                             </div>
                                             <div class="form-group col-xs-12">
                                                 <label for="bigestPriceResult"> ดังนั้นราคาต้นทุนต่อหน่วยใหญ่สุด//ระบบคำนวณอัตโนมัติ </label>
