@@ -18,6 +18,9 @@
                 <a <?php if($p=="shop") echo 'class="active-menu"';?> href="../interface_shop/shop.php"><i class="fa fa-shopping-cart fa-3x"></i> Shop </a>
             </li>
             <li>
+                <a <?php if($p=="discount_shop") echo 'class="active-menu"';?> href="../discount_shop/discount_shop.php"><i class="fa fa-dollar fa-3x"></i> Discount Shop </a>
+            </li>
+            <li>
                 <a <?php if($p=="transport") echo 'class="active-menu"';?> href="../transport/transport.php"><i class="fa fa-truck fa-3x"></i> Transportation </a>
             </li>
             <li>
