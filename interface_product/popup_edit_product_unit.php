@@ -1,11 +1,16 @@
 <?php
-session_start();
-$idUnit = $_GET['idUnit'];
-$nameUnit = $_SESSION['unit'][$idUnit]['NameUnit'];
-$AmountPerUnit = $_SESSION['unit'][$idUnit]['AmountPerUnit'];
-$under_unitid = $_SESSION['unit'][$idUnit]['under_unit'];
-$price = $_SESSION['unit'][$idUnit]['price'];
-$type = $_SESSION['unit'][$idUnit]['type'];
+//session_start();
+require_once 'function/func_product.php';
+$unitID = $_GET['unitid'];
+$getUnit = getProductUnitByID($unitID);
+$nameUnit = $getUnit['name'];
+$AmountPerUnit = $getUnit['amount_unit'];
+$under_unitid = $getUnit['idunit_big'];
+$price = $getUnit['price_unit'];
+$type = $getUnit['type_unit'];
+$idProduct = $getUnit['idproduct'];
+
+$getAllUnit = getProductUnit($idProduct);
 ?>
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -32,9 +37,11 @@ $type = $_SESSION['unit'][$idUnit]['type'];
                 <select class="form-control" name="under_unit" id="under_unit" onchange="calPrice();">
                     <option selected value="">Choose</option>
                     <?php
-                    for ($i = 1; $i <= $_SESSION["countUnit"]; $i++) {
+                    foreach ($getAllUnit as $value) {
+                        $valIdUnit = $value['idunit'];
+                        $valNameUnit = $value['name'];
                         ?> 
-                        <option <?php echo $i == $under_unitid ? "selected" : ""; ?> value="<?php echo $i; ?>"><?php echo $_SESSION["unit"][$i]["NameUnit"]; ?></option>
+                        <option <?php echo $valIdUnit == $under_unitid ? "selected" : ""; ?> value="<?php echo $valIdUnit; ?>"><?php echo $valNameUnit; ?></option>
                     <?php } ?>
                 </select>
             </div>
@@ -53,10 +60,10 @@ $type = $_SESSION['unit'][$idUnit]['type'];
                         <div class="panel-body">
                             <div class="table-responsive ">
                                 <label class="radio-inline">
-                                    <input <?php echo $type == "primary" ? "checked" : ""; ?> type="radio" name="type" id="type" value="primary"> ขาย
+                                    <input <?php echo $type == "PRIMARY" ? "checked" : ""; ?> type="radio" name="type" id="type" value="PRIMARY"> ขาย
                                 </label>
                                 <label class="radio-inline">
-                                    <input <?php echo $type == "second" ? "checked" : ""; ?> type="radio" name="type" id="type" value="second"> ไม่ขาย
+                                    <input <?php echo $type == "SECOND" ? "checked" : ""; ?> type="radio" name="type" id="type" value="SECOND"> ไม่ขาย
                                 </label>
                             </div>
                         </div>

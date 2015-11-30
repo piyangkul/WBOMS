@@ -116,7 +116,8 @@ function getProductUnit($idproduct) {
             . "`idunit_big`, "
             . "`name_big`, "
             . "`price_unit`, "
-            . "`amount_unit`"
+            . "`amount_unit`, "
+            . "`type_unit` "
             . "FROM `view_product` "
             . "WHERE `idproduct`=:idproduct";
     $SQLPrepare = $conn->prepare($SQLCommand);
@@ -131,6 +132,29 @@ function getProductUnit($idproduct) {
         array_push($resultArr, $result);
     }
     return $resultArr;
+}
+
+function getProductUnitByID($idunit) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT "
+            . "`idproduct`, "
+            . "`idunit`, "
+            . "`name`, "
+            . "`idunit_big`, "
+            . "`name_big`, "
+            . "`price_unit`, "
+            . "`amount_unit`, "
+            . "`type_unit` "
+            . "FROM `view_product` "
+            . "WHERE `idunit`=:idunit";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idunit" => $idunit
+            )
+    );
+    $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
+    return $result;
 }
 
 function deleteProduct($idproduct) {

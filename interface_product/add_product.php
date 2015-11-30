@@ -195,7 +195,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                     }
                 });
             }
-            
+
             function resetUnit() {
                 $.get("action_addUnit.php?p=resetUnit", function (data, status) {
                     if (data != "-1") {
@@ -206,7 +206,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                     }
                     else {
                         alert("ไม่สามารถลบหน่อยได้");
-                        
+
                     }
                 });
             }

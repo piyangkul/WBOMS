@@ -15,11 +15,12 @@ $getProductUnit = getProductUnit($val_idproduct);
 //echo "<pre>";
 //print_r($getProductDetail);
 //echo "</pre>";
-$val_code_product = $getProductDetail['code_product'];
-$val_name_product = $getProductDetail['name_product'];
-$val_name_factoryID = $getProductDetail['idfactory'];
-$val_name_factory = $getProductDetail['name_factory'];
-$val_difference_amount_product = $getProductDetail['difference_amount_product'];
+$val_code_product = $getProductDetail['code_product']; //รหัสสินค้า
+$val_name_product = $getProductDetail['name_product']; //ชื่อสินค้า
+$val_detail_product = $getProductDetail['detail_product']; //รายละเอียดสินค้า
+$val_name_factoryID = $getProductDetail['idfactory']; //ไอดีโรงงาน
+$val_name_factory = $getProductDetail['name_factory']; //ชื่อโรงงาน
+$val_difference_amount_product = $getProductDetail['difference_amount_product']; // % ส่วนลด
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -90,7 +91,7 @@ $val_difference_amount_product = $getProductDetail['difference_amount_product'];
                                         </div>
                                         <div class="form-group">
                                             <label for="porductDetail">รายละเอียด</label>
-                                            <textarea class="form-control" id="porductDetail" name="porductDetail" placeholder="รายละเอียดของสินค้า"></textarea>
+                                            <textarea class="form-control" id="porductDetail" name="porductDetail" placeholder="รายละเอียดของสินค้า"><?php echo $val_detail_product; ?></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -98,7 +99,7 @@ $val_difference_amount_product = $getProductDetail['difference_amount_product'];
                             <!--End บิล -->
                         </div>
                     </div>
-                    
+
                     <!-- หน่วยสินค้า -->
                     <div class="row">
                         <div class="col-md-12 col-sm-12 ">
@@ -124,10 +125,15 @@ $val_difference_amount_product = $getProductDetail['difference_amount_product'];
                                             </thead>
                                             <tbody>
                                                 <?php
+                                                $bigUnitName;
+                                                $bigPiceUnit;
                                                 foreach ($getProductUnit as $value) {
                                                     if ($value['name_big'] == NULL) {
+                                                        $bigUnitName = $value['name'];
+                                                        $bigPiceUnit = $value['price_unit'];
                                                         continue;
                                                     }
+                                                    $valIdunit = $value['idunit'];
                                                     $valUnit = $value['name'];
                                                     $valAmount = $value['amount_unit'];
                                                     $valBigUnit = $value['name_big'];
@@ -137,14 +143,14 @@ $val_difference_amount_product = $getProductDetail['difference_amount_product'];
                                                         <td><?php echo $valUnit; ?></td>
                                                         <td><?php echo $valAmount; ?></td>
                                                         <td><?php echo $valBigUnit; ?></td>
-                                                        <td> 
+                                                        <td>
                                                             <!-- Button trigger modal -->
-                                                            <a href="popup_edit_product_unit.php" class="btn btn-warning" data-toggle="modal" data-target="#myModal2" data-toggle="tooltip" title="แก้ไข">
+                                                            <a href="popup_edit_product_unit.php?unitid=<?php echo $valIdunit; ?>" class="btn btn-warning" data-toggle="modal" data-target="#myModal2" data-toggle="tooltip" title="แก้ไข">
                                                                 <span class="glyphicon glyphicon-edit"></span> 
                                                             </a>
-                                                            <a href="popup_delete_product_unit.php" class="btn btn-danger" data-toggle="modal" data-target="#myModal3" data-toggle="tooltip" title="ลบ">
-                                                                <span class="glyphicon glyphicon-trash"></span>
-                                                            </a>
+                                                            <!--                                                            <a href="popup_delete_product_unit.php" class="btn btn-danger" data-toggle="modal" data-target="#myModal3" data-toggle="tooltip" title="ลบ">
+                                                                                                                            <span class="glyphicon glyphicon-trash"></span>
+                                                                                                                        </a>-->
                                                         </td>
                                                     </tr>
                                                 <?php } ?>
@@ -169,19 +175,19 @@ $val_difference_amount_product = $getProductDetail['difference_amount_product'];
                                         <form class="form">
                                             <div class="form-group col-xs-12">
                                                 <label for="disabledInput1">หน่วยใหญ่ที่สุด</label>
-                                                <input type="text" class="form-control" id="disabledInput1" placeholder="มัด" disabled>
+                                                <input type="text" class="form-control" id="disabledInput1" placeholder="n/a" value="<?php echo $bigUnitName; ?>" disabled>
                                             </div>
                                             <div class="form-group col-xs-12">
                                                 <label for="exampleInputName4"> ราคาเปิดต่อหน่วยใหญ่ที่สุด </label>
-                                                <input type="text" class="form-control" id="exampleInputName4" placeholder="560">
+                                                <input type="text" class="form-control" id="bigestPrice" placeholder="n/a" value="<?php echo $bigPiceUnit; ?>" onchange="calBigestPrice();">
                                             </div>
                                             <div class="form-group col-xs-12">
                                                 <label for="difference_amount">ต้นทุนลดเป็น% (%ที่โรงงานลดให้เรา)//ลด10%</label>
-                                                <input type="text" class="form-control" id="difference_amount" name="difference_amount" placeholder="0" value="0" required="" onchange="calBigestPrice();" >
+                                                <input type="text" class="form-control" id="difference_amount" placeholder="n/a" name="difference_amount" placeholder="0" value="<?php echo $val_difference_amount_product; ?>" required="" onchange="calBigestPrice();" >
                                             </div>
                                             <div class="form-group col-xs-12">
                                                 <label for="exampleInputName2"> ดังนั้นราคาต้นทุนต่อหน่วยใหญ่สุด//ระบบคำนวณอัตโนมัติ </label>
-                                                <input type="text" class="form-control" id="exampleInputName2" placeholder="504">
+                                                <input type="text" class="form-control" id="bigestPriceResult" placeholder="n/a">
                                             </div>
                                         </form>
                                     </div>
@@ -221,6 +227,19 @@ $val_difference_amount_product = $getProductDetail['difference_amount_product'];
 
     </body>
 </html>
+<script>
+                                                    $(document.body).on('hidden.bs.modal', function () {
+                                                        $('#myModal2').removeData('bs.modal');
+                                                    });
+
+                                                    calBigestPrice();
+                                                    function calBigestPrice() {
+                                                        var difference_amount = $("#difference_amount").val();
+                                                        var bigestPrice = $("#bigestPrice").val();
+                                                        var total = bigestPrice - (bigestPrice * (difference_amount / 100.0));
+                                                        $("#bigestPriceResult").val(total);
+                                                    }
+</script>
 <!-- Modalเพิ่มหน่วย -->
 <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
