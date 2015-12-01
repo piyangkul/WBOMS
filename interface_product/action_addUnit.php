@@ -85,6 +85,19 @@ else if ($_GET['p'] == "getPriceUnit") {
                 for ($i = 1; $i <= $_SESSION["countUnit"]; $i++) {
                     $j = $_SESSION["unit"][$i]["under_unit"];
                     if ($j == "") {
+                        ?>
+                        <tr>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td><?php echo $_SESSION["unit"][$i]["NameUnit"]; ?></td>
+                            <td>
+                                <a href="popup_add_product_edit_unit.php?idUnit=<?php echo $i; ?>" class="btn btn-warning " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="แก้ไข">
+                                    <span class="glyphicon glyphicon-edit"></span>
+                                </a>
+                            </td>
+                        </tr>
+                        <?php
                         continue;
                     }
                     ?>
@@ -94,7 +107,7 @@ else if ($_GET['p'] == "getPriceUnit") {
                         <td><?php echo $_SESSION["unit"][$i]["AmountPerUnit"]; ?></td>
                         <td><?php echo $_SESSION["unit"][$i]["NameUnit"]; ?></td>
                         <td>
-                            <a href="popup_edit_product_unit.php?idUnit=<?php echo $i; ?>" class="btn btn-warning " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="แก้ไข">
+                            <a href="popup_add_product_edit_unit.php?idUnit=<?php echo $i; ?>" class="btn btn-warning " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="แก้ไข">
                                 <span class="glyphicon glyphicon-edit"></span>
                             </a>
                         </td>

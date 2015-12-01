@@ -1,6 +1,11 @@
-<!--<form class="form" action="add_product.php" method="POST">-->
 <?php
 session_start();
+$idUnit = $_GET['idUnit'];
+$nameUnit = $_SESSION['unit'][$idUnit]['NameUnit'];
+$AmountPerUnit = $_SESSION['unit'][$idUnit]['AmountPerUnit'];
+$under_unitid = $_SESSION['unit'][$idUnit]['under_unit'];
+$price = $_SESSION['unit'][$idUnit]['price'];
+$type = $_SESSION['unit'][$idUnit]['type'];
 ?>
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -14,11 +19,11 @@ session_start();
             </div>
             <div class="form-group col-xs-12">
                 <label for="NameUnit">ชื่อหน่วยสินค้ารอง</label>
-                <input type="text" class="form-control" name="NameUnit" id="NameUnit" placeholder="ใส่หน่วยสินค้า เช่น(กล่อง)">
+                <input type="text" class="form-control" name="NameUnit" id="NameUnit" placeholder="ใส่หน่วยสินค้า เช่น(กล่อง)" value="<?php echo $nameUnit; ?>">
             </div>
             <div class="form-group col-xs-12">
                 <label for="AmountPerUnit">จำนวนต่อหน่วยรอง</label>
-                <input type="text" class="form-control" name="AmountPerUnit" onchange="calPrice();" id="AmountPerUnit" placeholder="ใส่จำนวนต่อหน่วยรอง เช่น(2)" >
+                <input type="text" class="form-control" name="AmountPerUnit" onchange="calPrice();" id="AmountPerUnit" placeholder="ใส่จำนวนต่อหน่วยรอง เช่น(2)"  value="<?php echo $AmountPerUnit; ?>">
             </div>
             <div class="form-group col-xs-12">
                 <label for="under_unit">หน่วยใหญ่ที่จะเปรียบเทียบ</label>
@@ -29,14 +34,14 @@ session_start();
                     <?php
                     for ($i = 1; $i <= $_SESSION["countUnit"]; $i++) {
                         ?> 
-                        <option value="<?php echo $i; ?>"><?php echo $_SESSION["unit"][$i]["NameUnit"]; ?></option>
+                        <option <?php echo $i == $under_unitid ? "selected" : ""; ?> value="<?php echo $i; ?>"><?php echo $_SESSION["unit"][$i]["NameUnit"]; ?></option>
                     <?php } ?>
                 </select>
             </div>
 
             <div class="form-group col-xs-12">
                 <label for="price">ราคาต่อหน่วยสินค้า</label>
-                <input type="text" class="form-control" id="price" name="price" placeholder="0" value="" readonly>
+                <input type="text" class="form-control" id="price" name="price" placeholder="0" value="<?php echo $price; ?>" readonly>
 
             </div>
             <div class="form-group col-xs-12">
@@ -48,10 +53,10 @@ session_start();
                         <div class="panel-body">
                             <div class="table-responsive ">
                                 <label class="radio-inline">
-                                    <input type="radio" name="type" id="type" value="primary"> ขาย
+                                    <input <?php echo $type == "primary" ? "checked" : ""; ?> type="radio" name="type" id="type" value="primary"> ขาย
                                 </label>
                                 <label class="radio-inline">
-                                    <input type="radio" name="type" id="type" value="second"> ไม่ขาย
+                                    <input <?php echo $type == "second" ? "checked" : ""; ?> type="radio" name="type" id="type" value="second"> ไม่ขาย
                                 </label>
                             </div>
                         </div>
@@ -62,22 +67,22 @@ session_start();
     </div>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-default" onclick="addUnit();" data-dismiss="modal">Save</button>
+    <button type="button" class="btn btn-default" onclick="editUnit();" data-dismiss="modal">Save</button>
     <!--<button type="button" onclick="addUnit();" class="btn btn-primary">Save changes</button>-->
 </div>
-<!--</form>-->
+
 
 <script>
-    function addUnit() {
+    function editUnit() {
+        var idUnit = "<?php echo $idUnit; ?>";
         var NameUnit = $("#NameUnit").val();
         var AmountPerUnit = $("#AmountPerUnit").val();
         var under_unit = $("#under_unit").val();
         var price = $("#price").val();
         var type = $("input:radio[name=type]:checked").val();
-
-        var p = "&NameUnit=" + NameUnit + "&AmountPerUnit=" + AmountPerUnit + "&under_unit=" + under_unit + "&price=" + price + "&type=" + type;
+        var p = "&NameUnit=" + NameUnit + "&AmountPerUnit=" + AmountPerUnit + "&under_unit=" + under_unit + "&price=" + price + "&type=" + type + "&idUnit=" + idUnit;
 //        alert(p);
-        $.get("action_addUnit.php?p=addUnit" + p, function (data, status) {
+        $.get("action_addUnit.php?p=editUnit" + p, function (data, status) {
             //alert("Data: " + data + "\nStatus: " + status);
             if (data == "1") {
 //                $("#alert").html("บันทึกแล้ว")
@@ -112,7 +117,6 @@ session_start();
             }
         });
     }
-
     function calPrice() {
         var subUnitAmount = $("#AmountPerUnit").val();
         var under_unitID = $("#under_unit").val();

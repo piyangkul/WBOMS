@@ -4,9 +4,9 @@ $val_idproduct = $_GET['idproduct']; //ส่งค่าpara
 $getProductDetail = getProductDetail($val_idproduct);
 $getProductUnit = getProductUnit($val_idproduct);
 //echo "<pre>";
-//print_r($getProductDetail);
+//print_r($getProductUnit);
 //echo "</pre>";
-$val_code_product = $getProductDetail['code_product'];
+$val_code_product = $getProductDetail['product_code'];
 $val_name_product = $getProductDetail['name_product'];
 $val_detail_product = $getProductDetail['detail_product'];
 $val_name_factory = $getProductDetail['name_factory'];

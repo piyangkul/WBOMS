@@ -100,7 +100,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                             <a href="popup_add_product_unit.php" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">
                                                 <span class="glyphicon glyphicon-plus"></span> เพิ่มหน่วยสินค้า
                                             </a>
-                                            <button class="btn btn-danger btn-lg" type="button" onclick="resetUnit();">
+                                            <button class="btn btn-danger btn-lg" type="button" onclick="if(confirm('คุณต้องการลบหน่วยสินค้าทั้งหมดหรือไม่')){resetUnit();}">
                                                 <span class="glyphicon glyphicon-trash"></span> ลบหน่วยสินค้าทั้งหมด
                                             </button>
                                             <br/><br/>

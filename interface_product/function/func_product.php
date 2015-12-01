@@ -54,6 +54,7 @@ function getProducts() {
     $conn = dbconnect();
     $SQLCommand = "SELECT "
             . "`idproduct`, "
+            . "`product_code`, "
             . "`idfactory`, "
             . "`name_product`, "
             . "`detail_product`, "
@@ -81,6 +82,7 @@ function getProductDetail($idproduct) {//รับค่าpara
     $conn = dbconnect();
     $SQLCommand = "SELECT "
             . "`idproduct`, "
+            . "concat(`project`.`factory`.`code_factory`,`project`.`product`.`idproduct`) AS `product_code`,"
             . "`product`.`idfactory`, "
             . "`factory`.`name_factory`, "
             . "`name_product`, "
@@ -104,6 +106,7 @@ function getProductUnit($idproduct) {
     $conn = dbconnect();
     $SQLCommand = "SELECT "
             . "`idproduct`, "
+            . "`product_code`, "
             . "`idfactory`, "
             . "`name_product`, "
             . "`detail_product`, "
@@ -120,6 +123,7 @@ function getProductUnit($idproduct) {
             . "`type_unit` "
             . "FROM `view_product` "
             . "WHERE `idproduct`=:idproduct";
+//    echo $SQLCommand;
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(

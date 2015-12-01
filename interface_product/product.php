@@ -103,7 +103,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                     }
                                                     $i++;
                                                     $val_idproduct = $value['idproduct'];
-                                                    $val_code_product = $value['code_product'];
+                                                    $val_code_product = $value['product_code'];
                                                     $val_name_product = $value['name_product'];
                                                     $val_name_factory = $value['name_factory'];
                                                     $val_name = $value['name'];
