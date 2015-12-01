@@ -36,44 +36,44 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
         </script>
     </head>
     <body>
-        <div id="wrapper">   
+        <div id="wrapper">
             <!--  NAV TOP  -->
             <?php include '../interface_template/template_nav_top.php'; ?>  
 
             <!--  NAV SIDE  -->
-            <?php include '../interface_template/template_nav_side.php'; ?>  
+            <?php include '../interface_template/template_nav_side.php'; ?>    
 
             <div id="page-wrapper" >
                 <div id="page-inner">
                     <div class="row">
                         <div class="col-md-12">
-                            <h2>Add Order</h2>   
-                            <h5>รับคำสั่งซื้อ </h5>
+                            <h2> Add Order </h2>   
+                            <h5> เพิ่มคำสั่งซื้อ </h5>
+
                         </div>
                     </div>
                     <!-- /. ROW  -->
                     <hr />
                     <div class="row">
-                        <div class="col-md-12 col-sm-12 ">
-                            <div class="form-group col-xs-12">
-                                <div class="col-md-6 col-sm-6 ">
-                                    <div class="panel panel-primary">
-                                        <div class="panel-heading">
-                                            <label>สินค้า</label>
-                                        </div>
-                                        <div class="panel-body">
-                                            <div class="table-responsive ">
-                                                <form class="form">
-                                                    <div class="form-group col-xs-12">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-5">
+                            <!-- บิล -->
+                            <div class="panel panel-default">
+
+                                <div class="panel-heading ">
+                                    <div class="table-responsive">
+                                        <form class="form" id="LoginForm" method="post" action="warning.php">
+                                            <form class="form">
+                                                <div class="form-group">
+                                                    <div>
                                                         <label for="disabled_no">No.บิล</label>
-                                                        <input type="text" class="form-control" id="disabled_no" placeholder="ID บิล" disabled>
+                                                        <input type="text" class="form-control" id="disabled_no" placeholder="ID บิล">
+                                                    </div>
+                                                    <div >
+                                                        <p>วันที่สั่งซื้อ <input type="text" id="datepicker" ></p>
                                                     </div>
 
-                                                    <div class="form-group col-xs-12">
-                                                        <p>วันที่สั่งซื้อ <input type="text" id="datepicker"></p>
-                                                    </div>
-
-                                                    <div class ="form-group col-xs-12">
+                                                    <div>
                                                         <script>
 
                                                             var currentTime = new Date();
@@ -96,113 +96,102 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                                 </script></p>
 
                                                     </div>
-
-                                                    <div class="form-group col-xs-12">
-                                                        <label for="name_shop"> ชื่อร้านค้า </label>
-                                                        <input type="text" class="form-control" id="name_shop" placeholder="กรอกชื่อร้านค้า เช่น AA(กรุงเทพ)">
+                                                    <div>
+                                                        <label for="disabled_shop">ชื่อร้านค้า</label>
+                                                        <select class="form-control" id="shopName" name="shopName" required >
+                                                            <option selected value="">Choose</option>
+                                                            <?php
+                                                            require_once '/function/func_addorder.php';
+                                                            $getShop = getShop();
+                                                            foreach ($getShop as $value) {
+                                                                $val_idshop = $value['idshop'];
+                                                                $val_name_shop = $value['name_shop'];
+                                                                ?>
+                                                                <option value="<?php echo $val_idshop; ?>"><?php echo $val_name_shop; ?></option>
+                                                            <?php } ?>
+                                                        </select>
                                                     </div>
-                                                    <div class="form-group col-xs-12">
-                                                        <label for="name_factory"> ชื่อโรงงาน </label>
-                                                        <input type="text" class="form-control" id="name_factory" placeholder="กรอกชื่อโรงงาน">
-                                                    </div>
-                                                    <div class="form-group col-xs-12">
-                                                        <label for="name_product"> ชื่อสินค้า </label>
-                                                        <input type="text" class="form-control" id="name_product" placeholder="กรอกชื่อสินค้า">
-                                                    </div>
-                                                    <div class="form-group col-xs-12">
-                                                        <label for="name_product"> หน่วย</label> &nbsp;
-                                                        <div class="btn-group">
-                                                            <select id="aa" class="form-control" onchange="dd();">
-                                                                <option>กรุณาเลือกหน่วยขาย</option>
-                                                                <option value="cc">มัด(2กล่อง)</option>
-                                                                <option>กล่อง(12แพ็ค)</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group col-xs-12">
-                                                        <label for="amount_product">จำนวน</label>
-                                                        <input type="text" class="form-control" id="name_product" placeholder="กรอกจำนวนสินค้า">
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 col-sm-6 ">
-                                    <div class="panel panel-primary">
-                                        <div class="panel-heading">
-                                            <label>ราคาสินค้า</label>
-                                        </div>
-                                        <div class="panel-body">
-                                            <div class="table-responsive ">
-                                                <form class="form">
-                                                    <div class="form-group col-xs-12">
-                                                        <label for="disabled_price_unit">ราคาเปิดต่อหน่วย //ระบบคิดอัตโนมัติตามหน่วยที่เลือก</label>
-                                                        <input type="text" class="form-control" id="disabled_price_unit" placeholder="560" disabled>
-                                                    </div>
-                                                    <div class="form-group col-xs-12">
-                                                        <label for="disabled_cost_discounts_percent"> ต้นทุนลดเป็น% (%ที่โรงงานลดให้เรา) </label>
-                                                        <input type="text" class="form-control" id="disabled_cost_discounts_percent" placeholder="10" disabled>
-                                                    </div>
-                                                    <div class="form-group col-xs-12">
-                                                        <label for="exampleInputName2"> ดังนั้นราคาต้นทุน //ระบบคิดอัตโนมัติตามหน่วยที่เลือก</label>
-                                                        <input type="text" class="form-control" id="exampleInputName2" placeholder="504" disabled>
-                                                    </div>
-                                                    <div class="form-group col-xs-12">
-                                                        <div class="col-md-12 col-sm-12 ">
-                                                            <div class="panel panel-info">
-                                                                <div class="panel-heading">
-                                                                    <label>ส่วนต่างราคาขาย//ระบบจะดึงส่วนต่างราคาขายที่ให้แต่ละร้านค้า(สินค้าเชื่อมร้านค้า) </label>
-                                                                </div>
-                                                                <div class="panel-body">
-                                                                    <div class="table-responsive ">
-                                                                        <form class="form">
-                                                                            <label class="radio">
-                                                                                <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> ขายลดเปอร์เซ็นต์//8% = 44.8
-                                                                                    <input type="text" class="form-control" placeholder="กรอก%ขายลด" id="userName" name="username" value="" /> 
-                                                                            </label>
-                                                                            <label class="radio">
-                                                                                <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> ขายเพิ่มสุทธิ
-                                                                                    <input type="text" class="form-control" placeholder="กรอกราคาขายเพิ่มสุทธิ" id="userName" name="username" value="" /> 
-                                                                            </label>
-                                                                        </form>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group col-xs-12">
-                                                        <label for="exampleInputName2"> ดังนั้นราคาขาย//ระบบคำนวนอัตโนมัติ(ราคาเปิด-ส่วนต่างราคาขาย=560-44.8) </label>
-                                                        <input type="text" class="form-control" id="exampleInputName2" placeholder="515.20">
-                                                    </div>
-                                            </div>
-                                        </div>
+                                                </div>
+                                            </form>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <!-- ราคาสินค้า -->
+                            <!--End บิล -->
 
-                    </div>
-                    <!--End ราคาสินค้า -->
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-3"></div>
-                            <a href="confirm_add_order.php" class="btn btn-info btn-lg text-center">
-                                <span class="glyphicon glyphicon-ok"></span> ยืนยัน
-                            </a>
-                            <a href="#" class="btn btn-danger btn-lg text-center">
-                                <span class="glyphicon glyphicon-floppy-remove"></span> ยกเลิก
-                            </a>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <br>
+                                <!-- ตารางสินค้าที่สั่งซื้อ -->
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading">
+                                        ตารางสินค้าที่สั่งซื้อ
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="table-responsive">
+                                            
+                                            <a href="popup_addproduct_order.php" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">
+                                                <span class="glyphicon glyphicon-plus"></span> เพิ่มสินค้า
+                                            </a>
+                                            <table class="table table-striped table-bordered table-hover text-center" id="dataTables-example">
+                                                <thead>
+                                                    <tr>
+                                                        <th><div align="center">รายการ</div></th>
+                                                        <th><div align="center">ชื่อสินค้า</div></th>
+                                                        <th><div align="center">ชื่อโรงงาน</div></th>
+                                                        <th><div align="center">หน่วย</div></th>
+                                                        <th><div align="center">จำนวน</div></th>
+                                                        <th><div align="center">ราคาเปิด</div></th>
+                                                        <th><div align="center">ต้นทุนลด%</div></th>
+                                                        <th><div align="center">ขายลด%</div></th>
+                                                        <th><div align="center">ขายเพิ่มสุทธิ</div></th>
+                                                        <th><div align="center">ราคาขาย</div></th>
+                                                        <th><div align="center">การกระทำ</div></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+                                            </table>
+                                            <div class="col-md-6"></div>
+                                            <div class="col-md-4">
+                                                <label for="disabled_no">ราคาขายรวมต่อบิล</label>
+                                                <input type="text" class="form-control" id="disabled_no" placeholder=" " disabled>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <!--End  ตารางสินค้าที่สั่งซื้อ --> 
+                                <div class="row">
+                                    <div class="col-md-2"></div>
+                                    <div class="form-group col-xs-8">
+                                        <label for="exampleInputName2">รายละเอียดเพิ่มเติม</label>
+                                        <textarea rows="4" cols="50" name="Other" form="usrform" class="form-control" placeholder="กรอกรายละเอียดเพิ่มเติม"></textarea>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4"></div>
+                                    <a href="add_order.php" class="btn btn-info btn-lg">
+                                        <span class="glyphicon glyphicon-plus"></span> สั่งต่อ
+                                    </a>
+                                    <a href="../interface_history_order/history_order.php" class="btn btn-warning btn-lg text-center">
+                                        <span class="glyphicon glyphicon-floppy-save"></span> บันทึก
+                                    </a>
+                                    <a href="#" class="btn btn-danger btn-lg text-center">
+                                        <span class="glyphicon glyphicon-floppy-remove"></span> ยกเลิก
+                                    </a>
+                                </div>
+                        </div>
+                    </div>
+
                 </div>
+                <!-- /. PAGE INNER  -->
             </div>
-
-            <!-- /. PAGE INNER  -->
+            <!-- /. PAGE WRAPPER  -->
         </div>
-        <!-- /. PAGE WRAPPER  -->
-
         <!-- /. WRAPPER  -->
         <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
         <!-- JQUERY SCRIPTS -->
@@ -218,4 +207,25 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
 
     </body>
 </html>
-
+<!-- Modalรายละเอียด -->
+<div class="modal fade" id="myModal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content modal-lg">
+            <!-- Content -->
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModal-sm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content modal-sm">
+            <!-- Content -->
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Content -->
+        </div>
+    </div>
+</div>

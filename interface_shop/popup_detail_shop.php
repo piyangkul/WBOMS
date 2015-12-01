@@ -11,7 +11,7 @@ if (isset($_GET['idshop'])) {
     $val_detail_shop = $getShop['detail_shop'];
     $val_idprovince_s = $getShop['idprovince_s'];
     $val_name_province_s = $getShop['name_province_s'];
-    ?>
+   ?>
     <form class="form"action="action/action_editShop.php?idshop=<?php echo $idshop; ?>" method="post">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
