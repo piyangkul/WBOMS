@@ -78,7 +78,21 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                             <label for="name_product">ชื่อสินค้า</label>
                                             <div class="form-group input-group">
                                                 <span class="input-group-addon"><i class="fa fa-cube" ></i></span>
-                                                <input type="text" class="form-control" name="name_product" placeholder="กรอกชื่อสินค้า" />
+                                                <select class="form-control" id="idproduct" name="idproduct" onchange="getDiscount_product();">
+                                                    <option selected value="">Choose</option>
+                                                    <?php
+                                                    require_once '../interface_product/function/func_product.php';
+                                                    $getProducts = getProducts();
+                                                    foreach ($getProducts as $value) {
+                                                        if ($value['idunit_big'] != NULL) {
+                                                            continue;
+                                                        }
+                                                        $val_idproduct = $value['idproduct'];
+                                                        $val_name_product = $value['name_product'];
+                                                        ?>
+                                                        <option value="<?php echo $val_idproduct; ?>"><?php echo $val_name_product; ?></option>
+                                                    <?php } ?>
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="form-group" align="center">
@@ -102,25 +116,10 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                     <label>ข้อมูลต้นทุนสินค้า</label>
                                 </div>
                                 <div class="panel-body">
-                                    <div class="table-responsive">
-                                        <table class="table table-striped table-bordered table-hover text-center">
-                                            <thead>
-                                                <tr>
-                                                    <th><div align="center">จำนวน</div></th>
-                                                    <th><div align="center">ราคาเปิด</div></th>
-                                                    <th><div align="center">ต้นทุนลด</div></th>
-                                                    <th><div align="center">ราคาต้นทุน</div></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>1มัด</td>
-                                                    <td>560.00</td>
-                                                    <td>10%</td>
-                                                    <td>504.00</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                    <div class="table-responsive" id="show_Discount_product_table">
+                                        <!-- table -->
+
+
                                     </div>
                                 </div>
                             </div>
@@ -141,31 +140,29 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                         <table class="table table-striped table-bordered table-hover text-center" id="dataTables-example">
                                             <thead>
                                                 <tr>
+                                                    <th><div align="center">ลำดับ</div></th>
                                                     <th><div align="center">ร้านค้า</div></th>
                                                     <th><div align="center">ขายลด</div></th>
                                                     <th><div align="center">ราคาขาย</div></th>
-                                                    <th><div align="center">การกระทำ</div></th>
+                                                    <th><div align="center">วันที่อัพเดทล่าสุด</div></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>aaaaaaaaaaaaaa</td>
-                                                    <td>8%</td>
-                                                    <td>515.20</td>
-                                                    <td>
-                                                        <a href="popup_add_discount_shop.php" class="btn btn-info " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="เพิ่ม">
-                                                            <span class="glyphicon glyphicon-plus"></span>
-                                                        </a>
-                                                        <a href="popup_edit_discount_shop.php" class="btn btn-warning " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="แก้ไข">
-                                                            <span class="glyphicon glyphicon-edit"></span>
-                                                        </a>
-                                                        <a href="action/action_delShop.php" onclick="if (!confirm('คุณต้องการลบหรือไม่')) {
-                                                                    return false;
-                                                                }" class="btn btn-danger " title="ลบ">
-                                                            <span class="glyphicon glyphicon-trash"></span>
-                                                        </a>
-                                                    </td>
-                                                </tr>
+                                                <?php
+//                                                $getShops = getShops();
+                                                $i = 0;
+                                                foreach ($getShops as $value) {
+                                                    $i++;
+                                                    $val_name_shop = $value['name_shop'];
+                                                    ?>
+                                                    <tr>
+                                                        <td><?php echo $i; ?></td>
+                                                        <td><?php echo $val_name_shop; ?></td>
+                                                        <td>8%</td>
+                                                        <td>515.20</td>
+                                                        <td>2015-11-5</td>
+                                                    </tr>
+                                                <?php } ?>
                                             </tbody>
                                         </table>
                                     </div>
@@ -192,22 +189,28 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
         <script src="../assets/js/dataTables/jquery.dataTables.js"></script>
         <script src="../assets/js/dataTables/dataTables.bootstrap.js"></script>
         <script>
-                                                            $(document).ready(function () {
-                                                                $('#dataTables-example').dataTable();
-                                                            });
+                                                    $(document).ready(function () {
+                                                        $('#dataTables-example').dataTable();
+                                                    });
         </script>
         <script>
             $(function () {
-                $('[data-toggle="tooltip"]').tooltip()
-            })
-        </script>
-        <script>
+                $('[data-toggle="tooltip"]').tooltip();
+            });
+
             $(document.body).on('hidden.bs.modal', function () {
                 $('#myModal').removeData('bs.modal');
             });
+            
+            function getDiscount_product() {
+                var idproduct = $("#idproduct").val();
+                $.get("action/action_discount_shop_show.php?idproduct=" + idproduct, function (data, status) {
+                    $("#show_Discount_product_table").html(data);
+                });
+            }
         </script>
         <!-- CUSTOM SCRIPTS -->
-        <script src="../assets/js/custom.js"></script>
+        <!--<script src="../assets/js/custom.js"></script>-->
     </body>
 </html>
 <div class="modal fade" id="myModal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
