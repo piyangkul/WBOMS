@@ -14,7 +14,7 @@ session_start();
             </div>
             <div class="form-group col-xs-12">
                 <label for="NameUnit">ชื่อหน่วยสินค้ารอง</label>
-                <input type="text" class="form-control" name="NameUnit" id="NameUnit" placeholder="ใส่หน่วยสินค้า เช่น(กล่อง)">
+                <input type="text" class="form-control" name="NameUnit" id="NameUnit" placeholder="ใส่หน่วยสินค้า เช่น(กล่อง)" >
             </div>
             <div class="form-group col-xs-12">
                 <label for="AmountPerUnit">จำนวนต่อหน่วยรอง</label>
@@ -24,7 +24,7 @@ session_start();
                 <label for="under_unit">หน่วยใหญ่ที่จะเปรียบเทียบ</label>
             </div>
             <div class="form-group col-xs-12">
-                <select class="form-control" name="under_unit" id="under_unit" onchange="calPrice();">
+                <select class="form-control" name="under_unit" id="under_unit" onchange="calPrice();" >
                     <option selected value="">Choose</option>
                     <?php
                     for ($i = 1; $i <= $_SESSION["countUnit"]; $i++) {
@@ -85,16 +85,20 @@ session_start();
                 $("#AmountPerUnit").val("");
                 $("#under_unit").val("");
                 showUnit();
+                getBigestUnit();
+                getBigestPrice();
             }
             else {
                 $("#NameUnit").val("");
                 $("#AmountPerUnit").val("");
                 $("#under_unit").val("");
                 showUnit();
+                getBigestUnit();
+                getBigestPrice();
             }
         });
-        getBigestUnit();
-        getBigestPrice();
+
+
     }
     chkUnitAdd();
     function chkUnitAdd() { // Check to add the first time 

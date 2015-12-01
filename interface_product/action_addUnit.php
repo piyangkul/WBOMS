@@ -92,9 +92,9 @@ else if ($_GET['p'] == "getPriceUnit") {
                             <td>-</td>
                             <td><?php echo $_SESSION["unit"][$i]["NameUnit"]; ?></td>
                             <td>
-                                <a href="popup_add_product_edit_unit.php?idUnit=<?php echo $i; ?>" class="btn btn-warning " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="แก้ไข">
+<!--                                <a href="popup_add_product_edit_unit.php?idUnit=<?php echo $i; ?>" class="btn btn-warning " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="แก้ไข">
                                     <span class="glyphicon glyphicon-edit"></span>
-                                </a>
+                                </a>-->
                             </td>
                         </tr>
                         <?php

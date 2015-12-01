@@ -22,8 +22,6 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
         <link href="../assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
         <!-- CUSTOM STYLES-->
         <link href="../assets/css/custom.css" rel="stylesheet" />
-        <!-- GOOGLE FONTS-->
-        <link href='../http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
     </head>
     <body>
         <div id="wrapper">
@@ -60,9 +58,9 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                     echo '<center><h4 class="text-success">คุณได้ทำการแก้ไขสำเร็จแล้ว</h4></center>';
                                 } else if ($_GET['action'] == "editError") {
                                     echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถแก้ไขได้</h4></center>';
-                                } else if ($_GET['action'] == "delCompleted") {
+                                } else if ($_GET['action'] == "delProductCompleted") {
                                     echo '<center><h4 class="text-success">คุณได้ทำการลบสำเร็จแล้ว</h4></center>';
-                                } else if ($_GET['action'] == "delError") {
+                                } else if ($_GET['action'] == "delProductError") {
                                     echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถลบได้</h4></center>';
                                 } else if ($_GET['action'] == "addErrorDuplicateCode") {
                                     echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถเพิ่มได้เนื่องจากรหัสสินค้าซ้ำ</h4></center>';

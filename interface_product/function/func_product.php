@@ -58,7 +58,6 @@ function getProducts() {
             . "`idfactory`, "
             . "`name_product`, "
             . "`detail_product`, "
-            . "`code_product`, "
             . "`difference_amount_product`,"
             . "`difference_amount_factory`, "
             . "`name_factory`, "
@@ -87,7 +86,6 @@ function getProductDetail($idproduct) {//รับค่าpara
             . "`factory`.`name_factory`, "
             . "`name_product`, "
             . "`detail_product`, "
-            . "`code_product`, "
             . "`difference_amount_product` "
             . "FROM `product` LEFT JOIN `factory` ON `factory`.`idfactory`=`product`.`idfactory` "
             . "WHERE `idproduct`=:idproduct";
@@ -110,7 +108,6 @@ function getProductUnit($idproduct) {
             . "`idfactory`, "
             . "`name_product`, "
             . "`detail_product`, "
-            . "`code_product`, "
             . "`difference_amount_product`, "
             . "`difference_amount_factory`, "
             . "`name_factory`, "

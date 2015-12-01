@@ -132,7 +132,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                             </div>
                                             <div class="form-group col-xs-12">
                                                 <label for="difference_amount">ต้นทุนลดเป็น% //ดีงdifference_amount_factory</label><label class="text-danger">*</label>
-                                                <input type="text" class="form-control" id="difference_amount" name="difference_amount" value="" required onchange="calBigestPrice();" >
+                                                <input type="text" class="form-control" id="difference_amount" name="difference_amount" value="" onchange="calBigestPrice();" required>
                                             </div>
                                             <div class="form-group col-xs-12">
                                                 <label for="bigestPriceResult"> ดังนั้นราคาต้นทุนต่อหน่วยใหญ่สุด//ระบบคำนวณอัตโนมัติ </label>
@@ -214,6 +214,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                 var idfactory = $("#factoryName").val();
                 $.get("action/action_getDiff_factory.php?idfactory=" + idfactory, function (data, status) {
                     $("#difference_amount").val(data);
+                    calBigestPrice();
                 });
             }
 
@@ -222,6 +223,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                 $.get("action_addUnit.php?p=getBigestPrice", function (data, status) {
                     if (data != "-1") {
                         $("#bigestPrice").val(data);
+                        calBigestPrice();
                     }
                     else {
                         $("#bigestPrice").val("0");

@@ -15,7 +15,6 @@ $getProductUnit = getProductUnit($val_idproduct);
 //echo "<pre>";
 //print_r($getProductDetail);
 //echo "</pre>";
-$val_code_product = $getProductDetail['code_product']; //รหัสสินค้า
 $val_name_product = $getProductDetail['name_product']; //ชื่อสินค้า
 $val_detail_product = $getProductDetail['detail_product']; //รายละเอียดสินค้า
 $val_name_factoryID = $getProductDetail['idfactory']; //ไอดีโรงงาน
@@ -80,10 +79,10 @@ foreach ($getProducts as $value) {
                                 <div class="panel panel-default">
                                     <div class="panel-heading ">
                                         <div class="table-responsive">
-                                            <div class="form-group col-xs-12">
+<!--                                            <div class="form-group col-xs-12">
                                                 <label for="productCode">รหัสสินค้า</label>
                                                 <input type="text" class="form-control" id="productCode" name="productCode" value="<?php echo $val_code_product; ?>">
-                                            </div>
+                                            </div>-->
                                             <div class="form-group col-xs-12">
                                                 <label for="productName"> ชื่อสินค้า </label>
                                                 <input type="text" class="form-control" id="productName" name="productName" value="<?php echo $val_name_product; ?>">
