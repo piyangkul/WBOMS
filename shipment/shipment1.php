@@ -75,7 +75,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                     <div class="panel-body">
                                                         <div class="table-responsive">
                                                             <div class="form-group col-xs-12">
-                                                                <label>ตั้งแต่วันที่</label>
+                                                                <label>ตั้งแต่วันที่ //ระบบกำหนดให้เลย</label>
                                                                 <input type="date" class="form-control" id="date_start" name="date_start" required onchange="getmonth();">
                                                             </div>
 
