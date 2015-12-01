@@ -54,17 +54,17 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                 <div class="panel panel-default">
                                     <div class="panel-heading ">
                                         <div class="table-responsive">
-                                            <div class="form-group">
+<!--                                            <div class="form-group">
                                                 <label for="productCode">รหัสสินค้า//ระบบกำหนดให้เมื่อเลือกโรงงาน</label>
                                                 <input type="text" maxlength="7" class="form-control" id="productCode" name="productCode" readonly>
-                                            </div>
+                                            </div>-->
                                             <div class="form-group">
                                                 <label for="productName"> ชื่อสินค้า </label><label class="text-danger">*</label>
                                                 <input type="text" class="form-control" id="productName" name="productName" placeholder="กรอกชื่อสินค้า" required="">
                                             </div>
                                             <div class="form-group">
                                                 <label for="factoryName"> ชื่อโรงงาน </label><label class="text-danger">*</label>
-                                                <select class="form-control" id="factoryName" name="factoryName" required >
+                                                <select class="form-control" id="factoryName" name="factoryName" required onchange="getDiff_factory();">
                                                     <option selected value="">Choose</option>
                                                     <?php
                                                     require_once '../interface_factory/function/func_factory.php';
@@ -208,6 +208,12 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                         alert("ไม่สามารถลบหน่วยได้");
 
                     }
+                });
+            }
+            function getDiff_factory() {
+                var idfactory = $("#factoryName").val();
+                $.get("action/action_getDiff_factory.php?idfactory=" + idfactory, function (data, status) {
+                    $("#difference_amount").val(data);
                 });
             }
 
