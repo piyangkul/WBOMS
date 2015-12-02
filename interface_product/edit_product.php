@@ -35,34 +35,32 @@ foreach ($getProducts as $value) {
     $val_price_unit = $value['price_unit'];
     ?>
 <?php } ?>
-    <!DOCTYPE html>
-    <html xmlns="http://www.w3.org/1999/xhtml">
-        <head>
-            <meta charset="utf-8" />
-            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-            <title>THIP WAREE Project</title>
-            <!-- BOOTSTRAP STYLES-->
-            <link href="../assets/css/bootstrap.css" rel="stylesheet" />
-            <!-- FONTAWESOME STYLES-->
-            <link href="../assets/css/font-awesome.css" rel="stylesheet" />
-            <!-- MORRIS CHART STYLES-->
-            <link href="../assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
-            <!-- CUSTOM STYLES-->
-            <link href="../assets/css/custom.css" rel="stylesheet" />
-            <!-- GOOGLE FONTS-->
-            <link href='../http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>THIP WAREE Project</title>
+        <!-- BOOTSTRAP STYLES-->
+        <link href="../assets/css/bootstrap.css" rel="stylesheet" />
+        <!-- FONTAWESOME STYLES-->
+        <link href="../assets/css/font-awesome.css" rel="stylesheet" />
+        <!-- MORRIS CHART STYLES-->
+        <link href="../assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
+        <!-- CUSTOM STYLES-->
+        <link href="../assets/css/custom.css" rel="stylesheet" />
+    </head>
+    <body>
+        <div id="wrapper">
+            <!--  NAV TOP  -->
+            <?php include '../interface_template/template_nav_top.php'; ?>  
 
-        </head>
-        <body>
-            <div id="wrapper">
-                <!--  NAV TOP  -->
-                <?php include '../interface_template/template_nav_top.php'; ?>  
+            <!--  NAV SIDE  -->
+            <?php include '../interface_template/template_nav_side.php'; ?>  
 
-                <!--  NAV SIDE  -->
-                <?php include '../interface_template/template_nav_side.php'; ?>  
-
-                <div id="page-wrapper" >
-                    <div id="page-inner">
+            <div id="page-wrapper" >
+                <div id="page-inner">
+                    <form action="action/action_editProduct.php?idproduct=<?php echo $val_idproduct; ?>" method="POST">
                         <div class="row">
                             <div class="col-md-12">
                                 <h2>Edit Product</h2>   
@@ -79,17 +77,17 @@ foreach ($getProducts as $value) {
                                 <div class="panel panel-default">
                                     <div class="panel-heading ">
                                         <div class="table-responsive">
-<!--                                            <div class="form-group col-xs-12">
-                                                <label for="productCode">รหัสสินค้า</label>
-                                                <input type="text" class="form-control" id="productCode" name="productCode" value="<?php echo $val_code_product; ?>">
-                                            </div>-->
+                                            <!--                                            <div class="form-group col-xs-12">
+                                                                                            <label for="productCode">รหัสสินค้า</label>
+                                                                                            <input type="text" class="form-control" id="productCode" name="productCode" value="<?php echo $val_code_product; ?>">
+                                                                                        </div>-->
                                             <div class="form-group col-xs-12">
                                                 <label for="productName"> ชื่อสินค้า </label>
                                                 <input type="text" class="form-control" id="productName" name="productName" value="<?php echo $val_name_product; ?>">
                                             </div>
                                             <div class="form-group col-xs-12">
-                                                <label for="factoryName"> ชื่อโรงงาน </label>
-                                                <select class="form-control" id="factoryName" name="factoryName" >
+                                                <label for="factoryid"> ชื่อโรงงาน </label>
+                                                <select class="form-control" id="factoryid" name="factoryid" >
                                                     <option selected>Choose</option>
                                                     <?php
                                                     require_once '../interface_factory/function/func_factory.php';
@@ -189,48 +187,45 @@ foreach ($getProducts as $value) {
                                     </div>
                                     <div class="panel-body">
                                         <div class="table-responsive ">
-                                            <form class="form">
 
-                                                <div class="form-group col-xs-12">
-                                                    <label for="disabledInput1">หน่วยใหญ่ที่สุด</label>
-                                                    <input type="text" class="form-control" id="disabledInput1" placeholder="n/a" value="<?php echo $val_name; ?>" disabled>
-                                                </div>
-                                                <div class="form-group col-xs-12">
-                                                    <label for="exampleInputName4"> ราคาเปิดต่อหน่วยใหญ่ที่สุด </label>
-                                                    <input type="text" class="form-control" id="bigestPrice" placeholder="n/a" value="<?php echo $val_price_unit; ?>" onchange="calBigestPrice();" readonly>
-                                                </div>
-                                            
+                                            <div class="form-group col-xs-12">
+                                                <label for="bigestUnit">หน่วยใหญ่ที่สุด</label>
+                                                <input type="text" class="form-control" id="bigestUnit" placeholder="n/a" value="<?php echo $val_name; ?>" disabled>
+                                            </div>
+                                            <div class="form-group col-xs-12">
+                                                <label for="bigestPrice"> ราคาเปิดต่อหน่วยใหญ่ที่สุด </label>
+                                                <input type="text" class="form-control" id="bigestPrice" placeholder="n/a" value="<?php echo $val_price_unit; ?>" onchange="calBigestPrice();" readonly>
+                                            </div>
+
                                             <div class="form-group col-xs-12">
                                                 <label for="difference_amount">ต้นทุนลดเป็น% (%ที่โรงงานลดให้เรา)//ลด10%</label>
                                                 <input type="text" class="form-control" id="difference_amount" placeholder="n/a" name="difference_amount" value="<?php echo $val_difference_amount_product; ?>"  onchange="calBigestPrice();" required>
                                             </div>
                                             <div class="form-group col-xs-12">
-                                                <label for="exampleInputName2"> ดังนั้นราคาต้นทุนต่อหน่วยใหญ่สุด//ระบบคำนวณอัตโนมัติ </label>
-                                                <input type="text" class="form-control" id="bigestPriceResult" placeholder="n/a" readonly>
+                                                <label for="bigestPriceResult"> ดังนั้นราคาต้นทุนต่อหน่วยใหญ่สุด//ระบบคำนวณอัตโนมัติ </label>
+                                                <input type="text" class="form-control" id="bigestPriceResult" name="bigestPriceResult" placeholder="n/a" readonly>
                                             </div>
-                                        </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!--End ราคาสินค้า -->
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-3"></div>
-                            <a href="product.php" class="btn btn-info btn-lg text-center">
-                                <span class="glyphicon glyphicon-floppy-save"></span> บันทึก
-                            </a>
-                            <a href="#" class="btn btn-danger btn-lg text-center">
-                                <span class="glyphicon glyphicon-floppy-remove"></span> ยกเลิก
-                            </a>
+                        <!--End ราคาสินค้า -->
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-3"></div>
+                                <button type="submit" class="btn btn-info btn-lg text-center">
+                                    <span class="glyphicon glyphicon-floppy-save"></span> บันทึก
+                                </button>
+                                <a href="product.php" class="btn btn-danger btn-lg text-center">
+                                    <span class="glyphicon glyphicon-floppy-remove"></span> ยกเลิก
+                                </a>
+                            </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
-            <!-- /. PAGE INNER  -->
-        </div>
         <!-- /. PAGE WRAPPER  -->
         </div>
         <!-- /. WRAPPER  -->

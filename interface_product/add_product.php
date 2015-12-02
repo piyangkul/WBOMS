@@ -64,7 +64,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                             </div>
                                             <div class="form-group">
                                                 <label for="factoryName"> ชื่อโรงงาน </label><label class="text-danger">*</label>
-                                                <select class="form-control" id="factoryName" name="factoryName" required onchange="getDiff_factory();">
+                                                <select class="form-control" id="factoryid" name="factoryid" required onchange="getDiff_factory();">
                                                     <option selected value="">Choose</option>
                                                     <?php
                                                     require_once '../interface_factory/function/func_factory.php';
@@ -211,7 +211,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                 });
             }
             function getDiff_factory() {
-                var idfactory = $("#factoryName").val();
+                var idfactory = $("#factoryid").val();
                 $.get("action/action_getDiff_factory.php?idfactory=" + idfactory, function (data, status) {
                     $("#difference_amount").val(data);
                     calBigestPrice();

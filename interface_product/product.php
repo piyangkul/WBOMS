@@ -54,9 +54,9 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                     echo '<center><h4 class="text-success">คุณได้ทำการเพิ่มสำเร็จแล้ว</h4></center>';
                                 } else if ($_GET['action'] == "addError") {
                                     echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถเพิ่มได้</h4></center>';
-                                } else if ($_GET['action'] == "editCompleted") {
+                                } else if ($_GET['action'] == "editProductCompleted") {
                                     echo '<center><h4 class="text-success">คุณได้ทำการแก้ไขสำเร็จแล้ว</h4></center>';
-                                } else if ($_GET['action'] == "editError") {
+                                } else if ($_GET['action'] == "editProductError") {
                                     echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถแก้ไขได้</h4></center>';
                                 } else if ($_GET['action'] == "delProductCompleted") {
                                     echo '<center><h4 class="text-success">คุณได้ทำการลบสำเร็จแล้ว</h4></center>';
@@ -68,7 +68,9 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                     echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถลบได้เนื่องจากมีคำสั่งซื้ออยู่</h4></center>';
                                 } else if ($_GET['action'] == "addErrorDuplicateProduct") {
                                     echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถเพิ่มได้เนื่องจากคุณได้เพิ่มชื่อสินค้าสินค้าไปแล้ว</h4></center>';
-                                }                                
+                                } else if ($_GET['action'] == "addErrorNotHaveUnit") {
+                                    echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถเพิ่มได้เนื่องจากคุณไม่ได้กรอกหน่วยสินค้า</h4></center>';
+                                }                              
                             }
                             ?>
                             <!-- ตารางสินค้า -->

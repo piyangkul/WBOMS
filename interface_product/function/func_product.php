@@ -2,22 +2,23 @@
 
 require_once dirname(__FILE__) . '/../../config/connect.php';
 
-function checkDuplicateProduct($name_product, $name_factory) {
+function checkDuplicateProduct($name_product, $idfactory) {
     $conn = dbconnect();
-    $SQLCommand = "SELECT * FROM `view_product` WHERE `name_product`LIKE:name_product AND `name_factory`LIKE:name_factory ";
+    $SQLCommand = "SELECT * FROM `view_product` WHERE `name_product`LIKE :name_product AND `idfactory` LIKE :idfactory ";
 //$SQLCommand = "SELECT name_product FROM view_product WHERE `name_product`=:name_product AND `name_factory`=:name_factory ";
+    echo $SQLCommand;
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
                 ":name_product" => $name_product,
-                ":name_factory" => $name_factory
+                ":idfactory" => $idfactory
             )
     );
 
     if ($SQLPrepare->rowCount() > 0) {
-        return TRUE;
+        return 1;
     } else {
-        return false;
+        return 0;
     }
 }
 
@@ -225,6 +226,55 @@ function checkcode($productCode) {
 
     if ($SQLPrepare->rowCount() > 0) {
         return TRUE;
+    } else {
+        return false;
+    }
+}
+
+function editProduct($idproduct, $idfactory, $name_product, $detail_product, $difference_amount_product) {
+    $conn = dbconnect();
+    $SQLCommand = "UPDATE `product` SET `idproduct`=:idproduct ,`idfactory`=:idfactory,`name_product`=:name_product,`detail_product`=:detail_product,`difference_amount_product`=:difference_amount_product "
+            . "WHERE `idproduct`=:idproduct";
+
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idproduct" => $idproduct,
+                ":idfactory" => $idfactory,
+                ":name_product" => $name_product,
+                ":detail_product" => $detail_product,
+                ":difference_amount_product" => $difference_amount_product
+            )
+    );
+
+    if ($SQLPrepare->rowCount() > 0) {
+        return TRUE;
+    } else {
+//        echo $SQLCommand;
+        return false;
+    }
+}
+
+function editUnit($idunit, $idunit_big, $idproduct, $name_unit, $price_unit, $type_unit, $amount_unit) {
+    $conn = dbconnect();
+    $SQLCommand = "UPDATE `unit` SET `idunit`=:idunit,`idunit_big`=:idunit_big,`idproduct`=:idproduct,`name_unit`=:name_unit,`price_unit`=:price_unit,`type_unit`=:type_unit,`amount_unit`=:amount_unit "
+            . "WHERE `idproduct`=:idproduct";
+
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idunit" => $idunit,
+                ":idunit_big" => $idunit_big,
+                ":idproduct" => $idproduct,   
+                ":name_unit" => $name_unit,
+                ":price_unit" => $price_unit,
+                ":type_unit" => $type_unit,
+                ":amount_unit" => $amount_unit
+            )
+    );
+
+    if ($SQLPrepare->rowCount() > 0) {
+        return $conn->lastInsertId();
     } else {
         return false;
     }
