@@ -2,6 +2,25 @@
 
 require_once dirname(__FILE__) . '/../../config/connect.php';
 
+function checkDuplicateProduct($name_product, $name_factory) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT * FROM `view_product` WHERE `name_product`LIKE:name_product AND `name_factory`LIKE:name_factory ";
+//$SQLCommand = "SELECT name_product FROM view_product WHERE `name_product`=:name_product AND `name_factory`=:name_factory ";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":name_product" => $name_product,
+                ":name_factory" => $name_factory
+            )
+    );
+
+    if ($SQLPrepare->rowCount() > 0) {
+        return TRUE;
+    } else {
+        return false;
+    }
+}
+
 function addProduct($idfactory, $name_product, $detail_product, $difference_amount_product) {
     $conn = dbconnect();
     $SQLCommand = "INSERT INTO `product`(`idfactory`, `name_product`, `detail_product`, `difference_amount_product`) "
