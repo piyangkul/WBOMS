@@ -2,10 +2,10 @@
 
 require_once dirname(__FILE__) . '/../../config/connect.php';
 
-function addProduct($idfactory, $name_product, $detail_product, $code_product, $difference_amount_product) {
+function addProduct($idfactory, $name_product, $detail_product, $difference_amount_product) {
     $conn = dbconnect();
-    $SQLCommand = "INSERT INTO `product`(`idfactory`, `name_product`, `detail_product`, `code_product`, `difference_amount_product`) "
-            . "VALUES (:idfactory, :name_product, :detail_product, :code_product, :difference_amount_product )";
+    $SQLCommand = "INSERT INTO `product`(`idfactory`, `name_product`, `detail_product`, `difference_amount_product`) "
+            . "VALUES (:idfactory, :name_product, :detail_product, :difference_amount_product )";
 
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
@@ -13,7 +13,6 @@ function addProduct($idfactory, $name_product, $detail_product, $code_product, $
                 ":idfactory" => $idfactory,
                 ":name_product" => $name_product,
                 ":detail_product" => $detail_product,
-                ":code_product" => $code_product,
                 ":difference_amount_product" => $difference_amount_product
             )
     );
@@ -194,14 +193,14 @@ function deleteProductUnit($idproduct) {
     }
 }
 
-function checkcode($code_product) {
+function checkcode($productCode) {
     $conn = dbconnect();
-    $SQLCommand = "SELECT * FROM `product` WHERE `code_product`LIKE :code_product ";
+    $SQLCommand = "SELECT * FROM `product` WHERE `productCode`LIKE :productCode ";
 
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
-                ":code_product" => $code_product
+                ":productCode" => $productCode
             )
     );
 
