@@ -1,44 +1,48 @@
 <?php
-
 require_once dirname(__FILE__) . '/../function/func_discount_shop.php';
 
-$idproduct = $_GET['idproduct'];
-
-$getDiscountByID = getDiscountByID($idproduct);
-print_r($getDiscountByID);
-
-//echo $getDiscountByID['difference_amount_factory'];
 ?>
-<table class="table table-striped table-bordered table-hover text-center">
+<table class="table table-striped table-bordered table-hover text-center" id="dataTables-example">
     <thead>
         <tr>
-            <th><div align="center">จำนวน</div></th>
-<th><div align="center">ราคาเปิด</div></th>
-<th><div align="center">ต้นทุนลด</div></th>
-<th><div align="center">ราคาต้นทุน</div></th>
+            <th><div align="center">ลำดับ</div></th>
+<th><div align="center">รหัสร้านค้า</div></th>
+<th><div align="center">ร้านค้า</div></th>
+<th><div align="center">ขายลด</div></th>
+<th><div align="center">ราคาขาย</div></th>
+<th><div align="center">วันที่อัพเดทล่าสุด</div></th>
 </tr>
 </thead>
 <tbody>
     <?php
+    $idproduct = $_GET['idproduct'];
+    $getDiscountByID = getDiscountByID($idproduct);
+//    print_r($getDiscountByID);
+//    echo $idproduct;
+    $i = 0;
     foreach ($getDiscountByID as $value) {
-        if ($value['idunit_big'] != NULL) {
-            continue;
-        }
-        $val_name = $value['name'];
+        $i++;
+        $val_shop_code = $value['shop_code'];
+        $val_name_shop = $value['name_shop'];
+        $val_price_difference = $value['price_difference'];
+        $val_type_money = $value['type_money'];
         $val_price_unit = $value['price_unit'];
-        if ($value['difference_amount_product'] == null) {
-            $val_difference_amount = $value['difference_amount_factory'];
-        } else {
-            $val_difference_amount = $value['difference_amount_product'];
-        }
-        $cost = $val_price_unit - (($val_difference_amount / 100.0) * $val_price_unit);
+        $val_date_difference = $value['date_difference'];
         ?>
         <tr>
-            <td>1<?php echo $val_name; ?></td>
-            <td class="text-right"><?php echo number_format($val_price_unit, 2, '.', ''); ?></td>
-            <td><?php echo $val_difference_amount . "%"; ?></td>
-            <td class="text-right"><?php echo number_format($cost, 2, '.', '') ?></td>
+            <td><?php echo $i; ?></td>
+            <td><?php echo $val_shop_code; ?></td>
+            <td><?php echo $val_name_shop; ?></td>
+            <td><?php echo $val_price_difference; ?><?php echo ($val_type_money == "PERCENT") ? "%" : "฿"; ?></td>
+            <td><?php echo $val_price_unit; ?></td>
+            <td><?php echo $val_date_difference; ?></td>
         </tr>
-    <?php } ?>
+    <?php } ?> 
 </tbody>
 </table>
+
+<script>
+    $(document).ready(function () {
+        $('#dataTables-example').dataTable();
+    });
+</script>

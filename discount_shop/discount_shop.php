@@ -36,7 +36,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                     <div class="row">
                         <div class="col-md-12">
                             <h2> Discount Shop </h2>   
-                            <h5> ส่วนลดร้านค้า </h5>
+                            <h5> ประวัติส่วนลดร้านค้าล่าสุด </h5>
                         </div>
                     </div>
                     <!-- /. ROW  -->
@@ -67,39 +67,37 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                             <div class="panel panel-default">
                                 <div class="panel-heading ">
                                     <div class="table-responsive">
+                                        <!--<form action="action/action_discount_shop_show.php" method="GET">-->
+
+                                        <!--                                        <div class="form-group">
+                                                                                    <label for="product_code">รหัสสินค้า</label>
+                                                                                    <div class="form-group input-group">
+                                                                                        <span class="input-group-addon"><i class="fa fa-circle-o-notch" ></i></span>
+                                                                                        <input type="text" class="form-control" name="product_code" placeholder="กรอกรหัสสินค้า" />
+                                                                                    </div>
+                                                                                </div>-->
                                         <div class="form-group">
-                                            <label for="code_product">รหัสสินค้า</label>
+                                            <label for="product_code">ค้นหารหัสหรือชื่อสินค้า</label>
                                             <div class="form-group input-group">
-                                                <span class="input-group-addon"><i class="fa fa-circle-o-notch" ></i></span>
-                                                <input type="text" class="form-control" name="code_product" placeholder="กรอกรหัสสินค้า" />
+                                                <span class="input-group-addon"><i class="fa fa-cube" ></i></span>
+                                                <input type="text" class="form-control" id="searchProduct" name="searchProduct" onkeyup="searchProduct()" placeholder="กรอกชื่อสินค้า" />
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="name_product">ชื่อสินค้า</label>
+                                            <label for="name_product">สินค้า</label>
                                             <div class="form-group input-group">
                                                 <span class="input-group-addon"><i class="fa fa-cube" ></i></span>
-                                                <select class="form-control" id="idproduct" name="idproduct" onchange="getDiscount_product();">
-                                                    <option selected value="">Choose</option>
-                                                    <?php
-                                                    require_once '../interface_product/function/func_product.php';
-                                                    $getProducts = getProducts();
-                                                    foreach ($getProducts as $value) {
-                                                        if ($value['idunit_big'] != NULL) {
-                                                            continue;
-                                                        }
-                                                        $val_idproduct = $value['idproduct'];
-                                                        $val_name_product = $value['name_product'];
-                                                        ?>
-                                                        <option value="<?php echo $val_idproduct; ?>"><?php echo $val_name_product; ?></option>
-                                                    <?php } ?>
+                                                <select class="form-control" id="idproduct" name="idproduct" onchange="show_cost_product_table()">
+                                                    <!--getProduct-->
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="form-group" align="center">
-                                            <a href="popup_add_discount_shop.php" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">
-                                                <span class="glyphicon glyphicon-search"></span> ค้นหา
-                                            </a>
-                                        </div>
+                                        <!--<div class="form-group" align="center">-->
+                                        <!--                                                <button type="submit" class="btn btn-info btn-lg">
+                                                                                            <span class="glyphicon glyphicon-search"></span> ค้นหา
+                                                                                        </button>-->
+                                        <!--</div>-->
+                                        <!--</form>-->
                                     </div>
                                 </div>
                             </div>
@@ -116,10 +114,8 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                     <label>ข้อมูลต้นทุนสินค้า</label>
                                 </div>
                                 <div class="panel-body">
-                                    <div class="table-responsive" id="show_Discount_product_table">
-                                        <!-- table -->
-
-
+                                    <div class="table-responsive" id="show_cost_product_table">
+                                        <!-- show_cost_product_table -->
                                     </div>
                                 </div>
                             </div>
@@ -136,35 +132,8 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                     <label>ส่วนลดร้านค้า</label>
                                 </div>
                                 <div class="panel-body">
-                                    <div class="table-responsive">
-                                        <table class="table table-striped table-bordered table-hover text-center" id="dataTables-example">
-                                            <thead>
-                                                <tr>
-                                                    <th><div align="center">ลำดับ</div></th>
-                                                    <th><div align="center">ร้านค้า</div></th>
-                                                    <th><div align="center">ขายลด</div></th>
-                                                    <th><div align="center">ราคาขาย</div></th>
-                                                    <th><div align="center">วันที่อัพเดทล่าสุด</div></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <?php
-//                                                $getShops = getShops();
-                                                $i = 0;
-                                                foreach ($getShops as $value) {
-                                                    $i++;
-                                                    $val_name_shop = $value['name_shop'];
-                                                    ?>
-                                                    <tr>
-                                                        <td><?php echo $i; ?></td>
-                                                        <td><?php echo $val_name_shop; ?></td>
-                                                        <td>8%</td>
-                                                        <td>515.20</td>
-                                                        <td>2015-11-5</td>
-                                                    </tr>
-                                                <?php } ?>
-                                            </tbody>
-                                        </table>
+                                    <div class="table-responsive" id="show_discount_shop_table">
+                                        <!-- show_discount_shop_table -->
                                     </div>
                                 </div>
                             </div>
@@ -194,6 +163,32 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                     });
         </script>
         <script>
+            show_cost_product_table();
+            function show_cost_product_table() {
+                var idproduct = $("#idproduct").val();
+                $.get("action/action_cost_product_show.php?idproduct=" + idproduct, function (data, status) {
+                    $("#show_cost_product_table").html(data);
+                    show_discount_shop_table();
+                });
+            }
+
+
+            function show_discount_shop_table() {
+                var idproduct = $("#idproduct").val();
+                $.get("action/action_discount_shop_show.php?idproduct=" + idproduct, function (data, status) {
+                    $("#show_discount_shop_table").html(data);
+                });
+            }
+            searchProduct();
+            function searchProduct() {
+                var searchProduct = $("#searchProduct").val();
+                $.get("discount_shop_search_product.php?searchProduct=" + searchProduct, function (data, status) {
+                    $("#idproduct").html(data);
+                    show_cost_product_table();
+                    show_discount_shop_table();
+                });
+            }
+
             $(function () {
                 $('[data-toggle="tooltip"]').tooltip();
             });
@@ -201,16 +196,9 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
             $(document.body).on('hidden.bs.modal', function () {
                 $('#myModal').removeData('bs.modal');
             });
-            
-            function getDiscount_product() {
-                var idproduct = $("#idproduct").val();
-                $.get("action/action_discount_shop_show.php?idproduct=" + idproduct, function (data, status) {
-                    $("#show_Discount_product_table").html(data);
-                });
-            }
+
         </script>
-        <!-- CUSTOM SCRIPTS -->
-        <!--<script src="../assets/js/custom.js"></script>-->
+
     </body>
 </html>
 <div class="modal fade" id="myModal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
