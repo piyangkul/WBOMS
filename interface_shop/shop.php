@@ -23,8 +23,6 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
         <link href="../assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
         <!-- CUSTOM STYLES-->
         <link href="../assets/css/custom.css" rel="stylesheet" />
-        <!-- GOOGLE FONTS-->
-        <link href='../http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
 
     </head>
     <body>
@@ -54,9 +52,9 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                             <span>
                                 <?php
                                 if (isset($_GET['action'])) {
-                                    if ($_GET['action'] == "addCompleted") {
+                                    if ($_GET['action'] == "addShopCompleted") {
                                         echo '<center><h4 class="text-success">คุณได้ทำการเพิ่มสำเร็จแล้ว</h4></center>';
-                                    } else if ($_GET['action'] == "addError") {
+                                    } else if ($_GET['action'] == "addShopError") {
                                         echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถเพิ่มได้</h4></center>';
                                     } else if ($_GET['action'] == "editCompleted") {
                                         echo '<center><h4 class="text-success">คุณได้ทำการแก้ไขสำเร็จแล้ว</h4></center>';
@@ -82,6 +80,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                             <thead>
                                                 <tr>
                                                     <th><div align="center">ลำดับ</div></th>
+                                                    <th><div align="center">รหัสร้านค้า</div></th>
                                                     <th><div align="center">ชื่อร้านค้า</div></th>
                                                     <th><div align="center">เบอร์โทร</div></th>
                                                     <th><div align="center">ภาค</div></th>
@@ -96,6 +95,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                 foreach ($getShops as $value) {
                                                     $i++;
                                                     $val_idshop = $value['idshop'];
+                                                    $val_shop_code = $value['shop_code'];
                                                     $val_name_shop = $value['name_shop'];
                                                     $val_tel_shop = $value['tel_shop'];
                                                     $val_name_region = $value['name_region'];
@@ -103,6 +103,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                     ?>
                                                     <tr>
                                                         <td><?php echo $i; ?></td>
+                                                        <td><?php echo $val_shop_code; ?></td>
                                                         <td><?php echo $val_name_shop; ?></td>
                                                         <td><?php echo $val_tel_shop; ?></td>
                                                         <td><?php echo $val_name_region; ?></td>
@@ -116,8 +117,8 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                                 <span class="glyphicon glyphicon-edit"></span>
                                                             </a>
                                                             <a href="action/action_delShop.php?idshop=<?php echo $val_idshop; ?>" onclick="if (!confirm('คุณต้องการลบหรือไม่')) {
-                                                                            return false;
-                                                                        }" class="btn btn-danger " title="ลบ">
+                                                                        return false;
+                                                                    }" class="btn btn-danger " title="ลบ">
                                                                 <span class="glyphicon glyphicon-trash"></span>
                                                             </a>
                                                         </td>
@@ -152,23 +153,22 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
         <!-- DATA TABLE SCRIPTS -->
         <script src="../assets/js/dataTables/jquery.dataTables.js"></script>
         <script src="../assets/js/dataTables/dataTables.bootstrap.js"></script>
-         <script>
-            $(document).ready(function () {
-                $('#dataTables-example').dataTable();
-            });
+        <script>
+                                                            $(document).ready(function () {
+                                                                $('#dataTables-example').dataTable();
+                                                            });
         </script>
         <script>
             $(function () {
-                $('[data-toggle="tooltip"]').tooltip()
-            })
+                $('[data-toggle="tooltip"]').tooltip();
+            });
         </script>
         <script>
             $(document.body).on('hidden.bs.modal', function () {
                 $('#myModal').removeData('bs.modal');
             });
         </script>
-        <!-- CUSTOM SCRIPTS -->
-        <script src="../assets/js/custom.js"></script>
+
     </body>
 </html>
 <div class="modal fade" id="myModal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

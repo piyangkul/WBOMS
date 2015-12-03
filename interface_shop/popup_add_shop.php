@@ -46,12 +46,11 @@
                         </select>
                     </div>
                 </div>
-
                 <div class="form-group col-xs-12">
                     <label for="detail_shop">รายละเอียด</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-lock"  ></i></span>
-                        <textarea rows="4" cols="50" id="detail_factory" name="detail_shop" class="form-control" placeholder="กรอกรายละเอียดอื่นๆ" value="" required=""/></textarea>
+                        <textarea rows="4" cols="50" id="detail_factory" name="detail_shop" class="form-control" placeholder="กรอกรายละเอียดอื่นๆ" value="" /></textarea>
                     </div>
                 </div>
             </div>

@@ -8,5 +8,6 @@ $checkDel = delShop($idshop);
 if ($checkDel) {
    header("location: ../shop.php?action=delCompleted");
 } else {
-   header("location: ../shop.php?action=delError");
+//   header("location: ../shop.php?action=delError");
+   echo $checkDel;
 }
