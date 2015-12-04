@@ -1,6 +1,5 @@
 <?php
 require_once dirname(__FILE__) . '/../function/func_discount_shop.php';
-
 ?>
 <table class="table table-striped table-bordered table-hover text-center" id="dataTables-example">
     <thead>
@@ -24,9 +23,14 @@ require_once dirname(__FILE__) . '/../function/func_discount_shop.php';
         $i++;
         $val_shop_code = $value['shop_code'];
         $val_name_shop = $value['name_shop'];
-        $val_price_difference = $value['price_difference'];
+        $val_price_difference = $value['price_difference']; //ขายลด
         $val_type_money = $value['type_money'];
-        $val_price_unit = $value['price_unit'];
+        $val_price_unit = $value['price_unit']; //ราคาเปิด
+        if ($value['type_money'] == "PERCENT") {
+            $cost = $val_price_unit - (($val_price_difference / 100.0) * $val_price_unit);
+        } else {
+            $cost = $val_price_unit - $val_price_difference;
+        }
         $val_date_difference = $value['date_difference'];
         ?>
         <tr>
@@ -34,10 +38,10 @@ require_once dirname(__FILE__) . '/../function/func_discount_shop.php';
             <td><?php echo $val_shop_code; ?></td>
             <td><?php echo $val_name_shop; ?></td>
             <td><?php echo $val_price_difference; ?><?php echo ($val_type_money == "PERCENT") ? "%" : "฿"; ?></td>
-            <td><?php echo $val_price_unit; ?></td>
+            <td><?php echo $cost; ?></td>
             <td><?php echo $val_date_difference; ?></td>
         </tr>
-    <?php } ?> 
+<?php } ?> 
 </tbody>
 </table>
 
