@@ -2,6 +2,25 @@
 
 require_once dirname(__FILE__) . '/../../config/connect.php';
 
+function checkDuplicateFactory($name_factory) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT * FROM `factory` WHERE `name_factory`LIKE :name_factory ";
+
+    echo $SQLCommand;
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":name_factory" => $name_factory
+            )
+    );
+
+    if ($SQLPrepare->rowCount() > 0) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
 function addFactory($code_factory,$name_factory, $tel_factory, $address_factory, $contact_factory, $difference_amount_factory, $detail_factory) {
     $conn = dbconnect();
     $SQLCommand = "INSERT INTO `factory`(`code_factory`, `name_factory`, `tel_factory`, `address_factory`, `contact_factory`, `difference_amount_factory`, `detail_factory`) "

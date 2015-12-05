@@ -17,10 +17,14 @@ $detail_factory = $_POST['detail_factory'];
 //สิ้นสุดกลุ่มรับค่า
 //
 //กลุ่มคำสั่งทำอะไร
-$idfactory = addFactory($code_factory,$name_factory, $tel_factory, $address_factory, $contact_factory, $difference_amount_factory, $detail_factory);
-if ($idfactory > 0) {
-    header("location: ../factory.php?p=factory&action=addCompleted");
+if (!checkDuplicateFactory($name_factory)) {
+    $idfactory = addFactory($code_factory, $name_factory, $tel_factory, $address_factory, $contact_factory, $difference_amount_factory, $detail_factory);
+    if ($idfactory > 0) {
+        header("location: ../factory.php?p=factory&action=addFactoryCompleted");
+    } else {
+        header("location: ../factory.php?p=factory&action=addFactoryError");
+    }
 } else {
-    header("location: ../factory.php?p=factory&action=addError");
+    header("location: ../factory.php?p=factory&action=addFactoryDuplicateError");
 }
 //สิ้นสุดกลุ่มคำสั่งทำอะไร

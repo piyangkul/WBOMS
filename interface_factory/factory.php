@@ -52,18 +52,22 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                             <span>
                                 <?php
                                 if (isset($_GET['action'])) {
-                                    if ($_GET['action'] == "addCompleted") {
+                                    if ($_GET['action'] == "addFactoryCompleted") {
                                         echo '<center><h4 class="text-success">คุณได้ทำการเพิ่มสำเร็จแล้ว</h4></center>';
-                                    } else if ($_GET['action'] == "addError") {
+                                    } else if ($_GET['action'] == "addFactoryError") {
                                         echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถเพิ่มได้</h4></center>';
-                                    } else if ($_GET['action'] == "editCompleted") {
+                                    } else if ($_GET['action'] == "editFactoryCompleted") {
                                         echo '<center><h4 class="text-success">คุณได้ทำการแก้ไขสำเร็จแล้ว</h4></center>';
-                                    } else if ($_GET['action'] == "editError") {
+                                    } else if ($_GET['action'] == "editFactoryError") {
                                         echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถแก้ไขได้</h4></center>';
                                     } else if ($_GET['action'] == "delCompleted") {
                                         echo '<center><h4 class="text-success">คุณได้ทำการลบสำเร็จแล้ว</h4></center>';
                                     } else if ($_GET['action'] == "delError") {
                                         echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถลบได้</h4></center>';
+                                    } else if ($_GET['action'] == "addFactoryDuplicateError") {
+                                        echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถเพิ่มได้ เนื่อจากได้เพิ่มโรงงานนี้ไปแล้ว</h4></center>';
+                                    } else if ($_GET['action'] == "editFactoryDuplicateError") {
+                                        echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถแก้ไขได้ เนื่อจากมีโรงงานนี้แล้ว</h4></center>';
                                     }
                                 }
                                 ?>
