@@ -32,6 +32,7 @@ require_once dirname(__FILE__) . '/../function/func_discount_shop.php';
             $cost = $val_price_unit - $val_price_difference;
         }
         $val_date_difference = $value['date_difference'];
+        $change_date_difference = date("d-m-Y", strtotime($val_date_difference));
         ?>
         <tr>
             <td><?php echo $i; ?></td>
@@ -39,7 +40,7 @@ require_once dirname(__FILE__) . '/../function/func_discount_shop.php';
             <td><?php echo $val_name_shop; ?></td>
             <td><?php echo $val_price_difference; ?><?php echo ($val_type_money == "PERCENT") ? "%" : "฿"; ?></td>
             <td><?php echo $cost; ?></td>
-            <td><?php echo $val_date_difference; ?></td>
+            <td><?php echo $change_date_difference; ?></td>
         </tr>
 <?php } ?> 
 </tbody>
