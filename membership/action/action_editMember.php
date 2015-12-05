@@ -7,12 +7,16 @@ echo '</pre>';
 
 $idmember = $_GET['idmember'];
 $name = $_POST['name_member'];
-$lastname_member = $_POST['lastname_member'];
+$lastname = $_POST['lastname_member'];
 $password = $_POST['confirm_password'];
 
-$checkEdit = editMember($name, $lastname_member,$password, "", $idmember);
-if ($checkEdit) {
-    header("location: ../membership.php?action=editCompleted");
+if (!checkDuplicateMember($name, $lastname)) {
+    $checkEdit = editMember($name, $lastname, $password, "", $idmember);
+    if ($checkEdit) {
+        header("location: ../membership.php?action=editMemCompleted");
+    } else {
+        header("location: ../membership.php?action=editMemError");
+    }
 } else {
-    header("location: ../membership.php?action=editError");
+    header("location: ../membership.php?action=editMemDuplicateError");
 }

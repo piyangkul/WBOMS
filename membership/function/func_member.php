@@ -2,6 +2,26 @@
 
 require_once dirname(__FILE__) . '/../../config/connect.php';
 
+function checkDuplicateMember($name,$lastname) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT * FROM `member` WHERE `name`LIKE :name AND `lastname` LIKE :lastname ";
+
+    echo $SQLCommand;
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":name" => $name,
+                ":lastname" => $lastname
+            )
+    );
+
+    if ($SQLPrepare->rowCount() > 0) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
 function addMember($name, $lastname, $username, $password, $status_member) {
     $conn = dbconnect();
     $SQLCommand = "INSERT INTO `member`(`name`, `lastname`, `username`, `password`, `status_member`) "

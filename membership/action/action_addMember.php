@@ -7,15 +7,17 @@ print_r($_POST);
 echo '</pre>';
 
 $name = $_POST['name_member'];
-$lastname_member = $_POST['lastname_member'];
+$lastname = $_POST['lastname_member'];
 $username = $_POST['username'];
 $password = $_POST['confirm_password'];
 
-
-$memberID=addMember($name, $lastname_member, $username, $password, "");
-if($memberID>0){
-    header("location: ../membership.php?action=completed");
-}
- else {
-    header("location: ../membership.php?action=error");
+if (!checkDuplicateMember($name, $lastname)) {
+    $memberID = addMember($name, $lastname, $username, $password, "");
+    if ($memberID > 0) {
+        header("location: ../membership.php?action=addMemCompleted");
+    } else {
+        header("location: ../membership.php?action=addMemError");
+    }
+} else {
+    header("location: ../membership.php?action=addMemDuplicateError");
 }
