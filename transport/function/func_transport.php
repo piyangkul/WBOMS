@@ -2,6 +2,26 @@
 
 require_once dirname(__FILE__) . '/../../config/connect.php';
 
+function checkDuplicateTranport($name_transport,$address_transport) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT * FROM `transport` WHERE `name_transport`LIKE :name_transport AND `address_transport` LIKE :address_transport ";
+
+    echo $SQLCommand;
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":name_transport" => $name_transport,
+                ":address_transport" => $address_transport
+            )
+    );
+
+    if ($SQLPrepare->rowCount() > 0) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
 function getTransports() {
     $conn = dbconnect();
     $SQLCommand = "SELECT `idtransport`,"

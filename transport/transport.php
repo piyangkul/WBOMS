@@ -51,18 +51,22 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                             <span>
                                 <?php
                                 if (isset($_GET['action'])) {
-                                    if ($_GET['action'] == "addCompleted") {
+                                    if ($_GET['action'] == "addTransportCompleted") {
                                         echo '<center><h4 class="text-success">คุณได้ทำการเพิ่มสำเร็จแล้ว</h4></center>';
-                                    } else if ($_GET['action'] == "addError") {
+                                    } else if ($_GET['action'] == "addTransportError") {
                                         echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถเพิ่มได้</h4></center>';
-                                    } else if ($_GET['action'] == "editCompleted") {
+                                    } else if ($_GET['action'] == "editTransportCompleted") {
                                         echo '<center><h4 class="text-success">คุณได้ทำการแก้ไขสำเร็จแล้ว</h4></center>';
-                                    } else if ($_GET['action'] == "editError") {
+                                    } else if ($_GET['action'] == "editTransportError") {
                                         echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถแก้ไขได้</h4></center>';
-                                    } else if ($_GET['action'] == "delCompleted") {
+                                    } else if ($_GET['action'] == "delTransportCompleted") {
                                         echo '<center><h4 class="text-success">คุณได้ทำการลบสำเร็จแล้ว</h4></center>';
-                                    } else if ($_GET['action'] == "delError") {
+                                    } else if ($_GET['action'] == "delTransportError") {
                                         echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถลบได้</h4></center>';
+                                    } else if ($_GET['action'] == "addTransportDuplicateError") {
+                                        echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถเพิ่มได้เนื่องจากได้เพิ่มบริษัทขนส่งไปแล้ว</h4></center>';
+                                    } else if ($_GET['action'] == "editTransportDuplicateError") {
+                                        echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถแก้ไขได้เนื่องจากมีบริษัทขนส่งแล้ว</h4></center>';
                                     }
                                 }
                                 ?>
@@ -104,14 +108,14 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                         <td><?php echo $val_code_transport; ?></td>
                                                         <td><?php echo $val_name_transport; ?></td>
                                                         <td><?php echo $val_tel_transport; ?></td>
-                                                        <td><?php echo $val_address_transport;?></td>
+                                                        <td><?php echo $val_address_transport; ?></td>
                                                         <td>
                                                             <a href="popup_edit_transport.php?idtransport=<?php echo $val_idtransport; ?>" class="btn btn-warning " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="แก้ไข">
                                                                 <span class="glyphicon glyphicon-edit"></span>
                                                             </a>
                                                             <a href="action/action_delTransport.php?idtransport=<?php echo $val_idtransport; ?>" onclick="if (!confirm('คุณต้องการลบหรือไม่')) {
-                                                                        return false;
-                                                                    }" class="btn btn-danger " title="ลบ">
+                                                                            return false;
+                                                                        }" class="btn btn-danger " title="ลบ">
                                                                 <span class="glyphicon glyphicon-trash"></span>
                                                             </a>
                                                         </td>
@@ -141,9 +145,9 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
         <script src="../assets/js/dataTables/jquery.dataTables.js"></script>
         <script src="../assets/js/dataTables/dataTables.bootstrap.js"></script>
         <script>
-            $(document).ready(function () {
-                $('#dataTables-example').dataTable();
-            });
+                                                                $(document).ready(function () {
+                                                                    $('#dataTables-example').dataTable();
+                                                                });
         </script>
         <script>
             $(function () {

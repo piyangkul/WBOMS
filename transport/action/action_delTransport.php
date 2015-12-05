@@ -6,7 +6,7 @@ $idtransport = $_GET['idtransport'];
 
 $checkDelTransport = delTransport($idtransport);
 if ($checkDelTransport) {
-   header("location: ../transport.php?action=delCompleted");
+   header("location: ../transport.php?action=delTransportCompleted");
 } else {
-   header("location: ../transport.php?action=delError");
+   header("location: ../transport.php?action=delTransportError");
 }
