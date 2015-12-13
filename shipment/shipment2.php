@@ -8,11 +8,16 @@ $p = 'shipment';
 if (isset($_GET['p']) && !empty($_GET['p'])) {
     $p = $_GET['p'];
 }
-//echo "<pre>";
-//print_r($_POST);
-//echo "</pre>";
-$name_factory = $_POST['factoryName'];
-$monthly = $_POST['monthly'];
+?>
+<?php
+if (isset($_GET['idshipment_period'])) {
+    $idshipment_period = $_GET['idshipment_period'];
+    $getShipment_period = getShipment_periodByID($idshipment_period);
+    $val_date_start = $getShipment_period['date_start'];
+    $change_date_start = date("d-m-Y", strtotime($val_date_start));
+    $val_date_end = $getShipment_period['date_end'];
+    $change_date_end = date("d-m-Y", strtotime($val_date_end));
+}
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -49,37 +54,30 @@ $monthly = $_POST['monthly'];
                     <hr />
                     <div class="row">
                         <div class="col-md-12">
-                            <center><h4>บิลโรงงาน <?php echo $name_factory; ?> &nbsp;&nbsp;&nbsp;&nbsp; ประจำเดือน <?php echo $monthly; ?></h4></center>
-                            <button href="popup_add_shipment.php" type="submit" name="check_shipment" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal"> 
-                                <span class="fa fa-truck"></span> เพิ่ม/อัพเดทข้อมูลการส่งสินค้า</button>
-                            <a href="popup_add_payfactory.php" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">
-                                <span class="fa fa-building-o"></span> เพิ่มข้อมูลการจ่ายเงินโรงงาน
-                            </a>
-                            <a href="popup_edit_payfactory.php" class="btn btn-warning btn-lg" data-toggle="modal" data-target="#myModal">
-                                <span class="fa fa-building-o"></span> แก้ไขข้อมูลการจ่ายเงินโรงงาน
-                            </a>
+                            <div>
+                                <center><h4 class="text text-info"><b>รอบการส่งที่</b> <?php echo $change_date_start; ?> ถึง <?php echo $change_date_end; ?></h4></center>
+                            </div>
                             <br/>
                             <span>
                                 <?php
-                                if (isset($_GET['action'])) {
-                                    if ($_GET['action'] == "addCompleted") {
-                                        echo '<center><h4 class="text-success">คุณได้ทำการเพิ่มสำเร็จแล้ว</h4></center>';
-                                    } else if ($_GET['action'] == "addError") {
-                                        echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถเพิ่มได้</h4></center>';
-                                    } else if ($_GET['action'] == "editCompleted") {
-                                        echo '<center><h4 class="text-success">คุณได้ทำการแก้ไขสำเร็จแล้ว</h4></center>';
-                                    } else if ($_GET['action'] == "editError") {
-                                        echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถแก้ไขได้</h4></center>';
-                                    } else if ($_GET['action'] == "delCompleted") {
-                                        echo '<center><h4 class="text-success">คุณได้ทำการลบรายการสินค้าสำเร็จแล้ว</h4></center>';
-                                    } else if ($_GET['action'] == "delError") {
-                                        echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถลบรายการสินค้าได้</h4></center>';
-                                    }
-                                }
+//                                if (isset($_GET['action'])) {
+//                                    if ($_GET['action'] == "addCompleted") {
+//                                        echo '<center><h4 class="text-success">คุณได้ทำการเพิ่มสำเร็จแล้ว</h4></center>';
+//                                    } else if ($_GET['action'] == "addError") {
+//                                        echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถเพิ่มได้</h4></center>';
+//                                    } else if ($_GET['action'] == "editCompleted") {
+//                                        echo '<center><h4 class="text-success">คุณได้ทำการแก้ไขสำเร็จแล้ว</h4></center>';
+//                                    } else if ($_GET['action'] == "editError") {
+//                                        echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถแก้ไขได้</h4></center>';
+//                                    } 
+//                                }
                                 ?>
                             </span>
-                            <h5>คำชี้แจง : ตรวจสอบรายการสินค้าที่สั่งซื้อและเพิ่มข้อมูลการส่งสินค้า</h5>
-                            <h5>หมายเหตุ : เมื่อเพิ่มข้อมูลการส่งสินค้าแล้ว คุณจะไม่สามารถแก้ไข หรือลบจำนวนสินค้าได้ เพราะเมื่อกดเพิ่มแล้ว ปุ่มแก้ไขและลบจะหายไป</h5>
+                            <div class="alert alert-success" role="alert">
+                                <h5><b>คำชี้แจง</b> : ตรวจสอบรายการสินค้าที่สั่งซื้อและเพิ่มข้อมูลการส่งสินค้า</h5>
+                                <h5><b>หมายเหตุ</b> : เมื่อเพิ่มข้อมูลการส่งสินค้าแล้ว คุณจะไม่สามารถแก้ไข หรือลบจำนวนสินค้าได้ เพราะเมื่อกดเพิ่มแล้ว ปุ่มแก้ไขและลบจะหายไป</h5>
+                            check vaild id shipment period
+                            </div>
                             <!-- ตารางรายการสินค้า -->
                             <div class="panel panel-primary">
                                 <div class="panel-heading">
@@ -90,62 +88,47 @@ $monthly = $_POST['monthly'];
                                         <table class="table table-striped table-bordered table-hover text-center " id="dataTables-example">
                                             <thead>
                                                 <tr>
-                                                    <th rowspan="2" valign="middle"><div align="center">เลือก</div></th>
-                                                    <th rowspan="2"><div align="center">วันที่สั่ง</div></th>
-                                                    <th rowspan="2"><div align="center">ร้านค้า</div></th>
-                                                    <th rowspan="2"><div align="center">ชื่อสินค้า</div></th>
-                                                    <th rowspan="2"><div align="center">ราคาเปิดต่อหน่วย</div></th>
-                                                    <th rowspan="2"><div align="center">จำนวน</div></th>
-                                                    <th colspan="3"><div align="center">ข้อมูลการส่งสินค้า</div></th>
-                                                    <th rowspan="2"><div align="center">การกระทำสินค้าที่สั่งซื้อ</div></th>
+                                                    <th><div align="center">ลำดับ</div></th>
+                                                    <th><div align="center">โรงงาน</div></th>
+                                                    <th><div align="center">จำนวนรายการที่สั่ง</div></th>
+                                                    <th><div align="center">ยอดเงินรวมที่โรงงานเรียกเก็บ</div></th>
+                                                    <th><div align="center">การกระทำ</div></th>
                                                 </tr>
-                                                <tr>
-                                                    <th><div align="center">วันที่ส่ง</div></th>
-                                                    <th><div align="center">ชื่อ/เล่มที่/เลขที่</div></th>
-                                                    <th><div align="center">ค่าส่ง</div></th>
-                                                </tr>
+
                                             </thead>
                                             <tbody>
                                                 <?php
                                                 //มีเงื่อนไข การกำหนดช่วงเวลาที่สั่ง
-                                                $getShipments = getShipments();
+                                                $getFactoryByIDshipment_period = getFactoryByIDshipment_period2($idshipment_period);
                                                 $i = 0;
-                                                foreach ($getShipments as $value) {
+                                                foreach ($getFactoryByIDshipment_period as $value) {
                                                     $i++;
-                                                    $val_idproduct_order = $value['idproduct_order'];
-                                                    $val_date_order_p = $value['date_order_p'];
-                                                    $val_name_shop = $value['name_shop'];
-                                                    $val_name_product = $value['name_product'];
-                                                    $val_price_unit = $value['price_unit'];
-                                                    $val_amount_product_order = $value['amount_product_order'];
-                                                    $val_name_unit = $value['name_unit'];
-                                                    $val_date_transport = $value['date_transport'];
-                                                    $val_name_transport = $value['name_transport'];
-                                                    $val_volume = $value['volume'];
-                                                    $val_number = $value['number'];
-                                                    $val_price_transport = $value['price_transport'];
+                                                    $val_idshipment_period = $value['idshipment_period'];
+                                                    $val_idfactory = $value['idfactory'];
+                                                    $val_name_factory = $value['name_factory'];
+                                                    $val_CountCheck = $value['CountCheck'];
+                                                    if ($val_CountCheck == NULL) {
+                                                        $val_CountCheck = "-";
+                                                    }
+                                                    $val_price = $value['price'];
+                                                    if ($val_price == NULL) {
+                                                        $val_price = "-";
+                                                    }
                                                     ?>
                                                     <tr>
-                                                        <td><?php echo "" ?> <input type="checkbox" name="check_shipment[]" id="check_shipment" value="$val_idproduct_order" /> <? ; ?></td>
-                                                        <td><?php echo $val_date_order_p; ?></td>
-                                                        <td><?php echo $val_name_shop; ?></td>
-                                                        <td><?php echo $val_name_product; ?></td>
-                                                        <td><?php echo $val_price_unit; ?></td>
-                                                        <td><?php echo $val_amount_product_order . " " . $val_name_unit; ?></td>
-                                                        <td><?php echo $val_date_transport; ?></td>
-                                                        <td><?php echo $val_name_transport . "/" . $val_volume . "/" . $val_number; ?></td>
-                                                        <td><?php echo $val_price_transport; ?></td>
+                                                        <td><?php echo $i; ?></td>
+                                                        <td><?php echo $val_name_factory; ?></td>
+                                                        <td><?php echo $val_CountCheck; ?></td>
+                                                        <td><?php echo $val_price; ?></td>
                                                         <td>
-                                                            <a href="popup_detail_shipment.php?idproduct_order=<?php echo $val_idproduct_order; ?>" class="btn btn-success " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="รายละเอียด">
+                                                            <a href="detail_shipment3.php?idshipment_period=<?php echo $idshipment_period; ?>&idfactory=<?php echo $val_idfactory; ?>" class="btn btn-success " data-toggle="tooltip" title="รายละเอียด">
                                                                 <span class="glyphicon glyphicon-list-alt"></span>
                                                             </a>
-                                                            <a href="popup_edit_amount_product_order.php?idproduct_order=<?php echo $val_idproduct_order; ?>" class="btn btn-warning " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="แก้ไข">
-                                                                <span class="glyphicon glyphicon-edit"></span>
+                                                            <a href="add_shipment3.php?idshipment_period=<?php echo $idshipment_period; ?>&idfactory=<?php echo $val_idfactory; ?>" class="btn btn-info " data-toggle="tooltip" title="เพิ่ม">
+                                                                <span class="glyphicon glyphicon-plus"></span>
                                                             </a>
-                                                            <a href="action/action_delProduct_order.php?idproduct_order=<?php echo $val_idproduct_order; ?>" onclick="if (!confirm('คุณต้องการลบรายการสินค้าหรือไม่')) {
-                                                                            return false;
-                                                                        }" class="btn btn-danger " title="ลบ">
-                                                                <span class="glyphicon glyphicon-trash"></span>
+                                                            <a href="edit_shipment3.php?idshipment_period=<?php echo $idshipment_period; ?>&idfactory=<?php echo $val_idfactory; ?>" class="btn btn-warning " data-toggle="tooltip" title="แก้ไข">
+                                                                <span class="glyphicon glyphicon-edit"></span>
                                                             </a>
                                                         </td>
                                                     </tr>
@@ -160,7 +143,7 @@ $monthly = $_POST['monthly'];
                                 </div>
                             </div>
                             <!--End ตารางรายการสินค้า -->
-                            
+
                         </div>
                     </div>
                 </div>
@@ -178,17 +161,17 @@ $monthly = $_POST['monthly'];
         <!-- METISMENU SCRIPTS -->
         <script src="../assets/js/jquery.metisMenu.js"></script>
         <script>
-                                                                $(document.body).on('hidden.bs.modal', function () {
-                                                                    $('#myModal').removeData('bs.modal');
-                                                                });
+            $(document.body).on('hidden.bs.modal', function () {
+                $('#myModal').removeData('bs.modal');
+            });
         </script>
         <!-- DATA TABLE SCRIPTS -->
         <script src="../assets/js/dataTables/jquery.dataTables.js"></script>
         <script src="../assets/js/dataTables/dataTables.bootstrap.js"></script>
         <script>
-                                                                $(document).ready(function () {
-                                                                    $('#dataTables-example').dataTable();
-                                                                });
+            $(document).ready(function () {
+                $('#dataTables-example').dataTable();
+            });
         </script>
     </body>
 </html>

@@ -2,14 +2,16 @@
 require_once 'function/func_shipment.php';
 ?>
 <?php
-if (isset($_GET['idproduct_order'])) {
     $idproduct_order = $_GET['idproduct_order'];
+    $idshipment_period = $_GET['idshipment_period'];
+    $idfactory = $_GET['idfactory'];
     $getProduct_order = getProduct_orderByID($idproduct_order);
     $val_name_product = $getProduct_order['name_product'];
     $val_amount_product_order = $getProduct_order['amount_product_order'];
-}
+//    echo $idshipment_period;
+
 ?>
-﻿<form class="form" action="action/action_edit_amount_product_order.php?idproduct_order=<?php echo $idproduct_order; ?>" method="post">
+﻿<form class="form" action="action/action_edit_amount_product_order.php?idproduct_order=<?php echo $idproduct_order; ?>&idshipment_period=<?php echo $idshipment_period; ?>&idfactory=<?php echo $idfactory; ?>" method="post">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">แก้ไขจำนวนสินค้า</h4>

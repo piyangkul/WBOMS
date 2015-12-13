@@ -38,85 +38,89 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                         <div class="col-md-12">
                             <h2> Shipment </h2>   
                             <h5> การส่งสินค้า </h5>
-
                         </div>
                     </div>
                     <!-- /. ROW  -->
                     <hr />
                     <div class="row">
-                        <div class="col-md-3"></div>
-                        <div class="col-md-6 ">
-                            <!-- บิล -->
-                            <form class="form" action="shipment2.php" method="POST">
-                            <div class="panel panel-default">
-                                <div class="panel-heading ">
+                        <div class="col-md-12">
+                            <a href="popup_add_period_shipment.php" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">
+                                <span class="glyphicon glyphicon-plus"></span> เพิ่มรอบการส่งสินค้า
+                            </a>
+                            <br/>
+                            <br/>
+                            <span>
+                                <?php
+                                if (isset($_GET['action'])) {
+                                    if ($_GET['action'] == "addPeriodCompleted") {
+                                        echo '<center><h4 class="text-success">คุณได้ทำการเพิ่มสำเร็จแล้ว</h4></center>';
+                                    } else if ($_GET['action'] == "addPeriodError") {
+                                        echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถเพิ่มได้</h4></center>';
+                                    } else if ($_GET['action'] == "editPeriodCompleted") {
+                                        echo '<center><h4 class="text-success">คุณได้ทำการแก้ไขสำเร็จแล้ว</h4></center>';
+                                    } else if ($_GET['action'] == "editPeriodError") {
+                                        echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถแก้ไขได้</h4></center>';
+                                    }
+                                }
+                                ?>
+                            </span>
+                            <!-- ตารางรอบการส่งสินค้า -->
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <h5>ตารางรอบการส่งสินค้า</h5>
+                                </div>
+                                <div class="panel-body">
                                     <div class="table-responsive">
-                                        <div class="form-group">
-                                                <label for="factoryName"> ชื่อโรงงาน </label><label class="text-danger">*</label>
-                                                <select class="form-control" id="factoryName" name="factoryName" required="">
-                                                    <option selected value="">กรุณาเลือกโรงงาน</option>
-                                                    <?php
-                                                    require_once '../interface_factory/function/func_factory.php';
-                                                    $getFactorys = getFactorys();
-                                                    foreach ($getFactorys as $value) {
-                                                        $val_idfactory = $value['idfactory'];
-                                                        $val_name_factory = $value['name_factory'];
-                                                        ?>
-                                                        <option value="<?php echo $val_name_factory; ?>"><?php echo $val_name_factory; ?></option>
-                                                    <?php } ?>
-                                                </select>
-                                            </div>
-                                        <div class="form-group">
-                                            <div class="col-md-12 col-sm-12 ">
-                                                <div class="panel panel-primary">
-                                                    <div class="panel-heading">
-                                                        <label>เลือกช่วงเวลาที่สั่งซื้อ</label>
-                                                    </div>
-                                                    <div class="panel-body">
-                                                        <div class="table-responsive">
-                                                            <div class="form-group col-xs-12">
-                                                                <label>ตั้งแต่วันที่ //ระบบกำหนดให้เลย</label>
-                                                                <input type="date" class="form-control" id="date_start" name="date_start" required onchange="getmonth();">
-                                                            </div>
-
-                                                            <div class="form-group col-xs-12">
-                                                                <label>ถึงวันที่ </label>
-                                                                <input type="date" class="form-control" id="date_end" name="date_end" required onchange="getmonth();">
-                                                            </div>
-
-                                                            <div class="form-group col-xs-12">
-                                                                <label> ประจำเดือน </label>
-                                                                <select class="form-control" id="monthly" name="monthly" required>
-                                                                    <option selected value="">กรุณาเลือกเดือนตัดบัญชีโรงงาน</option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <center>
-                                                <button type="submit" class="btn btn-info btn-lg">
-                                                    <span class="glyphicon glyphicon-search"></span> เลือก
-                                                </button>
-                                                <a href="../interface_history_order/history_order.php" class="btn btn-danger btn-lg text-center">
-                                                    <span class="glyphicon glyphicon-floppy-remove"></span> ยกเลิก
-                                                </a>
-                                            </center>
-                                        </div>
-
+                                        <table class="table table-striped table-bordered table-hover text-center" id="dataTables-example">
+                                            <thead>
+                                                <tr>
+                                                    <th><div align="center">รอบที่</div></th>
+                                                    <th><div align="center">วันเริ่มต้น</div></th>
+                                                    <th><div align="center">วันสิ้นสุด</div></th>
+                                                    <th><div align="center">การกระทำ</div></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php
+                                                //ดึงข้อมูลจากตาราง
+                                                require_once 'function/func_shipment.php';
+                                                $getShipment_period = getShipment_period();
+                                                $i = 0;
+                                                foreach ($getShipment_period as $value) {
+                                                    $i++;
+                                                    $val_idshipment_period = $value['idshipment_period'];
+                                                    $val_date_start = $value['date_start'];
+                                                    $change_date_start = date("d-m-Y", strtotime($val_date_start));
+                                                    $val_date_end = $value['date_end'];
+                                                    $change_date_end = date("d-m-Y", strtotime($val_date_end));
+                                                    ?>
+                                                    <tr>
+                                                        <td><?php echo $i; ?></td>
+                                                        <td><?php echo $change_date_start; ?></td>
+                                                        <td><?php echo $change_date_end; ?></td>
+                                                        <td>
+                                                            <a href="shipment2.php?idshipment_period=<?php echo $val_idshipment_period; ?>" class="btn btn-success" title="รายละเอียด">
+                                                                <span class="glyphicon glyphicon-list-alt"></span>
+                                                            </a>
+                                                            <a href="popup_edit_period_shipment.php?idshipment_period=<?php echo $val_idshipment_period; ?>" class="btn btn-warning " data-toggle="modal" data-target="#myModal" title="แก้ไข">
+                                                                <span class="glyphicon glyphicon-edit"></span>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                <?php } ?>  
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
-                            </form>
-                            <!--End บิล -->
+                            <!--End ตารางรอบการส่งสินค้า -->
                         </div>
                     </div>
                     <!-- /. PAGE INNER  -->
                 </div>
                 <!-- /. PAGE WRAPPER  -->
             </div>
+        </div>
             <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
             <!-- JQUERY SCRIPTS -->
             <script src="../assets/js/jquery-1.10.2.js"></script>
@@ -128,7 +132,6 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
             <script src="../assets/js/dataTables/jquery.dataTables.js"></script>
             <script src="../assets/js/dataTables/dataTables.bootstrap.js"></script>
 
-
             <script>
                 function getmonth() {
                     var date_start = $("#date_start").val();
@@ -136,13 +139,18 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                     var date_end = $("#date_end").val();
                     var datearr_end = date_end.split("-");
 //                    alert(datearr_start[1] + " " + datearr_end[1]);
-                    var optionhtml = '<option selected value="">Choose</option><option value="'+datearr_start[1]+'">'+datearr_start[1]+'</option><option value="'+datearr_end[1]+'">'+datearr_end[1]+'</option>';
+                    var optionhtml = '<option selected value="">Choose</option><option value="' + datearr_start[1] + '">' + datearr_start[1] + '</option><option value="' + datearr_end[1] + '">' + datearr_end[1] + '</option>';
                     $("#monthly").html(optionhtml);
                 }
             </script>
             <script>
                 $(function () {
                     $('[data-toggle="tooltip"]').tooltip();
+                });
+            </script>
+            <script>
+                $(document).ready(function () {
+                    $('#dataTables-example').dataTable();
                 });
             </script>
             <script>

@@ -2,16 +2,15 @@
 require_once 'function/func_shipment.php';
 ?>
 <?php
-if (isset($_GET['idproduct_order'])) {
-    $idproduct_order = $_GET['idproduct_order'];
-    $getProduct_order = getProduct_orderByID($idproduct_order);
-    $val_name_factory = $getProduct_order['name_factory'];
-    $val_idorder_p = $getProduct_order['idorder_p'];
-    $val_date_order_p = $getProduct_order['date_order_p'];
-    $val_name_shop = $getProduct_order['name_shop'];
-}
+$idorder_p = $_GET['idorder_p'];
+$idproduct_order = $_GET['idproduct_order'];
+$getProduct_order = getProduct_orderByID($idproduct_order);
+$val_name_factory = $getProduct_order['name_factory'];
+$val_idorder_p = $getProduct_order['idorder_p'];
+$val_date_order_p = $getProduct_order['date_order_p'];
+$val_name_shop = $getProduct_order['name_shop'];
 ?>
-﻿<form class="form" action="action/action_editProduct_order.php?idproduct_order=<?php echo $idproduct_order; ?>" method="get">
+﻿<form class="form">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">รายละเอียดสินค้าตามบิลขนส่ง</h4>
@@ -67,7 +66,7 @@ if (isset($_GET['idproduct_order'])) {
                                 <tr>
                                     <th><div align="center">ลำดับ</div></th>
                             <th><div align="center">ชื่อสินค้า</div></th>
-                            <th><div align="center">ราคาเปิดต่อหน่วย</div></th>
+                            <th><div align="center">ราคาเปิด</div></th>
                             <th><div align="center">จำนวน</div></th>
                             <th><div align="center">ต้นทุนลด</div></th>
                             <th><div align="center">ราคาต้นทุน</div></th>
@@ -75,26 +74,29 @@ if (isset($_GET['idproduct_order'])) {
                             </thead>
                             <tbody>
                                 <?php
-//                        $getMembers = getMembers();
-//                        $i = 0;
-//                        foreach ($getMembers as $value) {
-//                            $i++;
-//                            $val_idmember = $value['idmember'];
-//                            $val_name = $value['name'];
-//                            $val_lastname = $value['lastname'];
-//                            $val_username = $value['username'];
-//                            
-                                ?>
-                                    <!--<tr>-->
-        <!--                                <td><?php echo $i; ?></td>
-                                        <td><?php echo $val_name; ?></td>
-                                        <td><?php echo $val_lastname; ?></td>
-                                        <td><?php echo $val_username; ?></td>
-                                        <td><?php ?></td>
-                                        <td><?php ?></td>
-                                        <td><?php ?></td>-->
-                                <!--</tr>-->
-                                <?php // }  ?>
+                                $getProductDetail_shipment = getProductDetail_shipment($idorder_p);
+                                $i = 0;
+                                foreach ($getProductDetail_shipment as $value) {
+                                    $i++;
+                                    $val_name_product = $value['name_product'];
+                                    $val_name_unit = $value['name_unit'];
+                                    $val_price_unit = $value['price_unit'];
+                                    if ($value['difference_amount_product'] == null) {
+                                        $val_difference_amount = $value['difference_amount_factory'];
+                                    } else {
+                                        $val_difference_amount = $value['difference_amount_product'];
+                                    }
+                                    $cost = $val_price_unit - (($val_difference_amount / 100.0) * $val_price_unit);                                    
+                                    ?>
+                                    <tr>
+                                        <td><?php echo $i; ?></td>
+                                        <td><?php echo $val_name_product; ?></td>
+                                        <td class="text-right"><?php echo number_format($val_price_unit, 2, '.', ''); ?></td>
+                                        <td><?php echo '1' + $val_name_unit; ?></td>
+                                        <td><?php echo $val_difference_amount . "%"; ?></td>
+                                        <td class="text-right"><?php echo number_format($cost, 2, '.', '') ?></td>
+                                    </tr>
+<?php } ?>
                         </table>
                     </div>
                 </div>
