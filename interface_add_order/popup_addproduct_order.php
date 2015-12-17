@@ -11,7 +11,7 @@
                 </div>
                 <div class="form-group col-xs-12">
                     <label for="factoryName">ชื่อโรงงาน</label>
-                    <select class="form-control" id="shopName" name="shopName" required >
+                    <select class="form-control" id="factoryName" name="factoryName" onchange ="ChangeProduct()" required >
                         <option selected value="">Choose</option>
                         <?php
                         require_once '/function/func_addorder.php';
@@ -25,18 +25,38 @@
                     </select>
                 </div>
                 <div class="form-group col-xs-12">
-                    <label for="tel_shop">สินค้า</label>
-                    <select class="form-control" id="factoryName" name="productName" required ></select>
+                    <label for="product_name">สินค้า</label> <font size="1" color ="red">*กรุณาเลือกโรงงานก่อน</font>
+                    <select class="form-control" id="productName" name="productName" required disabled >
+                        <option selected value="">Choose</option>
+                        <?php
+                        $getProduct = getProduct();
+                        foreach ($getProduct as $value) {
+                            $val_idproduct = $value['idproduct'];
+                            //$val_idfactory = $value['idfactory'];
+                            $val_name_product = $value['name_product'];
+                            ?>
+                            <option value="<?php echo $val_idproduct; ?>"><?php echo $val_name_product; ?></option>
+                        <?php } ?>
+                    </select>
                 </div>
                 <div class="form-group col-xs-12">
-                    <label for="name_product"> หน่วย</label> &nbsp;
-                    <div class="btn-group">
-                        <select id="aa" class="form-control" onchange="dd();">
-                            <option>กรุณาเลือกหน่วยขาย</option>
-                            <option value="cc">มัด(2กล่อง)</option>
-                            <option>กล่อง(12แพ็ค)</option>
-                        </select>
-                    </div>
+                    <label for="name_product"> หน่วย</label>  <font size="1" color ="red">*กรุณาเลือกสินค้าก่อน</font>
+
+                    <select id="Unit" class="form-control" >
+                        <option>กรุณาเลือกหน่วยขาย</option>
+                        <?php
+                        $getUnit = getUnit();
+                        foreach ($getUnit as $value) {
+                            $val_idunit = $value['idunit'];
+                            $val_name_unit = $value['name_unit'];
+                            $val_price_unit = $value['price_unit'];
+                            $val_type_unit = $value['type_unit'];
+                            ?>
+                            <option value="<?php echo $val_idunit; ?>"><?php echo $val_name_unit; ?></option><?php
+                        }
+                        ?>
+
+                    </select>
                 </div>
                 <div class="form-group col-xs-12">
                     <label for="amount_product">จำนวน</label>
@@ -89,5 +109,18 @@
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button type="submit" id="submit" name="sumbit" value="addShop" class="btn btn-primary">Save changes</button>
     </div>
-</form>
 
+
+</form>
+<script>
+
+    function ChangeProduct() {
+        var x = document.getElementById("").value;
+        document.getElementById("idProduct").innerHTML = "You selected: " + x;
+    }
+    function ChangeUnit() {
+        var y = document.getElementById("").value;
+        document.getElementById("demo").innerHTML = "You selected: " + x;
+
+    }
+</script>

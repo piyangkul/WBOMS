@@ -70,9 +70,10 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                         <input type="text" class="form-control" id="disabled_no" placeholder="ID บิล">
                                                     </div>
                                                     <div >
-                                                        <p>วันที่สั่งซื้อ <input type="text" id="datepicker" ></p>
+                                                        <p>วันที่สั่งซื้อ <input type="date" class="form-control" ></p>
+                                                        <input type="time" class="form-control" >
                                                     </div>
-
+<!--
                                                     <div>
                                                         <script>
 
@@ -95,7 +96,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                                     }
                                                                 </script></p>
 
-                                                    </div>
+                                                    </div>-->
                                                     <div>
                                                         <label for="disabled_shop">ชื่อร้านค้า</label>
                                                         <select class="form-control" id="shopName" name="shopName" required >
@@ -173,10 +174,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-4"></div>
-                                    <a href="add_order.php" class="btn btn-info btn-lg">
-                                        <span class="glyphicon glyphicon-plus"></span> สั่งต่อ
-                                    </a>
+                                    <div class="col-md-4"></div>                              
                                     <a href="../interface_history_order/history_order.php" class="btn btn-warning btn-lg text-center">
                                         <span class="glyphicon glyphicon-floppy-save"></span> บันทึก
                                     </a>

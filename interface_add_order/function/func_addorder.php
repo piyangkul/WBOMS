@@ -34,6 +34,29 @@ function getFactory() {
     }
     return $resultArr;
 }
+function getProduct() {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT idproduct,idfactory,name_product FROM `product` ";
 
-
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+    );
+    $resultArr = array();
+    while ($result = $SQLPrepare->fetch(PDO::FETCH_ASSOC)) {
+        array_push($resultArr, $result);
+    }
+    return $resultArr;
+}
+function getUnit() {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT idunit,idunit,name_unit,price_unit,type_unit FROM `unit` WHERE type_unit = 'PRIMARY' ";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+    );
+    $resultArr = array();
+    while ($result = $SQLPrepare->fetch(PDO::FETCH_ASSOC)) {
+        array_push($resultArr, $result);
+    }
+    return $resultArr;
+}
 ?>
