@@ -64,6 +64,9 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                 }
                                 ?>
                             </span>
+                            <div class="alert alert-success" role="alert">
+                                <b>หมายเหตุ</b> ถ้ามีการเพิ่มข้อมูลการจ่ายเงินโรงงานแล้ว จะแก้ไขรอบการส่งไม่ได้ --> ตัดบิลแล้วกลับมาแก้รอบไม่ได้
+                            </div>
                             <!-- ตารางรอบการส่งสินค้า -->
                             <div class="panel panel-primary">
                                 <div class="panel-heading">
@@ -116,48 +119,49 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                             <!--End ตารางรอบการส่งสินค้า -->
                         </div>
                     </div>
+
                     <!-- /. PAGE INNER  -->
                 </div>
                 <!-- /. PAGE WRAPPER  -->
             </div>
         </div>
-            <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
-            <!-- JQUERY SCRIPTS -->
-            <script src="../assets/js/jquery-1.10.2.js"></script>
-            <!-- BOOTSTRAP SCRIPTS -->
-            <script src="../assets/js/bootstrap.min.js"></script>
-            <!-- METISMENU SCRIPTS -->
-            <script src="../assets/js/jquery.metisMenu.js"></script>
-            <!-- DATA TABLE SCRIPTS -->
-            <script src="../assets/js/dataTables/jquery.dataTables.js"></script>
-            <script src="../assets/js/dataTables/dataTables.bootstrap.js"></script>
+        <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
+        <!-- JQUERY SCRIPTS -->
+        <script src="../assets/js/jquery-1.10.2.js"></script>
+        <!-- BOOTSTRAP SCRIPTS -->
+        <script src="../assets/js/bootstrap.min.js"></script>
+        <!-- METISMENU SCRIPTS -->
+        <script src="../assets/js/jquery.metisMenu.js"></script>
+        <!-- DATA TABLE SCRIPTS -->
+        <script src="../assets/js/dataTables/jquery.dataTables.js"></script>
+        <script src="../assets/js/dataTables/dataTables.bootstrap.js"></script>
 
-            <script>
-                function getmonth() {
-                    var date_start = $("#date_start").val();
-                    var datearr_start = date_start.split("-");
-                    var date_end = $("#date_end").val();
-                    var datearr_end = date_end.split("-");
+        <script>
+            function getmonth() {
+                var date_start = $("#date_start").val();
+                var datearr_start = date_start.split("-");
+                var date_end = $("#date_end").val();
+                var datearr_end = date_end.split("-");
 //                    alert(datearr_start[1] + " " + datearr_end[1]);
-                    var optionhtml = '<option selected value="">Choose</option><option value="' + datearr_start[1] + '">' + datearr_start[1] + '</option><option value="' + datearr_end[1] + '">' + datearr_end[1] + '</option>';
-                    $("#monthly").html(optionhtml);
-                }
-            </script>
-            <script>
-                $(function () {
-                    $('[data-toggle="tooltip"]').tooltip();
-                });
-            </script>
-            <script>
-                $(document).ready(function () {
-                    $('#dataTables-example').dataTable();
-                });
-            </script>
-            <script>
-                $(document.body).on('hidden.bs.modal', function () {
-                    $('#myModal').removeData('bs.modal');
-                });
-            </script>
+                var optionhtml = '<option selected value="">Choose</option><option value="' + datearr_start[1] + '">' + datearr_start[1] + '</option><option value="' + datearr_end[1] + '">' + datearr_end[1] + '</option>';
+                $("#monthly").html(optionhtml);
+            }
+        </script>
+        <script>
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip();
+            });
+        </script>
+        <script>
+            $(document).ready(function () {
+                $('#dataTables-example').dataTable();
+            });
+        </script>
+        <script>
+            $(document.body).on('hidden.bs.modal', function () {
+                $('#myModal').removeData('bs.modal');
+            });
+        </script>
     </body>
 </html>
 

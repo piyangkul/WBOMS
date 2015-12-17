@@ -151,7 +151,7 @@ function getTransport_shipment() {
     return $resultArr;
 }
 
-//ใช้หน้าshipment3
+//ใช้หน้าadd_shipment3
 function getShipmentByID($idfactory,$idshipment_period) {
     $conn = dbconnect();
     $SQLCommand = "SELECT * FROM view_product_order_shipment LEFT JOIN view_transport_shipment "
@@ -159,6 +159,26 @@ function getShipmentByID($idfactory,$idshipment_period) {
             . "WHERE view_product_order_shipment.idfactory = :idfactory "
             . "AND (view_transport_shipment.idshipment_period = :idshipment_period "
             . "OR view_transport_shipment.idshipment_period IS NULL )";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idshipment_period" => $idshipment_period,
+                ":idfactory" => $idfactory
+            )
+    );
+    $resultArr = array();
+    while ($result = $SQLPrepare->fetch(PDO::FETCH_ASSOC)) {
+        array_push($resultArr, $result);
+    }
+    return $resultArr;
+}
+//ใช้หน้าdetail_shipment3
+function getDetailShipmentByID($idfactory,$idshipment_period) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT * FROM view_product_order_shipment LEFT JOIN view_transport_shipment "
+            . "ON view_product_order_shipment.idproduct_order = view_transport_shipment.product_order_idproduct_order "
+            . "WHERE view_product_order_shipment.idfactory = :idfactory "
+            . "AND view_transport_shipment.idshipment_period = :idshipment_period ";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
