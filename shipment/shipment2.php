@@ -74,9 +74,7 @@ if (isset($_GET['idshipment_period'])) {
                                 ?>
                             </span>
                             <div class="alert alert-success" role="alert">
-                                <h5><b>คำชี้แจง</b> : ตรวจสอบรายการสินค้าที่สั่งซื้อและเพิ่มข้อมูลการส่งสินค้า</h5>
-                                <h5><b>หมายเหตุ</b> : เมื่อเพิ่มข้อมูลการส่งสินค้าแล้ว คุณจะไม่สามารถแก้ไข หรือลบจำนวนสินค้าได้ เพราะเมื่อกดเพิ่มแล้ว ปุ่มแก้ไขและลบจะหายไป</h5>
-                            check vaild id shipment period
+                                <b>หมายเหตุ</b> ถ้ามีการเพิ่มข้อมูลการจ่ายเงินโรงงานแล้ว จะเพิ่มรายการที่ส่งไม่ได้ --> ตัดบิลแล้วกลับมาส่งสินค้าเพิ่มไม่ได้
                             </div>
                             <!-- ตารางรายการสินค้า -->
                             <div class="panel panel-primary">
@@ -90,7 +88,7 @@ if (isset($_GET['idshipment_period'])) {
                                                 <tr>
                                                     <th><div align="center">ลำดับ</div></th>
                                                     <th><div align="center">โรงงาน</div></th>
-                                                    <th><div align="center">จำนวนรายการที่สั่ง</div></th>
+                                                    <th><div align="center">จำนวนรายการที่ส่ง</div></th>
                                                     <th><div align="center">ยอดเงินรวมที่โรงงานเรียกเก็บ</div></th>
                                                     <th><div align="center">การกระทำ</div></th>
                                                 </tr>
@@ -127,9 +125,9 @@ if (isset($_GET['idshipment_period'])) {
                                                             <a href="add_shipment3.php?idshipment_period=<?php echo $idshipment_period; ?>&idfactory=<?php echo $val_idfactory; ?>" class="btn btn-info " data-toggle="tooltip" title="เพิ่ม">
                                                                 <span class="glyphicon glyphicon-plus"></span>
                                                             </a>
-                                                            <a href="edit_shipment3.php?idshipment_period=<?php echo $idshipment_period; ?>&idfactory=<?php echo $val_idfactory; ?>" class="btn btn-warning " data-toggle="tooltip" title="แก้ไข">
+    <!--                                                            <a href="edit_shipment3.php?idshipment_period=<?php echo $idshipment_period; ?>&idfactory=<?php echo $val_idfactory; ?>" class="btn btn-warning " data-toggle="tooltip" title="แก้ไข">
                                                                 <span class="glyphicon glyphicon-edit"></span>
-                                                            </a>
+                                                            </a>-->
                                                         </td>
                                                     </tr>
 
@@ -147,7 +145,9 @@ if (isset($_GET['idshipment_period'])) {
                         </div>
                     </div>
                 </div>
-
+                <div class="alert alert-success" role="alert">
+                    check vaild id shipment period
+                </div>
                 <!-- /. PAGE INNER  -->
             </div>
             <!-- /. PAGE WRAPPER  -->
