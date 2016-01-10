@@ -14,6 +14,11 @@ function getShop() {
     }
     return $resultArr;
 }
+function search_product(){
+    $conn = dbconnect();
+    $SQLCommand = "S";
+    
+}
 function getFactory() {
     $conn = dbconnect();
     $SQLCommand = "SELECT `idfactory`, "
@@ -23,7 +28,8 @@ function getFactory() {
             . "`address_factory`, "
             . "`contact_factory`, "
             . "`difference_amount_factory`, "
-            . "`detail_factory` FROM `factory` ";
+            . "`detail_factory` FROM `factory` "
+            . "ORDER BY name_factory;";
 
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
@@ -36,7 +42,7 @@ function getFactory() {
 }
 function getProduct() {
     $conn = dbconnect();
-    $SQLCommand = "SELECT idproduct,idfactory,name_product FROM `product` ";
+    $SQLCommand = "SELECT idproduct,idfactory,name_product FROM `product` ORDER BY name_product";
 
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
@@ -59,4 +65,9 @@ function getUnit() {
     }
     return $resultArr;
 }
-?>
+
+function getUnit_cal() {
+  echo "hello world";
+}
+
+
