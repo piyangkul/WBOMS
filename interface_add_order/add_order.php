@@ -7,6 +7,7 @@ $p = 'history_order';
 if (isset($_GET['p']) && !empty($_GET['p'])) {
     $p = $_GET['p'];
 }
+require_once '/function/func_addorder.php';
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -66,36 +67,38 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                             <form class="form">
                                                 <div class="form-group">
                                                     <div>
+                                                        <input type="button" onclick="data()" value="Try"/>
                                                         <label for="disabled_no">No.บิล</label>
                                                         <input type="text" class="form-control" id="disabled_no" placeholder="ID บิล">
                                                     </div>
                                                     <div >
-                                                        <p>วันที่สั่งซื้อ <input type="text" id="datepicker" ></p>
+                                                        <p>วันที่สั่งซื้อ <input type="date" class="form-control" ></p>
+                                                        <input type="time" class="form-control" >
                                                     </div>
-
-                                                    <div>
-                                                        <script>
-
-                                                            var currentTime = new Date();
-                                                            var hours = currentTime.getHours();
-                                                            var minutes = currentTime.getMinutes();
-                                                            if (minutes < 10) {
-                                                                minutes = "0" + minutes;
-                                                            }
-                                                        </script>
-                                                        <p>เวลาสั่งซื้อ <input type="text" id="time" >
-                                                                <script>
-                                                                    document.getElementById("time").value = hours + ":" + minutes + " ";
-                                                                    if (hours > 11) {
-                                                                        document.write("PM");
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        document.write("AM");
-                                                                    }
-                                                                </script></p>
-
-                                                    </div>
+                                                    <!--
+                                                                                                        <div>
+                                                                                                            <script>
+                                                    
+                                                                                                                var currentTime = new Date();
+                                                                                                                var hours = currentTime.getHours();
+                                                                                                                var minutes = currentTime.getMinutes();
+                                                                                                                if (minutes < 10) {
+                                                                                                                    minutes = "0" + minutes;
+                                                                                                                }
+                                                                                                            </script>
+                                                                                                            <p>เวลาสั่งซื้อ <input type="text" id="time" >
+                                                                                                                    <script>
+                                                                                                                        document.getElementById("time").value = hours + ":" + minutes + " ";
+                                                                                                                        if (hours > 11) {
+                                                                                                                            document.write("PM");
+                                                                                                                        }
+                                                                                                                        else
+                                                                                                                        {
+                                                                                                                            document.write("AM");
+                                                                                                                        }
+                                                                                                                    </script></p>
+                                                    
+                                                                                                        </div>-->
                                                     <div>
                                                         <label for="disabled_shop">ชื่อร้านค้า</label>
                                                         <select class="form-control" id="shopName" name="shopName" required >
@@ -132,14 +135,14 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                     </div>
                                     <div class="panel-body">
                                         <div class="table-responsive">
-                                            
+
                                             <a href="popup_addproduct_order.php" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">
                                                 <span class="glyphicon glyphicon-plus"></span> เพิ่มสินค้า
                                             </a>
                                             <table class="table table-striped table-bordered table-hover text-center" id="dataTables-example">
                                                 <thead>
                                                     <tr>
-                                                        <th><div align="center">รายการ</div></th>
+                                                        <th><div align="center">ลำดับ</div></th>
                                                         <th><div align="center">ชื่อสินค้า</div></th>
                                                         <th><div align="center">ชื่อโรงงาน</div></th>
                                                         <th><div align="center">หน่วย</div></th>
@@ -173,10 +176,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-4"></div>
-                                    <a href="add_order.php" class="btn btn-info btn-lg">
-                                        <span class="glyphicon glyphicon-plus"></span> สั่งต่อ
-                                    </a>
+                                    <div class="col-md-4"></div>                              
                                     <a href="../interface_history_order/history_order.php" class="btn btn-warning btn-lg text-center">
                                         <span class="glyphicon glyphicon-floppy-save"></span> บันทึก
                                     </a>
@@ -204,7 +204,6 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
         <!-- CUSTOM SCRIPTS -->
         <script src="../assets/js/custom.js"></script>
 
-
     </body>
 </html>
 <!-- Modalรายละเอียด -->
@@ -229,3 +228,25 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
         </div>
     </div>
 </div>
+
+<script>
+                                                            function updateTotal() {
+                                                                var x = document.getElementById("DifferencePer").value;
+                                                                if (x.length > 1) {
+                                                                    document.getElementById("DifferenceBath").disabled = true;
+                                                                }
+                                                                var total = x * 10;
+                                                                document.getElementById("total").value = total;
+                                                            }
+                                                            function updateAmount() {
+
+                                                                var amount = document.getElementById("AmountProduct").value;
+                                                                var total = 560 * amount;
+                                                                document.getElementById("total_price").value = total;
+                                                            }
+                                                            function data() {
+                                                                //var l = <?php getUnit_cal(); ?>;
+                                                                alert("l");
+                                                                return false;
+                                                            }
+</script>
