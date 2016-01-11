@@ -2,13 +2,22 @@
 require_once 'function/func_shipment.php';
 ?>
 <?php
-$idorder_p = $_GET['idorder_p'];
-$idproduct_order = $_GET['idproduct_order'];
-$getProduct_order = getProduct_orderByID($idproduct_order);
-$val_name_factory = $getProduct_order['name_factory'];
-$val_idorder_p = $getProduct_order['idorder_p'];
-$val_date_order_p = $getProduct_order['date_order_p'];
-$val_name_shop = $getProduct_order['name_shop'];
+//$idorder_p = $_GET['idorder_p'];
+//$idproduct_order = $_GET['idproduct_order'];
+//$getProduct_order = getProduct_orderByID($idproduct_order);
+//$val_name_factory = $getProduct_order['name_factory'];
+//$val_idorder_p = $getProduct_order['idorder_p'];
+//$val_date_order_p = $getProduct_order['date_order_p'];
+//$val_name_shop = $getProduct_order['name_shop'];
+$idorder_transport = $_GET['idorder_transport'];
+$idshipment_period = $_GET['idshipment_period'];
+$idfactory = $_GET['idfactory'];
+$getShipmentDetailByID = getShipmentDetailByID($idorder_transport, $idshipment_period, $idfactory);
+$val_date_transport = $getShipmentDetailByID['date_transport'];
+$val_name_transport = $getShipmentDetailByID['name_transport'];
+$val_volume = $getShipmentDetailByID['volume'];
+$val_number = $getShipmentDetailByID['number'];
+$val_price_transport = $getShipmentDetailByID['price_transport'];
 ?>
 ﻿<form class="form">
     <div class="modal-header">
@@ -20,34 +29,47 @@ $val_name_shop = $getProduct_order['name_shop'];
             <div class="form-group col-xs-12">
                 <div class="form-group col-xs-12">
                 </div>
+                <div class="alert alert-danger" role="alert">
+                    1.กดได้อันเดียว
+                    2.กรณี2สินค้าส่งพร้อมกัน ให้แสดงข้อมูลสินค้ามาทั้ง2อย่างไม่ได้ (ตารางรายการสินค้าจากบิลขนส่ง)
+                </div>
                 <div class="form-group col-xs-12">
-                    <label for="name_factory">จากโรงงาน</label>
+                    <label for="date_transport">วันที่ส่งสินค้า</label>
                     <div class="form-group input-group">
-                        <span class="input-group-addon"><i class="fa fa-building"></i></span>
-                        <input type="text" class="form-control" id="name_factory" name="name_factory" value="<?php echo $val_name_factory; ?>"disabled="">
+                        <span class="input-group-addon"><i class="fa fa-calendar-o"  ></i></span>
+                        <input type="date" class="form-control" name="date_transport" value="<?php echo $val_date_transport; ?>" disabled/>
                     </div>
                 </div>
                 <div class="form-group col-xs-12">
-                    <label for="idorder_p">จากเลขที่บิลสั่งซื้อ</label>
+                    <label for="name_transport">ชื่อบริษัทขนส่ง</label>
                     <div class="form-group input-group">
-                        <span class="input-group-addon"><i class="fa fa-file-text-o"></i></span>
-                        <input type="text" class="form-control" id="idorder_p" name="idorder_p" value="<?php echo $val_idorder_p; ?>"disabled="">
+                        <span class="input-group-addon"><i class="fa fa-calendar-o"  ></i></span>
+                        <input type="text" class="form-control" name="name_transport" value="<?php echo $val_name_transport; ?>" disabled/>
                     </div>
                 </div>
                 <div class="form-group col-xs-12">
-                    <label for="date_order_p">วันที่สั่ง</label>
+                    <label for="volume">เล่มที่</label>
                     <div class="form-group input-group">
-                        <span class="input-group-addon"><i class="fa fa-calendar-o"></i></span>
-                        <input type="date" class="form-control" id="date_order_p" name="date_order_p" value="<?php echo $val_date_order_p; ?>"disabled="" >
+                        <span class="input-group-addon"><i class="fa fa-circle-o-notch"  ></i></span>
+                        <input type="text" class="form-control" name="volume" value="<?php echo $val_volume; ?>" disabled/>
                     </div>
                 </div>
                 <div class="form-group col-xs-12">
-                    <label for="name_shop">ชื่อร้านค้า</label>
+                    <label for="number">เลขที่</label>
                     <div class="form-group input-group">
-                        <span class="input-group-addon"><i class="fa fa-shopping-cart"></i></span>
-                        <input type="text" class="form-control" id="name_shop" name="name_shop" value="<?php echo $val_name_shop; ?>"disabled="" >
+                        <span class="input-group-addon"><i class="fa fa-circle-o-notch"  ></i></span>
+                        <input type="text" class="form-control" name="number" value="<?php echo $val_number; ?>" disabled/>
                     </div>
                 </div>
+                <div class="form-group col-xs-12">
+                    <label for="price_transport">ค่าส่งสินค้า</label>
+                    <div class="form-group input-group">
+                        <span class="input-group-addon"><i class="fa fa-dollar" ></i></span>
+                        <input type="text" class="form-control" id="price_transport" name ="price_transport" value="<?php echo $val_price_transport; ?>" disabled/>
+                        <span class="input-group-addon">.00</span>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
@@ -57,48 +79,82 @@ $val_name_shop = $getProduct_order['name_shop'];
         <div class = "col-md-10 col-sm-10 ">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <label>ตารางรายการสินค้าจากบิลสั่งซื้อ</label>
+                    <label>ตารางรายการสินค้าจากบิลขนส่ง</label>
                 </div>
                 <div class="panel-body">
                     <div class="table-responsive">
                         <table class="table table-striped table-bordered table-hover text-center" id="dataTables-example">
                             <thead>
-                                <tr>
+<!--                                <tr>
                                     <th><div align="center">ลำดับ</div></th>
                             <th><div align="center">ชื่อสินค้า</div></th>
                             <th><div align="center">ราคาเปิด</div></th>
                             <th><div align="center">จำนวน</div></th>
                             <th><div align="center">ต้นทุนลด</div></th>
                             <th><div align="center">ราคาต้นทุน</div></th>
+                            </tr>-->
+                                <tr>
+                                    <th rowspan="2" valign="middle"><div align="center">ลำดับ</div></th>
+                            <th rowspan="2"><div align="center">ชื่อสินค้า</div></th>
+                            <th rowspan="2"><div align="center">จำนวน</div></th>
+                            <th colspan="5"><div align="center">ราคา/หน่วย</div></th>
+                            <th colspan="3"><div align="center">ราคาทั้งหมด</div></th>
                             </tr>
+
+                            <tr>
+                                <th><div align="center">ราคาเปิด</div></th>
+                            <th><div align="center">ต้นทุนลด</div></th>
+                            <th><div align="center">ราคาต้นทุน</div></th>
+                            <th><div align="center">ขายลด</div></th>
+                            <th><div align="center">ราคาขาย</div></th>
+                            <th><div align="center">ราคาเปิดรวม</div></th>
+                            <th><div align="center">ราคาต้นทุนรวม</div></th>
+                            <th><div align="center">ราคาขายรวม</div></th>
+                            </tr>
+
                             </thead>
                             <tbody>
                                 <?php
-                                $getProductDetail_shipment = getProductDetail_shipment($idorder_p);
+                                $getProductDetail_shipment = getProductDetail_shipment($idshipment_period, $idfactory, $idorder_transport);
                                 $i = 0;
                                 foreach ($getProductDetail_shipment as $value) {
                                     $i++;
                                     $val_name_product = $value['name_product'];
+                                    $val_amount_product_order = $value['amount_product_order'];
                                     $val_name_unit = $value['name_unit'];
-                                    $val_price_unit = $value['price_unit'];
+                                    $val_price_unit = $value['price_unit']; //ราคาเปิด
+
                                     if ($value['difference_amount_product'] == null) {
                                         $val_difference_amount = $value['difference_amount_factory'];
                                     } else {
                                         $val_difference_amount = $value['difference_amount_product'];
                                     }
-                                    $cost = $val_price_unit - (($val_difference_amount / 100.0) * $val_price_unit);                                    
+                                    $cost = $val_price_unit - (($val_difference_amount / 100.0) * $val_price_unit);
+
+                                    $val_difference_product_order = $value['difference_product_order']; //ขายลด
+                                    $val_type_product_order = $value['type_product_order'];
+                                    if ($value['type_product_order'] == "PERCENT") {
+                                        $cost2 = $val_price_unit - (($val_difference_product_order / 100.0) * $val_price_unit);
+                                    } else {
+                                        $cost2 = $val_price_unit - $val_difference_product_order;
+                                    }
                                     ?>
                                     <tr>
                                         <td><?php echo $i; ?></td>
                                         <td><?php echo $val_name_product; ?></td>
-                                        <td class="text-right"><?php echo number_format($val_price_unit, 2, '.', ''); ?></td>
-                                        <td><?php echo '1' + $val_name_unit; ?></td>
-                                        <td><?php echo $val_difference_amount . "%"; ?></td>
-                                        <td class="text-right"><?php echo number_format($cost, 2, '.', '') ?></td>
+                                        <td><?php echo $val_amount_product_order . " " . $val_name_unit; ?></td><!-- จำนวน-->
+                                        <td class="text-right"><?php echo number_format($val_price_unit, 2, '.', ''); ?></td><!-- ราคาเปิด-->
+                                        <td><?php echo $val_difference_amount . "%"; ?></td><!-- ต้นทุนลด-->                                      
+                                        <td class="text-right"><?php echo number_format($cost, 2, '.', '') ?></td><!-- ราคาต้นทุน-->
+                                        <td><?php echo $val_difference_product_order; ?><?php echo ($val_type_product_order == "PERCENT") ? "%" : "฿"; ?></td>
+                                        <td><?php echo $cost2; ?></td>
+
+
                                     </tr>
-<?php } ?>
+                                <?php } ?>
                         </table>
                     </div>
+                    <div class="col-md-4 col-md-offset-6"><b>รวม ราคาขายของบิลขนส่ง</b></div>
                 </div>
             </div>
         </div>
@@ -107,5 +163,6 @@ $val_name_shop = $getProduct_order['name_shop'];
 
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="submit" name="sumbit" class="btn btn-primary">Confirm</button>
     </div>
 </form>

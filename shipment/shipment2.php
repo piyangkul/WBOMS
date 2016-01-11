@@ -52,6 +52,9 @@ if (isset($_GET['idshipment_period'])) {
                     </div>
                     <!-- /. ROW  -->
                     <hr />
+                    <a href="javascript: history.go(-1)" class="btn btn-danger btn-lg">
+                        <span class="fa fa-arrow-circle-left"></span> Back
+                    </a>
                     <div class="row">
                         <div class="col-md-12">
                             <div>
@@ -76,25 +79,50 @@ if (isset($_GET['idshipment_period'])) {
                             <div class="alert alert-success" role="alert">
                                 <b>หมายเหตุ</b> ถ้ามีการเพิ่มข้อมูลการจ่ายเงินโรงงานแล้ว จะเพิ่มรายการที่ส่งไม่ได้ --> ตัดบิลแล้วกลับมาส่งสินค้าเพิ่มไม่ได้
                             </div>
+                            <div class="alert alert-danger" role="alert">แก้ 1.เพิ่มจำนวนที่สั่งคงค้าง 3.มีเงื่อนไขการกดปุ่มการจ่ายเงินโรงงาน 4.รวมปุ่มเพิ่ม/แก้ไขการจ่ายเงินรง.เป็นปุ่มการจ่ายเงินรง. 5.กดปุ่มเสร็จสิ้น เมื่อทำโรงงานนั้นเสร็จแล้ว โดยมีเงื่อนไขต้องผ่าน2สถานะมาก่อน </div>
                             <!-- ตารางรายการสินค้า -->
                             <div class="panel panel-primary">
                                 <div class="panel-heading">
-                                    <h4>ตารางรายการสินค้า</h4>
+                                    <h4>ตารางรายการสินค้า(แยกตามโรงงาน)</h4>
                                 </div>
                                 <div class="panel-body">
                                     <div class="table-responsive">
                                         <table class="table table-striped table-bordered table-hover text-center " id="dataTables-example">
                                             <thead>
                                                 <tr>
+                                                    <th><div align="center">เสร็จสิ้น</div></th>
                                                     <th><div align="center">ลำดับ</div></th>
                                                     <th><div align="center">โรงงาน</div></th>
-                                                    <th><div align="center">จำนวนรายการที่ส่ง</div></th>
+                                                    <th><div align="center">จำนวนรายการที่สั่งคงค้าง/ส่ง</div></th>
                                                     <th><div align="center">ยอดเงินรวมที่โรงงานเรียกเก็บ</div></th>
+                                                    <th><div align="center">สถานะคำสั่งซื้อ</div></th>
                                                     <th><div align="center">การกระทำ</div></th>
                                                 </tr>
 
                                             </thead>
                                             <tbody>
+                                                <?php
+                                                $getCountSumProduct_order = getCountSumProduct_order(); //(จากproduct_orderของทุกรง.ของทุกรอบการส่ง)
+                                                foreach ($getCountSumProduct_order as $value) {
+                                                    $val_CountSumProduct_order = $value['CountSumProduct_order'];
+                                                    $val_test1 = $value['name_factory'];
+                                                }
+
+                                                $getCountSendProduct_order = getCountSendProduct_order(); //(จากproduct_orderของทุกรง.ที่ถูกส่งแล้ว)
+                                                foreach ($getCountSendProduct_order as $value) {
+                                                    $val_CountSendProduct_order = $value['CountSendProduct_order'];
+                                                    $val_test2 = $value['name_factory'];
+                                                }
+                                                echo $val_test1;
+                                                echo $val_test2;
+                                                echo $val_CountSumProduct_order;
+                                                //$val_CountProduct_order = $val_CountSumProduct_order - $val_CountSendProduct_order;
+//                                                    if ($val_CountProduct_order == 0) {
+//                                                        $val_CountProduct_order = "-";
+//                                                    } else {
+//                                                        $val_CountProduct_order = $val_CountProduct_order;
+//                                                    }
+                                                ?>
                                                 <?php
                                                 //มีเงื่อนไข การกำหนดช่วงเวลาที่สั่ง
                                                 $getFactoryByIDshipment_period = getFactoryByIDshipment_period2($idshipment_period);
@@ -113,21 +141,39 @@ if (isset($_GET['idshipment_period'])) {
                                                         $val_price = "-";
                                                     }
                                                     ?>
+
                                                     <tr>
+                                                        <td>
+                                                            <a href="#" class="btn btn-info " data-toggle="tooltip" title="เปลี่ยนสถานะเป็นเสร็จสิ้น">
+                                                                <span class="glyphicon glyphicon-ok"></span>
+                                                            </a>
+                                                        </td>
                                                         <td><?php echo $i; ?></td>
                                                         <td><?php echo $val_name_factory; ?></td>
-                                                        <td><?php echo $val_CountCheck; ?></td>
+                                                        <td><?php echo $val_CountSumProduct_order . "/" . $val_CountCheck; ?></td>
                                                         <td><?php echo $val_price; ?></td>
                                                         <td>
-                                                            <a href="detail_shipment3.php?idshipment_period=<?php echo $idshipment_period; ?>&idfactory=<?php echo $val_idfactory; ?>" class="btn btn-success " data-toggle="tooltip" title="รายละเอียด">
+
+                                                        </td>
+                                                        <td>
+    <!--                                                            <a href="detail_shipment3.php?idshipment_period=<?php echo $idshipment_period; ?>&idfactory=<?php echo $val_idfactory; ?>" class="btn btn-success " data-toggle="tooltip" title="รายละเอียด">
                                                                 <span class="glyphicon glyphicon-list-alt"></span>
-                                                            </a>
-                                                            <a href="add_shipment3.php?idshipment_period=<?php echo $idshipment_period; ?>&idfactory=<?php echo $val_idfactory; ?>" class="btn btn-info " data-toggle="tooltip" title="เพิ่ม">
-                                                                <span class="glyphicon glyphicon-plus"></span>
+                                                            </a>-->
+                                                            <a href="add_shipment3.php?idshipment_period=<?php echo $idshipment_period; ?>&idfactory=<?php echo $val_idfactory; ?>" class="btn btn-warning " data-toggle="tooltip" title="จัดการการส่งสินค้า">
+                                                                <span class="glyphicon glyphicon-edit"></span>
                                                             </a>
     <!--                                                            <a href="edit_shipment3.php?idshipment_period=<?php echo $idshipment_period; ?>&idfactory=<?php echo $val_idfactory; ?>" class="btn btn-warning " data-toggle="tooltip" title="แก้ไข">
                                                                 <span class="glyphicon glyphicon-edit"></span>
                                                             </a>-->
+                                                            <?php if ($val_date_pay_factory == NULL) { ?> <!--ไม่มีข้อมูลการจ่ายเงิน-->
+                                                                <a href = "popup_add_payfactory.php" class = "btn btn-info " data-toggle = "modal" data-target = "#myModal" data-toggle = "tooltip" title = "การจ่ายโรงงาน">
+                                                                    <span class = "fa fa-plus "></span><span class = "fa fa-building-o"></span>
+                                                                </a>
+                                                            <?php } else { ?>
+                                                                <a href = "popup_edit_payfactory.php" class = "btn btn-info " data-toggle = "modal" data-target = "#myModal" data-toggle = "tooltip" title = "การจ่ายโรงงาน">
+                                                                    <span class = "glyphicon glyphicon-edit"></span><span class = "fa fa-building-o"></span>
+                                                                </a>
+                                                            <?php } ?>
                                                         </td>
                                                     </tr>
 
@@ -145,9 +191,9 @@ if (isset($_GET['idshipment_period'])) {
                         </div>
                     </div>
                 </div>
-                <div class="alert alert-success" role="alert">
-                    check vaild id shipment period
-                </div>
+                <!--                <div class="alert alert-success" role="alert">
+                                    check vaild id shipment period
+                                </div>-->
                 <!-- /. PAGE INNER  -->
             </div>
             <!-- /. PAGE WRAPPER  -->

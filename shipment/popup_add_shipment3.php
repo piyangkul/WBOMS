@@ -16,6 +16,7 @@ $val_name_factory = $getFactory['name_factory'];
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">เพิ่ม/อัพเดท ข้อมูลการส่งสินค้า</h4>
     </div>
+    <!--<div class="alert alert-danger" role="alert">แก้ กำหนดวันที่ให้ตรงกับรอบ </div>-->
     <div class="row">
         <div class="col-md-12 col-sm-12 ">
             <div class="form-group col-xs-12">
@@ -25,7 +26,7 @@ $val_name_factory = $getFactory['name_factory'];
                     <label for="date_transport">วันที่ส่งสินค้า<label class="text-danger">*</label></label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-calendar-o"  ></i></span>
-                        <input type="date" class="form-control" id="date_transport" name="date_transport" required/>
+                        <input type="date" class="form-control" min="<?php echo date("$val_date_start");?>" max="<?php echo date("$val_date_end");?>" name="date_transport" required/>
                     </div>
                 </div>
                 <div class="form-group col-xs-12">
@@ -61,14 +62,22 @@ $val_name_factory = $getFactory['name_factory'];
                     </div>
                 </div>
                 <div class="form-group col-xs-12">
+                    <label for="price_transport">ค่าส่งสินค้า</label>
+                    <div class="form-group input-group">
+                        <span class="input-group-addon"><i class="fa fa-dollar" ></i></span>
+                        <input type="text" class="form-control" id="price_transport" name ="price_transport" value="0" />
+                        <span class="input-group-addon">.00</span>
+                    </div>
+                </div>
+<!--                <div class="form-group col-xs-12">
                     <input type="checkbox" onchange="chkPrice_transport()" id="check_price" value="" />
                     <label for="price_transport">ค่าส่งสินค้า</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-dollar" ></i></span>
-                        <input type="text" onchange="chkPrice_transport()" class="form-control" id="price_transport" placeholder="กรุณากรอกค่าส่งสินค้า" name ="price_transport" disabled/>
+                        <input type="text" onchange="chkPrice_transport()" class="form-control" id="price_transport" placeholder="กรุณากรอกค่าส่งสินค้า" name ="price_transport" value="0" disabled/>
                         <span class="input-group-addon">.00</span>
                     </div>
-                </div>
+                </div>-->
 
             </div>
         </div>
@@ -79,7 +88,7 @@ $val_name_factory = $getFactory['name_factory'];
                 <!-- ตารางรายการสินค้า -->
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <label>ตารางรายการสินค้า</label>
+                        <label>ตารางรายการสินค้าที่สั่ง</label>
                     </div>
                     <div class="panel-body">
                         <div class="table-responsive">
@@ -137,7 +146,7 @@ $val_name_factory = $getFactory['name_factory'];
     <button type="submit" name="sumbit" class="btn btn-primary">Save changes</button>
 </div>
 </form>
-<script>
+<!--<script>
     $(document).ready(function () {
         var check_price = $("#check_price:checked").length > 0;
         var price_transport = $("#price_transport").val();
@@ -159,4 +168,4 @@ $val_name_factory = $getFactory['name_factory'];
             $("#price_transport").prop('disabled', true);
         }
     }
-</script>
+</script>-->
