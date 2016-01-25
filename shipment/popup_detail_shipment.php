@@ -9,9 +9,15 @@ require_once 'function/func_shipment.php';
 //$val_idorder_p = $getProduct_order['idorder_p'];
 //$val_date_order_p = $getProduct_order['date_order_p'];
 //$val_name_shop = $getProduct_order['name_shop'];
+$status_shipment = $_GET['status_shipment'];
 $idorder_transport = $_GET['idorder_transport'];
 $idshipment_period = $_GET['idshipment_period'];
 $idfactory = $_GET['idfactory'];
+$idtransport = $_GET['idtransport'];
+$volume = $_GET['volume'];
+$number = $_GET['number'];
+$price_transport = $_GET['price_transport'];
+
 $getShipmentDetailByID = getShipmentDetailByID($idorder_transport, $idshipment_period, $idfactory);
 $val_date_transport = $getShipmentDetailByID['date_transport'];
 $val_name_transport = $getShipmentDetailByID['name_transport'];
@@ -19,7 +25,7 @@ $val_volume = $getShipmentDetailByID['volume'];
 $val_number = $getShipmentDetailByID['number'];
 $val_price_transport = $getShipmentDetailByID['price_transport'];
 ?>
-﻿<form class="form">
+﻿<form class="form" action="action/action_status_check_price.php?idorder_transport=<?php echo $idorder_transport; ?>&idshipment_period=<?php echo $idshipment_period; ?>&idfactory=<?php echo $idfactory; ?>" method="post">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">รายละเอียดสินค้าตามบิลขนส่ง</h4>
@@ -29,10 +35,10 @@ $val_price_transport = $getShipmentDetailByID['price_transport'];
             <div class="form-group col-xs-12">
                 <div class="form-group col-xs-12">
                 </div>
-                <div class="alert alert-danger" role="alert">
+<!--                <div class="alert alert-danger" role="alert">
                     1.กดได้อันเดียว
                     2.กรณี2สินค้าส่งพร้อมกัน ให้แสดงข้อมูลสินค้ามาทั้ง2อย่างไม่ได้ (ตารางรายการสินค้าจากบิลขนส่ง)
-                </div>
+                </div>-->
                 <div class="form-group col-xs-12">
                     <label for="date_transport">วันที่ส่งสินค้า</label>
                     <div class="form-group input-group">
@@ -115,7 +121,8 @@ $val_price_transport = $getShipmentDetailByID['price_transport'];
                             </thead>
                             <tbody>
                                 <?php
-                                $getProductDetail_shipment = getProductDetail_shipment($idshipment_period, $idfactory, $idorder_transport);
+                                $sum_sale_transport = 0;
+                                $getProductDetail_shipment = getProductDetail_shipment($idshipment_period, $idfactory, $idtransport, $volume, $number, $price_transport);
                                 $i = 0;
                                 foreach ($getProductDetail_shipment as $value) {
                                     $i++;
@@ -147,15 +154,18 @@ $val_price_transport = $getShipmentDetailByID['price_transport'];
                                         <td><?php echo $val_difference_amount . "%"; ?></td><!-- ต้นทุนลด-->                                      
                                         <td class="text-right"><?php echo number_format($cost, 2, '.', '') ?></td><!-- ราคาต้นทุน-->
                                         <td><?php echo $val_difference_product_order; ?><?php echo ($val_type_product_order == "PERCENT") ? "%" : "฿"; ?></td>
-                                        <td><?php echo $cost2; ?></td>
-
-
+                                        <td><?php echo $cost2; ?></td> <!-- ราคาขาย -->
+                                        <td><?php echo $val_price_unit * $val_amount_product_order; ?></td>
+                                        <td><?php echo $cost * $val_amount_product_order; ?></td> <!-- ราคาต้นทุนรวม--> 
+                                        <td><?php echo $cost2 * $val_amount_product_order; ?></td> <!-- ราคาขายรวม--> 
+                                        <?php $sum_sale_transport = $sum_sale_transport + $cost2 * $val_amount_product_order; ?>
                                     </tr>
                                 <?php } ?>
                         </table>
                     </div>
-                    <div class="col-md-4 col-md-offset-6"><b>รวม ราคาขายของบิลขนส่ง</b></div>
+                    <div class="col-md-6 col-md-offset-6">รวม ราคาขายของบิลขนส่ง &nbsp;&nbsp; <b><?php echo $sum_sale_transport; ?></b> &nbsp;&nbsp; บาท </div>
                 </div>
+
             </div>
         </div>
     </div>
@@ -163,6 +173,36 @@ $val_price_transport = $getShipmentDetailByID['price_transport'];
 
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="submit" name="sumbit" class="btn btn-primary">Confirm</button>
+        <?php if ($status_shipment == 'add_shipment') { ?> <!-- สถานะรอเพิ่มข้อมูลการส่ง Lv1 --> 
+            <button type="submit" name="sumbit" class="btn btn-primary" >Confirm</button>
+        <?php } else {
+            ?>
+            <button type = "submit" name = "sumbit" class = "btn btn-primary" disabled>Confirm</button>
+            <br><?php echo '<center><h4 class="text-danger">ไม่สามารถกดConfirmได้ เนื่องจากคุณทำการตรวจสอบไปแล้ว</h4></center>'; ?><!-- สถานะรอตรวจสอบยอดบิล Lv2 -->
+         
+ <?php }
+        ?>
     </div>
 </form>
+<!-- เปลี่ยนสถานะ -->
+<!--<div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+<?php //if ($status_shipment == 'add_shipment') { ?>  สถานะรอเพิ่มข้อมูลการส่ง Lv1  
+            <button type="submit" name="sumbit" class="btn btn-primary" >Confirm</button>
+<?php
+// } elseif ($status_shipment == NULL) {
+//            echo 'คุณไม่สามารถตรวจสอบได้ เนื่องจากคุณยังอยู่ในสถานะ1';
+//            
+?>
+            <button type = "submit" name = "sumbit" class = "btn btn-primary" disabled>Confirm</button>
+<?php
+//} else {
+//            
+?>
+<?php // echo 'คุณไม่สามารถตรวจสอบได้ เนื่องจากคุณทำการตรวจสอบไปแล้ว';  ?>
+            <button type = "submit" name = "sumbit" class = "btn btn-primary" disabled>Confirm</button>
+<?php
+//}
+//        
+?>
+    </div>-->
