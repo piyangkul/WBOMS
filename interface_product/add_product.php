@@ -79,7 +79,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                             </div>
                                             <div class="form-group">
                                                 <label for="porductDetail">รายละเอียด</label>
-                                                <textarea class="form-control" id="porductDetail" name="porductDetail" placeholder="รายละเอียดของสินค้า"></textarea>
+                                                <textarea rows="4" cols="50" id="detail_order" name="detail_order" class="form-control" placeholder="กรอกรายละเอียดอื่นๆ" value="" /></textarea>
                                             </div>
                                         </div>
                                     </div>

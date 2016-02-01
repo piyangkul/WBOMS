@@ -46,148 +46,128 @@ require_once '/function/func_addorder.php';
 
             <div id="page-wrapper" >
                 <div id="page-inner">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h2> Add Order </h2>   
-                            <h5> เพิ่มคำสั่งซื้อ </h5>
+                    <form action="action/action_addOrder.php" method="post"> 
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h2> Add Order </h2>   
+                                <h5> เพิ่มคำสั่งซื้อ </h5>
 
-                        </div>
-                    </div>
-                    <!-- /. ROW  -->
-                    <hr />
-                    <div class="row">
-                        <div class="col-md-3"></div>
-                        <div class="col-md-5">
-                            <!-- บิล -->
-                            <div class="panel panel-default">
-
-                                <div class="panel-heading ">
-                                    <div class="table-responsive">
-                                        <form class="form" id="LoginForm" method="post" action="warning.php">
-                                            <form class="form">
-                                                <div class="form-group">
-                                                    <div>
-                                                        <input type="button" onclick="data()" value="Try"/>
-                                                        <label for="disabled_no">No.บิล</label>
-                                                        <input type="text" class="form-control" id="disabled_no" placeholder="ID บิล">
-                                                    </div>
-                                                    <div >
-                                                        <p>วันที่สั่งซื้อ <input type="date" class="form-control" ></p>
-                                                        <input type="time" class="form-control" >
-                                                    </div>
-                                                    <!--
-                                                                                                        <div>
-                                                                                                            <script>
-                                                    
-                                                                                                                var currentTime = new Date();
-                                                                                                                var hours = currentTime.getHours();
-                                                                                                                var minutes = currentTime.getMinutes();
-                                                                                                                if (minutes < 10) {
-                                                                                                                    minutes = "0" + minutes;
-                                                                                                                }
-                                                                                                            </script>
-                                                                                                            <p>เวลาสั่งซื้อ <input type="text" id="time" >
-                                                                                                                    <script>
-                                                                                                                        document.getElementById("time").value = hours + ":" + minutes + " ";
-                                                                                                                        if (hours > 11) {
-                                                                                                                            document.write("PM");
-                                                                                                                        }
-                                                                                                                        else
-                                                                                                                        {
-                                                                                                                            document.write("AM");
-                                                                                                                        }
-                                                                                                                    </script></p>
-                                                    
-                                                                                                        </div>-->
-                                                    <div>
-                                                        <label for="disabled_shop">ชื่อร้านค้า</label>
-                                                        <select class="form-control" id="shopName" name="shopName" required >
-                                                            <option selected value="">Choose</option>
-                                                            <?php
-                                                            require_once '/function/func_addorder.php';
-                                                            $getShop = getShop();
-                                                            foreach ($getShop as $value) {
-                                                                $val_idshop = $value['idshop'];
-                                                                $val_name_shop = $value['name_shop'];
-                                                                ?>
-                                                                <option value="<?php echo $val_idshop; ?>"><?php echo $val_name_shop; ?></option>
-                                                            <?php } ?>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </form>
-                                    </div>
-                                </div>
                             </div>
-                            <!--End บิล -->
-
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
+                        <!-- /. ROW  -->
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-5">
+                                <!-- บิล -->
+                                <div class="panel panel-default">
 
-                            <br>
-                                <!-- ตารางสินค้าที่สั่งซื้อ -->
-                                <div class="panel panel-primary">
-                                    <div class="panel-heading">
-                                        ตารางสินค้าที่สั่งซื้อ
-                                    </div>
-                                    <div class="panel-body">
+                                    <div class="panel-heading ">
                                         <div class="table-responsive">
 
-                                            <a href="popup_addproduct_order.php" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">
-                                                <span class="glyphicon glyphicon-plus"></span> เพิ่มสินค้า
-                                            </a>
-                                            <table class="table table-striped table-bordered table-hover text-center" id="dataTables-example">
-                                                <thead>
-                                                    <tr>
-                                                        <th><div align="center">ลำดับ</div></th>
-                                                        <th><div align="center">ชื่อสินค้า</div></th>
-                                                        <th><div align="center">ชื่อโรงงาน</div></th>
-                                                        <th><div align="center">หน่วย</div></th>
-                                                        <th><div align="center">จำนวน</div></th>
-                                                        <th><div align="center">ราคาเปิด</div></th>
-                                                        <th><div align="center">ต้นทุนลด%</div></th>
-                                                        <th><div align="center">ขายลด%</div></th>
-                                                        <th><div align="center">ขายเพิ่มสุทธิ</div></th>
-                                                        <th><div align="center">ราคาขาย</div></th>
-                                                        <th><div align="center">การกระทำ</div></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
+                                            <div class="form-group">
+                                                <div>
+                                                    <label for="disabled_no">No.บิล</label>
+                                                    <input type="text" class="form-control" id="code_order" name="code_order" placeholder="ID บิล">
+                                                </div>
+                                                <div >
+                                                    <p>วันที่สั่งซื้อ <input type="date" class="form-control" ></p>
+                                                    <input type="time" class="form-control" id ="date_order" name="date_order">
+                                                </div>
+                                                <!--
+                                                                                                    <div>
+                                                                                                        <script>
+                                                
+                                                                                                            var currentTime = new Date();
+                                                                                                            var hours = currentTime.getHours();
+                                                                                                            var minutes = currentTime.getMinutes();
+                                                                                                            if (minutes < 10) {
+                                                                                                                minutes = "0" + minutes;
+                                                                                                            }
+                                                                                                        </script>
+                                                                                                        <p>เวลาสั่งซื้อ <input type="text" id="time" >
+                                                                                                                <script>
+                                                                                                                    document.getElementById("time").value = hours + ":" + minutes + " ";
+                                                                                                                    if (hours > 11) {
+                                                                                                                        document.write("PM");
+                                                                                                                    }
+                                                                                                                    else
+                                                                                                                    {
+                                                                                                                        document.write("AM");
+                                                                                                                    }
+                                                                                                                </script></p>
+                                                
+                                                                                                    </div>-->
+                                                <div>
+                                                    <label for="disabled_shop">ชื่อร้านค้า</label>
+                                                    <select class="form-control" id="idshop" name ="idshop"required >
+                                                        <option selected value="">Choose</option>
+                                                        <?php
+                                                        require_once '/function/func_addorder.php';
+                                                        $getShop = getShop();
+                                                        foreach ($getShop as $value) {
+                                                            $val_idshop = $value['idshop'];
+                                                            $val_name_shop = $value['name_shop'];
+                                                            ?>
+                                                            <option value="<?php echo $val_idshop; ?>"><?php echo $val_name_shop; ?></option>
+                                                        <?php } ?>
+                                                    </select>
+                                                </div>
+                                            </div>                                        
 
-                                            </table>
-                                            <div class="col-md-6"></div>
-                                            <div class="col-md-4">
-                                                <label for="disabled_no">ราคาขายรวมต่อบิล</label>
-                                                <input type="text" class="form-control" id="disabled_no" placeholder=" " disabled>
-                                            </div>
                                         </div>
+                                    </div>
+                                </div>
+                                <!--End บิล -->
 
-                                    </div>
-                                </div>
-                                <!--End  ตารางสินค้าที่สั่งซื้อ --> 
-                                <div class="row">
-                                    <div class="col-md-2"></div>
-                                    <div class="form-group col-xs-8">
-                                        <label for="exampleInputName2">รายละเอียดเพิ่มเติม</label>
-                                        <textarea rows="4" cols="50" name="Other" form="usrform" class="form-control" placeholder="กรอกรายละเอียดเพิ่มเติม"></textarea>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4"></div>                              
-                                    <a href="../interface_history_order/history_order.php" class="btn btn-warning btn-lg text-center">
-                                        <span class="glyphicon glyphicon-floppy-save"></span> บันทึก
-                                    </a>
-                                    <a href="#" class="btn btn-danger btn-lg text-center">
-                                        <span class="glyphicon glyphicon-floppy-remove"></span> ยกเลิก
-                                    </a>
-                                </div>
+                            </div>
                         </div>
-                    </div>
+                        <div class="row">
+                            <div class="col-md-12">
 
+                                <br>
+                                    <!-- ตารางสินค้าที่สั่งซื้อ -->
+                                    <div class="panel panel-primary">
+                                        <div class="panel-heading">
+                                            ตารางสินค้าที่สั่งซื้อ
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="table-responsive">
+
+                                                <a href="popup_addproduct_order.php" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">
+                                                    <span class="glyphicon glyphicon-plus"></span> เพิ่มสินค้า </a>
+                                                <div id="showUnit"></div>
+                                                <div class="col-md-6"></div>
+                                                <div class="col-md-4">
+                                                    <label for="disabled_no">ราคาขายรวมต่อบิล</label>
+                                                    <input type="text" class="form-control" id="disabled_no" placeholder=" " disabled>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <!--End  ตารางสินค้าที่สั่งซื้อ --> 
+                                    <div class="row">
+                                        <div class="col-md-2"></div>
+                                        <div class="form-group col-xs-8">
+                                            <label for="exampleInputName2">รายละเอียดเพิ่มเติม</label>
+                                            <textarea rows="4" cols="50" id = "detail_order" name ="detail_order" form="usrform" class="form-control" placeholder="กรอกรายละเอียดเพิ่มเติม" value=""></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4"></div>                              
+                                        <button type="submit" class="btn btn-info btn-lg text-center">
+                                            <span class="glyphicon glyphicon-floppy-save"></span> บันทึก
+                                        </button>
+                                        <a href="add_order.php" class="btn btn-danger btn-lg text-center">
+                                            <span class="glyphicon glyphicon-floppy-remove"></span> ยกเลิก
+                                        </a>
+                                    </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
+
                 <!-- /. PAGE INNER  -->
             </div>
             <!-- /. PAGE WRAPPER  -->
@@ -228,25 +208,141 @@ require_once '/function/func_addorder.php';
         </div>
     </div>
 </div>
-
 <script>
-                                                            function updateTotal() {
-                                                                var x = document.getElementById("DifferencePer").value;
-                                                                if (x.length > 1) {
-                                                                    document.getElementById("DifferenceBath").disabled = true;
-                                                                }
-                                                                var total = x * 10;
-                                                                document.getElementById("total").value = total;
-                                                            }
-                                                            function updateAmount() {
+            $(document.body).on('hidden.bs.modal', function () {
+                $('#myModal').removeData('bs.modal');
+            });
+</script>
+<script>
+    showUnit();
+    function showUnit() {
+        $.get("action_addProduct.php?p=showUnit", function (data, status) {
+            $("#showUnit").html(data);
+        });
+    }
+    function updateTotalPer() {
+        var x = document.getElementById("DifferencePer").value;
+        var price = document.getElementById("total_price").value;
+        var total = price - (price * (x / 100));
+        document.getElementById("total").value = total;
+        document.getElementById("DifferenceBath").disabled = true;
+        document.getElementById("type").value = "PERCENT";
+        if (x === "") {
+            document.getElementById("DifferenceBath").disabled = false;
+        }
+    }
+    function updateTotalBath() {
+        var x = document.getElementById("DifferenceBath").value;
+        var price = document.getElementById("total_price").value;
+        var qwer = document.getElementById("idFactory2").value;
+        var amount = document.getElementById("AmountProduct").value;
+        var total = (qwer - x) * amount;
+        document.getElementById("total").value = total;
+        document.getElementById("type").value = "BATH";
+        document.getElementById("DifferencePer").disabled = true;
+        if (x === "") {
+            document.getElementById("DifferencePer").disabled = false;
+        }
+    }
+    function updateAmount() {
+        var price = document.getElementById("idFactory2").value;
+        var amount = document.getElementById("AmountProduct").value;
+        var difference = document.getElementById("difference").value;
+        var total = amount * price;
+        var totals = total - (total * (difference / 100))
+        document.getElementById("total_price").value = total;
+        document.getElementById("cal_difference").value = totals;
+    }
 
-                                                                var amount = document.getElementById("AmountProduct").value;
-                                                                var total = 560 * amount;
-                                                                document.getElementById("total_price").value = total;
-                                                            }
-                                                            function data() {
-                                                                //var l = <?php getUnit_cal(); ?>;
-                                                                alert("l");
-                                                                return false;
-                                                            }
+    function ChangeProduct() {
+        var x = document.getElementById("factoryName").value;
+        document.getElementById("idFactory2").innerHTML = "You selected: " + x;
+        if (x === "Choose") {
+            document.getElementById("productName").disabled = true;
+        }
+        else {
+            document.getElementById("productName").disabled = false;
+        }
+    }
+    function LoadData(str) {
+        document.getElementById("idUnit").value = str;
+        //var amount = document.getElementById("AmountProduct").value;
+
+        if (str == "") {
+            //document.getElementById("factoryName").innerHTML = "";
+            return;
+        }
+        else if (str === "Choose") {
+            document.getElementById("productName").disabled = false;
+        }
+        else {
+            $.ajax({type: "GET",
+                url: "action/action_ajax.php",
+                async: false,
+                data: "q=" + str,
+                dataType: 'html',
+                success: function (response)
+                {
+                    $("#total_price").val(response);
+                    // alert(response);
+                    $("#idFactory2").val(response);
+                }
+            });
+        }
+    }
+    function LoadFactory(str) {
+        document.getElementById("factoryName").value = str;
+        if (str == "") {
+            //document.getElementById("factoryName").innerHTML = "";
+            return;
+        }
+        else {
+            $.ajax({type: "GET",
+                url: "action/action_ajax_difference.php",
+                async: false,
+                data: "q=" + str,
+                dataType: 'html',
+                success: function (wer)
+                {
+                    $("#difference").val(wer);
+                    //alert(wer);
+                }
+            });
+            $.ajax({type: "GET",
+                url: "action/action_ajax_factory.php",
+                async: false,
+                data: "q=" + str,
+                dataType: 'html',
+                success: function (response)
+                {
+                    $("#productName").html(response);
+                    //alert(response);
+                }
+            });
+        }
+    }
+
+    function LoadProduct(str) {
+        document.getElementById("productName").value = str;
+        if (str == "") {
+            //document.getElementById("factoryName").innerHTML = "";
+            return;
+        }
+
+        else {
+            $.ajax({type: "GET",
+                url: "action/action_ajax_product.php",
+                async: false,
+                data: "q=" + str,
+                dataType: 'html',
+                success: function (response)
+                {
+                    $("#idUnit").html(response);
+                    //alert(response);
+                }
+            });
+
+        }
+
+    }
 </script>
