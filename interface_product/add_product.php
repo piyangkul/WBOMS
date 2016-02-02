@@ -1,6 +1,6 @@
-﻿<?php
+<?php
 session_start();
-if (!isset($_SESSION['username']))
+if (!isset($_SESSION['member']))
     header('Location: ../index.php');
 
 $p = 'product';
@@ -54,19 +54,32 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                 <div class="panel panel-default">
                                     <div class="panel-heading ">
                                         <div class="table-responsive">
-                                            <div>
-                                                <label for="exampleInputName1">รหัสสินค้า</label>
-                                                <input type="text" class="form-control" id="productID" name="productID" placeholder="กรอกรหัสสินค้า" >
+<!--                                            <div class="form-group">
+                                                <label for="productCode">รหัสสินค้า//ระบบกำหนดให้เมื่อเลือกโรงงาน</label>
+                                                <input type="text" maxlength="7" class="form-control" id="productCode" name="productCode" readonly>
+                                            </div>-->
+                                            <div class="form-group">
+                                                <label for="productName"> ชื่อสินค้า </label><label class="text-danger">*</label>
+                                                <input type="text" class="form-control" id="productName" name="productName" placeholder="กรอกชื่อสินค้า" required="">
                                             </div>
-                                            <br/>
-                                            <div>
-                                                <label for="exampleInputName2"> ชื่อสินค้า </label>
-                                                <input type="text" class="form-control" id="productName" name="productName" placeholder="กรอกชื่อสินค้า">
+                                            <div class="form-group">
+                                                <label for="factoryName"> ชื่อโรงงาน </label><label class="text-danger">*</label>
+                                                <select class="form-control" id="factoryid" name="factoryid" required onchange="getDiff_factory();">
+                                                    <option selected value="">Choose</option>
+                                                    <?php
+                                                    require_once '../interface_factory/function/func_factory.php';
+                                                    $getFactorys = getFactorys();
+                                                    foreach ($getFactorys as $value) {
+                                                        $val_idfactory = $value['idfactory'];
+                                                        $val_name_factory = $value['name_factory'];
+                                                        ?>
+                                                        <option value="<?php echo $val_idfactory; ?>"><?php echo $val_name_factory; ?></option>
+                                                    <?php } ?>
+                                                </select>
                                             </div>
-                                            <br/>
-                                            <div>
-                                                <label for="exampleInputName3"> ชื่อโรงงาน </label>
-                                                <input type="text" class="form-control" id="factoryName" name="factoryName" placeholder="กรอกชื่อโรงงาน">
+                                            <div class="form-group">
+                                                <label for="porductDetail">รายละเอียด</label>
+                                                <textarea class="form-control" id="porductDetail" name="porductDetail" placeholder="รายละเอียดของสินค้า"></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -87,6 +100,9 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                             <a href="popup_add_product_unit.php" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">
                                                 <span class="glyphicon glyphicon-plus"></span> เพิ่มหน่วยสินค้า
                                             </a>
+                                            <button class="btn btn-danger btn-lg" type="button" onclick="if(confirm('คุณต้องการลบหน่วยสินค้าทั้งหมดหรือไม่')){resetUnit();}">
+                                                <span class="glyphicon glyphicon-trash"></span> ลบหน่วยสินค้าทั้งหมด
+                                            </button>
                                             <br/><br/>
                                             <div id="showUnit"></div>
                                         </div>
@@ -115,12 +131,12 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                 <input type="text" class="form-control" id="bigestPrice" readonly>
                                             </div>
                                             <div class="form-group col-xs-12">
-                                                <label for="difference_amount">ต้นทุนลดเป็น% (%ที่โรงงานลดให้เรา)//ลด10%</label>
-                                                <input type="text" class="form-control" id="difference_amount" name="difference_amount" placeholder="0" value="0" required="" onchange="calBigestPrice();">
+                                                <label for="difference_amount">ต้นทุนลดเป็น% //ดีงdifference_amount_factory</label><label class="text-danger">*</label>
+                                                <input type="text" class="form-control" id="difference_amount" name="difference_amount" value="" onchange="calBigestPrice();" required>
                                             </div>
                                             <div class="form-group col-xs-12">
                                                 <label for="bigestPriceResult"> ดังนั้นราคาต้นทุนต่อหน่วยใหญ่สุด//ระบบคำนวณอัตโนมัติ </label>
-                                                <input type="text" class="form-control" id="bigestPriceResult" name="bigestPriceResult">
+                                                <input type="text" class="form-control" id="bigestPriceResult" name="bigestPriceResult" readonly>
                                             </div>
                                         </div>
                                     </div>
@@ -158,7 +174,8 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
         <script>
                                                     $(document.body).on('hidden.bs.modal', function () {
                                                         $('#myModal').removeData('bs.modal');
-                                                    });</script>
+                                                    });
+        </script>
         <script>
             showUnit();
             function showUnit() {
@@ -179,11 +196,34 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                 });
             }
 
+            function resetUnit() {
+                $.get("action_addUnit.php?p=resetUnit", function (data, status) {
+                    if (data != "-1") {
+                        showUnit();
+                        getBigestUnit();
+                        getBigestPrice();
+                        alert("ลบหน่วยทั้งหมดแล้ว");
+                    }
+                    else {
+                        alert("ไม่สามารถลบหน่วยได้");
+
+                    }
+                });
+            }
+            function getDiff_factory() {
+                var idfactory = $("#factoryid").val();
+                $.get("action/action_getDiff_factory.php?idfactory=" + idfactory, function (data, status) {
+                    $("#difference_amount").val(data);
+                    calBigestPrice();
+                });
+            }
+
             getBigestPrice();
             function getBigestPrice() {
                 $.get("action_addUnit.php?p=getBigestPrice", function (data, status) {
                     if (data != "-1") {
                         $("#bigestPrice").val(data);
+                        calBigestPrice();
                     }
                     else {
                         $("#bigestPrice").val("0");

@@ -1,6 +1,6 @@
-﻿﻿<?php
+<?php 
 session_start();
-if (!isset($_SESSION['username']))
+if (!isset($_SESSION['member']))
     header('Location: ../index.php');
 
 $p = 'product';
@@ -31,16 +31,12 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
             <!--  NAV SIDE  -->
             <?php include '../interface_template/template_nav_side.php'; ?>
 
-            <!--  CONNECT DATABASE  -->
-            <?php include '../config/connect.php'; ?>
-
             <div id="page-wrapper" >
                 <div id="page-inner">
                     <div class="row">
                         <div class="col-md-12">
                             <h2> Product </h2>   
                             <h5> สินค้า </h5>
-
                         </div>
                     </div>
                     <!-- /. ROW  -->
@@ -52,9 +48,31 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                 <span class="glyphicon glyphicon-plus"></span> เพิ่มสินค้า
                             </a>
                             <br/><br/>
-                            <a href="popup_product_detail.php" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">
-                                <span class="glyphicon glyphicon-plus"></span> รายละเอียด
-                            </a>
+                            <?php
+                            if (isset($_GET['action'])) {
+                                if ($_GET['action'] == "addCompleted") {
+                                    echo '<center><h4 class="text-success">คุณได้ทำการเพิ่มสำเร็จแล้ว</h4></center>';
+                                } else if ($_GET['action'] == "addError") {
+                                    echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถเพิ่มได้</h4></center>';
+                                } else if ($_GET['action'] == "editProductCompleted") {
+                                    echo '<center><h4 class="text-success">คุณได้ทำการแก้ไขสำเร็จแล้ว</h4></center>';
+                                } else if ($_GET['action'] == "editProductError") {
+                                    echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถแก้ไขได้</h4></center>';
+                                } else if ($_GET['action'] == "delProductCompleted") {
+                                    echo '<center><h4 class="text-success">คุณได้ทำการลบสำเร็จแล้ว</h4></center>';
+                                } else if ($_GET['action'] == "delProductError") {
+                                    echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถลบได้</h4></center>';
+                                } else if ($_GET['action'] == "addErrorDuplicateCode") {
+                                    echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถเพิ่มได้เนื่องจากรหัสสินค้าซ้ำ</h4></center>';
+                                } else if ($_GET['action'] == "delProductdError") {
+                                    echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถลบได้เนื่องจากมีคำสั่งซื้ออยู่</h4></center>';
+                                } else if ($_GET['action'] == "addErrorDuplicateProduct") {
+                                    echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถเพิ่มได้เนื่องจากคุณได้เพิ่มชื่อสินค้าสินค้าไปแล้ว</h4></center>';
+                                } else if ($_GET['action'] == "addErrorNotHaveUnit") {
+                                    echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถเพิ่มได้เนื่องจากคุณไม่ได้กรอกหน่วยสินค้า</h4></center>';
+                                }                              
+                            }
+                            ?>
                             <!-- ตารางสินค้า -->
                             <div class="panel panel-primary">
                                 <div class="panel-heading">
@@ -72,99 +90,55 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                     <th><div align="center">หน่วยสินค้า</div></th>
                                                     <th><div align="center">ราคาเปิด</div></th>
                                                     <th><div align="center">ต้นทุนลด</div></th>
-                                                    <th><div align="center">หน่วยลด</div></th>
                                                     <th><div align="center">ราคาต้นทุน</div></th>
                                                     <th><div align="center">การกระทำ</div></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <?php
-                                                //$sql = "SELECT idproduct ,code_product,name_product,name_factory,price_product,amount_product,type_product,(price_product * amount_product / 100)AS A FROM product INNER JOIN  factory ON product.factory_id_factory = factory.id_factory;";
-                                                //$result = $conn->query($sql);
-
-//                                                if ($result->num_rows > 0) {
-//                                                    // output data of each row
-//                                                    while ($row = $result->fetch_assoc()) {
-//                                                        echo "<tr><td>" . $row["idproduct"] . "</td><td>" . $row["code_product"] . "</td><td>" . $row["name_product"] . "</td><td>" . $row["name_factory"] . "</td><td>" . $row["price_product"] . "</td><td>" . $row["amount_product"] . "</td><td>" . $row["type_product"] . "</td>";
-//                                                        if ($row["type_product"] == "PERCENT") {
-//                                                            echo "<td>" . $row["A"] . "</td>";
-//                                                        } else if ($row["type_product"] == "NON") {
-//                                                            echo "<td>" . $row["price_product"] . "</td>";
-//                                                        }
-//                                                        echo '<td>                                                           
-//                                                                <a href="popup_product_detail.php" class="btn btn-success" data-toggle="modal" data-target="#myModal">
-//                                                                    <span class="glyphicon glyphicon-list-alt"></span>
-//                                                                </a>
-//
-//                                                                <a href="edit_product.php" class="btn btn-warning " >
-//                                                                    <span class="glyphicon glyphicon-edit"></span>
-//                                                                </a>
-//                                                                
-//                                                                <a href="#" class="btn btn-danger " data-toggle="modal" data-target="#myModal">
-//                                                                    <span class="glyphicon glyphicon-trash"></span>
-//                                                                </a>
-//                                                                
-//                                                            </td></tr>';
-//                                                    }
-//                                                }
-                                                ?>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>A001</td>
-                                                    <td>เยลลี่ 5 บาท</td>
-                                                    <td>A</td>
-                                                    <td>มัด</td>
-                                                    <td>560</td>
-                                                    <td>10</td>
-                                                    <td>%</td>
-                                                    <td>504</td>
-                                                    <td> 
-                                                        <a href="popup_product_detail.php" class="btn btn-success" data-toggle="modal" data-target="#myModal1">
-                                                            <span class="glyphicon glyphicon-list-alt"></span>
-                                                        </a>
-
-                                                        <a href="edit_product.php" class="btn btn-warning " >
-                                                            <span class="glyphicon glyphicon-edit"></span>
-                                                        </a>
-                                                        <a href="popup_delete_product.php" class="btn btn-danger " data-toggle="modal" data-target="#myModal">
-                                                            <span class="glyphicon glyphicon-trash"></span>
-                                                        </a>
-
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>2</td>
-                                                    <td>B001</td>
-                                                    <td>เยลลี่ 5 บาท</td>
-                                                    <td>B</td>
-                                                    <td>กล่อง</td>
-                                                    <td>280</td>
-                                                    <td>10</td>
-                                                    <td>%</td>
-                                                    <td>252</td>
-                                                    <td> 
-                                                        <a class="btn btn-success"  href="#" role="button">รายละเอียด</a>
-                                                        <a class="btn btn-warning"  href="#" role="button">แก้ไข</a>
-                                                        <a class="btn btn-danger"  href="#" role="button">ลบ</a>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>3</td>
-                                                    <td>C001</td>
-                                                    <td>เยลลี่ 5 บาท</td>
-                                                    <td>C</td>
-                                                    <td>กล่อง</td>
-                                                    <td>280</td>
-                                                    <td>40</td>
-                                                    <td>บาท</td>
-                                                    <td>240</td>
-                                                    <td> 
-                                                        <a class="btn btn-success"  href="#" role="button">รายละเอียด</a>
-
-                                                        <a class="btn btn-warning"  href="#" role="button">แก้ไข</a>
-                                                        <a class="btn btn-danger"  href="#" role="button">ลบ</a>
-                                                    </td>
-                                                </tr>
+                                                require_once 'function/func_product.php';
+                                                $getProducts = getProducts();
+                                                $i = 0;
+                                                foreach ($getProducts as $value) {
+                                                    if ($value['idunit_big'] != NULL) {
+                                                        continue;
+                                                    }
+                                                    $i++;
+                                                    $val_idproduct = $value['idproduct'];
+                                                    $val_code_product = $value['product_code'];
+                                                    $val_name_product = $value['name_product'];
+                                                    $val_name_factory = $value['name_factory'];
+                                                    $val_name = $value['name'];
+                                                    $val_price_unit = $value['price_unit'];
+                                                    if ($value['difference_amount_product'] == null) {
+                                                        $val_difference_amount = $value['difference_amount_factory'];
+                                                    } else {
+                                                        $val_difference_amount = $value['difference_amount_product'];
+                                                    }
+                                                    $cost = $val_price_unit - (($val_difference_amount / 100.0) * $val_price_unit);
+                                                    ?>
+                                                    <tr>
+                                                        <td><?php echo $i; ?></td>
+                                                        <td><?php echo $val_code_product; ?></td>
+                                                        <td><?php echo $val_name_product; ?></td>
+                                                        <td><?php echo $val_name_factory; ?></td>
+                                                        <td><?php echo $val_name; ?></td>
+                                                        <td class="text-right"><?php echo number_format($val_price_unit, 2, '.', ''); ?></td>
+                                                        <td><?php echo $val_difference_amount . "%"; ?></td>
+                                                        <td class="text-right"><?php echo number_format($cost, 2, '.', '') ?></td>
+                                                        <td> 
+                                                            <a href="popup_product_detail.php?idproduct=<?php echo $val_idproduct; ?>" class="btn btn-success" data-toggle="modal" data-target="#myModal">
+                                                                <span class="glyphicon glyphicon-list-alt"></span>
+                                                            </a>
+                                                            <a href="edit_product.php?idproduct=<?php echo $val_idproduct; ?>" class="btn btn-warning " >
+                                                                <span class="glyphicon glyphicon-edit"></span>
+                                                            </a>
+                                                            <a onclick="return confirm('คุณต้องการลบหรือไม่')" href="action/action_delProduct.php?idproduct=<?php echo $val_idproduct; ?>" class="btn btn-danger">
+                                                                <span class="glyphicon glyphicon-trash"></span>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                <?php } ?>
                                             </tbody>
                                         </table>
 
@@ -193,14 +167,17 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
         <script src="../assets/js/dataTables/jquery.dataTables.js"></script>
         <script src="../assets/js/dataTables/dataTables.bootstrap.js"></script>
         <script>
-            $(document).ready(function () {
-                $('#dataTables-example').dataTable();
+                                                                $(document).ready(function () {
+                                                                    $('#dataTables-example').dataTable();
+                                                                });
+        </script>
+        <script>
+            $(document.body).on('hidden.bs.modal', function () {
+                $('#myModal').removeData('bs.modal')
             });
         </script>
-
     </body>
 </html>
-
 <div class="modal fade" id="myModal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content modal-lg">
@@ -222,3 +199,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
         </div>
     </div>
 </div>
+<!--ส่งค่าไป2ตัว
+<a href="popup_product_detail.php?idproduct=<?php echo $val_idproduct; ?>&p=<?php echo $val_idproduct; ?>" class="btn btn-success" data-toggle="modal" data-target="#myModal">
+    <span class="glyphicon glyphicon-list-alt"></span>
+</a>-->

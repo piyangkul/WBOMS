@@ -14,7 +14,7 @@ session_start();
             </div>
             <div class="form-group col-xs-12">
                 <label for="NameUnit">ชื่อหน่วยสินค้ารอง</label>
-                <input type="text" class="form-control" name="NameUnit" id="NameUnit" placeholder="ใส่หน่วยสินค้า เช่น(กล่อง)">
+                <input type="text" class="form-control" name="NameUnit" id="NameUnit" placeholder="ใส่หน่วยสินค้า เช่น(กล่อง)" >
             </div>
             <div class="form-group col-xs-12">
                 <label for="AmountPerUnit">จำนวนต่อหน่วยรอง</label>
@@ -24,7 +24,7 @@ session_start();
                 <label for="under_unit">หน่วยใหญ่ที่จะเปรียบเทียบ</label>
             </div>
             <div class="form-group col-xs-12">
-                <select class="form-control" name="under_unit" id="under_unit" onchange="calPrice();">
+                <select class="form-control" name="under_unit" id="under_unit" onchange="calPrice();" >
                     <option selected value="">Choose</option>
                     <?php
                     for ($i = 1; $i <= $_SESSION["countUnit"]; $i++) {
@@ -36,7 +36,7 @@ session_start();
 
             <div class="form-group col-xs-12">
                 <label for="price">ราคาต่อหน่วยสินค้า</label>
-                <input type="text" class="form-control" id="price" name="price" placeholder="0" value="0" readonly>
+                <input type="text" class="form-control" id="price" name="price" placeholder="0" value="" readonly>
 
             </div>
             <div class="form-group col-xs-12">
@@ -48,7 +48,7 @@ session_start();
                         <div class="panel-body">
                             <div class="table-responsive ">
                                 <label class="radio-inline">
-                                    <input type="radio" name="type" id="type" checked value="primary"> ขาย
+                                    <input type="radio" name="type" id="type" value="primary"> ขาย
                                 </label>
                                 <label class="radio-inline">
                                     <input type="radio" name="type" id="type" value="second"> ไม่ขาย
@@ -62,7 +62,7 @@ session_start();
     </div>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-default" onclick="alert('Add unit complete');addUnit();showUnit();" data-dismiss="modal">Save</button>
+    <button type="button" class="btn btn-default" onclick="addUnit();" data-dismiss="modal">Save</button>
     <!--<button type="button" onclick="addUnit();" class="btn btn-primary">Save changes</button>-->
 </div>
 <!--</form>-->
@@ -73,7 +73,7 @@ session_start();
         var AmountPerUnit = $("#AmountPerUnit").val();
         var under_unit = $("#under_unit").val();
         var price = $("#price").val();
-        var type = $("#type").val();
+        var type = $("input:radio[name=type]:checked").val();
 
         var p = "&NameUnit=" + NameUnit + "&AmountPerUnit=" + AmountPerUnit + "&under_unit=" + under_unit + "&price=" + price + "&type=" + type;
 //        alert(p);
@@ -84,15 +84,21 @@ session_start();
                 $("#NameUnit").val("");
                 $("#AmountPerUnit").val("");
                 $("#under_unit").val("");
+                showUnit();
+                getBigestUnit();
+                getBigestPrice();
             }
             else {
                 $("#NameUnit").val("");
                 $("#AmountPerUnit").val("");
                 $("#under_unit").val("");
+                showUnit();
+                getBigestUnit();
+                getBigestPrice();
             }
         });
-        getBigestUnit();
-        getBigestPrice();
+
+
     }
     chkUnitAdd();
     function chkUnitAdd() { // Check to add the first time 

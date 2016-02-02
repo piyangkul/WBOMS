@@ -1,17 +1,19 @@
 <!--  CONNECT DATABASE  -->
 <?php
-require '../model/db_user.inc.php';
+require_once 'function/func_member.php';
 ?>
 
 <?php
 if (isset($_GET['idmember'])) {
     $idmember = $_GET['idmember'];
-
-    $result = get_member_id($idmember);
-    $row = $result->fetch(PDO::FETCH_ASSOC);
+    $getMember = getMemberByID($idmember);
+    $val_name = $getMember['name'];
+    $val_lastname = $getMember['lastname'];
+    $val_username = $getMember['username'];
+    $val_password = $getMember['password'];
 }
 ?>
-<form class="form" action="membership.php?id=<?php echo $row["idmember"]; ?>" method="post">
+<form class="form" action="action/action_editMember.php?idmember=<?php echo $idmember; ?>" method="post">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">แก้ไขสมาชิก</h4>
@@ -22,39 +24,39 @@ if (isset($_GET['idmember'])) {
                 <div class="form-group col-xs-12">
                 </div>
                 <div class="form-group col-xs-12">
-                    <label>ชื่อ</label>
+                    <label>ชื่อ</label><label class="text-danger">*</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-circle-o-notch"  ></i></span>
-                        <input type="text" class="form-control" id="Name" name="name_member" value="<?php echo $row["name"]; ?>"  />
+                        <input type="text" class="form-control" id="Name" name="name_member" value="<?php echo $val_name; ?>"  />
                     </div>
                 </div>
 
                 <div class="form-group col-xs-12">
-                    <label>นามสกุล</label>
+                    <label>นามสกุล</label><label class="text-danger">*</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-circle-o-notch"  ></i></span>
-                        <input type="text" class="form-control" id="sName" name="lastname_member" value="<?php echo $row["lastname"]; ?>"  />
+                        <input type="text" class="form-control" id="sName" name="lastname_member" value="<?php echo $val_lastname; ?>"  />
                     </div>
                 </div>
                 <div class="form-group col-xs-12">
-                    <label>Username</label>
+                    <label>Username</label><label class="text-danger">*</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-user"  ></i></span>
-                        <input type="text" class="form-control" id="userName" name="username" value="<?php echo $row["username"]; ?>" disabled=""/>
+                        <input type="text" class="form-control" id="userName" name="username" value="<?php echo $val_username; ?>" disabled=""/>
                     </div>
                 </div>
                 <div class="form-group col-xs-12">
-                    <label>Password</label>
+                    <label>Password</label><label class="text-danger">*</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-lock"  ></i></span>
-                        <input type="password" onchange="chkPassMatch()" class="form-control" name ="password" id = "password" value="<?php echo $row['password'] ?>" />
+                        <input type="password" onchange="chkPassMatch()" class="form-control" name ="password" id = "password" value="<?php echo $val_password; ?>" />
                     </div>
                 </div>
                 <div class="form-group col-xs-12">
-                    <label>Confirm Password</label>
+                    <label>Confirm Password</label><label class="text-danger">*</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-lock"  ></i></span>
-                        <input type="password" onchange="chkPassMatch()" class="form-control" name ="confirm_password" id = "confirm_password" value="<?php echo $row['password'] ?>" />
+                        <input type="password" onchange="chkPassMatch()" class="form-control" name ="confirm_password" id = "confirm_password" value="<?php echo $val_password; ?>" />
                     </div>
                 </div>
             </div>

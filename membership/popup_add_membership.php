@@ -1,4 +1,4 @@
-<form class="form" action="membership.php" method="post">
+<form class="form" action="action/action_addMember.php" method="post">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">เพิ่มสมาชิก</h4>
@@ -9,35 +9,35 @@
                 <div class="form-group col-xs-12">
                 </div>
                 <div class="form-group col-xs-12">
-                    <label for="name">ชื่อ</label>
+                    <label for="name">ชื่อ</label><label class="text-danger">*</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-circle-o-notch"  ></i></span>
                         <input type="text" class="form-control" placeholder="กรุณากรอกชื่อ" name ="name_member" required=""/>
                     </div>
                 </div>
                 <div class="form-group col-xs-12">
-                    <label for="lastname">นามสกุล</label>
+                    <label for="lastname">นามสกุล</label><label class="text-danger">*</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-circle-o-notch"  ></i></span>
                         <input type="text" class="form-control" placeholder="กรุณากรอกนามสกุล" name="lastname_member" required=""/>
                     </div>
                 </div>
                 <div class="form-group col-xs-12">
-                    <label for="username">Username</label>
+                    <label for="username">Username</label><label class="text-danger">*</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-user"  ></i></span>
                         <input type="text" class="form-control" placeholder="กรุณากรอก Username " name = "username" required=""/>
                     </div>
                 </div>
                 <div class="form-group col-xs-12">
-                    <label for="password">Password</label>
+                    <label for="password">Password</label><label class="text-danger">*</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-lock"  ></i></span>
                         <input type="password" onchange="chkPassMatch()" class="form-control" placeholder="Password" name ="password" id = "password" required=""/>
                     </div>
                 </div>
                 <div class="form-group col-xs-12">
-                    <label for="password">Confirm Password</label>
+                    <label for="password">Confirm Password</label><label class="text-danger">*</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-lock"  ></i></span>
                         <input type="password" onchange="chkPassMatch()" class="form-control" placeholder="Confirm Password" name ="confirm_password" id = "confirm_password" required=""/>
@@ -75,5 +75,3 @@
         }
     }
 </script>
-
-

@@ -1,7 +1,6 @@
 ﻿<?php
-require '../model/db_user.inc.php';
 session_start();
-if (!isset($_SESSION['username']))
+if (!isset($_SESSION['member']))
     header('Location: ../index.php');
 
 $p = 'transport';
@@ -35,8 +34,8 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                 <div id="page-inner">
                     <div class="row">
                         <div class="col-md-12">
-                            <h2> Transport </h2>   
-                            <h5> จัดการขนส่ง </h5>
+                            <h2> Transportation </h2>   
+                            <h5> จัดการบริษัทขนส่ง </h5>
                         </div>
                     </div>
                     <!-- /. ROW  -->
@@ -44,70 +43,38 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                     <div class="row">
                         <div class="col-md-12">
                             <a href="popup_add_transport.php" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">
-                                <span class="glyphicon glyphicon-plus"></span> เพิ่มขนส่ง
+                                <span class="glyphicon glyphicon-plus"></span> เพิ่มบริษัทขนส่ง
                             </a>
 
                             <br/>
                             <br/>
-                            <?php
-                            //การแสดงผลตอบสนองการเพิ่ม
-                            /* if (isset($_COOKIE['p']) && $_COOKIE['p'] == "successfully")
-                              echo "<center><h4>คุณได้ทำการเพิ่มสำเร็จแล้ว</h4></center>";
-                              else if (isset($_COOKIE['p']) && $_COOKIE['p'] == "error")
-                              echo "<center><h4>ผิดพลาด!! ไม่สามารถเพิ่มได้ </h4></center>"; */
-                            ?>
-
                             <span>
                                 <?php
-                                if (isset($_REQUEST['del_id'])) {
-                                    $getid = $_POST['del_id'];
-                                    $countd = del_member($getid);
-                                    if ($countd === false) {
-                                        die(print_r($con->errorInfo(), true));
-                                    } else {
-                                        echo $countd . " rows Del <br/>";
-                                    }
-                                }
-
-                                if (isset($_REQUEST['sumbit']) && $_REQUEST['sumbit'] == "addMem") {//แต่ละช่องมีค่าใช่ไหม และมากจากปุ่มadd
-                                    $getName = $_POST['name_member'];
-                                    $getLastname = $_POST['lastname_member'];
-                                    $getUsername = $_POST['username'];
-                                    $getPassword = $_POST['password'];
-                                    $count = add_member($getName, $getLastname, $getUsername, $getPassword);
-
-                                    if ($count === false) {
-                                        die(print_r($con->errorInfo(), true));
-                                    } else {
-                                        ?>
-
-                                        <?php
-                                        echo "<center><h4>คุณได้ทำการเพิ่มสำเร็จแล้ว</h4></center>";
-                                    }
-                                }
-
-                                if (isset($_REQUEST['sumbit']) && $_REQUEST['sumbit'] == "updateMem") {//แต่ละช่องมีค่าใช่ไหม และมากจากปุ่มupdate
-                                    $getName = $_POST['name_member'];
-                                    $getLastname = $_POST['lastname_member'];
-                                    $getPassword = $_POST['password'];
-                                    $getid = $_GET['id'];
-                                    $count = edit_member($getid, $getPassword, $getName, $getLastname);
-
-                                    if ($count === false) {
-                                        die(print_r($con->errorInfo(), true));
-                                    } else {
-                                        ?>
-
-                                        <?php
-                                        echo "<center><h4>คุณได้ทำการอัพเดทสำเร็จแล้ว</h4></center>";
+                                if (isset($_GET['action'])) {
+                                    if ($_GET['action'] == "addTransportCompleted") {
+                                        echo '<center><h4 class="text-success">คุณได้ทำการเพิ่มสำเร็จแล้ว</h4></center>';
+                                    } else if ($_GET['action'] == "addTransportError") {
+                                        echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถเพิ่มได้</h4></center>';
+                                    } else if ($_GET['action'] == "editTransportCompleted") {
+                                        echo '<center><h4 class="text-success">คุณได้ทำการแก้ไขสำเร็จแล้ว</h4></center>';
+                                    } else if ($_GET['action'] == "editTransportError") {
+                                        echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถแก้ไขได้</h4></center>';
+                                    } else if ($_GET['action'] == "delTransportCompleted") {
+                                        echo '<center><h4 class="text-success">คุณได้ทำการลบสำเร็จแล้ว</h4></center>';
+                                    } else if ($_GET['action'] == "delTransportError") {
+                                        echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถลบได้</h4></center>';
+                                    } else if ($_GET['action'] == "addTransportDuplicateError") {
+                                        echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถเพิ่มได้เนื่องจากได้เพิ่มบริษัทขนส่งไปแล้ว</h4></center>';
+                                    } else if ($_GET['action'] == "editTransportDuplicateError") {
+                                        echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถแก้ไขได้เนื่องจากมีบริษัทขนส่งแล้ว</h4></center>';
                                     }
                                 }
                                 ?>
                             </span>
-                            <!-- ตารางสมาชิก -->
+                            <!-- ตารางขนส่ง -->
                             <div class="panel panel-primary">
                                 <div class="panel-heading">
-                                    <h5>ตารางสมาชิก</h5>
+                                    <h5>ตารางขนส่ง</h5>
                                 </div>
                                 <div class="panel-body">
                                     <div class="table-responsive">
@@ -115,37 +82,45 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                             <thead>
                                                 <tr>
                                                     <th><div align="center">ลำดับ</div></th>
-                                                    <th><div align="center">รหัสขนส่ง</div></th>
-                                                    <th><div align="center">ชื่อขนส่ง</div></th>
+                                                    <th><div align="center">รหัสบริษัทขนส่ง</div></th>
+                                                    <th><div align="center">ชื่อ</div></th>
                                                     <th><div align="center">เบอร์โทรศัพท์</div></th>
+                                                    <th><div align="center">ที่อยู่</div></th>
                                                     <th><div align="center">การกระทำ</div></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <?php
                                                 //ดึงข้อมูลจากตาราง
-                                                $i = 1;
-                                                $result = get_transport();
-                                                while ($user = $result->fetch(PDO::FETCH_OBJ)) {
+                                                require_once 'function/func_transport.php';
+                                                $getTransports = getTransports();
+                                                $i = 0;
+                                                foreach ($getTransports as $value) {
+                                                    $i++;
+                                                    $val_idtransport = $value['idtransport'];
+                                                    $val_code_transport = $value['code_transport'];
+                                                    $val_name_transport = $value['name_transport'];
+                                                    $val_tel_transport = $value['tel_transport'];
+                                                    $val_address_transport = $value['address_transport'];
                                                     ?>
                                                     <tr>
                                                         <td><?php echo $i; ?></td>
-                                                        <td><?php echo $user->idtransport; ?></td>
-                                                        <td><?php echo $user->name_transport; ?></td>
-                                                        <td><?php echo $user->tel_transport; ?></td>
+                                                        <td><?php echo $val_code_transport; ?></td>
+                                                        <td><?php echo $val_name_transport; ?></td>
+                                                        <td><?php echo $val_tel_transport; ?></td>
+                                                        <td><?php echo $val_address_transport; ?></td>
                                                         <td>
-                                                            <a href="popup_edit_membership.php?idmember=<?php echo $user->idmember; ?>" class="btn btn-warning " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="แก้ไข">
+                                                            <a href="popup_edit_transport.php?idtransport=<?php echo $val_idtransport; ?>" class="btn btn-warning " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="แก้ไข">
                                                                 <span class="glyphicon glyphicon-edit"></span>
                                                             </a>
-                                                            <a href="popup_delete_membership.php" class="btn btn-danger " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="ลบ">
+                                                            <a href="action/action_delTransport.php?idtransport=<?php echo $val_idtransport; ?>" onclick="if (!confirm('คุณต้องการลบหรือไม่')) {
+                                                                            return false;
+                                                                        }" class="btn btn-danger " title="ลบ">
                                                                 <span class="glyphicon glyphicon-trash"></span>
                                                             </a>
                                                         </td>
                                                     </tr>
-                                                    <?php
-                                                    $i++;
-                                                }
-                                                ?>  
+                                                <?php } ?>  
                                         </table>
                                     </div>
                                 </div>
@@ -170,9 +145,9 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
         <script src="../assets/js/dataTables/jquery.dataTables.js"></script>
         <script src="../assets/js/dataTables/dataTables.bootstrap.js"></script>
         <script>
-            $(document).ready(function () {
-                $('#dataTables-example').dataTable();
-            });
+                                                                $(document).ready(function () {
+                                                                    $('#dataTables-example').dataTable();
+                                                                });
         </script>
         <script>
             $(function () {
@@ -181,7 +156,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
         </script>
         <script>
             $(document.body).on('hidden.bs.modal', function () {
-                $('#myModal').removeData('bs.modal')
+                $('#myModal').removeData('bs.modal');
             });
         </script>
     </body>

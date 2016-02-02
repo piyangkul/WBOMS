@@ -1,7 +1,7 @@
 ﻿<?php
-require '../model/db_user.inc.php';
+require_once 'function/func_shop.php';
 session_start();
-if (!isset($_SESSION['username']))
+if (!isset($_SESSION['member']))
     header('Location: ../index.php');
 
 $p = 'shop';
@@ -23,8 +23,6 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
         <link href="../assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
         <!-- CUSTOM STYLES-->
         <link href="../assets/css/custom.css" rel="stylesheet" />
-        <!-- GOOGLE FONTS-->
-        <link href='../http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
 
     </head>
     <body>
@@ -34,9 +32,6 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
 
             <!--  NAV SIDE  -->
             <?php include '../interface_template/template_nav_side.php'; ?>  
-
-           
-
             <div id="page-wrapper" >
                 <div id="page-inner">
                     <div class="row">
@@ -50,10 +45,29 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                     <hr />
                     <div class="row">
                         <div class="col-md-12">
-                            <a href="popup_add_shop.php" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal1">
+                            <a href="popup_add_shop.php" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">
                                 <span class="glyphicon glyphicon-plus"></span> เพิ่มร้านค้า
                             </a>
                             <br/>
+                            <span>
+                                <?php
+                                if (isset($_GET['action'])) {
+                                    if ($_GET['action'] == "addShopCompleted") {
+                                        echo '<center><h4 class="text-success">คุณได้ทำการเพิ่มสำเร็จแล้ว</h4></center>';
+                                    } else if ($_GET['action'] == "addShopError") {
+                                        echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถเพิ่มได้</h4></center>';
+                                    } else if ($_GET['action'] == "editCompleted") {
+                                        echo '<center><h4 class="text-success">คุณได้ทำการแก้ไขสำเร็จแล้ว</h4></center>';
+                                    } else if ($_GET['action'] == "editError") {
+                                        echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถแก้ไขได้</h4></center>';
+                                    } else if ($_GET['action'] == "delCompleted") {
+                                        echo '<center><h4 class="text-success">คุณได้ทำการลบสำเร็จแล้ว</h4></center>';
+                                    } else if ($_GET['action'] == "delError") {
+                                        echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถลบได้</h4></center>';
+                                    }
+                                }
+                                ?>
+                            </span>
                             <br/>
                             <!-- ตารางร้านค้า -->
                             <div class="panel panel-primary">
@@ -66,6 +80,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                             <thead>
                                                 <tr>
                                                     <th><div align="center">ลำดับ</div></th>
+                                                    <th><div align="center">รหัสร้านค้า</div></th>
                                                     <th><div align="center">ชื่อร้านค้า</div></th>
                                                     <th><div align="center">เบอร์โทร</div></th>
                                                     <th><div align="center">ภาค</div></th>
@@ -75,35 +90,45 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                             </thead>
                                             <tbody>
                                                 <?php
-                                                //ดึงข้อมูลจากตาราง
-                                                $i = 1;
-                                                $result = get_shop();
-                                                while ($shop = $result->fetch(PDO::FETCH_OBJ)) {
+                                                $getShops = getShops();
+                                                $i = 0;
+                                                foreach ($getShops as $value) {
+                                                    $i++;
+                                                    $val_idshop = $value['idshop'];
+                                                    $val_shop_code = $value['shop_code'];
+                                                    $val_name_shop = $value['name_shop'];
+                                                    $val_tel_shop = $value['tel_shop'];
+                                                    $val_name_region = $value['name_region'];
+                                                    $val_name_province = $value['name_province'];
                                                     ?>
                                                     <tr>
                                                         <td><?php echo $i; ?></td>
-                                                        <td><?php echo $shop->name_shop; ?></td>
-                                                        <td><?php echo $shop->tel_shop; ?></td>                                                     
-                                                        <td><?php echo $shop->name_province ?></td>  
-                                                        <td><?php echo $shop->name_region ?></td>
+                                                        <td><?php echo $val_shop_code; ?></td>
+                                                        <td><?php echo $val_name_shop; ?></td>
+                                                        <td><?php echo $val_tel_shop; ?></td>
+                                                        <td><?php echo $val_name_region; ?></td>
+                                                        <td><?php echo $val_name_province; ?></td>
+
                                                         <td>
-                                                            <a href="popup_detail_shop.php" class="btn btn-success " data-toggle="modal" data-target="#myModal2" data-toggle="tooltip" title="รายละเอียด">
+                                                            <a href="popup_detail_shop.php?idshop=<?php echo $val_idshop; ?>" class="btn btn-success " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="รายละเอียด">
                                                                 <span class="glyphicon glyphicon-list-alt"></span>
                                                             </a>
-                                                            <a href="popup_edit_shop.php" class="btn btn-warning " data-toggle="modal" data-target="#myModal2" data-toggle="tooltip" title="แก้ไข">
+                                                            <a href="popup_edit_shop.php?idshop=<?php echo $val_idshop; ?>" class="btn btn-warning " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="แก้ไข">
                                                                 <span class="glyphicon glyphicon-edit"></span>
                                                             </a>
-                                                            <a href="popup_delete_shop.php" class="btn btn-danger " data-toggle="modal" data-target="#myModal3" data-toggle="tooltip" title="ลบ">
+                                                            <a href="action/action_delShop.php?idshop=<?php echo $val_idshop; ?>" onclick="if (!confirm('คุณต้องการลบหรือไม่')) {
+                                                                        return false;
+                                                                    }" class="btn btn-danger " title="ลบ">
                                                                 <span class="glyphicon glyphicon-trash"></span>
                                                             </a>
                                                         </td>
                                                     </tr>
-
                                                     <?php
-                                                    $i++;
                                                 }
-                                                ?>  
+                                                ?> 
+
                                         </table>
+
                                     </div>
                                 </div>
                             </div>
@@ -129,83 +154,41 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
         <script src="../assets/js/dataTables/jquery.dataTables.js"></script>
         <script src="../assets/js/dataTables/dataTables.bootstrap.js"></script>
         <script>
-            $(document).ready(function () {
-                $('#dataTables-example').dataTable();
+                                                            $(document).ready(function () {
+                                                                $('#dataTables-example').dataTable();
+                                                            });
+        </script>
+        <script>
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip();
             });
         </script>
-        <!-- CUSTOM SCRIPTS -->
-        <script src="../assets/js/custom.js"></script>
+        <script>
+            $(document.body).on('hidden.bs.modal', function () {
+                $('#myModal').removeData('bs.modal');
+            });
+        </script>
+
     </body>
 </html>
-<!-- Modalเพิ่ม -->
-<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="myModal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-            </div>
-            <div class="modal-body">
-                ...
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
+        <div class="modal-content modal-lg">
+            <!-- Content -->
         </div>
     </div>
 </div>
-<!-- Modalรายละเอียด -->
-<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="myModal-sm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-            </div>
-            <div class="modal-body">
-                ...
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
+        <div class="modal-content modal-sm">
+            <!-- Content -->
         </div>
     </div>
 </div>
-<!-- Modalแก้ไข -->
-<div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-            </div>
-            <div class="modal-body">
-                ...
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Modalลบ -->
-<div class="modal fade" id="myModal4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-            </div>
-            <div class="modal-body">
-                ...
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
+            <!-- Content -->
         </div>
     </div>
 </div>

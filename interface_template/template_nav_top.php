@@ -14,8 +14,8 @@ include('../config/connection.php');
     <div style="color: white;
          padding: 15px 50px 5px 50px;
          float: right;
-         font-size: 16px;"> <?php echo $_SESSION['username']['name'] . ' ' . $_SESSION['username']['lastname'] ?> &nbsp; 
-        <a href="../deleteSession.php" class="btn btn-danger square-btn-adjust">Logout</a> </div>
+         font-size: 16px;"> <?php echo $_SESSION['member']['name'] . ' ' . $_SESSION['member']['lastname'] ?> &nbsp; 
+        <a href="../login/action/action_logout.php" class="btn btn-danger square-btn-adjust">Logout</a> </div>
 </nav>   
 <!-- /. NAV TOP  -->
 
