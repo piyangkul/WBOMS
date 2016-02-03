@@ -34,8 +34,8 @@ foreach ($idproduct_order as $value) {
 //$shipmentByID = addShipment($idorder_transport, $idproduct_order, $idshipment_period, $idtransport, $date_transport, $volume, $number, $price_transport);
 //print_r($shipmentByID);
 //$editChange_statusByID = editChange_status($idproduct_order);
-if ($shipmentByID > 0 && $editChange_statusByID ) {
-    header("location: ../add_shipment3.php?idshipment_period=" . $idshipment_period . "&idfactory=" . $idfactory . "&action=addShipmentCompleted");
+if ($shipmentByID) {
+        header("location: ../add_shipment3.php?idshipment_period=" . $idshipment_period . "&idfactory=" . $idfactory . "&action=addShipmentCompleted");
 } else {
-     header("location: ../add_shipment3.php?idshipment_period=" . $idshipment_period . "&idfactory=" . $idfactory . "&action=addShipmentError");
+    header("location: ../add_shipment3.php?idshipment_period=" . $idshipment_period . "&idfactory=" . $idfactory . "&action=addShipmentError");
 }
