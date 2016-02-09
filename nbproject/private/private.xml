@@ -3,13 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/xampp/htdocs/WBOMS/interface_add_order/action/action_ajax_factory.php</file>
             <file>file:/C:/xampp/htdocs/WBOMS/interface_add_order/add_order.php</file>
             <file>file:/C:/xampp/htdocs/WBOMS/interface_add_order/function/func_addorder.php</file>
-            <file>file:/C:/xampp/htdocs/WBOMS/interface_product/action/action_addProduct.php</file>
             <file>file:/C:/xampp/htdocs/WBOMS/interface_add_order/action_addProduct.php</file>
-            <file>file:/C:/xampp/htdocs/WBOMS/interface_add_order/action/action_ajax.php</file>
             <file>file:/C:/xampp/htdocs/WBOMS/interface_add_order/popup_addproduct_order.php</file>
-            <file>file:/C:/xampp/htdocs/WBOMS/interface_product/popup_add_product_unit.php</file>
+            <file>file:/C:/xampp/htdocs/WBOMS/interface_add_order/action/action_ajax.php</file>
+            <file>file:/C:/xampp/htdocs/WBOMS/interface_add_order/action/action_addOrder.php</file>
         </group>
     </open-files>
 </project-private>

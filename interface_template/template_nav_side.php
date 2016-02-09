@@ -6,7 +6,7 @@
                 <img src="../assets/img/find_user.png" class="img-circle" class="user-image img-responsive"/>
             </li>
             <li>
-                <a <?php if ($p == "history_order") echo 'class="active-menu"'; ?>  href="../interface_order/order.php"><span class="fa fa-folder-open-o fa-3x"></span> Order </a>
+                <a <?php if ($p == "history_order") echo 'class="active-menu"'; ?>  href="../interface_add_order/order.php"><span class="fa fa-folder-open-o fa-3x"></span> Order </a>
             </li>
             <li>
                 <a <?php if ($p == "product") echo 'class="active-menu"'; ?> href="../interface_product/product.php"><i class="fa fa-cube fa-3x"></i> Product </a>

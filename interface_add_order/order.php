@@ -58,17 +58,42 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                 </div>
                                 <div class="panel-body">
                                     <div class="table-responsive">
+                                        <?php
+                                        if (isset($_GET['action'])) {
+                                            if ($_GET['action'] == "addCompleted") {
+                                                echo '<center><h4 class="text-success">คุณได้ทำการเพิ่มสำเร็จแล้ว</h4></center>';
+                                            } else if ($_GET['action'] == "addError") {
+                                                echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถเพิ่มได้</h4></center>';
+                                            } else if ($_GET['action'] == "editCompleted") {
+                                                echo '<center><h4 class="text-success">คุณได้ทำการแก้ไขสำเร็จแล้ว</h4></center>';
+                                            } else if ($_GET['action'] == "editError") {
+                                                echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถแก้ไขได้</h4></center>';
+                                            } else if ($_GET['action'] == "delCompleted") {
+                                                echo '<center><h4 class="text-success">คุณได้ทำการลบสำเร็จแล้ว</h4></center>';
+                                            } else if ($_GET['action'] == "delError") {
+                                                echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถลบได้</h4></center>';
+                                            } else if ($_GET['action'] == "addErrorDuplicateCode") {
+                                                echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถเพิ่มได้เนื่องจากรหัสสินค้าซ้ำ</h4></center>';
+                                            } else if ($_GET['action'] == "delProductdError") {
+                                                echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถลบได้เนื่องจากมีคำสั่งซื้ออยู่</h4></center>';
+                                            } else if ($_GET['action'] == "addErrorDuplicateProduct") {
+                                                echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถเพิ่มได้เนื่องจากคุณได้เพิ่มชื่อสินค้าสินค้าไปแล้ว</h4></center>';
+                                            } else if ($_GET['action'] == "addErrorNotHaveProduct") {
+                                                echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถเพิ่มได้เนื่องจากคุณไม่ได้กรอกสินค้า</h4></center>';
+                                            }
+                                        }
+                                        ?>
                                         <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                             <thead>
                                                 <tr>
                                                     <center>
-                                                        <th><center>No.บิล</center></th>
+                                                        <th><center>ลำดับ</center></th>
+                                                        <th>รหัสใบคำสั่งซื้อ</th>
                                                         <th>วันที่สั่งซื้อ</th>
                                                         <th>เวลาสั่งซื้อ</th>
                                                         <th>ชื่อร้านค้า</th>
                                                         <th><center>จำนวนรายการสินค้า</center></th>
                                                         <th>ราคารวมต่อบิล</th>
-                                                        <th>สถานะบิล</th>
                                                         <th>การกระทำ</th>
                                                     </center>
                                                 </tr>
@@ -79,36 +104,31 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                 $i = 0;
                                                 foreach ($getOrder as $value) {
                                                     $i++;
+                                                    $val_idorder_p = $value['idorder_p'];
+                                                    $val_code_order_p = $value['code_order_p'];
                                                     $val_date_order_p = $value['date_order_p'];
                                                     $val_time_order_p = $value['time_order_p'];
                                                     $val_name_shop = $value['name_shop'];
-                                                    $val_count_idproduct_order = $value['count_idproduct_order'];
-                                                    $val_status_order_p = $value['status_order_p'];
+                                                    $val_count_product = $value['count_product'];
+                                                    //$val_count_idproduct_order = $value['count_idproduct_order'];
                                                     ?>
                                                     <tr>
                                                         <td><?php echo $i; ?></td>
+                                                        <td><?php echo $val_code_order_p; ?></td>
                                                         <td><?php echo $val_date_order_p; ?></td>
                                                         <td><?php echo $val_time_order_p; ?></td>
                                                         <td><?php echo $val_name_shop; ?></td>
-                                                        <td><?php echo $val_count_idproduct_order; ?></td>
-                                                        <td><?php  ?></td>
-                                                        <td><?php
-                                                            if ($val_status_order_p == 'uncheck') {
-                                                                echo "ยังไม่ตรวจสอบ";
-                                                            }
-                                                            elseif ($val_status_order_p == 'check') {
-                                                                echo "ตรวจสอบแล้ว";
-                                                            }
-                                                            ?></td>
+                                                        <td><?php echo $val_count_product; ?></td>
+                                                        <td><?php ?></td>
                                                         <td> 
 
                                                             <a href="#" class="btn btn-success" data-toggle="modal" data-target="#myModal1" data-toggle="tooltip" title="รายละเอียด">
                                                                 <span class="glyphicon glyphicon-list-alt"></span>
                                                             </a>
-                                                            <a href="popup_edit_order.php" class="btn btn-warning " data-toggle="modal" data-target="#myModal2" data-toggle="tooltip" title="แก้ไข">
+                                                            <a href="edit_order.php?idorder=<?php echo $val_idorder_p; ?>" class="btn btn-warning " data-toggle="tooltip" title="แก้ไข">
                                                                 <span class="glyphicon glyphicon-edit"></span>
                                                             </a>
-                                                            <a href="popup_delete_history_order.php" class="btn btn-danger " data-toggle="modal" data-target="#myModal3" data-toggle="tooltip" title="ลบ">
+                                                            <a onclick="return confirm('คุณต้องการลบหรือไม่')" href="action/action_delOrder.php?idorder=<?php echo $val_idorder_p; ?>" class="btn btn-danger">
                                                                 <span class="glyphicon glyphicon-trash"></span>
                                                             </a>
 
@@ -142,9 +162,9 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
         <script src="../assets/js/dataTables/jquery.dataTables.js"></script>
         <script src="../assets/js/dataTables/dataTables.bootstrap.js"></script>
         <script>
-            $(document).ready(function () {
-                $('#dataTables-example').dataTable();
-            });
+                                                              $(document).ready(function () {
+                                                                  $('#dataTables-example').dataTable();
+                                                              });
         </script>
         <script>
             $(function () {

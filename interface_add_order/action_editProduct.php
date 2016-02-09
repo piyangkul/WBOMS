@@ -15,20 +15,20 @@ if ($_GET['p'] == "addProduct") {
     $total = $_GET['total'];
     $type = $_GET['type'];
 
-    if (isset($_SESSION["countProduct"])) {
-        $_SESSION["countProduct"] ++;
+    if (isset($_SESSION["editcountProduct"])) {
+        $_SESSION["editcountProduct"] ++;
     } else
-        $_SESSION["countProduct"] = 1;
-    $_SESSION["product"][$_SESSION["countProduct"]]["idUnit"] = $idUnit;
-    $_SESSION["product"][$_SESSION["countProduct"]]["productName"] = $productName;
-    $_SESSION["product"][$_SESSION["countProduct"]]["factoryName"] = $factoryName;
-    $_SESSION["product"][$_SESSION["countProduct"]]["AmountProduct"] = $AmountProduct;
-    $_SESSION["product"][$_SESSION["countProduct"]]["difference"] = $difference;
-    $_SESSION["product"][$_SESSION["countProduct"]]["DifferencePer"] = $DifferencePer;
-    $_SESSION["product"][$_SESSION["countProduct"]]["DifferenceBath"] = $DifferenceBath;
-    $_SESSION["product"][$_SESSION["countProduct"]]["total_price"] = $total_price;
-    $_SESSION["product"][$_SESSION["countProduct"]]["total"] = $total;
-    $_SESSION["product"][$_SESSION["countProduct"]]["type"] = $type;
+        $_SESSION["editcountProduct"] = 1;
+    $_SESSION["editproduct"][$_SESSION["editcountProduct"]]["idUnit"] = $idUnit;
+    $_SESSION["editproduct"][$_SESSION["editcountProduct"]]["productName"] = $productName;
+    $_SESSION["editproduct"][$_SESSION["editcountProduct"]]["factoryName"] = $factoryName;
+    $_SESSION["editproduct"][$_SESSION["editcountProduct"]]["AmountProduct"] = $AmountProduct;
+    $_SESSION["editproduct"][$_SESSION["editcountProduct"]]["difference"] = $difference;
+    $_SESSION["editproduct"][$_SESSION["editcountProduct"]]["DifferencePer"] = $DifferencePer;
+    $_SESSION["editproduct"][$_SESSION["editcountProduct"]]["DifferenceBath"] = $DifferenceBath;
+    $_SESSION["editproduct"][$_SESSION["editcountProduct"]]["total_price"] = $total_price;
+    $_SESSION["editproduct"][$_SESSION["editcountProduct"]]["total"] = $total;
+    $_SESSION["editproduct"][$_SESSION["editcountProduct"]]["type"] = $type;
 
     echo "1";
 }
@@ -100,12 +100,12 @@ if ($_GET['p'] == "addProduct") {
         </thead>
         <tbody>
             <?php
-            if (isset($_SESSION["countProduct"])) {
-                for ($i = 1; $i <= $_SESSION["countProduct"]; $i++) {
+            if (isset($_SESSION["editcountProduct"])) {
+                for ($i = 1; $i <= $_SESSION["editcountProduct"]; $i++) {
                     //$j = $_SESSION["unit"][$i]["under_unit"];
-                    $idUnitS = $_SESSION["product"][$i]["idUnit"];
-                    $idFactoryS = $_SESSION["product"][$i]["factoryName"];
-                    $idProductS = $_SESSION["product"][$i]["productName"];
+                    $idUnitS = $_SESSION["editproduct"][$i]["idUnit"];
+                    $idFactoryS = $_SESSION["editproduct"][$i]["factoryName"];
+                    $idProductS = $_SESSION["editproduct"][$i]["productName"];
                     //echo $s;
                     //$getUnit = getUnit2($s);
                     //$val_name_unit = $getUnit('name_unit');
@@ -135,12 +135,12 @@ if ($_GET['p'] == "addProduct") {
                                 echo $val_name_unit;
                             }
                             ?></td>
-                        <td><?php echo $_SESSION["product"][$i]["AmountProduct"]; ?></td>
-                        <td><?php echo $_SESSION["product"][$i]["total_price"]; ?></td>
-                        <td><?php echo $_SESSION["product"][$i]["difference"]; ?></td>
-                        <td><?php echo $_SESSION["product"][$i]["DifferencePer"]; ?></td>
-                        <td><?php echo $_SESSION["product"][$i]["DifferenceBath"]; ?></td>
-                        <td><?php echo $_SESSION["product"][$i]["total"]; ?></td>
+                        <td><?php echo $_SESSION["editproduct"][$i]["AmountProduct"]; ?></td>
+                        <td><?php echo $_SESSION["editproduct"][$i]["total_price"]; ?></td>
+                        <td><?php echo $_SESSION["editproduct"][$i]["difference"]; ?></td>
+                        <td><?php echo $_SESSION["editproduct"][$i]["DifferencePer"]; ?></td>
+                        <td><?php echo $_SESSION["editproduct"][$i]["DifferenceBath"]; ?></td>
+                        <td><?php echo $_SESSION["editproduct"][$i]["total"]; ?></td>
                         <td>
                             <a href="popup_editproduct_order_edit.php?idUnit=<?php echo $i; ?>" class="btn btn-warning " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="แก้ไข">
                                 <span class="glyphicon glyphicon-edit"></span>

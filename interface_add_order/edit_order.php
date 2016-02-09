@@ -8,6 +8,16 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
     $p = $_GET['p'];
 }
 require_once '/function/func_addorder.php';
+$val_idorder = $_GET['idorder']; //ส่งค่าpara
+$getOrderEdit = getOrderEdit($val_idorder);
+$getProductOrder = getProductOrder($val_idorder);
+//echo "<pre>";
+//print_r($getProductDetail);
+//echo "</pre>";
+$val_code_order_p = $getOrderEdit['code_order_p'];
+$val_date_order_p = $getOrderEdit['date_order_p'];
+$val_time_order_p = $getOrderEdit['time_order_p'];
+$val_name_shop = $getOrderEdit['name_shop'];
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -31,8 +41,10 @@ require_once '/function/func_addorder.php';
         <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
         <link rel="stylesheet" href="/resources/demos/style.css"/>
         <script>
+
+
             /*  $(function () {
-             var data = JSON.stringify(<?php //getShop2(); ?>);
+             var data = JSON.stringify(<?php //getShop2();              ?>);
              //var www = JSON.parse(data);
              //alert(www);
              alert(data);
@@ -53,7 +65,7 @@ require_once '/function/func_addorder.php';
 
             <div id="page-wrapper" >
                 <div id="page-inner">
-                    <form action="action/action_addOrder.php" method="post"> 
+                    <form action="action/action_editOrder.php?idorder=<?php echo $val_idorder; ?>" method="post"> 
                         <div class="row">
                             <div class="col-md-12">
                                 <h2> Add Order </h2>   
@@ -75,28 +87,16 @@ require_once '/function/func_addorder.php';
                                             <div class="form-group">
                                                 <div>
                                                     <label for="disabled_no">No.บิล</label>
-                                                    <input type="text" class="form-control" id="code_order" name="code_order" placeholder="ID บิล" autocomplete= on onchange="LoadShop()">
+                                                    <input type="text" class="form-control" id="code_order" name="code_order" placeholder="ID บิล" value="<?= $val_code_order_p ?>">                    
                                                 </div>
                                                 <p id="www"></p>
                                                 <div >
                                                     <p>วันที่สั่งซื้อ <input type="date" class="form-control" id ="date_order" name="date_order"></p>
-                                                    <input type="time" class="form-control" id ="time_order" name="time_order">
+                                                    <input type="time" class="form-control" id ="time_order" name="time_order" value="<?= $val_time_order_p ?>">
                                                 </div>
                                                 <div>
                                                     <label for="disabled_shop">ชื่อร้านค้า</label>
-                                                    <select class="form-control" id="idshop" name ="idshop"required >
-                                                        <option selected value="">Choose</option>
-                                                        <?php
-                                                        require_once '/function/func_addorder.php';
-                                                        $getShop = getShop();
-
-                                                        foreach ($getShop as $value) {
-                                                            $val_idshop = $value['idshop'];
-                                                            $val_name_shop = $value['name_shop'];
-                                                            ?>
-                                                            <option value="<?php echo $val_idshop; ?>"><?php echo $val_name_shop; ?></option>
-                                                        <?php } ?>
-                                                    </select>
+                                                    <input type="text" class="form-control" id="name_order" name="name_shop" placeholder="ชื่อร้านค้า" value="<?= $val_name_shop ?>" disabled>
                                                 </div>
                                             </div>                                        
 
@@ -119,8 +119,79 @@ require_once '/function/func_addorder.php';
                                         <div class="panel-body">
                                             <div class="table-responsive">
 
-                                                <a href="popup_addproduct_order.php" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">
+                                                <a href="popup_edit_addproduct_order.php" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">
                                                     <span class="glyphicon glyphicon-plus"></span> เพิ่มสินค้า </a>
+                                                <table class="table table-striped table-bordered table-hover text-center" id="dataTables-example">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>ลำดับ</th>
+                                                            <th>ชื่อสินค้า</th>
+                                                            <th>ชื่อโรงงาน</th>
+                                                            <th>หน่วย</th>
+                                                            <th>จำนวน</th>
+                                                            <th>ราคาเปิด</th>
+                                                            <th>ต้นทุนลด%</th>
+                                                            <th>ขายลด%</th>
+                                                            <th>ขายเพิ่มสุทธิ</th>
+                                                            <th>ราคาขาย</th>
+                                                            <th>การกระทำ</th> 
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <?php
+                                                        $i = 0;
+                                                        foreach ($getProductOrder as $value) {
+                                                            $i++;
+                                                            $val_name_product = $value['name_product'];
+                                                            $val_name_unit = $value['name_unit'];
+                                                            $val_name_factory = $value['name_factory'];
+                                                            $val_amount_product_order = $value['amount_product_order'];
+                                                            $val_difference_product_order = $value['difference_product_order'];
+                                                            $val_type_product_order = $value['type_product_order'];
+                                                            $val_difference_amount_factory = $value['difference_amount_factory'];
+                                                            $val_price_unit = $value['price_unit'];
+                                                            $total_open = $val_price_unit * $val_amount_product_order;
+                                                            $total_percent = $total_open - ($total_open * ($val_difference_product_order / 100));
+                                                            $total_bath = $total_open - ($val_difference_product_order * $val_amount_product_order);
+                                                            ?>
+                                                            <tr>
+                                                                <td><?= $i; ?></td>
+                                                                <td><?= $val_name_product; ?></td>
+                                                                <td><?= $val_name_factory; ?></td>
+                                                                <td><?= $val_name_unit; ?></td> 
+                                                                <td><?= $val_amount_product_order; ?></td>
+                                                                <td><?= $total_open; ?> </td>
+                                                                <td><?= $val_difference_amount_factory; ?></td>
+                                                                <?php if ($val_type_product_order === 'PERCENT') { ?>
+                                                                    <td><?= $val_difference_product_order; ?></td>
+                                                                    <td>-</td>
+                                                                    <td><?= $total_percent; ?></td>
+                                                                <?php }
+                                                                ?>
+                                                                <?php if ($val_type_product_order === 'BATH') {
+                                                                    ?>
+                                                                    <td>-</td>
+                                                                    <td><?= $val_difference_product_order; ?></td>                                                                  
+                                                                    <td><?= $total_bath; ?></td>
+                                                                <?php }
+                                                                ?>    
+
+
+                                                                <td>
+                                                                    <!-- Button trigger modal -->
+                                                                    <a href="popup_edit_product_unit.php?unitid=<?php echo $valIdunit; ?>" class="btn btn-warning" data-toggle="modal" data-target="#myModal2" data-toggle="tooltip" title="แก้ไข">
+                                                                        <span class="glyphicon glyphicon-edit"></span> 
+                                                                    </a>
+                                                                    <!--                                                            <a href="popup_delete_product_unit.php" class="btn btn-danger" data-toggle="modal" data-target="#myModal3" data-toggle="tooltip" title="ลบ">
+                                                                                                                                    <span class="glyphicon glyphicon-trash"></span>
+                                                                                                                                </a>-->
+                                                                </td>
+                                                            </tr>
+                                                        <?php } ?>
+                                                </table>
+
+
+                                                <label>สินค้าเพิ่มใหม่</label>
                                                 <div id="showUnit"></div>
                                                 <div class="col-md-6"></div>
                                                 <div class="col-md-4">
@@ -194,13 +265,13 @@ require_once '/function/func_addorder.php';
     </div>
 </div>
 <script>
-                                                        $(document.body).on('hidden.bs.modal', function () {
-                                                            $('#myModal').removeData('bs.modal');
-                                                        });</script>
+            $(document.body).on('hidden.bs.modal', function () {
+                $('#myModal').removeData('bs.modal');
+            });</script>
 <script>
     showUnit();
     function showUnit() {
-        $.get("action_addProduct.php?p=showUnit", function (data, status) {
+        $.get("action_editProduct.php?p=showUnit", function (data, status) {
             $("#showUnit").html(data);
         });
     }
