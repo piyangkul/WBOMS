@@ -31,16 +31,40 @@ require_once '/function/func_addorder.php';
         <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
         <link rel="stylesheet" href="/resources/demos/style.css"/>
         <script>
-            /*  $(function () {
-             var data = JSON.stringify(<?php //getShop2(); ?>);
-             //var www = JSON.parse(data);
-             //alert(www);
-             alert(data);
-             $("#code_order").autocomplete({
-             source: data
-             });
-             });
-             */
+            //alert('<?= getShop2(); ?>');
+            var data = JSON.stringify(<?php echo getShop2(); ?>);
+            alert(data);
+            var www = JSON.parse(data);
+            //data = JSON.parse(www+'');
+            /*alert(data);*/
+            //document.write(www[0].idshop+www[0].name_shop);
+            var shopName = new Array();
+            var shopId = new Array();
+
+            for (var i = 0; i < www.length; i++) {
+                //var obj = JSON.parse(item);
+                //shopName[i++] = item["shop_name"];
+                // shopId[i++] = item["idshop"];
+                alert(www[i].name_shop);
+                shopName.push(www[i].name_shop);
+                shopId["'" + www[i].name_shop + "'"] = www[i].idshop;
+                //alert(item["shop_name"]);
+
+            }
+            //alert(data);
+            $(function () {
+
+                $("#code_order").autocomplete({
+                    source: shopName
+                });
+            });
+            function getShopId() {
+            alert("Hello");
+              var price = document.getElementById("code_order").value;
+                
+        alert(shopId["'"+price+"'"]);
+
+            }
         </script>
     </head>
     <body>
@@ -75,7 +99,7 @@ require_once '/function/func_addorder.php';
                                             <div class="form-group">
                                                 <div>
                                                     <label for="disabled_no">No.บิล</label>
-                                                    <input type="text" class="form-control" id="code_order" name="code_order" placeholder="ID บิล" autocomplete= on onchange="LoadShop()">
+                                                    <input type="text" class="form-control" id="code_order" name="code_order" placeholder="ID บิล" autocomplete= on onblur="getShopId()">
                                                 </div>
                                                 <p id="www"></p>
                                                 <div >
@@ -122,11 +146,7 @@ require_once '/function/func_addorder.php';
                                                 <a href="popup_addproduct_order.php" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">
                                                     <span class="glyphicon glyphicon-plus"></span> เพิ่มสินค้า </a>
                                                 <div id="showUnit"></div>
-                                                <div class="col-md-6"></div>
-                                                <div class="col-md-4">
-                                                    <label for="disabled_no">ราคาขายรวมต่อบิล</label>
-                                                    <input type="text" class="form-control" id="disabled_no" placeholder=" " disabled>
-                                                </div>
+
                                             </div>
 
                                         </div>
@@ -268,7 +288,7 @@ require_once '/function/func_addorder.php';
                 success: function (response)
                 {
                     $("#total_price").val(response);
-                    // alert(response);
+                    $("#price").val(response);
                     $("#idFactory2").val(response);
                 }
             });

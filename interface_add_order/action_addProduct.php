@@ -11,6 +11,7 @@ if ($_GET['p'] == "addProduct") {
     $difference = $_GET['difference'];
     $DifferencePer = $_GET['DifferencePer'];
     $DifferenceBath = $_GET['DifferenceBath'];
+    $price = $_GET['price'];
     $total_price = $_GET['total_price'];
     $total = $_GET['total'];
     $type = $_GET['type'];
@@ -26,19 +27,24 @@ if ($_GET['p'] == "addProduct") {
     $_SESSION["product"][$_SESSION["countProduct"]]["difference"] = $difference;
     $_SESSION["product"][$_SESSION["countProduct"]]["DifferencePer"] = $DifferencePer;
     $_SESSION["product"][$_SESSION["countProduct"]]["DifferenceBath"] = $DifferenceBath;
+    $_SESSION["product"][$_SESSION["countProduct"]]["price"] = $price;
     $_SESSION["product"][$_SESSION["countProduct"]]["total_price"] = $total_price;
     $_SESSION["product"][$_SESSION["countProduct"]]["total"] = $total;
     $_SESSION["product"][$_SESSION["countProduct"]]["type"] = $type;
 
     echo "1";
 }
-/*
-  else if ($_GET['p'] == "editUnit") {
+
+/* else if ($_GET['p'] == "editUnit") {
   $idUnit = $_GET['idUnit'];
-  $NameUnit = $_GET['NameUnit'];
-  $AmountPerUnit = $_GET['AmountPerUnit'];
-  $under_unit = $_GET['under_unit'];
-  $price = $_GET['price'];
+  $productName = $_GET['productName'];
+  $factoryName = $_GET['factoryName'];
+  $AmountProduct = $_GET['AmountProduct'];
+  $difference = $_GET['difference'];
+  $DifferencePer = $_GET['DifferencePer'];
+  $DifferenceBath = $_GET['DifferenceBath'];
+  $total_price = $_GET['total_price'];
+  $total = $_GET['total'];
   $type = $_GET['type'];
 
   $_SESSION["unit"][$idUnit]["NameUnit"] = $NameUnit;
@@ -48,7 +54,7 @@ if ($_GET['p'] == "addProduct") {
   $_SESSION["unit"][$idUnit]["type"] = $type;
 
   echo "1";
-  } else if ($_GET['p'] == "chkUnitAdd") {
+  } /* else if ($_GET['p'] == "chkUnitAdd") {
 
   //    echo $_SESSION["countUnit"];
   if (isset($_SESSION["countUnit"])) {
@@ -80,7 +86,8 @@ if ($_GET['p'] == "addProduct") {
   } else {
   echo -1;
   }
-  } */else if ($_GET['p'] == "showUnit") {
+  } */ else if ($_GET['p'] == "showUnit") {
+    $sum = 0;
     ?>
     <table class="table table-striped table-bordered table-hover text-center" id="dataTables-example">
         <thead>
@@ -101,7 +108,9 @@ if ($_GET['p'] == "addProduct") {
         <tbody>
             <?php
             if (isset($_SESSION["countProduct"])) {
+
                 for ($i = 1; $i <= $_SESSION["countProduct"]; $i++) {
+                    $sum += $_SESSION["product"][$i]["total"];
                     //$j = $_SESSION["unit"][$i]["under_unit"];
                     $idUnitS = $_SESSION["product"][$i]["idUnit"];
                     $idFactoryS = $_SESSION["product"][$i]["factoryName"];
@@ -153,6 +162,11 @@ if ($_GET['p'] == "addProduct") {
             }
             ?>
     </table>
+    <div class="col-md-6"></div>
+    <div class="col-md-4">
+        <label for="disabled_no">ราคาขายรวมต่อบิล</label>
+        <input type="text" class="form-control" id="disabled_no" placeholder=" " value="<?= $sum ?>" readonly="true">
+    </div>
     <?php
 }
 ?>

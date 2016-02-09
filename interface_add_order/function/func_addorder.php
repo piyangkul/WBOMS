@@ -23,8 +23,8 @@ function getShop2() {
     while ($result = $SQLPrepare->fetch(PDO::FETCH_ASSOC)) {
         array_push($resultArr, $result);
     }
-    return json_encode($resultArr, JSON_UNESCAPED_UNICODE);
-    return "{}";
+    return json_encode($resultArr);//, JSON_UNESCAPED_UNICODE);
+    //return "{}";
 }
 
 function getFactory() {
@@ -192,10 +192,10 @@ function addOrder($code_order, $idshop, $date_order, $time_order, $detail_order)
     }
 }
 
-function addProductOrder($idunit, $idorder_p, $amount_product_order, $difference_product_order, $type_product_order) {
+function addProductOrder($idunit, $idorder_p, $amount_product_order, $difference_product_order, $type_product_order,$price) {
     $conn = dbconnect();
-    $SQLCommand = "INSERT INTO `product_order`(idunit,idorder_p,amount_product_order,difference_product_order,type_product_order) "
-            . "VALUES (:idunit, :idorder_p, :amount_product_order, :difference_product_order,:type_product_order )";
+    $SQLCommand = "INSERT INTO `product_order`(idunit,idorder_p,amount_product_order,difference_product_order,type_product_order,price_product_order) "
+            . "VALUES (:idunit, :idorder_p, :amount_product_order, :difference_product_order,:type_product_order,:price )";
 
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
@@ -204,7 +204,8 @@ function addProductOrder($idunit, $idorder_p, $amount_product_order, $difference
                 ":idorder_p" => $idorder_p,
                 ":amount_product_order" => $amount_product_order,
                 ":difference_product_order" => $difference_product_order,
-                ":type_product_order" => $type_product_order
+                ":type_product_order" => $type_product_order,
+                ":price" => $price
             )
     );
 

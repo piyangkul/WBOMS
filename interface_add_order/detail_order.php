@@ -88,12 +88,12 @@ $val_detail_order_p = $getOrderEdit['detail_order_p'];
                                             <div class="form-group">
                                                 <div>
                                                     <label for="disabled_no">No.บิล</label>
-                                                    <input type="text" class="form-control" id="code_order" name="code_order" placeholder="ID บิล" value="<?= $val_code_order_p ?>">                    
+                                                    <input type="text" class="form-control" id="code_order" name="code_order" placeholder="ID บิล" value="<?= $val_code_order_p ?>"disabled>                    
                                                 </div>
                                                 <p id="www"></p>
                                                 <div >
-                                                    <p>วันที่สั่งซื้อ <input type="date" class="form-control" id ="date_order" name="date_order" value="<?= $val_date_order_p;?>"></p>
-                                                    <input type="time" class="form-control" id ="time_order" name="time_order" value="<?= $val_time_order_p ?>">
+                                                    <p>วันที่สั่งซื้อ <input type="date" class="form-control" id ="date_order" name="date_order"disabled></p>
+                                                    <input type="time" class="form-control" id ="time_order" name="time_order" value="<?= $val_time_order_p ?>" disabled>
                                                 </div>
                                                 <div>
                                                     <label for="disabled_shop">ชื่อร้านค้า</label>
@@ -135,7 +135,7 @@ $val_detail_order_p = $getOrderEdit['detail_order_p'];
                                                             <th>ขายลด%</th>
                                                             <th>ขายเพิ่มสุทธิ</th>
                                                             <th>ราคาขาย</th>
-                                                            <th>การกระทำ</th> 
+                                                           
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -178,22 +178,10 @@ $val_detail_order_p = $getOrderEdit['detail_order_p'];
                                                                 ?>    
 
 
-                                                                <td>
-                                                                    <!-- Button trigger modal -->
-                                                                    <a href="popup_edit_product_unit.php?unitid=<?php echo $valIdunit; ?>" class="btn btn-warning" data-toggle="modal" data-target="#myModal2" data-toggle="tooltip" title="แก้ไข">
-                                                                        <span class="glyphicon glyphicon-edit"></span> 
-                                                                    </a>
-                                                                    <!--                                                            <a href="popup_delete_product_unit.php" class="btn btn-danger" data-toggle="modal" data-target="#myModal3" data-toggle="tooltip" title="ลบ">
-                                                                                                                                    <span class="glyphicon glyphicon-trash"></span>
-                                                                                                                                </a>-->
-                                                                </td>
                                                             </tr>
                                                         <?php } ?>
                                                 </table>
 
-
-                                                <label>สินค้าเพิ่มใหม่</label>
-                                                <div id="showUnit"></div>
                                                 <div class="col-md-6"></div>
                                                 <div class="col-md-4">
                                                     <label for="disabled_no">ราคาขายรวมต่อบิล</label>
@@ -208,15 +196,13 @@ $val_detail_order_p = $getOrderEdit['detail_order_p'];
                                         <div class="col-md-2"></div>
                                         <div class="form-group col-xs-8">
                                             <label for="exampleInputName2">รายละเอียดเพิ่มเติม</label>
-                                            <textarea rows="4" cols="50" id = "detail_order" name ="detail_order" class="form-control" placeholder="กรอกรายละเอียดเพิ่มเติม" value=""><?= $val_detail_order_p?></textarea>
+                                            <textarea rows="4" cols="50" id = "detail_order" name ="detail_order" class="form-control" placeholder="กรอกรายละเอียดเพิ่มเติม" value="" disabled><?= $val_detail_order_p?></textarea>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-4"></div>                              
-                                        <button type="submit" class="btn btn-info btn-lg text-center">
-                                            <span class="glyphicon glyphicon-floppy-save"></span> บันทึก
-                                        </button>
-                                        <a href="add_order.php" class="btn btn-danger btn-lg text-center">
+                                        
+                                        <a href="order.php" class="btn btn-danger btn-lg text-center">
                                             <span class="glyphicon glyphicon-floppy-remove"></span> ยกเลิก
                                         </a>
                                     </div>

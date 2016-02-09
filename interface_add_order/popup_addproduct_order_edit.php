@@ -49,13 +49,9 @@ session_start();
             <div class="form-group col-xs-12">
                 <label for="amount_product">จำนวน</label>
                 <input type="text" class="form-control" id="AmountProduct" placeholder="กรอกจำนวนสินค้า" onkeyup="updateAmount()">
-            </div
-            <div class="form-group col-xs-12">
-                <label for="disabled_price_unit">ราคาเปิดต่อหน่วย //ระบบคิดอัตโนมัติตามหน่วยที่เลือก</label>
-                <input type="text" class="form-control" id="price" readonly="true" onkeyup="cal_difference()">
             </div>
             <div class="form-group col-xs-12">
-                <label for="disabled_price_unit">ราคาเปิดทั้งหมด //ระบบคิดอัตโนมัติตามหน่วยที่เลือก</label>
+                <label for="disabled_price_unit">ราคาเปิดต่อหน่วย //ระบบคิดอัตโนมัติตามหน่วยที่เลือก</label>
                 <input type="text" class="form-control" id="total_price" readonly="true" onkeyup="cal_difference()">
             </div>
             <div class="form-group col-xs-12">
@@ -112,7 +108,6 @@ session_start();
         var difference = $("#difference").val();
         var DifferencePer = $("#DifferencePer").val();
         var DifferenceBath = $("#DifferenceBath").val();
-        var price = $("#price").val();
         var total_price = $("#total_price").val();
         var total = $("#total").val();
         var type = $("#type").val();
@@ -120,7 +115,7 @@ session_start();
         //alert(AmountProduct);
         //alert(DifferencePer);
         //alert(DifferenceBath);
-        var p = "&idUnit=" + idUnit + "&productName=" + productName + "&factoryName=" + factoryName + "&difference=" + difference + "&AmountProduct=" + AmountProduct + "&DifferencePer=" + DifferencePer + "&DifferenceBath=" + DifferenceBath +"&price=" + price + "&total_price=" + total_price + "&total=" + total + "&type=" + type;
+        var p = "&idUnit=" + idUnit + "&productName=" + productName + "&factoryName=" + factoryName + "&difference=" + difference + "&AmountProduct=" + AmountProduct + "&DifferencePer=" + DifferencePer + "&DifferenceBath=" + DifferenceBath + "&total_price=" + total_price + "&total=" + total + "&type=" + type;
         alert(p);
         $.get("action_addProduct.php?p=addProduct" + p, function (data, status) {
             alert("Data: " + data + "\nStatus: " + status);
@@ -133,7 +128,6 @@ session_start();
                 $("#AmountProduct").val("");
                 $("#DifferencePer").val("");
                 $("#DifferenceBath").val("");
-                $("#price").val("");
                 $("#total_price").val("");
                 $("#total").val("");
                 $("#type").val("");
@@ -147,7 +141,6 @@ session_start();
                 $("#AmountProduct").val("");
                 $("#DifferencePer").val("");
                 $("#DifferenceBath").val("");
-                $("#price").val("");
                 $("#total_price").val("");
                 $("#total").val("");
                 $("#type").val("");

@@ -30,17 +30,18 @@ if (isset($_SESSION["product"])) {//ถามว่า$_SESSION["unit"]ถูก
         for ($i = 1; $i <= count($products); $i++) {
             //$under_unit = $units[$i]['under_unit'];
             //$underIdUnit = $idUnit[$under_unit]; 
-            $idproduct[$i] = addProductOrder($products[$i]['idUnit'], $idorder, $products[$i]['AmountProduct'], $products[$i]['DifferencePer'], $products[$i]['type']);
-
+            $idproduct[$i] = addProductOrder($products[$i]['idUnit'], $idorder, $products[$i]['AmountProduct'], $products[$i]['DifferencePer'], $products[$i]['type'], $products[$i]['price']);
+          //echo "555";
             //$idUnit[$i] = addUnit($idshop, $underIdUnit, $units[$i]['AmountPerUnit'], $units[$i]['NameUnit'], $units[$i]['price'], $units[$i]['type']);
         }
+        //echo "555";
         unset($_SESSION["product"]);
         unset($_SESSION["countProduct"]);
         header("location: ../order.php?p=product&action=addCompleted");
     } else {
-        unset($_SESSION["product"]);
-        unset($_SESSION["countProduct"]);
-        header("location: ../order.php?p=product&action=addError");
+       unset($_SESSION["product"]);
+       unset($_SESSION["countProduct"]);
+       header("location: ../order.php?p=product&action=addError");
     }
 } else {
     unset($_SESSION["product"]);

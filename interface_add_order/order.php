@@ -110,6 +110,9 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                     $val_time_order_p = $value['time_order_p'];
                                                     $val_name_shop = $value['name_shop'];
                                                     $val_count_product = $value['count_product'];
+                                                    $val_price_product_order = $value['price_product_order'];
+
+
                                                     //$val_count_idproduct_order = $value['count_idproduct_order'];
                                                     ?>
                                                     <tr>
@@ -119,10 +122,10 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                         <td><?php echo $val_time_order_p; ?></td>
                                                         <td><?php echo $val_name_shop; ?></td>
                                                         <td><?php echo $val_count_product; ?></td>
-                                                        <td><?php ?></td>
+                                                        <td><?php echo $val_price_product_order; ?></td>
                                                         <td> 
 
-                                                            <a href="#" class="btn btn-success" data-toggle="modal" data-target="#myModal1" data-toggle="tooltip" title="รายละเอียด">
+                                                            <a href="detail_order.php?idorder=<?php echo $val_idorder_p; ?>" class="btn btn-success" data-toggle="tooltip" title="รายละเอียด">
                                                                 <span class="glyphicon glyphicon-list-alt"></span>
                                                             </a>
                                                             <a href="edit_order.php?idorder=<?php echo $val_idorder_p; ?>" class="btn btn-warning " data-toggle="tooltip" title="แก้ไข">
@@ -162,9 +165,9 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
         <script src="../assets/js/dataTables/jquery.dataTables.js"></script>
         <script src="../assets/js/dataTables/dataTables.bootstrap.js"></script>
         <script>
-                                                              $(document).ready(function () {
-                                                                  $('#dataTables-example').dataTable();
-                                                              });
+                                                                $(document).ready(function () {
+                                                                    $('#dataTables-example').dataTable();
+                                                                });
         </script>
         <script>
             $(function () {
