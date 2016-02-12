@@ -3058,6 +3058,54 @@ fieldset[disabled] .btn-warning.active {
   color: #f0ad4e;
   background-color: #fff;
 }
+.btn-outline {
+    color: #fff;
+    background-color: #7c5fa7;
+    border-color: #4a356b;
+}
+.btn-outline:hover,
+.btn-outline:focus,
+.btn-outline.focus,
+.btn-outline:active,
+.btn-outline.active,
+.open > .dropdown-toggle.btn-outline {
+  color: #fff;
+  background-color: #62458d;
+  border-color: #763d7c;
+}
+.btn-outline:active,
+.btn-outline.active,
+.open > .dropdown-toggle.btn-outline {
+  background-image: none;
+}
+.btn-outline.disabled,
+.btn-outline[disabled],
+fieldset[disabled] .btn-outline,
+.btn-outline.disabled:hover,
+.btn-outline[disabled]:hover,
+fieldset[disabled] .btn-outline:hover,
+.btn-outline.disabled:focus,
+.btn-outline[disabled]:focus,
+fieldset[disabled] .btn-outline:focus,
+.btn-outline.disabled.focus,
+.btn-outline[disabled].focus,
+fieldset[disabled] .btn-outline.focus,
+.btn-outline.disabled:active,
+.btn-outline[disabled]:active,
+fieldset[disabled] .btn-outline:active,
+.btn-outline.disabled.active,
+.btn-outline[disabled].active,
+fieldset[disabled] .btn-outline.active {
+  background-color: #563d7c;
+  border-color: #4a356b;
+}
+.btn-outline .badge {
+  color: #563d7c;
+  background-color: #fff;
+}
+
+
+
 .btn-danger {
   color: #fff;
   background-color: #d9534f;

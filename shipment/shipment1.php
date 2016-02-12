@@ -72,7 +72,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                 <b>หมายเหตุ</b> ในแต่ละรอบ เมื่อมีการเพิ่มข้อมูลการส่งสินค้าแล้ว จะไม่สามารถแก้ไขและลบรอบการส่งได้ --> มีการส่งแล้วกลับมาแก้,ลบรอบการส่งไม่ได้
                                 <br>แก้ไขได้เฉพาะวันสิ้นสุดเท่านั้น <br>ลบได้เฉพาะรอบสุดท้ายเท่านั้น <br>แก้ไขวันสิ้นสุดแล้ววันเริ่มต้นของรอบถัดไปจะแก้ตาม
                                             </div>
-                                            <h4 class="alert alert-danger" role="alert">1.เพิ่มสถานะโรงงานที่เหลือ</h4>
+                                            <!--<h4 class="alert alert-danger" role="alert">1.เพิ่มสถานะโรงงานที่เหลือ</h4>-->
                                             <!-- ตารางรอบการส่งสินค้า -->
                                             <div class="panel panel-primary">
                                                 <div class="panel-heading">
@@ -106,6 +106,8 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                                     $change_date_start = date("d-m-Y", strtotime($val_date_start));
                                                                     $val_date_end = $value['date_end'];
                                                                     $change_date_end = date("d-m-Y", strtotime($val_date_end));
+                                                                    $count_notFinish = $value['count_notFinish']!=NULL?$value['count_notFinish']:"-";
+                                                                    $Total2 = $value['Total2'];
                                                                     ?>
                                                                     <?php // print_r(end($getShipment_period)['idshipment_period']) ; ?>
 
@@ -114,7 +116,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                                         <td><?php echo $val_last_idshipment_period; ?></td>
                                                                         <td><?php echo $change_date_start; ?></td>
                                                                         <td><?php echo $change_date_end; ?></td>
-                                                                        <td><?php ?> </td>
+                                                                        <td><?php echo $count_notFinish."/".$Total2; ?> </td>
                                                                         <td align="left">
                                                                             <a href="shipment2.php?idshipment_period=<?php echo $val_idshipment_period; ?>" class="btn btn-success" title="รายละเอียด">
                                                                                 <span class="glyphicon glyphicon-list-alt"></span>

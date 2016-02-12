@@ -15,16 +15,26 @@ if (isset($_GET['idshipment_period'])and isset($_GET['idfactory'])) {
     $val_name_factory = $getFactory['name_factory'];
     //ยอดเงินที่โรงงานเรียกเก็บ
     $price = $_GET['price'];
+
+    $page = $_GET['page'];
+    
+    $status_shipment_factory = $_GET['status_shipment'];
+    
+    $Nextid = getNextid($idshipment_period); //ได้ค่าidรอบถัดไป --> อัพเดทรอบนี้ด้วย
+    $val_next_idshipment_period = $Nextid['idshipment_period'];
+    $val_next_date_end = $Nextid['date_end'];
+    $date2 = str_replace('-', '/', $val_next_date_end);
+    $endNextdate = date('Y-m-d', strtotime($date2 . "0 days"));
 }
 ?>
 <?php
 //ยอดเงินสินค้าคืนรวม
 $price_product_refund = 0;
 ?>
-﻿<form class="form" action="action/action_addPayfactory.php?idfactory=<?php echo $idfactory; ?>&price_pay_factory=<?php echo $price; ?>" method="post">
+﻿<form class="form" action="action/action_addPayfactory.php?page=<?php echo $page; ?>&idshipment_period=<?php echo $idshipment_period; ?>&idfactory=<?php echo $idfactory; ?>&price_pay_factory=<?php echo $price; ?>&status_shipment=<?php echo $status_shipment_factory; ?>" method="post">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">การจ่ายเงินโรงงาน</h4>
+        <h4 class="modal-title" id="myModalLabel">เพิ่มการจ่ายเงินโรงงาน //วันที่จ่ายเช็คตั้งแต่วันที่ของปลายรอบนี้ถึงรอบถัดไป</h4>
     </div>
     <div class="row">
         <div class="col-md-12 col-sm-12 ">
@@ -67,7 +77,7 @@ $price_product_refund = 0;
                                         </thead>
                                         <tbody>
                                             <?php
-                                            $getProduct_refunds = getProduct_refunds($idfactory);
+                                            $getProduct_refunds = getProduct_refunds($idfactory, $idshipment_period);
                                             $i = 0;
                                             foreach ($getProduct_refunds as $value) {
                                                 $i++;
@@ -123,7 +133,7 @@ $price_product_refund = 0;
                     <center><h4 class="text text-danger">สรุปยอดเงินที่จ่ายโรงงาน <input type="text" class="form-control" name="real_price_pay_factory" value="<?php echo $real_price_pay_factory; ?>" readonly></h4></center>
                     <center><h4>วันที่จ่ายเงินโรงงาน <input type="date" class="form-control" id="date_pay_factory" name="date_pay_factory" value="<?php echo $date->format('Y-m-d'); ?>" required></h4></center>
                 </div>
-                
+
                 <div class = "form-group col-md-4"></div>
                 <div class = "form-group col-md-5">
                     <div class="panel panel-primary">
@@ -134,13 +144,13 @@ $price_product_refund = 0;
                             <div class="table-responsive ">
                                 <div class="form-group input-group">
                                     <label class="radio-inline">
-                                        <input type="radio" onclick="chkCash_pay_factory()" name="type_pay_factory" id="cash" value="cash"> <label>เงินสด</label>
+                                        <input type="radio" onclick="chkCash_pay_factory()" name="type_pay_factory" id="cash" value="cash" checked> <label>เงินสด</label>
                                     </label>
                                 </div>
                                 <div class="form-group input-group">
                                     <label class="radio-inline">
-                                        <input type="radio" onclick="chkCredit_pay_factory()" name="type_pay_factory" id="credit" value="credit"> <label>เช็ค</label>
-                                        <input type="date" class="form-control" id="date_pay_factory_credit" name="date_pay_factory_credit" disabled>
+                                        <input type="radio" onclick="chkCredit_pay_factory()" name="type_pay_factory" id="credit" value="credit" > <label>เช็ค</label>
+                                        <input type="date" class="form-control" id="date_pay_factory_credit" min="<?php echo $val_date_end; ?>" max="<?php echo $endNextdate; ?>" name="date_pay_factory_credit" disabled>
                                     </label>
                                 </div>
                             </div>
@@ -153,7 +163,7 @@ $price_product_refund = 0;
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary">Save changes</button>
+        <button type="submit" class="btn btn-primary" onclick="chkdateCredit()">Save changes</button>
     </div>
 </form>
 <script>
@@ -165,4 +175,12 @@ $price_product_refund = 0;
         $("#date_pay_factory_credit").val('');
 
     }
+    function chkdateCredit() {
+        if ($('#credit').is(':checked')) {
+            document.getElementById("date_pay_factory_credit").required = true;
+        } else {
+            document.getElementById("date_pay_factory_credit").required = false;
+        }
+    }
+
 </script>

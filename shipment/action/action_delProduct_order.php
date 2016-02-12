@@ -14,9 +14,12 @@ $idfactory = $_GET['idfactory'];
 $getFactory = getFactoryByID($idfactory);
 $val_name_factory = $getFactory['name_factory'];
 
+$price = $_GET['price'];
+$status_shipment_factory = $_GET['status_shipment'];
+
 $checkDelProduct_order = delProduct_order($idproduct_order);
 if ($checkDelProduct_order) {
-    header("location: ../add_shipment3.php?idshipment_period=" . $idshipment_period . "&idfactory=" . $idfactory . "&action=delProduct_orderCompleted");
+    header("location: ../add_shipment3.php?idshipment_period=" . $idshipment_period . "&idfactory=" . $idfactory . "&price=" . $price . "&status_shipment=" . $status_shipment_factory . "&action=delProduct_orderCompleted");
 } else {
-    header("location: ../add_shipment3.php?idshipment_period=" . $idshipment_period . "&idfactory=" . $idfactory . "&action=delProduct_orderError");
+    header("location: ../add_shipment3.php?idshipment_period=" . $idshipment_period . "&idfactory=" . $idfactory . "&price=" . $price . "&status_shipment=" . $status_shipment_factory . "&action=delProduct_orderError");
 }
