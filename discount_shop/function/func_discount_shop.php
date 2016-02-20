@@ -4,7 +4,7 @@ require_once dirname(__FILE__) . '/../../config/connect.php';
 
 function getCostProductByID($idproduct) {
     $conn = dbconnect();
-    $SQLCommand = "SELECT `idproduct`,`idunit_big`,`name`,`price_unit`,`difference_amount_product`,`difference_amount_factory` FROM `view_product` WHERE `idproduct`= :idproduct ";
+    $SQLCommand = "SELECT `idproduct`,`idunit_big`,`name`,`price_unit`,`difference_amount_product` FROM `view_product` WHERE `idproduct`= :idproduct ";
  
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
