@@ -41,25 +41,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                     </div>
                     <!-- /. ROW  -->
                     <hr />
-                    <span>
-                        <?php
-                        if (isset($_GET['action'])) {
-                            if ($_GET['action'] == "addCompleted") {
-                                echo '<center><h4 class="text-success">คุณได้ทำการเพิ่มสำเร็จแล้ว</h4></center>';
-                            } else if ($_GET['action'] == "addError") {
-                                echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถเพิ่มได้</h4></center>';
-                            } else if ($_GET['action'] == "editCompleted") {
-                                echo '<center><h4 class="text-success">คุณได้ทำการแก้ไขสำเร็จแล้ว</h4></center>';
-                            } else if ($_GET['action'] == "editError") {
-                                echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถแก้ไขได้</h4></center>';
-                            } else if ($_GET['action'] == "delCompleted") {
-                                echo '<center><h4 class="text-success">คุณได้ทำการลบสำเร็จแล้ว</h4></center>';
-                            } else if ($_GET['action'] == "delError") {
-                                echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถลบได้</h4></center>';
-                            }
-                        }
-                        ?>
-                    </span>
+                    <div class="alert alert-danger" role="alert">1.กดที่ตัวเลขยอดเรียกเก็บและยอดสินค้าคืนรวมจะขึ้นข้อมูล </div>
                     <!-- ค้นหา -->
                     <div class="row">
                         <div class="col-md-3"></div>                        
@@ -67,37 +49,22 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                             <div class="panel panel-default">
                                 <div class="panel-heading ">
                                     <div class="table-responsive">
-                                        <!--<form action="action/action_discount_shop_show.php" method="GET">-->
-
-                                        <!--                                        <div class="form-group">
-                                                                                    <label for="product_code">รหัสสินค้า</label>
-                                                                                    <div class="form-group input-group">
-                                                                                        <span class="input-group-addon"><i class="fa fa-circle-o-notch" ></i></span>
-                                                                                        <input type="text" class="form-control" name="product_code" placeholder="กรอกรหัสสินค้า" />
-                                                                                    </div>
-                                                                                </div>-->
                                         <div class="form-group">
-                                            <label for="product_code">ค้นหารหัสหรือชื่อโรงงาน</label>
+                                            <label for="code_factory">ค้นหารหัสหรือชื่อโรงงาน</label>
                                             <div class="form-group input-group">
                                                 <span class="input-group-addon"><i class="fa fa-cube" ></i></span>
-                                                <input type="text" class="form-control" id="searchProduct" name="searchProduct" onkeyup="searchProduct()" placeholder="กรอกชื่อสินค้า" />
+                                                <input type="text" class="form-control" id="searchFactory" name="searchFactory" onkeyup="searchFactory()" placeholder="กรอกชื่อโรงงาน" />
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="name_product">โรงงาน</label>
+                                            <label for="name_factory">โรงงาน</label>
                                             <div class="form-group input-group">
                                                 <span class="input-group-addon"><i class="fa fa-cube" ></i></span>
-                                                <select class="form-control" id="idproduct" name="idproduct" onchange="show_cost_product_table()">
-                                                    <!--getProduct-->
+                                                <select class="form-control" id="idFactory" name="idFactory" onchange="show_pay_factory_table()">
                                                 </select>
                                             </div>
                                         </div>
-                                        <!--<div class="form-group" align="center">-->
-                                        <!--                                                <button type="submit" class="btn btn-info btn-lg">
-                                                                                            <span class="glyphicon glyphicon-search"></span> ค้นหา
-                                                                                        </button>-->
-                                        <!--</div>-->
-                                        <!--</form>-->
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -105,35 +72,18 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                     </div>
                     <!--End ค้นหา -->
                     <br/>
-                    <!-- ข้อมูลต้นทุนสินค้า -->
-<!--                    <div class="row">
-                        <div class="col-md-3"></div>                        
-                        <div class="col-md-6 ">
-                            <div class="panel panel-primary">
-                                <div class="panel-heading">
-                                    <label>ข้อมูลต้นทุนสินค้า</label>
-                                </div>
-                                <div class="panel-body">
-                                    <div class="table-responsive" id="show_cost_product_table">
-                                         show_cost_product_table 
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>-->
-                    <!--End ข้อมูลต้นทุนสินค้า -->
                     <br/>
                     <!-- ส่วนลดร้านค้า -->
                     <div class="row">
-                        <div class="col-md-2"></div>                        
-                        <div class="col-md-8 ">
+                        <div class="col-md-1"></div>                        
+                        <div class="col-md-10 ">
                             <div class="panel panel-primary">
                                 <div class="panel-heading">
                                     <label>ข้อมูลการจ่ายเงินโรงงานรายเดือน-ปี</label>
                                 </div>
                                 <div class="panel-body">
-                                    <div class="table-responsive" id="show_discount_shop_table">
-                                        <!-- show_discount_shop_table -->
+                                    <div class="table-responsive" id="show_pay_factory_table">
+                                         <!--show_pay_factory_table--> 
                                     </div>
                                 </div>
                             </div>
@@ -163,29 +113,20 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                     });
         </script>
         <script>
-            show_cost_product_table();
-            function show_cost_product_table() {
-                var idproduct = $("#idproduct").val();
-                $.get("action/action_cost_product_show.php?idproduct=" + idproduct, function (data, status) {
-                    $("#show_cost_product_table").html(data);
-                    show_discount_shop_table();
+            show_pay_factory_table();
+            function show_pay_factory_table() {
+                var idfactory = $("#idFactory").val();
+                $.get("action/action_pay_factory_show.php?idfactory=" + idfactory, function (data, status) {
+                    $("#show_pay_factory_table").html(data);
                 });
             }
 
-
-            function show_discount_shop_table() {
-                var idproduct = $("#idproduct").val();
-                $.get("action/action_discount_shop_show.php?idproduct=" + idproduct, function (data, status) {
-                    $("#show_discount_shop_table").html(data);
-                });
-            }
-            searchProduct();
-            function searchProduct() {
-                var searchProduct = $("#searchProduct").val();
-                $.get("discount_shop_search_product.php?searchProduct=" + searchProduct, function (data, status) {
-                    $("#idproduct").html(data);
-                    show_cost_product_table();
-                    show_discount_shop_table();
+            searchFactory();
+            function searchFactory() {
+                var searchFactory = $("#searchFactory").val();
+                $.get("history_search_pay_factory.php?searchFactory=" + searchFactory, function (data, status) {
+                    $("#idFactory").html(data);
+                   show_pay_factory_table();
                 });
             }
 
