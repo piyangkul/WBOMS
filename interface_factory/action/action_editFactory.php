@@ -14,13 +14,12 @@ $contact_factory = $_POST['contact_factory'];
 $difference_amount_factory = $_POST['difference_amount_factory'];
 $detail_factory = $_POST['detail_factory'];
 
-if (!checkDuplicateFactory($name_factory)) {
+
 $checkEditFactory = editFactory($code_factory, $name_factory, $tel_factory, $address_factory, $contact_factory, $difference_amount_factory, $detail_factory ,$idfactory);
+//print_r($checkEditFactory);
 if ($checkEditFactory) {
     header("location: ../factory.php?p=factory&action=editFactoryCompleted");
 } else {
     header("location: ../factory.php?p=factory&action=editFactoryError");
-}}
- else {
-    header("location: ../factory.php?p=factory&action=editFactoryDuplicateError");
 }
+
