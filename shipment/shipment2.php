@@ -55,7 +55,7 @@ $val_name_factory = $getFactoryByID['name_factory'];
                     </div>
                     <!-- /. ROW  -->
                     <hr />
-                    <a href="javascript: history.go(-1)" class="btn btn-danger btn-lg">
+                    <a class="btn btn-danger btn-lg" onclick="Back()">
                         <span class="fa fa-arrow-circle-left"></span> Back
                     </a>
                     <div class="row">
@@ -80,9 +80,9 @@ $val_name_factory = $getFactoryByID['name_factory'];
                                     } else if ($_GET['action'] == "delPayfactoryError") {
                                         echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถลบการจ่ายเงินโรงงานได้</h4></center>';
                                     } else if ($_GET['action'] == "finishCompleted") {
-                                        echo '<center><h4 class="text-success">คุณได้จัดการการส่งสินค้าของโรงงาน '. $val_name_factory .' เสร็จสิ้นแล้ว</h4></center>';
+                                        echo '<center><h4 class="text-success">คุณได้จัดการการส่งสินค้าของโรงงาน ' . $val_name_factory . ' เสร็จสิ้นแล้ว</h4></center>';
                                     } else if ($_GET['action'] == "finishError") {
-                                        echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถจัดการการส่งสินค้าของโรงงาน '. $val_name_factory .' ให้เสร็จสิ้นได้</h4></center>';
+                                        echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถจัดการการส่งสินค้าของโรงงาน ' . $val_name_factory . ' ให้เสร็จสิ้นได้</h4></center>';
                                     }
                                 }
                                 ?>
@@ -158,10 +158,9 @@ $val_name_factory = $getFactoryByID['name_factory'];
                                                                     $val_CountCheck = "-";
                                                                 }
                                                                 $val_price = $value['price'];
-                                                                if ($val_price == NULL) {
-                                                                    $val_price = "-";
-                                                                }
-
+//                                                                if ($val_price == NULL) {
+//                                                                    $val_price = "-";
+//                                                                }
 //                                                    echo '<pre>';
 //                                                    print_r($value);
 //                                                    echo '</pre>';
@@ -177,129 +176,150 @@ $val_name_factory = $getFactoryByID['name_factory'];
                                                                     <td><?php
                                                                         $text = ($leftArr["$val_idfactory"]['count_left'] == NULL ? '-' : $leftArr["$val_idfactory"]['count_left']) . "/" . $val_CountCheck;
                                                                         if ($val_status_shipment == "finish") {
-                                                                            echo "เสร็จสิ้น". "/" . $val_CountCheck;
-                                                                        }
-                                                                        else{
+                                                                            echo "เสร็จสิ้น" . "/" . $val_CountCheck;
+                                                                        } else {
                                                                             echo $text;
                                                                         }
                                                                         ?></td>
-                                                                    <!--<td><?php //echo implode($leftArr["$val_idfactory"],"/") ;                       ?></td>-->
-                                                                    <!--<td><?php //echo implode($leftArr["$val_idfactory"],"/", $val_CountCheck) ;                       ?></td>-->
-                                                                    <td><?php echo $val_price; ?></td>
+                                                                    <!--<td><?php //echo implode($leftArr["$val_idfactory"],"/") ;                              ?></td>-->
+                                                                    <!--<td><?php //echo implode($leftArr["$val_idfactory"],"/", $val_CountCheck) ;                                ?></td>-->
+                                                                    <?php
+                                                                    if ($val_price == NULL) {
+                                                                        $val_price = "-";
+                                                                        ?>
+                                                                        <td><?php echo $val_price; ?></td>
+                                                                    <?php } else { ?>
+                                                                        <td><?php echo number_format($val_price, 2, '.', ''); ?></td>
+                                                                    <?php } ?>
+
                                                                     <td>
                                                                         <?php if ($val_status_shipment == NULL) { ?>
                                                                             <img src = "../images/level0.png">
                                                                             <?php } elseif ($val_status_shipment == 'add_shipment') { ?>
                                                                                 <img src = "../images/level1.png" title="เพิ่มข้อมูลการส่งสำเร็จแล้ว รอตรวจสอบยอดบิล">                                                            
-                                                                                <?php } elseif ($val_status_shipment == 'check_price') { ?>
+                                                                                <?php } elseif ($val_status_shipment == 'check_price' && $leftArr["$val_idfactory"]['count_left'] == 0) { ?>
                                                                                     <img src = "../images/level2.png" title="ตรวจสอบยอดบิลสำเร็จแล้ว รอเพิ่มการจ่ายเงินโรงงาน">                                                            
-                                                                                    <?php } elseif ($val_status_shipment == 'pay') { ?>
-                                                                                        <img src = "../images/level3.png" title="เพิ่มการจ่ายเงินโรงงานสำเร็จแล้ว รอกดปุ่มเสร็จสิ้น">   
-                                                                                        <?php } elseif ($val_status_shipment == 'finish') { ?>
-                                                                                            <img src = "../images/level4.png" title="เสร็จสิ้น"> 
-                                                                                            <?php } ?>
-                                                                                            </td>
-                                                                                            <td>
-                                        <!--                                                            <a href="detail_shipment3.php?idshipment_period=<?php echo $idshipment_period; ?>&idfactory=<?php echo $val_idfactory2; ?>" class="btn btn-success " data-toggle="tooltip" title="รายละเอียด">
-                                                                                                    <span class="glyphicon glyphicon-list-alt"></span>
-                                                                                                </a>-->
-                                                                                                <a href="add_shipment3.php?idshipment_period=<?php echo $idshipment_period; ?>&idfactory=<?php echo $val_idfactory2; ?>&price=<?php echo $val_price; ?>&status_shipment=<?php echo $val_status_shipment; ?>" class="btn btn-warning " data-toggle="tooltip" title="จัดการการส่งสินค้า">
-                                                                                                    <span class="glyphicon glyphicon-edit"></span>
-                                                                                                </a>
-                                        <!--                                                            <a href="edit_shipment3.php?idshipment_period=<?php echo $idshipment_period; ?>&idfactory=<?php echo $val_idfactory2; ?>" class="btn btn-warning " data-toggle="tooltip" title="แก้ไข">
-                                                                                                    <span class="glyphicon glyphicon-edit"></span>
-                                                                                                </a>-->
-                                                                                                <?php if ($val_status_shipment == 'check_price') { ?> <!--สถานะรอการจ่ายเงินโรงงาน และ ไม่มีข้อมูลการจ่ายเงิน&& $val_idpay_factory == NULL-->
-                                                                                                    <a href = "popup_add_payfactory.php?page=shipment2&idshipment_period=<?php echo $idshipment_period; ?>&idfactory=<?php echo $val_idfactory2; ?>&price=<?php echo $val_price; ?>&status_shipment=<?php echo $val_status_shipment; ?>" class = "btn btn-info " data-toggle = "modal" data-target = "#myModal-lg" data-toggle = "tooltip" title = "เพิ่มการจ่ายโรงงาน">
-                                                                                                        <span class = "fa fa-plus fa-lg fa-fw"></span><span class = "fa fa-building-o fa-lg"></span>
-                                                                                                    </a>
-                                                                                                <?php } elseif ($val_status_shipment == 'pay') { ?> <!--สถานะรอการกดเสร็จสิ้น และ มีข้อมูลการจ่ายเงิน && $val_idpay_factory != NULL-->
-                                                                                                    <a href="action/action_delPayfactory.php?page=shipment2&idshipment_period=<?php echo $idshipment_period; ?>&idfactory=<?php echo $val_idfactory2; ?>&price=<?php echo $val_price; ?>&status_shipment=<?php echo $val_status_shipment; ?>" onclick="if (!confirm('คุณต้องการลบหรือไม่')) {
-                                                                                                                return false;
-                                                                                                            }" class="btn btn-danger " title="ลบการจ่ายเงินโรงงาน">
-                                                                                                        <span class="fa fa-trash fa-lg fa-fw"></span><span class = "fa fa-building-o fa-lg"></span>
-                                                                                                    </a>
-                                                                                                    <a href="action/action_finish.php?idshipment_period=<?php echo $idshipment_period; ?>&idfactory=<?php echo $val_idfactory2; ?>&price=<?php echo $val_price; ?>&status_shipment=<?php echo $val_status_shipment; ?>" onclick="if (!confirm('คุณต้องการกดเสร็จสิ้นหรือไม่')) {
-                                                                                                                return false;
-                                                                                                            }" class="btn btn-outline" title="เปลี่ยนสถานะเป็นเสร็จสิ้น">
-                                                                                                        <span class="glyphicon glyphicon-ok"></span>
-                                                                                                    </a>
+                                                                                    <?php } elseif ($val_status_shipment == 'check_price') {
+                                                                                        ?>
+                                                                                        <img src = "../images/level1.png" title="เพิ่มข้อมูลการส่งสำเร็จแล้ว รอตรวจสอบยอดบิล">                                                            
+                                                                                        <?php } elseif ($val_status_shipment == 'pay') {
+                                                                                            ?>
+                                                                                            <img src = "../images/level3.png" title="เพิ่มการจ่ายเงินโรงงานสำเร็จแล้ว รอกดปุ่มเสร็จสิ้น">   
+                                                                                            <?php } elseif ($val_status_shipment == 'finish') { ?>
+                                                                                                <img src = "../images/level4.png" title="เสร็จสิ้น"> 
                                                                                                 <?php } ?>
-                                                                                                <?php // } elseif($val_status_shipment == 'pay' ) { ?> <!--สถานะรอการกดเสร็จสิ้น และ มีข้อมูลการจ่ายเงิน && $val_idpay_factory != NULL-->
-                                                    <!--                                                                                        <a href = "popup_edit_payfactory.php?page=shipment2&idshipment_period=//<?php echo $idshipment_period; ?>&idfactory=<?php echo $val_idfactory2; ?>&price=<?php echo $val_price; ?>" class = "btn btn-info " data-toggle = "modal" data-target = "#myModal-lg" data-toggle = "tooltip" title = "การจ่ายโรงงาน">
-                                                                                                                                                <span class = "glyphicon glyphicon-edit"></span><span class = "fa fa-building-o"></span>
-                                                                                                                                            </a>-->
-                                                                                                <?php // } ?>
-                                                                                            </td>
-                                                                                            </tr>
+                                                                                                </td>
+                                                                                                <td>
+                                            <!--                                                            <a href="detail_shipment3.php?idshipment_period=<?php echo $idshipment_period; ?>&idfactory=<?php echo $val_idfactory2; ?>" class="btn btn-success " data-toggle="tooltip" title="รายละเอียด">
+                                                                                                        <span class="glyphicon glyphicon-list-alt"></span>
+                                                                                                    </a>-->
+                                                                                                    <a href="add_shipment3.php?idshipment_period=<?php echo $idshipment_period; ?>&idfactory=<?php echo $val_idfactory2; ?>&price=<?php echo $val_price; ?>&status_shipment=<?php echo $val_status_shipment; ?>" class="btn btn-warning " data-toggle="tooltip" title="จัดการการส่งสินค้า">
+                                                                                                        <span class="glyphicon glyphicon-edit"></span>
+                                                                                                    </a>
+                                            <!--                                                            <a href="edit_shipment3.php?idshipment_period=<?php echo $idshipment_period; ?>&idfactory=<?php echo $val_idfactory2; ?>" class="btn btn-warning " data-toggle="tooltip" title="แก้ไข">
+                                                                                                        <span class="glyphicon glyphicon-edit"></span>
+                                                                                                    </a>-->
+                                                                                                    <?php if ($val_status_shipment == 'check_price') { ?> <!--สถานะรอการจ่ายเงินโรงงาน และ ไม่มีข้อมูลการจ่ายเงิน&& $val_idpay_factory == NULL-->
+                                                                                                        <a href = "popup_add_payfactory.php?page=shipment2&idshipment_period=<?php echo $idshipment_period; ?>&idfactory=<?php echo $val_idfactory2; ?>&price=<?php echo $val_price; ?>&status_shipment=<?php echo $val_status_shipment; ?>" class = "btn btn-info " data-toggle = "modal" data-target = "#myModal-lg" data-toggle = "tooltip" title = "เพิ่มการจ่ายโรงงาน">
+                                                                                                            <span class = "fa fa-plus fa-lg fa-fw"></span><span class = "fa fa-building-o fa-lg"></span>
+                                                                                                        </a>
+                                                                                                    <?php } elseif ($val_status_shipment == 'pay') { ?> <!--สถานะรอการกดเสร็จสิ้น และ มีข้อมูลการจ่ายเงิน && $val_idpay_factory != NULL-->
+                                                                                                        <a href = "popup_detail_payfactory.php?page=shipment2&idshipment_period=<?php echo $idshipment_period; ?>&idfactory=<?php echo $val_idfactory2; ?>&price=<?php echo $val_price; ?>&status_shipment=<?php echo $val_status_shipment; ?>" class = "btn btn-success" data-toggle = "modal" data-target = "#myModal-lg" data-toggle = "tooltip" title = "ดูรายละเอียดการจ่ายโรงงาน">
+                                                                                                            <span class = "glyphicon glyphicon-list-alt"></span> <span class = "fa fa-building-o fa-lg"></span>
+                                                                                                        </a>
+                                                                                                        <a href="action/action_delPayfactory.php?page=shipment2&idshipment_period=<?php echo $idshipment_period; ?>&idfactory=<?php echo $val_idfactory2; ?>&price=<?php echo $val_price; ?>&status_shipment=<?php echo $val_status_shipment; ?>" onclick="if (!confirm('คุณต้องการลบหรือไม่')) {
+                                                                                                                            return false;
+                                                                                                                        }" class="btn btn-danger " title="ลบการจ่ายเงินโรงงาน">
+                                                                                                            <span class="fa fa-trash fa-lg fa-fw"></span><span class = "fa fa-building-o fa-lg"></span>
+                                                                                                        </a>
+                                                                                                        <a href="action/action_finish.php?idshipment_period=<?php echo $idshipment_period; ?>&idfactory=<?php echo $val_idfactory2; ?>&price=<?php echo $val_price; ?>&status_shipment=<?php echo $val_status_shipment; ?>" onclick="if (!confirm('คุณต้องการกดเสร็จสิ้นหรือไม่')) {
+                                                                                                                            return false;
+                                                                                                                        }" class="btn btn-outline" title="เปลี่ยนสถานะเป็นเสร็จสิ้น">
+                                                                                                            <span class="glyphicon glyphicon-ok"></span>
+                                                                                                        </a>
+                                                                                                    <?php } elseif ($val_status_shipment == 'finish') { ?>
+                                                                                                        <a href = "popup_detail_payfactory.php?page=shipment2&idshipment_period=<?php echo $idshipment_period; ?>&idfactory=<?php echo $val_idfactory2; ?>&price=<?php echo $val_price; ?>&status_shipment=<?php echo $val_status_shipment; ?>" class = "btn btn-success" data-toggle = "modal" data-target = "#myModal-lg" data-toggle = "tooltip" title = "ดูรายละเอียดการจ่ายโรงงาน">
+                                                                                                            <span class = "glyphicon glyphicon-list-alt"></span> <span class = "fa fa-building-o fa-lg"></span>
+                                                                                                        </a>
+                                                                                                    <?php } ?>
+                                                                                                    <?php // } elseif($val_status_shipment == 'pay' ) {   ?> <!--สถานะรอการกดเสร็จสิ้น และ มีข้อมูลการจ่ายเงิน && $val_idpay_factory != NULL-->
+                    <!--                                                                                        <a href = "popup_edit_payfactory.php?page=shipment2&idshipment_period=//<?php echo $idshipment_period; ?>&idfactory=<?php echo $val_idfactory2; ?>&price=<?php echo $val_price; ?>" class = "btn btn-info " data-toggle = "modal" data-target = "#myModal-lg" data-toggle = "tooltip" title = "การจ่ายโรงงาน">
+                                                                                                                <span class = "glyphicon glyphicon-edit"></span><span class = "fa fa-building-o"></span>
+                                                                                                            </a>-->
+                                                                                                    <?php // }    ?>
+                                                                                                </td>
+                                                                                                </tr>
 
-                                                                                            <?php
-                                                                                        }
-                                                                                        ?> 
-                                                                                        </tbody>
-                                                                                        </table>
+                                                                                                <?php
+                                                                                            }
+                                                                                            ?> 
+                                                                                            </tbody>
+                                                                                            </table>
 
-                                                                                        </div>
-                                                                                        </div>
-                                                                                        </div>
-                                                                                        <!--End ตารางรายการสินค้า -->
+                                                                                            </div>
+                                                                                            </div>
+                                                                                            </div>
+                                                                                            <!--End ตารางรายการสินค้า -->
 
-                                                                                        </div>
-                                                                                        </div>
-                                                                                        </div>
-                                                                                        <!--                <div class="alert alert-success" role="alert">
-                                                                                                            check vaild id shipment period
-                                                                                                        </div>-->
-                                                                                        <!-- /. PAGE INNER  -->
-                                                                                        </div>
-                                                                                        <!-- /. PAGE WRAPPER  -->
-                                                                                        </div>
-                                                                                        <!-- /. WRAPPER  -->
-                                                                                        <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
-                                                                                        <!-- JQUERY SCRIPTS -->
-                                                                                        <script src="../assets/js/jquery-1.10.2.js"></script>
-                                                                                        <!-- BOOTSTRAP SCRIPTS -->
-                                                                                        <script src="../assets/js/bootstrap.min.js"></script>
-                                                                                        <!-- METISMENU SCRIPTS -->
-                                                                                        <script src="../assets/js/jquery.metisMenu.js"></script>
-                                                                                        <script>
+                                                                                            </div>
+                                                                                            </div>
+                                                                                            </div>
+                                                                                            <!--                <div class="alert alert-success" role="alert">
+                                                                                                                check vaild id shipment period
+                                                                                                            </div>-->
+                                                                                            <!-- /. PAGE INNER  -->
+                                                                                            </div>
+                                                                                            <!-- /. PAGE WRAPPER  -->
+                                                                                            </div>
+                                                                                            <!-- /. WRAPPER  -->
+                                                                                            <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
+                                                                                            <!-- JQUERY SCRIPTS -->
+                                                                                            <script src="../assets/js/jquery-1.10.2.js"></script>
+                                                                                            <!-- BOOTSTRAP SCRIPTS -->
+                                                                                            <script src="../assets/js/bootstrap.min.js"></script>
+                                                                                            <!-- METISMENU SCRIPTS -->
+                                                                                            <script src="../assets/js/jquery.metisMenu.js"></script>
+                                                                                            <script>
+                                                                                                            $(document.body).on('hidden.bs.modal', function () {
+                                                                                                                $('#myModal').removeData('bs.modal');
+                                                                                                            });
+                                                                                            </script>
+                                                                                            <script>
                                                                                                 $(document.body).on('hidden.bs.modal', function () {
-                                                                                                    $('#myModal').removeData('bs.modal');
+                                                                                                    $('#myModal-lg').removeData('bs.modal');
                                                                                                 });
-                                                                                        </script>
-                                                                                        <script>
-                                                                                            $(document.body).on('hidden.bs.modal', function () {
-                                                                                                $('#myModal-lg').removeData('bs.modal');
-                                                                                            });
-                                                                                        </script>
-                                                                                        <!-- DATA TABLE SCRIPTS -->
-                                                                                        <script src="../assets/js/dataTables/jquery.dataTables.js"></script>
-                                                                                        <script src="../assets/js/dataTables/dataTables.bootstrap.js"></script>
-                                                                                        <script>
-                                                                                            $(document).ready(function () {
-                                                                                                $('#dataTables-example').dataTable();
-                                                                                            });
-                                                                                        </script>
-                                                                                        </body>
-                                                                                        </html>
-                                                                                        <div class="modal fade" id="myModal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                                                                            <div class="modal-dialog">
-                                                                                                <div class="modal-content modal-lg">
-                                                                                                    <!-- Content -->
+                                                                                            </script>
+                                                                                            <!-- DATA TABLE SCRIPTS -->
+                                                                                            <script src="../assets/js/dataTables/jquery.dataTables.js"></script>
+                                                                                            <script src="../assets/js/dataTables/dataTables.bootstrap.js"></script>
+                                                                                            <script>
+                                                                                                $(document).ready(function () {
+                                                                                                    $('#dataTables-example').dataTable();
+                                                                                                });
+                                                                                                function Back() {
+                                                                                                    window.location.assign("shipment1.php");
+                                                                                                }
+                                                                                            </script>
+                                                                                            </body>
+                                                                                            </html>
+                                                                                            <div class="modal fade" id="myModal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                                                                <div class="modal-dialog">
+                                                                                                    <div class="modal-content modal-lg">
+                                                                                                        <!-- Content -->
+                                                                                                    </div>
                                                                                                 </div>
                                                                                             </div>
-                                                                                        </div>
-                                                                                        <div class="modal fade" id="myModal-sm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                                                                            <div class="modal-dialog">
-                                                                                                <div class="modal-content modal-sm">
-                                                                                                    <!-- Content -->
+                                                                                            <div class="modal fade" id="myModal-sm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                                                                <div class="modal-dialog">
+                                                                                                    <div class="modal-content modal-sm">
+                                                                                                        <!-- Content -->
+                                                                                                    </div>
                                                                                                 </div>
                                                                                             </div>
-                                                                                        </div>
-                                                                                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                                                                            <div class="modal-dialog">
-                                                                                                <div class="modal-content">
-                                                                                                    <!-- Content -->
+                                                                                            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                                                                <div class="modal-dialog">
+                                                                                                    <div class="modal-content">
+                                                                                                        <!-- Content -->
+                                                                                                    </div>
                                                                                                 </div>
                                                                                             </div>
-                                                                                        </div>

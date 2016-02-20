@@ -31,10 +31,10 @@ if (isset($_GET['idshipment_period'])and isset($_GET['idfactory'])) {
 //ยอดเงินสินค้าคืนรวม
 $price_product_refund = 0;
 ?>
-﻿<form class="form" action="action/action_addPayfactory.php?page=<?php echo $page; ?>&idshipment_period=<?php echo $idshipment_period; ?>&idfactory=<?php echo $idfactory; ?>&price_pay_factory=<?php echo $price; ?>&status_shipment=<?php echo $status_shipment_factory; ?>" method="post">
+﻿<form class="form" action="#" method="post">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">เพิ่มการจ่ายเงินโรงงาน //วันที่จ่ายเช็คตั้งแต่วันที่ของปลายรอบนี้ถึงรอบถัดไป</h4>
+        <h4 class="modal-title" id="myModalLabel">รายละเอียดการจ่ายเงินโรงงาน</h4>
     </div>
     <div class="row">
         <div class="col-md-12 col-sm-12 ">
@@ -122,7 +122,16 @@ $price_product_refund = 0;
                     </div>
                 </div>
                 <?php
-                $date = new DateTime('now', new DateTimeZone('Asia/Bangkok'));
+                $getPayFactory = getPayFactory($idfactory, $idshipment_period);
+                $val_date_pay_factory = $getPayFactory['date_pay_factory'];
+                $val_type_pay_factory = $getPayFactory['type_pay_factory'];
+                if ($val_type_pay_factory == "cash") {
+                    
+                } else {
+                    
+                }
+                $val_date_pay_factory_credit = $getPayFactory['date_pay_factory_credit'];
+                //$date = new DateTime('now', new DateTimeZone('Asia/Bangkok'));
                 //echo $date->format('d-m-Y H:i:s');
                 $real_price_pay_factory = $price - $price_product_refund; //สรุปยอดเงินที่จ่ายโรงงาน 
                 ?>
@@ -131,7 +140,7 @@ $price_product_refund = 0;
                     <center><h4>ยอดเงินที่โรงงานเรียกเก็บ <input type="text" class="form-control" value="<?php echo number_format($price, 2, '.', ''); ?>" readonly> </h4></center>
                     <center><h4>ยอดเงินสินค้าคืนรวม <input type="text" class="form-control" name="price_product_refund" value="<?php echo number_format($price_product_refund, 2, '.', ''); ?>" readonly> </h4></center>
                     <center><h4 class="text text-danger">สรุปยอดเงินที่จ่ายโรงงาน <input type="text" class="form-control" name="real_price_pay_factory" value="<?php echo number_format($real_price_pay_factory, 2, '.', ''); ?>" readonly></h4></center>
-                    <center><h4>วันที่จ่ายเงินโรงงาน <input type="date" class="form-control" id="date_pay_factory" name="date_pay_factory" value="<?php echo $date->format('Y-m-d'); ?>" required></h4></center>
+                    <center><h4>วันที่จ่ายเงินโรงงาน <input type="date" class="form-control" id="date_pay_factory" name="date_pay_factory" value="<?php echo $val_date_pay_factory; ?>" readonly></h4></center>
                 </div>
 
                 <div class = "form-group col-md-4"></div>
@@ -142,35 +151,33 @@ $price_product_refund = 0;
                         </div>
                         <div class="panel-body">
                             <div class="table-responsive ">
-                                <div class="form-group input-group">
-                                    <label class="radio-inline">
-                                        <input type="radio" onclick="chkCash_pay_factory()" name="type_pay_factory" id="cash" value="cash" checked> <label>เงินสด</label>
-                                    </label>
-                                </div>
-                                <div class="form-group input-group">
-                                    <label class="radio-inline">
-                                        <input type="radio" onclick="chkCredit_pay_factory()" name="type_pay_factory" id="credit" value="credit" > <label>เช็ค</label>
-                                        <input type="date" class="form-control" id="date_pay_factory_credit" min="<?php echo $val_date_end; ?>" max="<?php echo $endNextdate; ?>" name="date_pay_factory_credit" disabled>
-                                    </label>
-                                </div>
-                                <div class="form-group input-group">
-                                    <label class="radio-inline">
-                                        <label>เลขที่เช็ค</label>
-                                        <input type="text" onclick="chkCredit_pay_factory()" class="form-control" id="cheque_number" name="cheque_number" disabled>
-                                    </label>
-                                </div>
-                                <div class="form-group input-group">
-                                    <label class="radio-inline">
-                                        <label>ชื่อธนาคารของเช็ค</label>
-                                        <input type="text" onclick="chkCredit_pay_factory()" class="form-control" id="cheque_name_bank" name="cheque_name_bank" disabled>
-                                    </label>
-                                </div>
-                                <div class="form-group input-group">
-                                    <label class="radio-inline">
-                                        <label>สาขาธนาคารของเช็ค</label>
-                                        <input type="text" onclick="chkCredit_pay_factory()" class="form-control" id="cheque_branch_bank" name="cheque_branch_bank" disabled>
-                                    </label>
-                                </div>
+                                <?php if ($val_type_pay_factory == "cash") { ?>
+                                    <div class="form-group input-group">
+                                        <label class="radio-inline">
+                                            <input type="radio" onclick="chkCash_pay_factory()" name="type_pay_factory" id="cash" value="cash" checked disabled> <label>เงินสด</label>
+                                        </label>
+                                    </div>
+                                    <div class="form-group input-group">
+                                        <label class="radio-inline">
+                                            <input type="radio" onclick="chkCredit_pay_factory()" name="type_pay_factory" id="credit" value="credit" disabled> <label>เช็ค</label>
+                                            <input type="date" class="form-control" id="date_pay_factory_credit" name="date_pay_factory_credit" value="<?php echo $val_date_pay_factory_credit; ?>" disabled>
+                                        </label>
+                                    </div>
+                                <?php } else { ?>
+                                 <div class="form-group input-group">
+                                        <label class="radio-inline">
+                                            <input type="radio" onclick="chkCash_pay_factory()" name="type_pay_factory" id="cash" value="cash" disabled> <label>เงินสด</label>
+                                        </label>
+                                    </div>
+                                    <div class="form-group input-group">
+                                        <label class="radio-inline">
+                                            <input type="radio" onclick="chkCredit_pay_factory()" name="type_pay_factory" id="credit" value="credit" checked disabled> <label>เช็ค</label>
+                                            <input type="date" class="form-control" id="date_pay_factory_credit" name="date_pay_factory_credit" value="<?php echo $val_date_pay_factory_credit; ?>" disabled>
+                                        </label>
+                                    </div>
+                                <?php } ?>
+
+
                             </div>
                         </div>
                     </div>
@@ -181,34 +188,23 @@ $price_product_refund = 0;
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary" onclick="chkdateCredit()">Save changes</button>
+        <!--<button type="submit" class="btn btn-primary" onclick="chkdateCredit()">Save changes</button>-->
     </div>
 </form>
 <script>
     function chkCredit_pay_factory() {
         document.getElementById("date_pay_factory_credit").disabled = false;
-        document.getElementById("cheque_number").disabled = false;
-        document.getElementById("cheque_name_bank").disabled = false;
-        document.getElementById("cheque_branch_bank").disabled = false;
     }
     function chkCash_pay_factory() {
         document.getElementById("date_pay_factory_credit").disabled = true;
-        document.getElementById("cheque_number").disabled = true;
-        document.getElementById("cheque_name_bank").disabled = true;
-        document.getElementById("cheque_branch_bank").disabled = true;
-        $("#date_pay_factory_credit").val('');//ล้างค่า
-        $("#cheque_number").val('');
-        $("#cheque_name_bank").val('');
-        $("#cheque_branch_bank").val('');
+        $("#date_pay_factory_credit").val('');
 
     }
     function chkdateCredit() {
         if ($('#credit').is(':checked')) {
             document.getElementById("date_pay_factory_credit").required = true;
-           // document.getElementById("cheque_number").required = true;
         } else {
             document.getElementById("date_pay_factory_credit").required = false;
-           // document.getElementById("cheque_number").required = false;
         }
     }
 

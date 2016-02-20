@@ -16,6 +16,10 @@ $real_price_pay_factory = $_POST['real_price_pay_factory']; //สรุปยอ
 $date_pay_factory = $_POST['date_pay_factory']; //วันที่จ่ายเงินโรงงาน 
 $type_pay_factory = $_POST['type_pay_factory']; //ประเภทการจ่ายเงิน
 $date_pay_factory_credit = $_POST['date_pay_factory_credit']; //วันที่เช็ค
+$cheque_number = $_POST['cheque_number']; 
+$cheque_name_bank = $_POST['cheque_name_bank']; 
+$cheque_branch_bank = $_POST['cheque_branch_bank']; 
+
 /////if(!isset($date_pay_factory_credit)){//ไม่โดนตั้งค่า
 //    $date_pay_factory_credit = NULL;
 //}
@@ -25,17 +29,31 @@ $date_pay_factory_credit = $_POST['date_pay_factory_credit']; //วันที�
 $status_shipment_factory = $_GET['status_shipment'];
 //$price_pay_factory = $_GET['price_pay_factory'];
 
-$Payfactory = addPayfactory($idshipment_period, $idfactory, $price_pay_factory, $price_product_refund, $real_price_pay_factory, $date_pay_factory, $type_pay_factory, $date_pay_factory_credit);
+$Payfactory = addPayfactory($idshipment_period, $idfactory, $price_pay_factory, $price_product_refund, $real_price_pay_factory, $date_pay_factory, $type_pay_factory, $date_pay_factory_credit, $cheque_number, $cheque_name_bank, $cheque_branch_bank);
 
-$getProduct_waitchangeStatus = getProduct_waitchangeStatus($idfactory,$idshipment_period);
-$i = 0;
-foreach ($getProduct_waitchangeStatus as $value) {
-    $i++;
+//เริ่มต้นการเปลี่ยนสถานะใน order_transport
+$getProduct_waitchangeStatusShipment = getProduct_waitchangeStatusShipment($idfactory,$idshipment_period);
+$i1 = 0;
+foreach ($getProduct_waitchangeStatusShipment as $value) {
+    $i1++;
     $val_name_product = $value['name_product'];
     $val_idorder_transport = $value['idorder_transport'];
     echo $val_name_product;
     $editStatus_pay = editStatus_pay($val_idorder_transport);
 }
+//สิ้นสุดการเปลี่ยนสถานะใน order_transport
+
+//เริ่มต้นการเปลี่ยนสถานะใน product_refunds
+$getProduct_waitchangeStatusRefund = getProduct_waitchangeStatusRefund($idfactory,$idshipment_period);
+$i2 = 0;
+foreach ($getProduct_waitchangeStatusRefund as $value) {
+    $i2++;
+    $val_name_product = $value['name_product'];
+    $val_idorder_product_refunds = $value['idorder_product_refunds'];
+    echo $val_name_product;
+    $editStatus_pay = editStatus_returned($val_idorder_product_refunds);
+}
+//สิ้นสุดการเปลี่ยนสถานะใน product_refunds
 
 //updatestatusShipment
 $getUpdateStatusShipmentByID = getUpdateStatusShipmentByID($idfactory, $idshipment_period);

@@ -27,8 +27,9 @@ $volume = $_POST['volume'];
 $number = $_POST['number'];
 $price_transport = $_POST['price_transport'];
 
-$status_shipment_factory = $_GET['status_shipment'];
+//$status_shipment_factory = $_GET['status_shipment'];
 //$price = $_GET['price']; //ใช้ไม่ได้
+
 
 foreach ($idproduct_order as $value) {
     $editChange_statusByID = editChange_status($value, $check_shipment);
@@ -46,8 +47,16 @@ $val_price = $price_pay_factory['price'];
 //$shipmentByID = addShipment($idorder_transport, $idproduct_order, $idshipment_period, $idtransport, $date_transport, $volume, $number, $price_transport);
 //print_r($shipmentByID);
 //$editChange_statusByID = editChange_status($idproduct_order);
+
+//updatestatusShipment
+$getUpdateStatusShipmentByID = getUpdateStatusShipmentByID($idfactory, $idshipment_period);
+$val_status_shipment = $getUpdateStatusShipmentByID['status_shipment'];
+echo '<pre>';
+echo $val_status_shipment;
+echo '</pre>';
+
 if ($shipmentByID) {
-    header("location: ../add_shipment3.php?idshipment_period=" . $idshipment_period . "&idfactory=" . $idfactory . "&price=" . $val_price . "&status_shipment=" . $status_shipment_factory ."&action=addShipmentCompleted");
+    header("location: ../add_shipment3.php?idshipment_period=" . $idshipment_period . "&idfactory=" . $idfactory . "&price=" . $val_price . "&status_shipment=" . $val_status_shipment ."&action=addShipmentCompleted");
 } else {
-    header("location: ../add_shipment3.php?idshipment_period=" . $idshipment_period . "&idfactory=" . $idfactory . "&price=" . $val_price . "&status_shipment=" . $status_shipment_factory ."&action=addShipmentError");
+    header("location: ../add_shipment3.php?idshipment_period=" . $idshipment_period . "&idfactory=" . $idfactory . "&price=" . $val_price . "&status_shipment=" . $val_status_shipment ."&action=addShipmentError");
 }

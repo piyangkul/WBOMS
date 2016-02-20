@@ -17,6 +17,7 @@ $idtransport = $_GET['idtransport'];
 $volume = $_GET['volume'];
 $number = $_GET['number'];
 $price_transport = $_GET['price_transport'];
+$price = $_GET['price'];
 
 $getShipmentDetailByID = getShipmentDetailByID($idorder_transport, $idshipment_period, $idfactory);
 $val_date_transport = $getShipmentDetailByID['date_transport'];
@@ -25,7 +26,7 @@ $val_volume = $getShipmentDetailByID['volume'];
 $val_number = $getShipmentDetailByID['number'];
 $val_price_transport = $getShipmentDetailByID['price_transport'];
 ?>
-﻿<form class="form" action="action/action_status_check_price.php?idorder_transport=<?php echo $idorder_transport; ?>&idshipment_period=<?php echo $idshipment_period; ?>&idfactory=<?php echo $idfactory; ?>" method="post">
+﻿<form class="form" action="action/action_status_check_price.php?idorder_transport=<?php echo $idorder_transport; ?>&idshipment_period=<?php echo $idshipment_period; ?>&idfactory=<?php echo $idfactory; ?>&price=<?php echo $price; ?>" method="post">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">รายละเอียดสินค้าตามบิลขนส่ง</h4>
@@ -154,16 +155,16 @@ $val_price_transport = $getShipmentDetailByID['price_transport'];
                                         <td><?php echo $val_difference_amount . "%"; ?></td><!-- ต้นทุนลด-->                                      
                                         <td class="text-right"><?php echo number_format($cost, 2, '.', '') ?></td><!-- ราคาต้นทุน-->
                                         <td><?php echo $val_difference_product_order; ?><?php echo ($val_type_product_order == "PERCENT") ? "%" : "฿"; ?></td>
-                                        <td><?php echo $cost2; ?></td> <!-- ราคาขาย -->
-                                        <td><?php echo $val_price_unit * $val_amount_product_order; ?></td>
-                                        <td><?php echo $cost * $val_amount_product_order; ?></td> <!-- ราคาต้นทุนรวม--> 
-                                        <td><?php echo $cost2 * $val_amount_product_order; ?></td> <!-- ราคาขายรวม--> 
+                                        <td><?php echo number_format($cost2, 2, '.', ''); ?></td> <!-- ราคาขาย -->
+                                        <td><?php echo number_format($val_price_unit * $val_amount_product_order, 2, '.', ''); ?></td>
+                                        <td><?php echo number_format($cost * $val_amount_product_order, 2, '.', ''); ?></td> <!-- ราคาต้นทุนรวม--> 
+                                        <td><?php echo number_format($cost2 * $val_amount_product_order, 2, '.', ''); ?></td> <!-- ราคาขายรวม--> 
                                         <?php $sum_sale_transport = $sum_sale_transport + $cost2 * $val_amount_product_order; ?>
                                     </tr>
                                 <?php } ?>
                         </table>
                     </div>
-                    <div class="col-md-6 col-md-offset-6">รวม ราคาขายของบิลขนส่ง &nbsp;&nbsp; <b><?php echo $sum_sale_transport; ?></b> &nbsp;&nbsp; บาท </div>
+                    <div class="col-md-6 col-md-offset-6">รวม ราคาขายของบิลขนส่ง &nbsp;&nbsp; <b><?php echo number_format($sum_sale_transport, 2, '.', ''); ?></b> &nbsp;&nbsp; บาท </div>
                 </div>
 
             </div>

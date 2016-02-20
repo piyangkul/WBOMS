@@ -53,17 +53,17 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                 <?php
                                 if (isset($_GET['action'])) {
                                     if ($_GET['action'] == "addPeriodCompleted") {
-                                        echo '<center><h4 class="text-success">คุณได้ทำการเพิ่มสำเร็จแล้ว</h4></center>';
+                                        echo '<center><h4 class="text-success">คุณได้ทำการเพิ่มรอบการส่งสินค้าสำเร็จแล้ว</h4></center>';
                                     } else if ($_GET['action'] == "addPeriodError") {
-                                        echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถเพิ่มได้</h4></center>';
+                                        echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถเพิ่มรอบการส่งสินค้าได้</h4></center>';
                                     } else if ($_GET['action'] == "editPeriodCompleted") {
-                                        echo '<center><h4 class="text-success">คุณได้ทำการแก้ไขสำเร็จแล้ว</h4></center>';
+                                        echo '<center><h4 class="text-success">คุณได้ทำการแก้ไขรอบการส่งสินค้าสำเร็จแล้ว</h4></center>';
                                     } else if ($_GET['action'] == "editPeriodError") {
-                                        echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถแก้ไขได้</h4></center>';
+                                        echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถแก้ไขรอบการส่งสินค้าได้</h4></center>';
                                     } else if ($_GET['action'] == "delPeriodCompleted") {
-                                        echo '<center><h4 class="text-success">คุณได้ทำการลบสำเร็จแล้ว</h4></center>';
+                                        echo '<center><h4 class="text-success">คุณได้ทำการลบรอบการส่งสินค้าสำเร็จแล้ว</h4></center>';
                                     } else if ($_GET['action'] == "delPeriodError") {
-                                        echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถลบได้</h4></center>';
+                                        echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถลบรอบการส่งสินค้าได้</h4></center>';
                                     }
                                 }
                                 ?>
@@ -86,7 +86,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                                     <th><div align="center">รอบที่</div></th>
                                                                     <th><div align="center">วันเริ่มต้น</div></th>
                                                                     <th><div align="center">วันสิ้นสุด</div></th>
-                                                                    <th><div align="center">โรงงานที่ยังทำไม่เสร็จ/ทั้งหมด</div></th>
+                                                                    <th><div align="center">จำนวนโรงงานที่ยังทำไม่เสร็จ/ทั้งหมด</div></th>
                                                                     <th><div align="center">การกระทำ</div></th>
                                                                 </tr>
                                                             </thead>

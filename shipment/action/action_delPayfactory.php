@@ -22,15 +22,29 @@ echo $val_idpay_factory;
 
 $delPayfactory = delPayfactory($val_idpay_factory);//ลบข้อมูลการจ่ายเงิน
 
-$getProduct_waitchangeStatus = getProduct_waitchangeStatus($idfactory,$idshipment_period);//ค้นหาสินค้า
-$i = 0;
-foreach ($getProduct_waitchangeStatus as $value) {
-    $i++;
+//เริ่มต้นการเปลี่ยนสถานะใน order_transport
+$getProduct_waitchangeStatusShipment = getProduct_waitchangeStatusShipment($idfactory,$idshipment_period);//ค้นหาสินค้า
+$i1 = 0;
+foreach ($getProduct_waitchangeStatusShipment as $value) {
+    $i1++;
     $val_name_product = $value['name_product'];
     $val_idorder_transport = $value['idorder_transport'];
     echo $val_name_product;
     $editStatus_check_price = editStatus_check_price($val_idorder_transport);//เปลี่ยนสถานะรายการสินค้า
 }
+//สิ้นสุดการเปลี่ยนสถานะใน order_transport
+
+//เริ่มต้นการเปลี่ยนสถานะใน product_refunds
+$getProduct_waitchangeStatusRefund = getProduct_waitchangeStatusRefund($idfactory,$idshipment_period);
+$i2 = 0;
+foreach ($getProduct_waitchangeStatusRefund as $value) {
+    $i2++;
+    $val_name_product = $value['name_product'];
+    $val_idorder_product_refunds = $value['idorder_product_refunds'];
+    echo $val_name_product;
+    $editStatus_pay = editStatus_unreturn($val_idorder_product_refunds);
+}
+//สิ้นสุดการเปลี่ยนสถานะใน product_refunds
 
 
 //updatestatusShipment

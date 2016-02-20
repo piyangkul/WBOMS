@@ -13,9 +13,9 @@ echo $idshipment_period;
 echo $idfactory;
 echo $price;
 
-$getProduct_waitchangeStatus = getProduct_waitchangeStatus($idfactory,$idshipment_period);//เปลี่ยนสถานะรายการสินค้า
+$getProduct_waitchangeStatusShipment = getProduct_waitchangeStatusShipment($idfactory,$idshipment_period);//เปลี่ยนสถานะรายการสินค้า
 $i = 0;
-foreach ($getProduct_waitchangeStatus as $value) {
+foreach ($getProduct_waitchangeStatusShipment as $value) {
     $i++;
     $val_name_product = $value['name_product'];
     $val_idorder_transport = $value['idorder_transport'];

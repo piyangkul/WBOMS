@@ -11,6 +11,8 @@ $date_end = $_POST['date_end'];
 
 
 $Shipment_period = addShipment_period($date_start, $date_end);
+$editStatus_checkTransport_Postpone = editStatus_checkTransport_Postpone();
+
 if ($Shipment_period > 0) {
     header("location: ../shipment1.php?action=addPeriodCompleted");
 } else {

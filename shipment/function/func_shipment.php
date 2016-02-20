@@ -36,6 +36,21 @@ function addShipment_period($date_start, $date_end) {
     }
 }
 
+//ใช้กับ action_addPeriod_shipment(Shipment1)
+function editStatus_checkTransport_Postpone() {
+    $conn = dbconnect();
+    $SQLCommand = "UPDATE `product_order` SET `status_checktransport` = 'uncheck' WHERE `status_checktransport`='postpone' ";
+
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+    );
+    $resultArr = array();
+    while ($result = $SQLPrepare->fetch(PDO::FETCH_ASSOC)) {
+        array_push($resultArr, $result);
+    }
+    return $resultArr;
+}
+
 //เช็คปุ่มแก้ไขรอบการส่ง หน้าshipment1 
 function getCountCheckByIDshipment_period($idshipment_period) {
     $conn = dbconnect();
@@ -213,7 +228,7 @@ function getCountSendProduct_order() {
 //จำนวนรายการที่สั่งคงค้าง หน้าshipment2 (getCountSumProduct_order-getCountSendProduct_order)
 function getCountLeftProduct_order() {
     $conn = dbconnect();
-    $SQLCommand = "SELECT S1.idfactory, S1.CountSumProduct_order-S2.CountSendProduct_order AS count_left FROM(SELECT factory.idfactory,factory.name_factory,CountSumProduct_order FROM(SELECT COUNT(`idproduct_order`) AS `CountSumProduct_order`,factory.idfactory,factory.name_factory FROM product_order JOIN unit ON product_order.idunit=unit.idunit JOIN product ON unit.idproduct=product.idproduct JOIN factory ON product.idfactory=factory.idfactory GROUP BY factory.idfactory) AS A RIGHT JOIN factory ON A.idfactory = factory.idfactory) AS S1 INNER JOIN(SELECT factory.idfactory,factory.name_factory,CountSendProduct_order FROM(SELECT COUNT(`idproduct_order`) AS `CountSendProduct_order` ,factory.idfactory,factory.name_factory FROM product_order JOIN unit ON product_order.idunit=unit.idunit JOIN product ON unit.idproduct=product.idproduct JOIN factory ON product.idfactory=factory.idfactory WHERE product_order.status_checktransport LIKE 'check' GROUP BY factory.idfactory) AS A RIGHT JOIN factory ON A.idfactory = factory.idfactory )AS S2 ON S1.idfactory = S2.idfactory";
+    $SQLCommand = "SELECT S1.idfactory, S1.CountSumProduct_order-S2.CountSendProduct_order AS count_left FROM(SELECT factory.idfactory,factory.name_factory,CountSumProduct_order FROM(SELECT COUNT(`idproduct_order`) AS `CountSumProduct_order`,factory.idfactory,factory.name_factory FROM product_order JOIN unit ON product_order.idunit=unit.idunit JOIN product ON unit.idproduct=product.idproduct JOIN factory ON product.idfactory=factory.idfactory GROUP BY factory.idfactory) AS A RIGHT JOIN factory ON A.idfactory = factory.idfactory) AS S1 INNER JOIN(SELECT factory.idfactory,factory.name_factory,CountSendProduct_order FROM(SELECT COUNT(`idproduct_order`) AS `CountSendProduct_order` ,factory.idfactory,factory.name_factory FROM product_order JOIN unit ON product_order.idunit=unit.idunit JOIN product ON unit.idproduct=product.idproduct JOIN factory ON product.idfactory=factory.idfactory WHERE product_order.status_checktransport LIKE 'check' OR product_order.status_checktransport LIKE 'postpone' GROUP BY factory.idfactory) AS A RIGHT JOIN factory ON A.idfactory = factory.idfactory )AS S2 ON S1.idfactory = S2.idfactory";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
     );
@@ -239,6 +254,25 @@ function getFactoryByID($idfactory) {
 
     $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
     return $result;
+}
+
+//ใช้กับ action_postponeProduct_order(Shipment3)
+function editStatus_checkTransport($idproduct_order) {
+    $conn = dbconnect();
+    $SQLCommand = "UPDATE `product_order` SET status_checktransport='postpone' WHERE `idproduct_order`=:idproduct_order";
+
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idproduct_order" => $idproduct_order
+            )
+    );
+
+    if ($SQLPrepare->rowCount() > 0) {
+        return TRUE;
+    } else {
+        return false;
+    }
 }
 
 //ไม่ใช้ อยู่ฝั่งซ้ายของshipment3 
@@ -305,7 +339,6 @@ function getUpdateStatusShipmentByID($idfactory, $idshipment_period) {
     $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
     return $result;
 }
-
 
 function getCountshipment_perroidByID($idfactory, $idshipment_period) {
     $conn = dbconnect();
@@ -447,7 +480,7 @@ function addShipment($idorder_transport, $product_order_idproduct_order, $shipme
 }
 
 //popup_edit_shipment3 ตารางรายการสินค้าที่สั่ง
-function getProductDetail_shipmentEdit($idshipment_period, $idfactory, $idtransport,$date_transport, $volume, $number, $price_transport) {//รับค่าpara
+function getProductDetail_shipmentEdit($idshipment_period, $idfactory, $idtransport, $date_transport, $volume, $number, $price_transport) {//รับค่าpara
     $conn = dbconnect();
     $SQLCommand = "SELECT product_order.idproduct_order,order_p.date_order_p,shop.name_shop, order_transport.idtransport,order_transport.volume,order_transport.number,order_transport.price_transport,product.name_product,product_order.amount_product_order,unit.name_unit,unit.price_unit,product.difference_amount_product,product_order.difference_product_order,product_order.type_product_order FROM transport JOIN order_transport ON transport.idtransport=order_transport.idtransport JOIN shipment_period ON order_transport.shipment_period_idshipment_period=shipment_period.idshipment_period JOIN product_order ON order_transport.product_order_idproduct_order=product_order.idproduct_order JOIN order_p ON order_p.idorder_p=product_order.idorder_p JOIN shop ON order_p.idshop=shop.idshop JOIN unit ON product_order.idunit=unit.idunit JOIN product ON unit.idproduct=product.idproduct JOIN factory ON product.idfactory=factory.idfactory "
             . "WHERE shipment_period.idshipment_period=:idshipment_period AND factory.idfactory=:idfactory AND order_transport.idtransport=:idtransport AND order_transport.date_transport=:date_transport AND order_transport.volume=:volume AND order_transport.number=:number AND order_transport.price_transport=:price_transport ";
@@ -591,7 +624,6 @@ function editStatus_finish($idorder_transport) {
     }
 }
 
-
 //popup_add_payfactory ตารางรายการสินค้าคืน
 function getProduct_refunds($idfactory, $idshipment_period) {
     $conn = dbconnect();
@@ -614,10 +646,10 @@ function getProduct_refunds($idfactory, $idshipment_period) {
 }
 
 //ใช้หน้า action_addPayfactory
-function addPayfactory($idshipment_period, $idfactory, $price_pay_factory, $price_product_refund, $real_price_pay_factory, $date_pay_factory, $type_pay_factory, $date_pay_factory_credit) {
+function addPayfactory($idshipment_period, $idfactory, $price_pay_factory, $price_product_refund, $real_price_pay_factory, $date_pay_factory, $type_pay_factory, $date_pay_factory_credit, $cheque_number, $cheque_name_bank, $cheque_branch_bank) {
     $conn = dbconnect();
-    $SQLCommand = "INSERT INTO `pay_factory`(`factory_idfactory`, `shipment_period_idshipment`, `price_pay_factory`, `price_product_refund`, `real_price_pay_factory`, `type_pay_factory`, `date_pay_factory`, `date_pay_factory_credit`) "
-            . "VALUES (:idfactory, :idshipment_period, :price_pay_factory, :price_product_refund, :real_price_pay_factory, :type_pay_factory, :date_pay_factory, :date_pay_factory_credit)";
+    $SQLCommand = "INSERT INTO `pay_factory`(`factory_idfactory`, `shipment_period_idshipment`, `price_pay_factory`, `price_product_refund`, `real_price_pay_factory`, `type_pay_factory`, `date_pay_factory`, `date_pay_factory_credit`, `cheque_number`, `cheque_name_bank`, `cheque_branch_bank`) "
+            . "VALUES (:idfactory, :idshipment_period, :price_pay_factory, :price_product_refund, :real_price_pay_factory, :type_pay_factory, :date_pay_factory, :date_pay_factory_credit, :cheque_number, :cheque_name_bank, :cheque_branch_bank)";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
@@ -628,7 +660,10 @@ function addPayfactory($idshipment_period, $idfactory, $price_pay_factory, $pric
                 ":real_price_pay_factory" => $real_price_pay_factory,
                 ":date_pay_factory" => $date_pay_factory,
                 ":type_pay_factory" => $type_pay_factory,
-                ":date_pay_factory_credit" => $date_pay_factory_credit
+                ":date_pay_factory_credit" => $date_pay_factory_credit,
+                ":cheque_number" => $cheque_number,
+                ":cheque_name_bank" => $cheque_name_bank,
+                ":cheque_branch_bank" => $cheque_branch_bank
             )
     );
     if ($SQLPrepare->rowCount() > 0) {
@@ -639,8 +674,65 @@ function addPayfactory($idshipment_period, $idfactory, $price_pay_factory, $pric
     }
 }
 
-//popup_add_payfactory ค้นหาสินค้าที่รอการอัพเดทสถานะว่าจ่ายแล้ว
-function getProduct_waitchangeStatus($idfactory, $idshipment_period) {
+//action_addPayfactory[popup_add_payfactory] ค้นหาสินค้าที่รอการอัพเดทสถานะคืนแล้ว
+function getProduct_waitchangeStatusRefund($idfactory, $idshipment_period) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT * FROM shipment_period JOIN order_product_refunds ON shipment_period.idshipment_period=order_product_refunds.shipment_period_idshipment_period "
+            . "JOIN product_refunds ON order_product_refunds.idorder_product_refunds=product_refunds.order_product_refunds_idorder_product_refunds JOIN product ON product_refunds.product_idproduct=product.idproduct JOIN factory ON factory.idfactory=product.idfactory "
+            . "WHERE factory.idfactory=:idfactory  AND shipment_period.idshipment_period=:idshipment_period ";
+
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idfactory" => $idfactory,
+                ":idshipment_period" => $idshipment_period
+            )
+    );
+    $resultArr = array();
+    while ($result = $SQLPrepare->fetch(PDO::FETCH_ASSOC)) {
+        array_push($resultArr, $result);
+    }
+    return $resultArr;
+}
+
+//action_addPayfactory[popup_add_payfactory]อัพเดทสถานะสินค้าว่าจ่ายแล้ว ต่อจากgetProduct_waitchangeStatusRefund
+function editStatus_unreturn($idproduct_refunds) {
+    $conn = dbconnect();
+    $SQLCommand = "UPDATE `product_refunds` SET `status_product_refund`= 'unreturn' WHERE idproduct_refunds =:idproduct_refunds ";
+
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idproduct_refunds" => $idproduct_refunds
+            )
+    );
+    $resultArr = array();
+    while ($result = $SQLPrepare->fetch(PDO::FETCH_ASSOC)) {
+        array_push($resultArr, $result);
+    }
+    return $resultArr;
+}
+
+//action_addPayfactory[popup_add_payfactory]อัพเดทสถานะสินค้าว่าจ่ายแล้ว ต่อจากgetProduct_waitchangeStatusShipment
+function editStatus_returned($idproduct_refunds) {
+    $conn = dbconnect();
+    $SQLCommand = "UPDATE `product_refunds` SET `status_product_refund`= 'returned' WHERE idproduct_refunds =:idproduct_refunds ";
+
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idproduct_refunds" => $idproduct_refunds
+            )
+    );
+    $resultArr = array();
+    while ($result = $SQLPrepare->fetch(PDO::FETCH_ASSOC)) {
+        array_push($resultArr, $result);
+    }
+    return $resultArr;
+}
+
+//action_addPayfactory[popup_add_payfactory] ค้นหาสินค้าที่รอการอัพเดทสถานะว่าจ่ายแล้ว
+function getProduct_waitchangeStatusShipment($idfactory, $idshipment_period) {
     $conn = dbconnect();
     $SQLCommand = "SELECT order_transport.idorder_transport, shipment_period.idshipment_period,product_order.idproduct_order,factory.idfactory,product.idproduct, product.name_product,unit.price_unit,product_order.amount_product_order,order_transport.status_shipment FROM order_transport JOIN shipment_period ON shipment_period.idshipment_period=order_transport.shipment_period_idshipment_period JOIN product_order ON order_transport.product_order_idproduct_order=product_order.idproduct_order JOIN unit ON unit.idunit=product_order.idunit JOIN product ON product.idproduct=unit.idproduct JOIN factory ON factory.idfactory=product.idfactory WHERE factory.idfactory=:idfactory AND shipment_period.idshipment_period=:idshipment_period ";
 
@@ -658,7 +750,7 @@ function getProduct_waitchangeStatus($idfactory, $idshipment_period) {
     return $resultArr;
 }
 
-//popup_add_payfactory อัพเดทสถานะสินค้าว่าจ่ายแล้ว ต่อจากgetProduct_waitchangeStatus
+//action_addPayfactory[popup_add_payfactory]อัพเดทสถานะสินค้าว่าจ่ายแล้ว ต่อจากgetProduct_waitchangeStatusShipment
 function editStatus_pay($idorder_transport) {
     $conn = dbconnect();
     $SQLCommand = "UPDATE `order_transport` SET `status_shipment`= 'pay' WHERE idorder_transport=:idorder_transport";
@@ -693,7 +785,6 @@ function editStatus_pay($idorder_transport) {
 //    }
 //    return $resultArr;
 //}
-
 //ใช้หน้า action_delPayfactory 
 function delPayfactory($idpay_factory) {
     $conn = dbconnect();
