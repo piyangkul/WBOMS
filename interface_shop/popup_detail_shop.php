@@ -11,11 +11,11 @@ if (isset($_GET['idshop'])) {
     $val_detail_shop = $getShop['detail_shop'];
     $val_idprovince_s = $getShop['idprovince'];
     $val_name_province_s = $getShop['name_province'];
-   ?>
+    ?>
     <form class="form"action="action/action_editShop.php?idshop=<?php echo $idshop; ?>" method="post">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="myModalLabel">แก้ไขร้านค้า</h4>
+            <h4 class="modal-title" id="myModalLabel">รายละเอียดร้านค้า</h4>
         </div>
         <div class="row">
             <div class="col-md-12 col-sm-12 ">
@@ -67,16 +67,14 @@ if (isset($_GET['idshop'])) {
                         <label for="detail_shop">รายละเอียด</label>
                         <div class="form-group input-group">
                             <span class="input-group-addon"><i class="fa fa-lock"  ></i></span>
-                            <textarea rows="4" cols="50" id="detail_factory" name="detail_shop" class="form-control" placeholder="กรอกรายละเอียดอื่นๆ" required=""disabled><?php echo $val_detail_shop; ?></textarea>
+                            <textarea rows="4" cols="50" id="detail_factory" name="detail_shop" class="form-control" disabled><?php echo $val_detail_shop; ?></textarea>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="modal-footer">
-            <p id="alertPass"></p>
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="submit" id="submit"class="btn btn-primary">Save changes</button>
         </div>
     </form>
 

@@ -10,30 +10,30 @@
                 <div class="form-group col-xs-12">
                 </div>
                 <div class="form-group col-xs-12">
-                    <label for="name_shop">ชื่อร้านค้า</label>
+                    <label for="name_shop">ชื่อร้านค้า</label><label class="text-danger">*</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-circle-o-notch"  ></i></span>
-                        <input type="text" class="form-control" placeholder="กรอกชื่อร้านค้า" name ="name_shop" required=""/>
+                        <input type="text" class="form-control" placeholder="กรอกชื่อร้านค้า" name ="name_shop" required >
                     </div>
                 </div>
                 <div class="form-group col-xs-12">
-                    <label for="tel_shop">เบอร์โทรศัพท์</label>
+                    <label for="tel_shop">เบอร์โทรศัพท์</label><label class="text-danger">*</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-circle-o-notch"  ></i></span>
-                        <input type="text" maxlength="10" class="form-control" placeholder="กรอกเบอร์โทรศัพท์" name="tel_shop" required=""/>
+                        <input type="text" maxlength="10" class="form-control" placeholder="กรอกเบอร์โทรศัพท์" name="tel_shop" required>
                     </div>
                 </div>
                 <div class="form-group col-xs-12">
-                    <label for="address_shop">ที่อยู่</label>
+                    <label for="address_shop">ที่อยู่</label><label class="text-danger">*</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-user"  ></i></span>
-                        <input type="text" class="form-control" placeholder="กรอกที่อยู่" name = "address_shop" required=""/>
+                        <input type="text" class="form-control" placeholder="กรอกที่อยู่" name = "address_shop" required >
                     </div>
                 </div>
                 <div class="form-group col-xs-12">
-                    <label for="province">จังหวัด</label>
+                    <label for="province">จังหวัด</label><label class="text-danger">*</label>
                     <div class="btn-group">
-                        <select id="aaa" name ="idprovince" class="form-control">
+                        <select id="aaa" name ="idprovince" class="form-control" required>
                             <?php
                             $getProvince = getProvince();
                             foreach ($getProvince as $value) {
@@ -57,7 +57,6 @@
         </div>
     </div>
     <div class="modal-footer">
-        <p id="alertPass"></p>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button type="submit" id="submit" name="sumbit" value="addShop" class="btn btn-primary">Save changes</button>
     </div>
