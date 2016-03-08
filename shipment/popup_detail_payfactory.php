@@ -28,8 +28,22 @@ if (isset($_GET['idshipment_period'])and isset($_GET['idfactory'])) {
 }
 ?>
 <?php
+$getPayFactory = getPayFactory($idfactory, $idshipment_period);
+$val_price_pay_factory = $getPayFactory['price_pay_factory'];
+$val_price_product_refund_factory = $getPayFactory['price_product_refund_factory'];
+$val_real_price_pay_factory = $getPayFactory['real_price_pay_factory'];
+$val_date_pay_factory = $getPayFactory['date_pay_factory'];
+$val_type_pay_factory = $getPayFactory['type_pay_factory'];
+$val_date_pay_factory_credit = $getPayFactory['date_pay_factory_credit'];
+$val_cheque_number = $getPayFactory['cheque_number'];
+$val_cheque_name_bank = $getPayFactory['cheque_name_bank'];
+$val_cheque_branch_bank = $getPayFactory['cheque_branch_bank'];
+
+//                $real_price_pay_factory = $price - $price_product_refund_factory; //สรุปยอดเงินที่จ่ายโรงงาน 
+?>
+<?php
 //ยอดเงินสินค้าคืนรวม
-$price_product_refund = 0;
+$price_product_refund_factory = 0;
 ?>
 ﻿<form class="form" action="#" method="post">
     <div class="modal-header">
@@ -42,11 +56,11 @@ $price_product_refund = 0;
                 <div class="form-group col-xs-12">
                     <center><h4 class="text text-info"><b>รอบการส่งที่</b> <?php echo $change_date_start; ?> ถึง <?php echo $change_date_end; ?></h4></center>
                     <center><h4 class="text text-info"><b>โรงงาน</b> <?php echo $val_name_factory; ?></h4></center>
-                    <center><h4 class="text text-info"><b>ยอดเงินที่โรงงานเรียกเก็บ</b> <?php echo number_format($price, 2, '.', ''); ?> บาท</h4></center>
+                    <center><h4 class="text text-info"><b>ยอดเงินที่โรงงานเรียกเก็บ</b> <?php echo number_format($price, 2); ?> บาท</h4></center>
                 </div>
                 <div class = "row">
-                    <div class = "col-md-1 col-sm-1 "></div>
-                    <div class = "col-md-10 col-sm-10 ">
+                    <!--<div class = "col-md-1 col-sm-1 "></div>-->
+                    <div class = "col-md-12 col-sm-12 ">
                         <div class="panel panel-primary">
                             <div class="panel-heading">
                                 <label>รายการสินค้าคืน</label>
@@ -83,7 +97,7 @@ $price_product_refund = 0;
                                                 $i++;
                                                 $val_name_shop = $value['name_shop'];
                                                 $val_name_product = $value['name_product'];
-                                                $val_amount_product_refunds = $value['amount_product_refunds'];
+                                                $val_amount_product_refunds = $value['amount_product_refunds']; //จำนวนที่คืน
                                                 $val_name_unit = $value['name_unit'];
                                                 $val_price_unit = $value['price_unit'];
                                                 //ต้นทุนลด
@@ -95,51 +109,38 @@ $price_product_refund = 0;
                                                 $cost = $val_price_unit - (($val_difference_amount / 100.0) * $val_price_unit); //ราคาต้นทุน
                                                 $val_price_difference = $value['price_difference']; //ขายลด,คืนลด
                                                 $type_money = $value['type_money']; //% หรือ BATH
-                                                $val_price_product_refunds = $value['price_product_refunds']; //ราคาขาย,ราคาคืน
+                                                $val_price_product_refunds = $value['price_product_refunds']; //ราคาคืนที่คูณจำนวนแล้ว
                                                 ?>
                                                 <tr>
                                                     <td><?php echo $i; ?></td>
                                                     <td><?php echo $val_name_shop; ?></td>
                                                     <td><?php echo $val_name_product; ?></td>
                                                     <td><?php echo $val_amount_product_refunds . " " . $val_name_unit; ?></td><!-- จำนวน-->
-                                                    <td class="text-right"><?php echo number_format($val_price_unit, 2, '.', ''); ?></td><!-- ราคาเปิด-->
+                                                    <td class="text-right"><?php echo number_format($val_price_unit, 2); ?></td><!-- ราคาเปิด-->
                                                     <td><?php echo $val_difference_amount . "%"; ?></td><!-- ต้นทุนลด-->                                      
-                                                    <td class="text-right"><?php echo number_format($cost, 2, '.', ''); ?></td><!-- ราคาต้นทุน-->
+                                                    <td class="text-right"><?php echo number_format($cost, 2); ?></td><!-- ราคาต้นทุน-->
                                                     <td><?php echo $val_price_difference; ?><?php echo ($type_money == "PERCENT") ? "%" : "฿"; ?></td><!-- คืนลด -->
-                                                    <td><?php echo number_format($val_price_product_refunds, 2, '.', ''); ?></td><!-- ราคาคืน-->
-                                                    <td><?php echo number_format($val_price_unit * $val_amount_product_refunds, 2, '.', ''); ?></td>
-                                                    <td><?php echo number_format($cost * $val_amount_product_refunds, 2, '.', ''); ?></td>
-                                                    <td><?php echo number_format($val_price_product_refunds * $val_amount_product_refunds, 2, '.', ''); ?></td>
-                                                    <?php $price_product_refund = $price_product_refund + $val_price_product_refunds * $val_amount_product_refunds; ?>
+                                                    <td class="text-right"><?php echo number_format($val_price_product_refunds / $val_amount_product_refunds, 2); ?></td><!-- ราคาคืนต่อหน่วย-->
+                                                    <td class="text-right"><?php echo number_format($val_price_unit * $val_amount_product_refunds, 2); ?></td><!-- ราคาเปิดที่คูณจำนวนแล้ว-->
+                                                    <td class="text-right"><?php echo number_format($cost * $val_amount_product_refunds, 2); ?></td><!-- ราคาต้นทุนที่คูณจำนวนแล้ว-->
+                                                    <td class="text-right"><?php echo number_format($val_price_product_refunds, 2); ?></td><!-- ราคาคืนที่คูณจำนวนแล้ว-->
+                                                    <?php $price_product_refund_factory = $price_product_refund_factory + $val_price_product_refunds; ?>
                                                 </tr>
                                             <?php } ?>
                                         </tbody>
                                     </table>
                                 </div>
-                            </div>
-
+                                <div class="col-md-8 col-md-offset-8">ยอดเงินสินค้าคืนรวม &nbsp;&nbsp; <b><?php echo number_format($val_price_product_refund_factory, 2); ?></b> &nbsp;&nbsp; บาท </div>
+                            </div>                            
                         </div>
                     </div>
                 </div>
-                <?php
-                $getPayFactory = getPayFactory($idfactory, $idshipment_period);
-                $val_date_pay_factory = $getPayFactory['date_pay_factory'];
-                $val_type_pay_factory = $getPayFactory['type_pay_factory'];
-                if ($val_type_pay_factory == "cash") {
-                    
-                } else {
-                    
-                }
-                $val_date_pay_factory_credit = $getPayFactory['date_pay_factory_credit'];
-                //$date = new DateTime('now', new DateTimeZone('Asia/Bangkok'));
-                //echo $date->format('d-m-Y H:i:s');
-                $real_price_pay_factory = $price - $price_product_refund; //สรุปยอดเงินที่จ่ายโรงงาน 
-                ?>
+
                 <div class="form-group col-xs-1"></div>
                 <div class="form-group col-xs-5">
-                    <center><h4>ยอดเงินที่โรงงานเรียกเก็บ <input type="text" class="form-control" value="<?php echo number_format($price, 2, '.', ''); ?>" readonly> </h4></center>
-                    <center><h4>ยอดเงินสินค้าคืนรวม <input type="text" class="form-control" name="price_product_refund" value="<?php echo number_format($price_product_refund, 2, '.', ''); ?>" readonly> </h4></center>
-                    <center><h4 class="text text-danger">สรุปยอดเงินที่จ่ายโรงงาน <input type="text" class="form-control" name="real_price_pay_factory" value="<?php echo number_format($real_price_pay_factory, 2, '.', ''); ?>" readonly></h4></center>
+                    <center><h4>ยอดเงินที่โรงงานเรียกเก็บ <input type="text" class="form-control" value="<?php echo number_format($val_price_pay_factory, 2); ?>" readonly> </h4></center>
+                    <center><h4>ยอดเงินสินค้าคืนรวม <input type="text" class="form-control" name="price_product_refund" value="<?php echo number_format($val_price_product_refund_factory, 2); ?>" readonly> </h4></center>
+                    <center><h4 class="text text-danger">สรุปยอดเงินที่จ่ายโรงงาน <input type="text" class="form-control" name="real_price_pay_factory" value="<?php echo number_format($val_real_price_pay_factory, 2); ?>" readonly></h4></center>
                     <center><h4>วันที่จ่ายเงินโรงงาน <input type="date" class="form-control" id="date_pay_factory" name="date_pay_factory" value="<?php echo $val_date_pay_factory; ?>" readonly></h4></center>
                 </div>
 
@@ -163,8 +164,26 @@ $price_product_refund = 0;
                                             <input type="date" class="form-control" id="date_pay_factory_credit" name="date_pay_factory_credit" value="<?php echo $val_date_pay_factory_credit; ?>" disabled>
                                         </label>
                                     </div>
+                                    <div class="form-group input-group">
+                                        <label class="radio-inline">
+                                            <label>เลขที่เช็ค</label>
+                                            <input type="text" onclick="chkCredit_pay_factory()" class="form-control" id="cheque_number" value="<?php echo $val_cheque_number; ?>" name="cheque_number" onkeypress='return event.charCode >= 48 && event.charCode <= 57;' disabled>
+                                        </label>
+                                    </div>
+                                    <div class="form-group input-group">
+                                        <label class="radio-inline">
+                                            <label>ชื่อธนาคารของเช็ค</label>
+                                            <input type="text" onclick="chkCredit_pay_factory()" class="form-control" id="cheque_name_bank" value="<?php echo $val_cheque_name_bank; ?>" name="cheque_name_bank" disabled>
+                                        </label>
+                                    </div>
+                                    <div class="form-group input-group">
+                                        <label class="radio-inline">
+                                            <label>สาขาธนาคารของเช็ค</label>
+                                            <input type="text" onclick="chkCredit_pay_factory()" class="form-control" id="cheque_branch_bank" value="<?php echo $val_cheque_branch_bank; ?>" name="cheque_branch_bank" disabled>
+                                        </label>
+                                    </div>
                                 <?php } else { ?>
-                                 <div class="form-group input-group">
+                                    <div class="form-group input-group">
                                         <label class="radio-inline">
                                             <input type="radio" onclick="chkCash_pay_factory()" name="type_pay_factory" id="cash" value="cash" disabled> <label>เงินสด</label>
                                         </label>
@@ -173,6 +192,24 @@ $price_product_refund = 0;
                                         <label class="radio-inline">
                                             <input type="radio" onclick="chkCredit_pay_factory()" name="type_pay_factory" id="credit" value="credit" checked disabled> <label>เช็ค</label>
                                             <input type="date" class="form-control" id="date_pay_factory_credit" name="date_pay_factory_credit" value="<?php echo $val_date_pay_factory_credit; ?>" disabled>
+                                        </label>
+                                    </div>
+                                    <div class="form-group input-group">
+                                        <label class="radio-inline">
+                                            <label>เลขที่เช็ค</label>
+                                            <input type="text" onclick="chkCredit_pay_factory()" class="form-control" id="cheque_number" value="<?php echo $val_cheque_number; ?>" name="cheque_number" onkeypress='return event.charCode >= 48 && event.charCode <= 57;' disabled>
+                                        </label>
+                                    </div>
+                                    <div class="form-group input-group">
+                                        <label class="radio-inline">
+                                            <label>ชื่อธนาคารของเช็ค</label>
+                                            <input type="text" onclick="chkCredit_pay_factory()" class="form-control" id="cheque_name_bank" value="<?php echo $val_cheque_name_bank; ?>" name="cheque_name_bank" disabled>
+                                        </label>
+                                    </div>
+                                    <div class="form-group input-group">
+                                        <label class="radio-inline">
+                                            <label>สาขาธนาคารของเช็ค</label>
+                                            <input type="text" onclick="chkCredit_pay_factory()" class="form-control" id="cheque_branch_bank" value="<?php echo $val_cheque_branch_bank; ?>" name="cheque_branch_bank" disabled>
                                         </label>
                                     </div>
                                 <?php } ?>

@@ -54,7 +54,6 @@ if (isset($_GET['idshipment_period'])and isset($_GET['idfactory'])) {
         <link href="../assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
         <!-- CUSTOM STYLES-->
         <link href="../assets/css/custom.css" rel="stylesheet" />
-        
     </head>
     <body>
         <div id="wrapper">
@@ -194,7 +193,7 @@ if (isset($_GET['idshipment_period'])and isset($_GET['idfactory'])) {
                                             </div>
                                             <div class="panel-body">
                                                 <div class="table-responsive">
-                                                    <table class="table table-striped table-bordered table-hover text-center " >
+                                                    <table class="table table-striped table-bordered table-hover text-center " id="dataTables-example">
                                                         <thead>
                                                             <tr>
                                                                 <th rowspan="2" valign="middle"><div align="center">ลำดับ</div></th>
@@ -450,7 +449,7 @@ if (isset($_GET['idshipment_period'])and isset($_GET['idfactory'])) {
                                         </html>
                                         <div class="modal fade" id="myModal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                             <div class="modal-dialog">
-                                                <div class="modal-content modal-lg">
+                                                <div class="modal-content modal-lg ui-front">
                                                     <!-- Content -->
                                                 </div>
                                             </div>

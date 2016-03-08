@@ -163,27 +163,30 @@ function editShipment_period($idshipment_period, $date_start, $date_end) {
     }
 }
 
+//หน้าshipment2 ดึงค่าขนส่งแยกตามshipment และโรงงาน
+function getPrice_transportByshipment_period($idshipment_period, $idfactory) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT * FROM
+(SELECT shipment_period.idshipment_period,factory.idfactory,factory.name_factory,product.name_product,product_order.amount_product_order,order_transport.price_transport FROM shipment_period JOIN order_transport ON shipment_period.idshipment_period = order_transport.shipment_period_idshipment_period JOIN product_order ON order_transport.product_order_idproduct_order = product_order.idproduct_order JOIN unit ON product_order.idunit = unit.idunit JOIN product ON product.idproduct = unit.idproduct JOIN factory ON factory.idfactory=product.idfactory WHERE shipment_period.idshipment_period = :idshipment_period AND factory.idfactory=:idfactory GROUP BY order_transport.idtransport,order_transport.date_transport,order_transport.volume,order_transport.number) AS Tables GROUP BY idshipment_period ";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idshipment_period" => $idshipment_period,
+                ":idfactory" => $idfactory
+            )
+    );
+    if ($SQLPrepare->rowCount() > 0) {
+        $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    } else {
+        return false;
+    }
+}
+
 //ใช้หน้าshipment2 verเก่า
 function getFactoryByIDshipment_period($idshipment_period) {
     $conn = dbconnect();
     $SQLCommand = "SELECT * FROM `view_getFactoryByIDshipment_period` WHERE `idshipment_period`=:idshipment_period OR `idshipment_period` IS NULL ";
-    $SQLPrepare = $conn->prepare($SQLCommand);
-    $SQLPrepare->execute(
-            array(
-                ":idshipment_period" => $idshipment_period
-            )
-    );
-    $resultArr = array();
-    while ($result = $SQLPrepare->fetch(PDO::FETCH_ASSOC)) {
-        array_push($resultArr, $result);
-    }
-    return $resultArr;
-}
-
-//แก้หน้าshipment2 verใหม่
-function getFactoryByIDshipment_period2($idshipment_period) {
-    $conn = dbconnect();
-    $SQLCommand = "SELECT * FROM (SELECT * FROM `view_getfactorybyidshipment_period` WHERE `idshipment_period` = :idshipment_period )AS A RIGHT JOIN factory ON A.idfactory = factory.idfactory ";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
@@ -225,7 +228,107 @@ function getCountSendProduct_order() {
     return $resultArr;
 }
 
-//จำนวนรายการที่สั่งคงค้าง หน้าshipment2 (getCountSumProduct_order-getCountSendProduct_order)
+//หน้าshipment1 นับจำนวนโรงงานที่ยังทำไม่เสร็จ
+function get_numFactory_notFinish($idshipment_period) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT * FROM (SELECT * FROM `view_getfactorybyidshipment_period` WHERE `idshipment_period` = :idshipment_period )AS A RIGHT JOIN ((SELECT idfactory,name_factory FROM `view_getfactorybyidshipment_period` WHERE `idshipment_period` = :idshipment_period ) UNION (SELECT factory.idfactory,factory.name_factory FROM factory JOIN product ON factory.idfactory=product.idfactory JOIN unit ON unit.idproduct=product.idproduct JOIN product_order ON product_order.idunit=unit.idunit WHERE status_checktransport = 'uncheck' )) AS B ON A.idfactory = B.idfactory WHERE status_shipment NOT LIKE 'finish' OR status_shipment IS NULL ";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idshipment_period" => $idshipment_period
+            )
+    );
+    return $SQLPrepare->rowCount();
+}
+
+//หน้าshipment1 นับจำนวนโรงงานทั้งหมด
+function get_numAllFactory_shipment1($idshipment_period) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT * FROM (SELECT * FROM `view_getfactorybyidshipment_period` WHERE `idshipment_period` = :idshipment_period )AS A 
+RIGHT JOIN ((SELECT idfactory,name_factory FROM `view_getfactorybyidshipment_period` WHERE `idshipment_period` = :idshipment_period ) UNION (SELECT factory.idfactory,factory.name_factory FROM factory JOIN product ON factory.idfactory=product.idfactory JOIN unit ON unit.idproduct=product.idproduct JOIN product_order ON product_order.idunit=unit.idunit WHERE status_checktransport = 'uncheck' )) AS B ON A.idfactory = B.idfactory ";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idshipment_period" => $idshipment_period
+            )
+    );
+    return $SQLPrepare->rowCount();
+}
+
+//ใช้หน้าadd_shipment3 --> ยอดเงินที่โรงงานเรียกเก็บ 
+function getPriceFactoryByIDshipment_period($idshipment_period, $idfactory) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT * FROM `view_getfactorybyidshipment_period` WHERE `idshipment_period`=:idshipment_period AND `idfactory`=:idfactory";
+
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idshipment_period" => $idshipment_period,
+                ":idfactory" => $idfactory
+            )
+    );
+
+    if ($SQLPrepare->rowCount() > 0) {
+        $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    } else {
+        return false;
+    }
+}
+
+//หน้าshipment2 แสดงโรงงานที่มีการสั่งซื้อ
+function getFactoryByIDshipment_period4($idshipment_period) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT * FROM (SELECT * FROM `view_getfactorybyidshipment_period` WHERE `idshipment_period` = :idshipment_period )AS A 
+RIGHT JOIN ((SELECT idfactory,name_factory FROM `view_getfactorybyidshipment_period` WHERE `idshipment_period` = :idshipment_period ) UNION (SELECT factory.idfactory,factory.name_factory FROM factory JOIN product ON factory.idfactory=product.idfactory JOIN unit ON unit.idproduct=product.idproduct JOIN product_order ON product_order.idunit=unit.idunit WHERE status_checktransport = 'uncheck' )) AS B ON A.idfactory = B.idfactory ";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idshipment_period" => $idshipment_period
+            )
+    );
+    $resultArr = array();
+    while ($result = $SQLPrepare->fetch(PDO::FETCH_ASSOC)) {
+        array_push($resultArr, $result);
+    }
+    return $resultArr;
+}
+
+//หน้าshipment2 แสดงโรงงานที่มีการสั่งซื้อ
+function getFactoryByIDshipment_period3($idshipment_period) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT * FROM `view_getfactorybyidshipment_period` WHERE `idshipment_period` = :idshipment_period ";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idshipment_period" => $idshipment_period
+            )
+    );
+    $resultArr = array();
+    while ($result = $SQLPrepare->fetch(PDO::FETCH_ASSOC)) {
+        array_push($resultArr, $result);
+    }
+    return $resultArr;
+}
+
+//แก้หน้าshipment2 ver_old
+function getFactoryByIDshipment_period2($idshipment_period) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT * FROM (SELECT * FROM `view_getfactorybyidshipment_period` WHERE `idshipment_period` = :idshipment_period )AS A RIGHT JOIN factory ON A.idfactory = factory.idfactory ";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idshipment_period" => $idshipment_period
+            )
+    );
+    $resultArr = array();
+    while ($result = $SQLPrepare->fetch(PDO::FETCH_ASSOC)) {
+        array_push($resultArr, $result);
+    }
+    return $resultArr;
+}
+
+//จำนวนรายการที่สั่งคงค้าง หน้าshipment2_ver_old (getCountSumProduct_order-getCountSendProduct_order)
 function getCountLeftProduct_order() {
     $conn = dbconnect();
     $SQLCommand = "SELECT S1.idfactory, S1.CountSumProduct_order-S2.CountSendProduct_order AS count_left FROM(SELECT factory.idfactory,factory.name_factory,CountSumProduct_order FROM(SELECT COUNT(`idproduct_order`) AS `CountSumProduct_order`,factory.idfactory,factory.name_factory FROM product_order JOIN unit ON product_order.idunit=unit.idunit JOIN product ON unit.idproduct=product.idproduct JOIN factory ON product.idfactory=factory.idfactory GROUP BY factory.idfactory) AS A RIGHT JOIN factory ON A.idfactory = factory.idfactory) AS S1 INNER JOIN(SELECT factory.idfactory,factory.name_factory,CountSendProduct_order FROM(SELECT COUNT(`idproduct_order`) AS `CountSendProduct_order` ,factory.idfactory,factory.name_factory FROM product_order JOIN unit ON product_order.idunit=unit.idunit JOIN product ON unit.idproduct=product.idproduct JOIN factory ON product.idfactory=factory.idfactory WHERE product_order.status_checktransport LIKE 'check' OR product_order.status_checktransport LIKE 'postpone' GROUP BY factory.idfactory) AS A RIGHT JOIN factory ON A.idfactory = factory.idfactory )AS S2 ON S1.idfactory = S2.idfactory";
@@ -323,6 +426,28 @@ function getShipmentByID($idfactory, $idshipment_period) {
         array_push($resultArr, $result);
     }
     return $resultArr;
+}
+
+//ใช้หน้าadd_shipment3 mergeข้อมูลการขนส่งที่ส่งรอบเดียวกัน
+function getShipmentDuplicateByID($idfactory, $idshipment_period, $name_transport, $number, $volume) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT * FROM view_product_order_shipment LEFT JOIN view_transport_shipment "
+            . "ON view_product_order_shipment.idproduct_order = view_transport_shipment.product_order_idproduct_order "
+            . "WHERE view_product_order_shipment.idfactory = :idfactory AND name_transport=:name_transport AND number=:number AND volume=:volume "
+            . "AND (view_transport_shipment.idshipment_period = :idshipment_period "
+            . "OR view_transport_shipment.idshipment_period IS NULL )";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idshipment_period" => $idshipment_period,
+                ":idfactory" => $idfactory,
+                ":name_transport" => $name_transport,
+                ":volume" => $volume,
+                ":number" => $number
+            )
+    );
+    $count = $SQLPrepare->rowCount();
+    return $count;
 }
 
 //ใช้หน้าadd_shipment3
@@ -475,6 +600,7 @@ function addShipment($idorder_transport, $product_order_idproduct_order, $shipme
     if ($SQLPrepare->rowCount() > 0) {
         return $conn->lastInsertId();
     } else {
+        echo $SQLCommand;
         return false;
     }
 }
@@ -624,13 +750,27 @@ function editStatus_finish($idorder_transport) {
     }
 }
 
+//autoComplete ชื่อกับสาขาธนาคาร popup_add_payfactory 
+function getBank() {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT * FROM `pay_factory` ";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute();
+    $resultArr = array();
+    while ($result = $SQLPrepare->fetch(PDO::FETCH_ASSOC)) {
+        array_push($resultArr, $result);
+    }
+    return json_encode($resultArr); //, JSON_UNESCAPED_UNICODE);
+    //return "{}";
+}
+
 //popup_add_payfactory ตารางรายการสินค้าคืน
 function getProduct_refunds($idfactory, $idshipment_period) {
     $conn = dbconnect();
-    $SQLCommand = "SELECT shipment_period.idshipment_period, shop.idshop,shop.name_shop,factory.idfactory,factory.name_factory,product.idproduct,product.name_product,unit.price_unit,unit.name_unit,product_refunds.amount_product_refunds,product.difference_amount_product,factory.difference_amount_factory,difference.price_difference,difference.type_money,order_product_refunds.price_product_refunds "
-            . "FROM order_product_refunds JOIN product_refunds ON order_product_refunds.idorder_product_refunds=product_refunds.order_product_refunds_idorder_product_refunds JOIN product ON product_refunds.product_idproduct=product.idproduct JOIN factory ON factory.idfactory=product.idfactory JOIN unit ON product.idproduct=unit.idproduct JOIN difference ON product.idproduct=difference.idproduct JOIN shop ON order_product_refunds.shop_idshop=shop.idshop JOIN shipment_period ON order_product_refunds.shipment_period_idshipment_period=shipment_period.idshipment_period "
-            . "WHERE product_refunds.idunit_product_refund=unit.idunit AND difference.idshop=shop.idshop AND factory.idfactory=:idfactory AND shipment_period.idshipment_period=:idshipment_period";
-
+//    $SQLCommand = "SELECT shipment_period.idshipment_period, shop.idshop,shop.name_shop,factory.idfactory,factory.name_factory,product.idproduct,product.name_product,unit.price_unit,unit.name_unit,product_refunds.amount_product_refunds,product.difference_amount_product,factory.difference_amount_factory,difference.price_difference,difference.type_money,order_product_refunds.total_price_product_refunds,(product_refunds.amount_product_refunds*order_product_refunds.total_price_product_refunds) AS total_product_refund "
+//            . "FROM order_product_refunds JOIN product_refunds ON order_product_refunds.idorder_product_refunds=product_refunds.order_product_refunds_idorder_product_refunds JOIN product ON product_refunds.product_idproduct=product.idproduct JOIN factory ON factory.idfactory=product.idfactory JOIN unit ON product.idproduct=unit.idproduct JOIN difference ON product.idproduct=difference.idproduct JOIN shop ON order_product_refunds.shop_idshop=shop.idshop JOIN shipment_period ON order_product_refunds.shipment_period_idshipment_period=shipment_period.idshipment_period "
+//            . "WHERE product_refunds.idunit_product_refund=unit.idunit AND difference.idshop=shop.idshop AND factory.idfactory=:idfactory AND shipment_period.idshipment_period=:idshipment_period";
+    $SQLCommand = "SELECT shipment_period.idshipment_period, shop.idshop,shop.name_shop,factory.idfactory,factory.name_factory,product.idproduct,product.name_product,unit.price_unit,unit.name_unit,product_refunds.amount_product_refunds,product.difference_amount_product,factory.difference_amount_factory,difference.price_difference,difference.type_money,product_refunds.price_product_refunds FROM order_product_refunds JOIN product_refunds ON order_product_refunds.idorder_product_refunds=product_refunds.order_product_refunds_idorder_product_refunds JOIN product ON product_refunds.product_idproduct=product.idproduct JOIN factory ON factory.idfactory=product.idfactory JOIN unit ON product.idproduct=unit.idproduct JOIN difference ON product.idproduct=difference.idproduct JOIN shop ON order_product_refunds.shop_idshop=shop.idshop JOIN shipment_period ON order_product_refunds.shipment_period_idshipment_period=shipment_period.idshipment_period WHERE product_refunds.idunit_product_refund=unit.idunit AND difference.idshop=shop.idshop AND factory.idfactory=:idfactory AND shipment_period.idshipment_period=:idshipment_period ";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
@@ -646,20 +786,20 @@ function getProduct_refunds($idfactory, $idshipment_period) {
 }
 
 //ใช้หน้า action_addPayfactory
-function addPayfactory($idshipment_period, $idfactory, $price_pay_factory, $price_product_refund, $real_price_pay_factory, $date_pay_factory, $type_pay_factory, $date_pay_factory_credit, $cheque_number, $cheque_name_bank, $cheque_branch_bank) {
+function addPayfactory($idfactory, $idshipment_period, $price_pay_factory, $price_product_refund_factory, $real_price_pay_factory, $type_pay_factory, $date_pay_factory, $date_pay_factory_credit, $cheque_number, $cheque_name_bank, $cheque_branch_bank) {
     $conn = dbconnect();
-    $SQLCommand = "INSERT INTO `pay_factory`(`factory_idfactory`, `shipment_period_idshipment`, `price_pay_factory`, `price_product_refund`, `real_price_pay_factory`, `type_pay_factory`, `date_pay_factory`, `date_pay_factory_credit`, `cheque_number`, `cheque_name_bank`, `cheque_branch_bank`) "
-            . "VALUES (:idfactory, :idshipment_period, :price_pay_factory, :price_product_refund, :real_price_pay_factory, :type_pay_factory, :date_pay_factory, :date_pay_factory_credit, :cheque_number, :cheque_name_bank, :cheque_branch_bank)";
+    $SQLCommand = "INSERT INTO `pay_factory`(`factory_idfactory`, `shipment_period_idshipment`, `price_pay_factory`, `price_product_refund_factory`, `real_price_pay_factory`, `type_pay_factory`, `date_pay_factory`, `date_pay_factory_credit`, `cheque_number`, `cheque_name_bank`, `cheque_branch_bank`) "
+            . "VALUES (:idfactory, :idshipment_period, :price_pay_factory, :price_product_refund_factory, :real_price_pay_factory, :type_pay_factory, :date_pay_factory, :date_pay_factory_credit, :cheque_number, :cheque_name_bank, :cheque_branch_bank) ";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
                 ":idfactory" => $idfactory,
                 ":idshipment_period" => $idshipment_period,
                 ":price_pay_factory" => $price_pay_factory,
-                ":price_product_refund" => $price_product_refund,
+                ":price_product_refund_factory" => $price_product_refund_factory,
                 ":real_price_pay_factory" => $real_price_pay_factory,
-                ":date_pay_factory" => $date_pay_factory,
                 ":type_pay_factory" => $type_pay_factory,
+                ":date_pay_factory" => $date_pay_factory,
                 ":date_pay_factory_credit" => $date_pay_factory_credit,
                 ":cheque_number" => $cheque_number,
                 ":cheque_name_bank" => $cheque_name_bank,

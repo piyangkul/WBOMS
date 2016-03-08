@@ -40,9 +40,9 @@ $i2 = 0;
 foreach ($getProduct_waitchangeStatusRefund as $value) {
     $i2++;
     $val_name_product = $value['name_product'];
-    $val_idorder_product_refunds = $value['idorder_product_refunds'];
+    $val_idproduct_refunds = $value['idproduct_refunds'];
     echo $val_name_product;
-    $editStatus_pay = editStatus_unreturn($val_idorder_product_refunds);
+    $editStatus_unreturn = editStatus_unreturn($val_idproduct_refunds);
 }
 //สิ้นสุดการเปลี่ยนสถานะใน product_refunds
 
