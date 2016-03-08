@@ -5665,7 +5665,8 @@ button.close {
 }
 @media (min-width: 992px) {
   .modal-lg {
-    width: 900px;
+    margin-left: -40%;
+    width: 1100px;//เดิม900px และmargin-leftไม่มี
   }
 }
 .tooltip {
