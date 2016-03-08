@@ -23,6 +23,56 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
         <link href="../assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
         <!-- CUSTOM STYLES-->
         <link href="../assets/css/custom.css" rel="stylesheet" />
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+            <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+            <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+            <script>
+                var idfactory;
+                var data = JSON.stringify(<?php echo getFactory(); ?>);//ดึงค่า
+                var Obj = JSON.parse(data);//Objตามจำนวนข้อมูล
+                //alert(Obj);
+                var Arr = new Array();
+                var JSON_factoryCode = new Array();
+                var JSON_factoryName = new Array();
+                //pushข้อมูลลงArray
+                for (var i = 0; i < Obj.length; i++) {
+                    //Arr.push(Obj[i].code_factory);
+                    Arr.push(Obj[i].name_factory+" ("+Obj[i].code_factory+")");
+                    JSON_factoryCode["'" + Obj[i].code_factory + "'"] = Obj[i].idfactory;
+                    JSON_factoryName["'" + Obj[i].name_factory + "'"] = Obj[i].idfactory;
+                    console.log(JSON_factoryCode);
+                    console.log(JSON_factoryName);
+                }
+                $(function () {
+                    $("#code_order").autocomplete({
+                        source: Arr
+                    });
+                });
+
+                function getFactoryId(e) {//ใช้กับ<input type="text" id="code_order" autocomplete=on name="code_order" onkeypress="getShopId(event)"  >
+                    //alert(e);
+                    //alert(e.keyCode);
+                    if ((e instanceof FocusEvent) || (e instanceof KeyboardEvent && e.keyCode === 13)) {//$('#myText').live("keypress", function(e) {
+                        //alert("go");
+                        var input = document.getElementById("code_order").value;
+                        //alert(input);
+                        firstParen = input.lastIndexOf("(");
+                        secondParen = input.lastIndexOf(")");
+                        input = input.substr(firstParen+1,secondParen - firstParen-1);
+                        //alert(input+ firstParen +","+ secondParen);
+                        if (JSON_factoryCode["'" + input + "'"] != null) {
+                            idfactory = JSON_factoryCode["'" + input + "'"];
+                        }
+                        else {
+                            idfactory = JSON_factoryName["'" + input + "'"];
+                        }
+                        console.log(idfactory);
+                        //$("#test").text(idfactory);
+                        show_pay_factory_table();
+                    }
+                    return false;
+                }
+            </script>
     </head>
     <body>
         <div id="wrapper">
@@ -41,7 +91,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                     </div>
                     <!-- /. ROW  -->
                     <hr />
-                    <div class="alert alert-danger" role="alert">1.กดที่ตัวเลขยอดเรียกเก็บและยอดสินค้าคืนรวมจะขึ้นข้อมูล </div>
+                    
                     <!-- ค้นหา -->
                     <div class="row">
                         <div class="col-md-3"></div>                        
@@ -49,22 +99,26 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                             <div class="panel panel-default">
                                 <div class="panel-heading ">
                                     <div class="table-responsive">
+                                        <!--                                        <div class="form-group">
+                                                                                    <label for="code_factory">ค้นหารหัสหรือชื่อโรงงาน</label>
+                                                                                    <div class="form-group input-group">
+                                                                                        <span class="input-group-addon"><i class="fa fa-cube" ></i></span>
+                                                                                        <input type="text" class="form-control" id="searchFactory" name="searchFactory" onkeyup="searchFactory()" placeholder="กรอกชื่อโรงงาน" />
+                                                                                    </div>
+                                                                                </div>-->
                                         <div class="form-group">
-                                            <label for="code_factory">ค้นหารหัสหรือชื่อโรงงาน</label>
+                                            <label for="name_factory">ค้นหารหัสหรือชื่อโรงงาน</label>
                                             <div class="form-group input-group">
                                                 <span class="input-group-addon"><i class="fa fa-cube" ></i></span>
-                                                <input type="text" class="form-control" id="searchFactory" name="searchFactory" onkeyup="searchFactory()" placeholder="กรอกชื่อโรงงาน" />
+                                                <input type="text" class="form-control" id="code_order" autocomplete=on name="code_order" placeholder="กรอกรหัสหรือชื่อโรงงาน" onblur ="getFactoryId(event)" onkeypress="getFactoryId(event)">
                                             </div>
+
+                                            <!--                                            <div class="form-group input-group">
+                                                                                            <span class="input-group-addon"><i class="fa fa-cube" ></i></span>
+                                                                                            <select class="form-control" id="idFactory" name="idFactory" onchange="show_pay_factory_table()"></select>
+                                                                                        </div>-->
                                         </div>
-                                        <div class="form-group">
-                                            <label for="name_factory">โรงงาน</label>
-                                            <div class="form-group input-group">
-                                                <span class="input-group-addon"><i class="fa fa-cube" ></i></span>
-                                                <select class="form-control" id="idFactory" name="idFactory" onchange="show_pay_factory_table()">
-                                                </select>
-                                            </div>
-                                        </div>
-                                        
+
                                     </div>
                                 </div>
                             </div>
@@ -73,7 +127,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                     <!--End ค้นหา -->
                     <br/>
                     <br/>
-                    <!-- ส่วนลดร้านค้า -->
+                    <!-- ข้อมูลการจ่ายเงินโรงงานรายเดือน-ปี -->
                     <div class="row">
                         <div class="col-md-1"></div>                        
                         <div class="col-md-10 ">
@@ -83,13 +137,13 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                 </div>
                                 <div class="panel-body">
                                     <div class="table-responsive" id="show_pay_factory_table">
-                                         <!--show_pay_factory_table--> 
+                                        <!--show_pay_factory_table--> 
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- End ส่วนลดร้านค้า -->
+                    <!-- End ข้อมูลการจ่ายเงินโรงงานรายเดือน-ปี -->
 
                 </div>
                 <!-- /. PAGE INNER  -->
@@ -99,7 +153,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
         <!-- /. WRAPPER  -->
         <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
         <!-- JQUERY SCRIPTS -->
-        <script src="../assets/js/jquery-1.10.2.js"></script>
+        <!--<script src="../assets/js/jquery-1.10.2.js"></script>-->
         <!-- BOOTSTRAP SCRIPTS -->
         <script src="../assets/js/bootstrap.min.js"></script>
         <!-- METISMENU SCRIPTS -->
@@ -115,20 +169,29 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
         <script>
             show_pay_factory_table();
             function show_pay_factory_table() {
-                var idfactory = $("#idFactory").val();
+                //var idfactory = $("#test").val();
                 $.get("action/action_pay_factory_show.php?idfactory=" + idfactory, function (data, status) {
                     $("#show_pay_factory_table").html(data);
                 });
             }
+        </script>
+        <script>
+//            show_pay_factory_table();
+//            function show_pay_factory_table() {
+//                    var idfactory = $("#idFactory").val();
+//                $.get("action/action_pay_factory_show.php?idfactory=" + idfactory, function (data, status) {
+//            $("#show_pay_factory_table").html(data);
+//            });
+//            }
 
-            searchFactory();
-            function searchFactory() {
-                var searchFactory = $("#searchFactory").val();
-                $.get("history_search_pay_factory.php?searchFactory=" + searchFactory, function (data, status) {
-                    $("#idFactory").html(data);
-                   show_pay_factory_table();
-                });
-            }
+//            searchFactory();
+//            function searchFactory() {
+//                var searchFactory = $("#searchFactory").val();
+//                $.get("history_search_pay_factory.php?searchFactory=" + searchFactory, function (data, status) {
+//                    $("#idFactory").html(data);
+//                    show_pay_factory_table();
+//                });
+//            }
 
             $(function () {
                 $('[data-toggle="tooltip"]').tooltip();
@@ -163,3 +226,4 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
         </div>
     </div>
 </div>
+<!--<div class="alert alert-danger" role="alert">1.รง.ไทยฟูดส์เพี้ยน </div>-->
