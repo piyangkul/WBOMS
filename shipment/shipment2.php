@@ -260,7 +260,7 @@ $val_name_factory = $getFactoryByID['name_factory'];
                                                                                             </body>
                                                                                             </html>
                                                                                             <div class="modal fade" id="myModal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                                                                                <div class="modal-dialog ui-front">
+                                                                                                <div class="modal-dialog">
                                                                                                     <div class="modal-content modal-lg">
                                                                                                         <!-- Content -->
                                                                                                     </div>
