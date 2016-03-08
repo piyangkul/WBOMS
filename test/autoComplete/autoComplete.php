@@ -8,6 +8,7 @@
         <script src="//code.jquery.com/jquery-1.10.2.js"></script>
         <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
         <link rel="stylesheet" href="/resources/demos/style.css">
+
         <script>
             $(function () {
                 var availableTags = [
@@ -39,22 +40,23 @@
                 });
             });
 
-
-            var data = JSON.stringify(<?php echo getShop2(); ?>);//ดึงค่า
-            var Obj = JSON.parse(data);//Objตามจำนวนข้อมูล
-            //alert(Obj);
-            var shopName = new Array();
-            var shopId = new Array();
-            //pushข้อมูลลงArray
-            for (var i = 0; i < Obj.length; i++) {
-                shopName.push(Obj[i].name_shop);
-                shopId["'" + Obj[i].name_shop + "'"] = Obj[i].idshop;
-            }
-            $(function () {
-                $("#code_order").autocomplete({
-                    source: shopName
-                });
-            });
+//            yes
+//            var data = JSON.stringify(<?php echo getShop2(); ?>);//ดึงค่า
+//            var Obj = JSON.parse(data);//Objตามจำนวนข้อมูล
+//            //alert(Obj);
+//            var shopName = new Array();
+//            var shopId = new Array();
+//            //pushข้อมูลลงArray
+//            for (var i = 0; i < Obj.length; i++) {
+//                shopName.push(Obj[i].name_shop);
+//                shopId["'" + Obj[i].name_shop + "'"] = Obj[i].idshop;
+//            }
+//            $(function () {
+//                $("#code_order").autocomplete({
+//                    source: shopName
+//                });
+//            });
+//            no
 //            function getShopId() {
 //                var shop = document.getElementById("code_order").value;
 //                idshop = shopId["'" + shop + "'"];
@@ -62,17 +64,19 @@
 //                $("#test").text(idshop);//ใช้กับ<a href="#" id="test">text</a>
 //               // $("#test").val(idshop);//ใช้กับ<input type="button" value="" id="test"/>
 //            }
-            function getShopId(e) {//ใช้กับ<input type="text" id="code_order" autocomplete=on name="code_order" onkeypress="getShopId(event)"  >
-                //alert(e);
-                //alert(e.keyCode);
-                if ((e instanceof FocusEvent) || (e instanceof KeyboardEvent && e.keyCode === 13)) {//$('#myText').live("keypress", function(e) {
-                    //alert("go");
-                    var shop = document.getElementById("code_order").value;
-                    idshop = shopId["'" + shop + "'"];
-                    $("#test").text(idshop);
-                }
-                return false;
-            }
+//            yes
+//            function getShopId(e) {//ใช้กับ<input type="text" id="code_order" autocomplete=on name="code_order" onkeypress="getShopId(event)"  >
+//                //alert(e);
+//                //alert(e.keyCode);
+//                if ((e instanceof FocusEvent) || (e instanceof KeyboardEvent && e.keyCode === 13)) {//$('#myText').live("keypress", function(e) {
+//                    //alert("go");
+//                    var shop = document.getElementById("code_order").value;
+//                    idshop = shopId["'" + shop + "'"];
+//                    $("#test").text(idshop);
+//                }
+//                return false;
+//            }
+//            no
 //            $('#code_order').live("keypress", function(e) {
 //                if (e.keyCode === 13) {
 //                    var shop = document.getElementById("code_order").value;
@@ -83,21 +87,66 @@
 //                return false;
 //            });
 
-        </script>
-    </head>
-    <body>
+            var data = JSON.stringify(<?php echo getShop2(); ?>);//ดึงค่า
+            var Obj = JSON.parse(data);//Objตามจำนวนข้อมูล
+//            alert(Obj);
+            var Arr = new Array();
+            var JSON_tel_shop = new Array();
+            var JSON_name_shop = new Array();
+            //pushข้อมูลลงArray
+            for (var i = 0; i < Obj.length; i++) {
+                Arr.push(Obj[i].tel_shop);
+                Arr.push(Obj[i].name_shop);
+                JSON_tel_shop["'" + Obj[i].tel_shop + "'"] = Obj[i].idshop;
+                JSON_name_shop["'" + Obj[i].name_shop + "'"] = Obj[i].idshop;
+//                alert(shopId["'" + Obj[i].tel_shop + "'"]);
+                console.log(JSON_tel_shop);
+                console.log(JSON_name_shop);
+            }
 
-        <div class="ui-widget">
-            <label for="tags">Tags: </label>
-            <input id="tags">
-            <label for="code_order" >code_order: </label>
-            <input type="text" id="code_order" autocomplete=on name="code_order" onblur ="getShopId(event)" onkeypress="getShopId(event)">
-            <!--<input type="text" id="code_order" autocomplete=on name="code_order"   >-->
-            <p id="aa"></p>
-            <input type="button" value="" />
-            <a href="#" class="btn btn-warning " data-toggle="modal" data-target="#myModal" title="แก้ไข" id="test"></a>
-        </div>
+            $(function () {
+                $("#code_order").autocomplete({
+                    source: Arr
+                });
+            });
+
+            function getShopId(e) {//ใช้กับ<input type="text" id="code_order" autocomplete=on name="code_order" onkeypress="getShopId(event)"  >
+                //alert(e);
+                //alert(e.keyCode);
+                if ((e instanceof FocusEvent) || (e instanceof KeyboardEvent && e.keyCode === 13)) {//$('#myText').live("keypress", function(e) {
+                    //alert("go");
+                    var input = document.getElementById("code_order").value;
+                    if (JSON_tel_shop["'" + input + "'"] != null) {
+                        idshop = JSON_tel_shop["'" + input + "'"];
+                    }
+                    else {
+                        idshop = JSON_name_shop["'" + input + "'"];
+                    }
+                    console.log(idshop);
+                    $("#test").text(idshop);
+                }
+                return false;
+            }
 
 
-    </body>
-</html>
+
+
+
+            </script>
+        </head>
+        <body>
+
+            <div class="ui-widget">
+                <!--            <label for="tags">Tags: </label>
+                            <input id="tags">-->
+                <label for="code_order" >code_order: </label>
+                <input type="text" id="code_order" autocomplete=on name="code_order" onblur ="getShopId(event)" onkeypress="getShopId(event)">
+                <!--<input type="text" id="code_order" autocomplete=on name="code_order"   >-->
+
+<!--            <input type="text" id="test" />-->
+                <a href="#" class="btn btn-warning " data-toggle="modal" data-target="#myModal" title="แก้ไข" id="test"></a>
+            </div>
+
+
+        </body>
+    </html>
