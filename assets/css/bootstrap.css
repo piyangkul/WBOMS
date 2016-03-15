@@ -6404,4 +6404,7 @@ button.close {
     display: none !important;
   }
 }
+.diff{
+    display: none;
+}
 /*# sourceMappingURL=bootstrap.css.map */
