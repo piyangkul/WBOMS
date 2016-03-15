@@ -43,9 +43,8 @@ $val_detail_order_p = $getOrderEdit['detail_order_p'];
         <link rel="stylesheet" href="/resources/demos/style.css"/>
         <script>
 
-
             /*  $(function () {
-             var data = JSON.stringify(<?php //getShop2();              ?>);
+             var data = JSON.stringify(<?php //getShop2();                                            ?>);
              //var www = JSON.parse(data);
              //alert(www);
              alert(data);
@@ -69,8 +68,8 @@ $val_detail_order_p = $getOrderEdit['detail_order_p'];
                     <form action="action/action_editOrder.php?idorder=<?php echo $val_idorder; ?>" method="post"> 
                         <div class="row">
                             <div class="col-md-12">
-                                <h2> Add Order </h2>   
-                                <h5> เพิ่มคำสั่งซื้อ </h5>
+                                <h2> Edit Order </h2>   
+                                <h5> แก้ไขคำสั่งซื้อ </h5>
 
                             </div>
                         </div>
@@ -81,7 +80,6 @@ $val_detail_order_p = $getOrderEdit['detail_order_p'];
                             <div class="col-md-5">
                                 <!-- บิล -->
                                 <div class="panel panel-default">
-
                                     <div class="panel-heading ">
                                         <div class="table-responsive">
 
@@ -92,7 +90,7 @@ $val_detail_order_p = $getOrderEdit['detail_order_p'];
                                                 </div>
                                                 <p id="www"></p>
                                                 <div >
-                                                    <p>วันที่สั่งซื้อ <input type="date" class="form-control" id ="date_order" name="date_order" value="<?= $val_date_order_p;?>"></p>
+                                                    <p>วันที่สั่งซื้อ <input type="date" class="form-control" id ="date_order" name="date_order" value="<?= $val_date_order_p; ?>"></p>
                                                     <input type="time" class="form-control" id ="time_order" name="time_order" value="<?= $val_time_order_p ?>">
                                                 </div>
                                                 <div>
@@ -119,8 +117,7 @@ $val_detail_order_p = $getOrderEdit['detail_order_p'];
                                         </div>
                                         <div class="panel-body">
                                             <div class="table-responsive">
-
-                                                <a href="popup_edit_addproduct_order.php" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">
+                                                <a href="addproduct_editorder.php?idorder=<?= $val_idorder; ?>" class="btn btn-info btn-lg">
                                                     <span class="glyphicon glyphicon-plus"></span> เพิ่มสินค้า </a>
                                                 <table class="table table-striped table-bordered table-hover text-center" id="dataTables-example">
                                                     <thead>
@@ -143,6 +140,7 @@ $val_detail_order_p = $getOrderEdit['detail_order_p'];
                                                         $i = 0;
                                                         foreach ($getProductOrder as $value) {
                                                             $i++;
+                                                            $val_idproduct_order = $value['idproduct_order'];
                                                             $val_name_product = $value['name_product'];
                                                             $val_name_unit = $value['name_unit'];
                                                             $val_name_factory = $value['name_factory'];
@@ -153,6 +151,7 @@ $val_detail_order_p = $getOrderEdit['detail_order_p'];
                                                             $val_price_unit = $value['price_unit'];
                                                             $total_open = $val_price_unit * $val_amount_product_order;
                                                             $total_percent = $total_open - ($total_open * ($val_difference_product_order / 100));
+                                                            $val_status_checktransport = $value['status_checktransport'];
                                                             $total_bath = $total_open - ($val_difference_product_order * $val_amount_product_order);
                                                             ?>
                                                             <tr>
@@ -161,46 +160,56 @@ $val_detail_order_p = $getOrderEdit['detail_order_p'];
                                                                 <td><?= $val_name_factory; ?></td>
                                                                 <td><?= $val_name_unit; ?></td> 
                                                                 <td><?= $val_amount_product_order; ?></td>
-                                                                <td><?= $total_open; ?> </td>
+                                                                <td class ="text-right"><?= number_format($total_open, 2); ?> </td>
                                                                 <td><?= $val_difference_amount_factory; ?></td>
                                                                 <?php if ($val_type_product_order === 'PERCENT') { ?>
                                                                     <td><?= $val_difference_product_order; ?></td>
                                                                     <td>-</td>
-                                                                    <td><?= $total_percent; ?></td>
+                                                                    <td class ="text-right"><?= number_format($total_percent, 2); ?></td>
                                                                 <?php }
                                                                 ?>
                                                                 <?php if ($val_type_product_order === 'BATH') {
                                                                     ?>
                                                                     <td>-</td>
                                                                     <td><?= $val_difference_product_order; ?></td>                                                                  
-                                                                    <td><?= $total_bath; ?></td>
-                                                                <?php }
+                                                                    <td class ="text-right"><?= number_format($total_bath, 2); ?></td> 
+                                                                    <?php
+                                                                }
+
+                                                                if ($val_status_checktransport === 'check') {
+                                                                    ?> <td>
+                                                                        <b>สินค้าถูกจัดส่งแล้ว</font></b>
+                                                                    </td>
+                                                                    <?php
+                                                                } else {
+                                                                    ?>
+                                                                    <td>
+                                                                        <!--Button trigger modal -->
+
+                                                                        <a href = "editproduct_editorderE.php?idproduct_order=<?php echo $val_idproduct_order; ?>&idorder=<?= $val_idorder; ?>" id="editProduct<?= $val_idproduct_order ?>" name="editProduct<?= $val_idproduct_order ?>" class="btn btn-warning " data-toggle="tooltip" title="แก้ไข">
+                                                                            <span class = "glyphicon glyphicon-edit"></span>
+                                                                        </a>
+                                                                        <a class = "btn btn-danger" data-toggle = "modal" data-target = "#myModal3" data-toggle = "tooltip" title = "ลบ" id="deleteProduct<?= $val_idproduct_order ?>" name="deleteProduct<?= $val_idproduct_order ?>" onclick="delProduct(<?= $val_idproduct_order ?>);">
+                                                                            <span class = "glyphicon glyphicon-trash"></span>
+                                                                        </a>           
+                                                                        <center><b id ="del<?php echo $val_idproduct_order; ?>"><font color="red"></font></b></center>
+                                                                    </td>
+                                                                    <?php
+                                                                }
                                                                 ?>    
-
-
-                                                                <td>
-                                                                    <!-- Button trigger modal -->
-                                                                    <a href="popup_edit_product_unit.php?unitid=<?php echo $valIdunit; ?>" class="btn btn-warning" data-toggle="modal" data-target="#myModal2" data-toggle="tooltip" title="แก้ไข">
-                                                                        <span class="glyphicon glyphicon-edit"></span> 
-                                                                    </a>
-                                                                    <!--                                                            <a href="popup_delete_product_unit.php" class="btn btn-danger" data-toggle="modal" data-target="#myModal3" data-toggle="tooltip" title="ลบ">
-                                                                                                                                    <span class="glyphicon glyphicon-trash"></span>
-                                                                                                                                </a>-->
-                                                                </td>
                                                             </tr>
                                                         <?php } ?>
+
                                                 </table>
-
-
-                                                <label>สินค้าเพิ่มใหม่</label>
-                                                <div id="showUnit"></div>
-                                                <div class="col-md-6"></div>
-                                                <div class="col-md-4">
-                                                    <label for="disabled_no">ราคาขายรวมต่อบิล</label>
-                                                    <input type="text" class="form-control" id="disabled_no" placeholder=" " disabled>
-                                                </div>
                                             </div>
+                                            <label>สินค้าเพิ่มใหม่</label>
+                                            <div id="showUnit"></div>
 
+                                            <div class="col-md-6"></div>
+                                            <div class="col-md-4">
+                                                <label for="disabled_no">ราคาขายรวมต่อบิล</label>
+                                                <input type="text" class="form-control" id="disabled_no" placeholder=" " disabled>
+                                            </div>   
                                         </div>
                                     </div>
                                     <!--End  ตารางสินค้าที่สั่งซื้อ --> 
@@ -208,7 +217,7 @@ $val_detail_order_p = $getOrderEdit['detail_order_p'];
                                         <div class="col-md-2"></div>
                                         <div class="form-group col-xs-8">
                                             <label for="exampleInputName2">รายละเอียดเพิ่มเติม</label>
-                                            <textarea rows="4" cols="50" id = "detail_order" name ="detail_order" class="form-control" placeholder="กรอกรายละเอียดเพิ่มเติม" value=""><?= $val_detail_order_p?></textarea>
+                                            <textarea rows="4" cols="50" id = "detail_order" name ="detail_order" class="form-control" placeholder="กรอกรายละเอียดเพิ่มเติม" value=""><?= $val_detail_order_p ?></textarea>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -266,14 +275,52 @@ $val_detail_order_p = $getOrderEdit['detail_order_p'];
     </div>
 </div>
 <script>
-            $(document.body).on('hidden.bs.modal', function () {
-                $('#myModal').removeData('bs.modal');
-            });</script>
+</script>
 <script>
     showUnit();
+    showUnitE();
+    showUnitD();
+    function delProduct(str) {
+        var x;
+        var idproduct_order = str;
+
+        if (confirm("คุณต้องการลบสินค้าตัวนี้ใช่ไหม") == true) {
+            x = "You pressed OK!";
+            var p = "&idproduct_order=" + idproduct_order;
+            alert(p);
+            $.get("action_editProductD.php?p=addProduct" + p, function (data, status) {
+                alert("Data: " + data + "\nStatus: " + status);
+                if (data == "1") {
+                    $("#alert").html("บันทึกแล้ว")
+                    showUnitD();
+                }
+                else {
+                    showUnitD();
+
+                }
+            });
+            document.getElementById('editProduct' + idproduct_order).style.display = 'none';
+            document.getElementById('deleteProduct' + idproduct_order).style.display = 'none';
+            document.getElementById("del" + idproduct_order).innerHTML = 'สินค้าตัวนี้ถูกลบ';
+            document.getElementById("del" + idproduct_order).style.color = "red";
+        }
+    }
+    $(document.body).on('hidden.bs.modal', function () {
+        $('#myModal').removeData('bs.modal');
+    });
     function showUnit() {
         $.get("action_editProduct.php?p=showUnit", function (data, status) {
             $("#showUnit").html(data);
+        });
+    }
+    function showUnitE() {
+        $.get("action_editProductE.php?p=showUnit", function (data, status) {
+            $("#showUnitE").html(data);
+        });
+    }
+    function showUnitD() {
+        $.get("action_editProductD.php?p=showUnit", function (data, status) {
+            $("#showUnitD").html(data);
         });
     }
     function updateTotalPer() {
@@ -340,7 +387,7 @@ $val_detail_order_p = $getOrderEdit['detail_order_p'];
                 success: function (response)
                 {
                     $("#total_price").val(response);
-                    // alert(response);
+                    $("#price").val(response);
                     $("#idFactory2").val(response);
                 }
             });

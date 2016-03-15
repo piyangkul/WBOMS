@@ -88,13 +88,13 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                 <tr>
                                                     <center>
                                                         <th><center>ลำดับ</center></th>
-                                                        <th>รหัสใบคำสั่งซื้อ</th>
-                                                        <th>วันที่สั่งซื้อ</th>
-                                                        <th>เวลาสั่งซื้อ</th>
-                                                        <th>ชื่อร้านค้า</th>
+                                                        <th><center>รหัสใบคำสั่งซื้อ</center></th>
+                                                        <th><center>วันที่สั่งซื้อ</center></th>
+                                                        <th><center>เวลาสั่งซื้อ</center></th>
+                                                        <th><center>ชื่อร้านค้า</center></th>
                                                         <th><center>จำนวนรายการสินค้า</center></th>
-                                                        <th>ราคารวมต่อบิล</th>
-                                                        <th>การกระทำ</th>
+                                                        <th><center>ราคารวมต่อบิล</center></th>
+                                                        <th><center>การกระทำ</center></th>
                                                     </center>
                                                 </tr>
                                             </thead>
@@ -116,25 +116,25 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                     //$val_count_idproduct_order = $value['count_idproduct_order'];
                                                     ?>
                                                     <tr>
-                                                        <td><?php echo $i; ?></td>
-                                                        <td><?php echo $val_code_order_p; ?></td>
-                                                        <td><?php echo $val_date_order_p; ?></td>
-                                                        <td><?php echo $val_time_order_p; ?></td>
-                                                        <td><?php echo $val_name_shop; ?></td>
-                                                        <td><?php echo $val_count_product; ?></td>
-                                                        <td><?php echo $val_price_product_order; ?></td>
-                                                        <td> 
+                                                        <td><center><?php echo $i; ?></center></td>
+                                                        <td><center><?php echo $val_code_order_p; ?></center></td>
+                                                        <td><center><?php echo $val_date_order_p; ?></center></td>
+                                                        <td><center><?php echo $val_time_order_p; ?></center></td>
+                                                        <td><center><?php echo $val_name_shop; ?></center></td>
+                                                        <td><center><?php echo $val_count_product; ?></center></td>
+                                                        <td class ="text-right"><?php echo number_format($val_price_product_order, 2); ?></td>
+                                                        <td> <center>
 
-                                                            <a href="detail_order.php?idorder=<?php echo $val_idorder_p; ?>" class="btn btn-success" data-toggle="tooltip" title="รายละเอียด">
-                                                                <span class="glyphicon glyphicon-list-alt"></span>
-                                                            </a>
-                                                            <a href="edit_order.php?idorder=<?php echo $val_idorder_p; ?>" class="btn btn-warning " data-toggle="tooltip" title="แก้ไข">
-                                                                <span class="glyphicon glyphicon-edit"></span>
-                                                            </a>
-                                                            <a onclick="return confirm('คุณต้องการลบหรือไม่')" href="action/action_delOrder.php?idorder=<?php echo $val_idorder_p; ?>" class="btn btn-danger">
-                                                                <span class="glyphicon glyphicon-trash"></span>
-                                                            </a>
-
+                                                                <a href="detail_order.php?idorder=<?php echo $val_idorder_p; ?>" class="btn btn-success" data-toggle="tooltip" title="รายละเอียด">
+                                                                    <span class="glyphicon glyphicon-list-alt"></span>
+                                                                </a>
+                                                                <a href="edit_order.php?idorder=<?php echo $val_idorder_p; ?>" class="btn btn-warning " data-toggle="tooltip" title="แก้ไข">
+                                                                    <span class="glyphicon glyphicon-edit"></span>
+                                                                </a>
+                                                                <a onclick="return confirm('คุณต้องการลบหรือไม่')" href="action/action_delOrder.php?idorder=<?php echo $val_idorder_p; ?>" class="btn btn-danger">
+                                                                    <span class="glyphicon glyphicon-trash"></span>
+                                                                </a>
+                                                            </center>
                                                         </td>
                                                     </tr>
                                                     <?php
@@ -165,9 +165,9 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
         <script src="../assets/js/dataTables/jquery.dataTables.js"></script>
         <script src="../assets/js/dataTables/dataTables.bootstrap.js"></script>
         <script>
-                                                                $(document).ready(function () {
-                                                                    $('#dataTables-example').dataTable();
-                                                                });
+                                                                        $(document).ready(function () {
+                                                                            $('#dataTables-example').dataTable();
+                                                                        });
         </script>
         <script>
             $(function () {

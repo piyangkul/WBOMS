@@ -31,41 +31,50 @@ require_once '/function/func_addorder.php';
         <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
         <link rel="stylesheet" href="/resources/demos/style.css"/>
         <script>
-            //alert('<?= getShop2(); ?>');
-            var data = JSON.stringify(<?php echo getShop2(); ?>);
-            alert(data);
-            var www = JSON.parse(data);
+            //alert('<?//= getShop2(); ?>');
+            var Shop = JSON.stringify(<?php echo getShop2(); ?>);
+
+            //alert(Product);
+            //alert(data);
+            var ShopP = JSON.parse(Shop);
+
+            //alert(ProductP);
             //data = JSON.parse(www+'');
             /*alert(data);*/
             //document.write(www[0].idshop+www[0].name_shop);
             var shopName = new Array();
             var shopId = new Array();
+            // var idshop;
 
-            for (var i = 0; i < www.length; i++) {
+
+            for (var i = 0; i < ShopP.length; i++) {
+                shopName.push(ShopP[i].name_shop);
+                shopId["'" + ShopP[i].name_shop + "'"] = ShopP[i].idshop;
                 //var obj = JSON.parse(item);
                 //shopName[i++] = item["shop_name"];
                 // shopId[i++] = item["idshop"];
-                alert(www[i].name_shop);
-                shopName.push(www[i].name_shop);
-                shopId["'" + www[i].name_shop + "'"] = www[i].idshop;
+                //alert(www[i].name_shop);
                 //alert(item["shop_name"]);
 
             }
+
             //alert(data);
             $(function () {
-
-                $("#code_order").autocomplete({
+                $("#name_shop").autocomplete({
                     source: shopName
                 });
             });
-            function getShopId() {
-            alert("Hello");
-              var price = document.getElementById("code_order").value;
-                
-        alert(shopId["'"+price+"'"]);
 
+            function getShopId() {
+                //alert("Hello");
+                var price = document.getElementById("name_shop").value;
+                //alert(shopId["'" + price + "'"]);
+                document.getElementById("idshop").value = shopId["'" + price + "'"];
+                //idshop = shopId["'" + price + "'"];
+                //alert(idshop);
             }
         </script>
+
     </head>
     <body>
         <div id="wrapper">
@@ -92,38 +101,23 @@ require_once '/function/func_addorder.php';
                             <div class="col-md-5">
                                 <!-- บิล -->
                                 <div class="panel panel-default">
-
                                     <div class="panel-heading ">
                                         <div class="table-responsive">
-
                                             <div class="form-group">
                                                 <div>
                                                     <label for="disabled_no">No.บิล</label>
-                                                    <input type="text" class="form-control" id="code_order" name="code_order" placeholder="ID บิล" autocomplete= on onblur="getShopId()">
+                                                    <input type="text" class="form-control" id="code_order" name="code_order" placeholder="ID บิล">
                                                 </div>
-                                                <p id="www"></p>
                                                 <div >
-                                                    <p>วันที่สั่งซื้อ <input type="date" class="form-control" id ="date_order" name="date_order"></p>
-                                                    <input type="time" class="form-control" id ="time_order" name="time_order">
+                                                    <p>วันที่สั่งซื้อ <input type="date" class="form-control" id ="date_order" name="date_order" ></p>
+                                                    <input type="time" class="form-control" id ="time_order" name="time_order"></input>
                                                 </div>
                                                 <div>
-                                                    <label for="disabled_shop">ชื่อร้านค้า</label>
-                                                    <select class="form-control" id="idshop" name ="idshop"required >
-                                                        <option selected value="">Choose</option>
-                                                        <?php
-                                                        require_once '/function/func_addorder.php';
-                                                        $getShop = getShop();
-
-                                                        foreach ($getShop as $value) {
-                                                            $val_idshop = $value['idshop'];
-                                                            $val_name_shop = $value['name_shop'];
-                                                            ?>
-                                                            <option value="<?php echo $val_idshop; ?>"><?php echo $val_name_shop; ?></option>
-                                                        <?php } ?>
-                                                    </select>
+                                                    <label for="disabled_shop">ชื่อร้านค้า></label>
+                                                    <input type="text" class="form-control" id="name_shop" name="name_shop" placeholder="กรุณาระบุชื่อร้านค้า" autocomplete= on onblur="getShopId()"></input>                    
+                                                    <input type="hidden" id="idshop" name="idshop"></input>
                                                 </div>
                                             </div>                                        
-
                                         </div>
                                     </div>
                                 </div>
@@ -133,7 +127,6 @@ require_once '/function/func_addorder.php';
                         </div>
                         <div class="row">
                             <div class="col-md-12">
-
                                 <br>
                                     <!-- ตารางสินค้าที่สั่งซื้อ -->
                                     <div class="panel panel-primary">
@@ -142,13 +135,17 @@ require_once '/function/func_addorder.php';
                                         </div>
                                         <div class="panel-body">
                                             <div class="table-responsive">
-
-                                                <a href="popup_addproduct_order.php" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">
-                                                    <span class="glyphicon glyphicon-plus"></span> เพิ่มสินค้า </a>
+                                                <a href="addproduct_addorder.php" class="btn btn-info btn-lg">
+                                                    <span class="glyphicon glyphicon-plus"></span> เพิ่มสินค้า
+                                                </a>
+                                                <button class="btn btn-danger btn-lg" type="button" onclick="if (confirm('คุณต้องการลบหน่วยสินค้าทั้งหมดหรือไม่')) {
+                                                            resetUnit();
+                                                        }">
+                                                    <span class="glyphicon glyphicon-trash"></span> ลบสินค้าทั้งหมด
+                                                </button>
+                                                <br></br>
                                                 <div id="showUnit"></div>
-
                                             </div>
-
                                         </div>
                                     </div>
                                     <!--End  ตารางสินค้าที่สั่งซื้อ --> 
@@ -164,7 +161,7 @@ require_once '/function/func_addorder.php';
                                         <button type="submit" class="btn btn-info btn-lg text-center">
                                             <span class="glyphicon glyphicon-floppy-save"></span> บันทึก
                                         </button>
-                                        <a href="add_order.php" class="btn btn-danger btn-lg text-center">
+                                        <a href="order.php" class="btn btn-danger btn-lg text-center">
                                             <span class="glyphicon glyphicon-floppy-remove"></span> ยกเลิก
                                         </a>
                                     </div>
@@ -214,138 +211,97 @@ require_once '/function/func_addorder.php';
     </div>
 </div>
 <script>
-                                                        $(document.body).on('hidden.bs.modal', function () {
-                                                            $('#myModal').removeData('bs.modal');
-                                                        });</script>
-<script>
-    showUnit();
-    function showUnit() {
-        $.get("action_addProduct.php?p=showUnit", function (data, status) {
-            $("#showUnit").html(data);
-        });
-    }
-    function updateTotalPer() {
-        var x = document.getElementById("DifferencePer").value;
-        var price = document.getElementById("total_price").value;
-        var total = price - (price * (x / 100));
-        document.getElementById("total").value = total;
-        document.getElementById("DifferenceBath").disabled = true;
-        document.getElementById("type").value = "PERCENT";
-        if (x === "") {
-            document.getElementById("DifferenceBath").disabled = false;
-        }
-    }
-    function updateTotalBath() {
-        var x = document.getElementById("DifferenceBath").value;
-        var price = document.getElementById("total_price").value;
-        var qwer = document.getElementById("idFactory2").value;
-        var amount = document.getElementById("AmountProduct").value;
-        var total = (qwer - x) * amount;
-        document.getElementById("total").value = total;
-        document.getElementById("type").value = "BATH";
-        document.getElementById("DifferencePer").disabled = true;
-        if (x === "") {
-            document.getElementById("DifferencePer").disabled = false;
-        }
-    }
-    function updateAmount() {
-        var price = document.getElementById("idFactory2").value;
-        var amount = document.getElementById("AmountProduct").value;
-        var difference = document.getElementById("difference").value;
-        var total = amount * price;
-        var totals = total - (total * (difference / 100))
-        document.getElementById("total_price").value = total;
-        document.getElementById("cal_difference").value = totals;
-    }
+                                                    $(document.body).on('hidden.bs.modal', function () {
+                                                        $('#myModal').removeData('bs.modal');
+                                                    });
+                                                    showUnit();
+                                                    function delProduct(str) {
+                                                        var x;
+                                                        var idproduct_order = str;
 
-    function ChangeProduct() {
-        var x = document.getElementById("factoryName").value;
-        document.getElementById("idFactory2").innerHTML = "You selected: " + x;
-        if (x === "Choose") {
-            document.getElementById("productName").disabled = true;
-        }
-        else {
-            document.getElementById("productName").disabled = false;
-        }
-    }
-    function LoadData(str) {
-        document.getElementById("idUnit").value = str;
-        //var amount = document.getElementById("AmountProduct").value;
+                                                        if (confirm("คุณต้องการลบสินค้าตัวนี้ใช่ไหม" + str) == true) {
+                                                            x = "You pressed OK!";
+                                                            var p = "&idproduct_order=" + idproduct_order;
+                                                            alert(p);
+                                                            $.get("action_editProductD.php?p=addProduct" + p, function (data, status) {
+                                                                alert("Data: " + data + "\nStatus: " + status);
+                                                                if (data == "1") {
+                                                                    $("#alert").html("บันทึกแล้ว")
+                                                                    showUnitD();
+                                                                }
+                                                                else {
+                                                                    showUnitD();
 
-        if (str == "") {
-            //document.getElementById("factoryName").innerHTML = "";
-            return;
-        }
-        else if (str === "Choose") {
-            document.getElementById("productName").disabled = false;
-        }
-        else {
-            $.ajax({type: "GET",
-                url: "action/action_ajax.php",
-                async: false,
-                data: "q=" + str,
-                dataType: 'html',
-                success: function (response)
-                {
-                    $("#total_price").val(response);
-                    $("#price").val(response);
-                    $("#idFactory2").val(response);
-                }
-            });
-        }
-    }
-    function LoadFactory(str) {
-        document.getElementById("factoryName").value = str;
-        if (str == "") {
-            //document.getElementById("factoryName").innerHTML = "";
-            return;
-        }
-        else {
-            $.ajax({type: "GET",
-                url: "action/action_ajax_difference.php",
-                async: false,
-                data: "q=" + str,
-                dataType: 'html',
-                success: function (wer)
-                {
-                    $("#difference").val(wer);
-                    //alert(wer);
-                }
-            });
-            $.ajax({type: "GET",
-                url: "action/action_ajax_factory.php",
-                async: false,
-                data: "q=" + str,
-                dataType: 'html',
-                success: function (response)
-                {
-                    $("#productName").html(response);
-                    //alert(response);
-                }
-            });
-        }
-    }
+                                                                }
+                                                            });
+                                                            document.getElementById('editProduct' + idproduct_order).style.display = 'none';
+                                                            document.getElementById('deleteProduct' + idproduct_order).style.display = 'none';
+                                                            document.getElementById("del" + idproduct_order).innerHTML = 'สินค้าตัวนี้ถูกลบ';
+                                                            document.getElementById("del" + idproduct_order).style.color = "red";
+                                                        }
+                                                    }
+                                                    function showUnit() {
+                                                        $.get("action_addProduct.php?p=showUnit", function (data, status) {
+                                                            $("#showUnit").html(data);
+                                                        });
+                                                    }
+                                                    function updateTotalPer() {
+                                                        var x = document.getElementById("DifferencePer").value;
+                                                        var price = document.getElementById("total_price").value;
+                                                        var total = price - (price * (x / 100));
+                                                        document.getElementById("total").value = total;
+                                                        document.getElementById("DifferenceBath").disabled = true;
+                                                        document.getElementById("type").value = "PERCENT";
+                                                        if (x === "") {
+                                                            document.getElementById("DifferenceBath").disabled = false;
+                                                        }
+                                                    }
+                                                    function updateTotalBath() {
+                                                        var x = document.getElementById("DifferenceBath").value;
+                                                        var price = document.getElementById("total_price").value;
+                                                        var qwer = document.getElementById("idFactory2").value;
+                                                        var amount = document.getElementById("AmountProduct").value;
+                                                        var total = (qwer - x) * amount;
+                                                        document.getElementById("total").value = total;
+                                                        document.getElementById("type").value = "BATH";
+                                                        document.getElementById("DifferencePer").disabled = true;
+                                                        if (x === "") {
+                                                            document.getElementById("DifferencePer").disabled = false;
+                                                        }
+                                                    }
+                                                    function updateAmount() {
+                                                        var price = document.getElementById("idFactory2").value;
+                                                        var amount = document.getElementById("AmountProduct").value;
+                                                        var difference = document.getElementById("difference").value;
+                                                        var total = amount * price;
+                                                        var totals = total - (total * (difference / 100))
+                                                        document.getElementById("total_price").value = total;
+                                                        document.getElementById("cal_difference").value = totals;
+                                                    }
 
-    function LoadProduct(str) {
-        document.getElementById("productName").value = str;
-        if (str == "") {
-            //document.getElementById("factoryName").innerHTML = "";
-            return;
-        }
+                                                    function ChangeProduct() {
+                                                        var x = document.getElementById("factoryName").value;
+                                                        document.getElementById("idFactory2").innerHTML = "You selected: " + x;
+                                                        if (x === "Choose") {
+                                                            document.getElementById("productName").disabled = true;
+                                                        }
+                                                        else {
+                                                            document.getElementById("productName").disabled = false;
+                                                        }
+                                                    }
+                                                    function resetUnit() {
+                                                        $.get("action_addProduct.php?p=resetUnit", function (data, status) {
+                                                            if (data != "-1") {
+                                                                showUnit();
+                                                                getBigestUnit();
+                                                                getBigestPrice();
+                                                                alert("ลบหน่วยทั้งหมดแล้ว");
+                                                            }
+                                                            else {
+                                                                alert("ไม่สามารถลบหน่วยได้");
 
-        else {
-            $.ajax({type: "GET",
-                url: "action/action_ajax_product.php",
-                async: false,
-                data: "q=" + str,
-                dataType: 'html',
-                success: function (response)
-                {
-                    $("#idUnit").html(response);
-                    //alert(response);
-                }
-            });
-        }
+                                                            }
+                                                        });
+                                                    }
 
-    }
 </script>

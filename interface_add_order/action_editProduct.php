@@ -4,6 +4,7 @@ session_start();
 
 //session_destroy();
 if ($_GET['p'] == "addProduct") {
+    $idorder = $_GET['idorder'];
     $idUnit = $_GET['idUnit'];
     $productName = $_GET['productName'];
     $factoryName = $_GET['factoryName'];
@@ -11,6 +12,7 @@ if ($_GET['p'] == "addProduct") {
     $difference = $_GET['difference'];
     $DifferencePer = $_GET['DifferencePer'];
     $DifferenceBath = $_GET['DifferenceBath'];
+    $price = $_GET['price'];
     $total_price = $_GET['total_price'];
     $total = $_GET['total'];
     $type = $_GET['type'];
@@ -19,6 +21,7 @@ if ($_GET['p'] == "addProduct") {
         $_SESSION["editcountProduct"] ++;
     } else
         $_SESSION["editcountProduct"] = 1;
+    $_SESSION["editproduct"][$_SESSION["editcountProduct"]]["idorder"] = $idorder;
     $_SESSION["editproduct"][$_SESSION["editcountProduct"]]["idUnit"] = $idUnit;
     $_SESSION["editproduct"][$_SESSION["editcountProduct"]]["productName"] = $productName;
     $_SESSION["editproduct"][$_SESSION["editcountProduct"]]["factoryName"] = $factoryName;
@@ -26,29 +29,41 @@ if ($_GET['p'] == "addProduct") {
     $_SESSION["editproduct"][$_SESSION["editcountProduct"]]["difference"] = $difference;
     $_SESSION["editproduct"][$_SESSION["editcountProduct"]]["DifferencePer"] = $DifferencePer;
     $_SESSION["editproduct"][$_SESSION["editcountProduct"]]["DifferenceBath"] = $DifferenceBath;
+    $_SESSION["editproduct"][$_SESSION["editcountProduct"]]["price"] = $price;
     $_SESSION["editproduct"][$_SESSION["editcountProduct"]]["total_price"] = $total_price;
     $_SESSION["editproduct"][$_SESSION["editcountProduct"]]["total"] = $total;
     $_SESSION["editproduct"][$_SESSION["editcountProduct"]]["type"] = $type;
 
     echo "1";
 }
-/*
-  else if ($_GET['p'] == "editUnit") {
-  $idUnit = $_GET['idUnit'];
-  $NameUnit = $_GET['NameUnit'];
-  $AmountPerUnit = $_GET['AmountPerUnit'];
-  $under_unit = $_GET['under_unit'];
-  $price = $_GET['price'];
-  $type = $_GET['type'];
+else if ($_GET['p'] == "editProduct") {
+    $product_order = $_GET['idproduct_order'];
+    $idUnit = $_GET['idUnit'];
+    $productName = $_GET['productName'];
+    $factoryName = $_GET['factoryName'];
+    $AmountProduct = $_GET['AmountProduct'];
+    $difference = $_GET['difference'];
+    $DifferencePer = $_GET['DifferencePer'];
+    $DifferenceBath = $_GET['DifferenceBath'];
+    $price = $_GET['price'];
+    $total_price = $_GET['total_price'];
+    $total = $_GET['total'];
+    $type = $_GET['type'];
 
-  $_SESSION["unit"][$idUnit]["NameUnit"] = $NameUnit;
-  $_SESSION["unit"][$idUnit]["AmountPerUnit"] = $AmountPerUnit;
-  $_SESSION["unit"][$idUnit]["under_unit"] = $under_unit;
-  $_SESSION["unit"][$idUnit]["price"] = $price;
-  $_SESSION["unit"][$idUnit]["type"] = $type;
+    $_SESSION["editproduct"]["$product_order"]["idUnit"] = $idUnit;
+    $_SESSION["editproduct"]["$product_order"]["productName"] = $productName;
+    $_SESSION["editproduct"]["$product_order"]["factoryName"] = $factoryName;
+    $_SESSION["editproduct"]["$product_order"]["AmountProduct"] = $AmountProduct;
+    $_SESSION["editproduct"]["$product_order"]["difference"] = $difference;
+    $_SESSION["editproduct"]["$product_order"]["DifferencePer"] = $DifferencePer;
+    $_SESSION["editproduct"]["$product_order"]["DifferenceBath"] = $DifferenceBath;
+    $_SESSION["editproduct"]["$product_order"]["price"] = $total / $AmountProduct;
+    $_SESSION["editproduct"]["$product_order"]["total_price"] = $total_price;
+    $_SESSION["editproduct"]["$product_order"]["total"] = $total;
+    $_SESSION["editproduct"]["$product_order"]["type"] = $type;
 
-  echo "1";
-  } else if ($_GET['p'] == "chkUnitAdd") {
+    echo "1";
+}/* else if ($_GET['p'] == "chkUnitAdd") {
 
   //    echo $_SESSION["countUnit"];
   if (isset($_SESSION["countUnit"])) {
@@ -80,7 +95,7 @@ if ($_GET['p'] == "addProduct") {
   } else {
   echo -1;
   }
-  } */else if ($_GET['p'] == "showUnit") {
+  } */ else if ($_GET['p'] == "showUnit") {
     ?>
     <table class="table table-striped table-bordered table-hover text-center" id="dataTables-example">
         <thead>
@@ -136,15 +151,18 @@ if ($_GET['p'] == "addProduct") {
                             }
                             ?></td>
                         <td><?php echo $_SESSION["editproduct"][$i]["AmountProduct"]; ?></td>
-                        <td><?php echo $_SESSION["editproduct"][$i]["total_price"]; ?></td>
+                        <td class ="text-right"><?php echo number_format($_SESSION["editproduct"][$i]["total_price"],2); ?></td>
                         <td><?php echo $_SESSION["editproduct"][$i]["difference"]; ?></td>
                         <td><?php echo $_SESSION["editproduct"][$i]["DifferencePer"]; ?></td>
                         <td><?php echo $_SESSION["editproduct"][$i]["DifferenceBath"]; ?></td>
-                        <td><?php echo $_SESSION["editproduct"][$i]["total"]; ?></td>
+                        <td class ="text-right"><?php echo number_format($_SESSION["editproduct"][$i]["total"],2); ?></td>
                         <td>
-                            <a href="popup_editproduct_order_edit.php?idUnit=<?php echo $i; ?>" class="btn btn-warning " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="แก้ไข">
+                            <a href="editproduct_editorder.php?idorder=<?=$_SESSION["editproduct"][$i]["idorder"];; ?>&idproduct_order=<?= $i; ?>&idunit=<?php echo $idUnitS; ?>&amount=<?= $_SESSION["editproduct"][$i]["AmountProduct"]; ?>&DifferencePer=<?= $_SESSION["editproduct"][$i]["DifferencePer"]; ?>&DifferenceBath=<?= $_SESSION["editproduct"][$i]["DifferenceBath"]; ?>&type=<?= $_SESSION["editproduct"][$i]["type"]; ?>" class="btn btn-warning " data-toggle="tooltip" title="แก้ไข">
                                 <span class="glyphicon glyphicon-edit"></span>
                             </a>
+                            <a class = "btn btn-danger" data-toggle = "modal" data-toggle = "tooltip" title = "ลบ" id="deleteProduct<?= $i; ?>" name="deleteProduct<?= $i; ?>" onclick="delProduct(<?= $i; ?>);">
+                                <span class = "glyphicon glyphicon-trash"></span>
+                            </a>     
                         </td>
                     </tr>
                     <?php

@@ -23,9 +23,9 @@ session_start();
                         ?>
                         <option value="<?php echo $val_idfactory; ?>"><?php echo $val_name_factory; ?></option>
                     <?php } ?>
-
                 </select>
                 <h id="idFactory2"></h>
+                
             </div>
 
             <div class="form-group col-xs-12">
@@ -40,10 +40,7 @@ session_start();
 
                 <select class="form-control" id="idUnit" name="idUnit" onchange="LoadData(this.value)" required>
                     <option>กรุณาเลือกหน่วยขาย</option>
-
-
                 </select>
-
                 <div id="tee"></div>
             </div>
             <div class="form-group col-xs-12">
@@ -116,9 +113,9 @@ session_start();
         //alert(DifferencePer);
         //alert(DifferenceBath);
         var p = "&idUnit=" + idUnit + "&productName=" + productName + "&factoryName=" + factoryName + "&difference=" + difference + "&AmountProduct=" + AmountProduct + "&DifferencePer=" + DifferencePer + "&DifferenceBath=" + DifferenceBath + "&total_price=" + total_price + "&total=" + total + "&type=" + type;
-        alert(p);
+        // alert(p);
         $.get("action_addProduct.php?p=addProduct" + p, function (data, status) {
-            alert("Data: " + data + "\nStatus: " + status);
+            //alert("Data: " + data + "\nStatus: " + status);
             if (data == "1") {
                 $("#alert").html("บันทึกแล้ว")
                 $("#idUnit").val("");

@@ -23,7 +23,7 @@ function getShop2() {
     while ($result = $SQLPrepare->fetch(PDO::FETCH_ASSOC)) {
         array_push($resultArr, $result);
     }
-    return json_encode($resultArr);//, JSON_UNESCAPED_UNICODE);
+    return json_encode($resultArr); //, JSON_UNESCAPED_UNICODE);
     //return "{}";
 }
 
@@ -84,6 +84,19 @@ function getProduct($id) {
     return $resultArr;
 }
 
+function getProduct4() {
+    $conn = dbconnect();
+    //$SQLCommand = "SELECT idproduct,idfactory,name_product FROM `product` WHERE idfactory = {$id} ORDER BY name_product";
+    $SQLCommand = "SELECT idproduct,product.idfactory,name_product,name_factory,difference_amount_factory,factory.type_factory FROM `product`  INNER JOIN factory ON factory.idfactory = product.idfactory";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute();
+    $resultArr = array();
+    while ($result = $SQLPrepare->fetch(PDO::FETCH_ASSOC)) {
+        array_push($resultArr, $result);
+    }
+    return json_encode($resultArr); //, JSON_UNESCAPED_UNICODE);
+}
+
 function getProduct2($id) {
     $conn = dbconnect();
     $SQLCommand = "SELECT idproduct,idfactory,name_product FROM `product` WHERE idproduct = {$id} ORDER BY name_product";
@@ -94,6 +107,19 @@ function getProduct2($id) {
         array_push($resultArr, $result);
     }
     return $resultArr;
+}
+
+function getProduct3() {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT idproduct,idfactory,name_product FROM `product`";
+    //$SQLCommand = "SELECT idshop,name_shop FROM shop";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute();
+    $resultArr = array();
+    while ($result = $SQLPrepare->fetch(PDO::FETCH_ASSOC)) {
+        array_push($resultArr, $result);
+    }
+    return json_encode($resultArr); //, JSON_UNESCAPED_UNICODE);
 }
 
 function getUnit($id) {
@@ -118,6 +144,20 @@ function getUnit2($id) {
         array_push($resultArr, $result);
     }
     return $resultArr;
+}
+
+function getUnit3($id) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT idunit,name_unit,price_unit,factory.difference_amount_factory,unit.price_unit,type_unit,unit.idproduct,factory.name_factory,name_product,product.idfactory FROM `unit` INNER JOIN product ON product.idproduct=unit.idproduct INNER JOIN factory ON factory.idfactory = product.idfactory WHERE type_unit = 'PRIMARY' AND idunit = :id ";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":id" => $id
+            )
+    );
+    //$resultArr = array();
+    $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
+    return $result;
 }
 
 function getUnit_cal() {
@@ -192,7 +232,7 @@ function addOrder($code_order, $idshop, $date_order, $time_order, $detail_order)
     }
 }
 
-function addProductOrder($idunit, $idorder_p, $amount_product_order, $difference_product_order, $type_product_order,$price) {
+function addProductOrder($idunit, $idorder_p, $amount_product_order, $difference_product_order, $type_product_order, $price) {
     $conn = dbconnect();
     $SQLCommand = "INSERT INTO `product_order`(idunit,idorder_p,amount_product_order,difference_product_order,type_product_order,price_product_order) "
             . "VALUES (:idunit, :idorder_p, :amount_product_order, :difference_product_order,:type_product_order,:price )";
@@ -231,7 +271,7 @@ function getOrderEdit($id) {
 
 function getProductOrder($id) {
     $conn = dbconnect();
-    $SQLCommand = "SELECT product_order.idproduct_order,product_order.idorder_p,product.name_product,unit.name_unit,factory.name_factory,factory.difference_amount_factory,product_order.amount_product_order,product_order.difference_product_order,product_order.type_product_order,unit.price_unit FROM product_order INNER JOIN unit ON unit.idunit = product_order.idunit INNER JOIN product ON product.idproduct = unit.idproduct INNER JOIN factory ON factory.idfactory = product.idfactory WHERE product_order.idorder_p = {$id}";
+    $SQLCommand = "SELECT product_order.idproduct_order,product_order.idorder_p,product.name_product,unit.name_unit,factory.name_factory,factory.difference_amount_factory,product_order.amount_product_order,product_order.difference_product_order,product_order.type_product_order,unit.price_unit,product_order.status_checktransport FROM product_order INNER JOIN unit ON unit.idunit = product_order.idunit INNER JOIN product ON product.idproduct = unit.idproduct INNER JOIN factory ON factory.idfactory = product.idfactory WHERE product_order.idorder_p = {$id}";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute();
     //$resultArr = array();
@@ -264,6 +304,84 @@ function EditOrder($idorder, $code_order, $date_order, $time_order, $detail_orde
         return TRUE;
     } else {
         return false;
+    }
+}
+
+function edit_product_order($id) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT product_order.idproduct_order,factory.difference_amount_factory,factory.difference_amount_factory,unit.price_unit,unit.idproduct,unit.idunit,product_order.idorder_p,product.name_product,unit.name_unit,factory.name_factory,factory.difference_amount_factory,product_order.amount_product_order,product_order.difference_product_order,product_order.type_product_order,unit.price_unit,product_order.status_checktransport FROM product_order INNER JOIN unit ON unit.idunit = product_order.idunit INNER JOIN product ON product.idproduct = unit.idproduct INNER JOIN factory ON factory.idfactory = product.idfactory WHERE product_order.idproduct_order = :id";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":id" => $id
+            )
+    );
+    $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
+    return $result;
+}
+
+function EditProductOrder($idproduct_order, $idunit, $amount_product_order, $difference_product_order, $price_product_order) {
+    $conn = dbconnect();
+    //$date = str_replace('-', '/', $date_order);
+    //$Nextdate = date('Y-m-d', strtotime($date . "0 days"));
+    $SQLCommand = "UPDATE `product_order` SET idunit = :idunit,amount_product_order = :amount_product_order,difference_product_order= :difference_product_order,price_product_order = :price_product_order "
+            . "WHERE idproduct_order = :idproduct_order";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idproduct_order" => $idproduct_order,
+                ":idunit" => $idunit,
+                ":amount_product_order" => $amount_product_order,
+                ":difference_product_order" => $difference_product_order,
+                ":price_product_order" => $price_product_order
+            )
+    );
+    if ($SQLPrepare->rowCount() > 0) {
+        return TRUE;
+    } else {
+        return false;
+    }
+}
+
+function edit_unit($id) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT idunit,name_unit,price_unit,type_unit FROM unit WHERE idproduct = :id";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":id" => $id
+            )
+    );
+    $resultArr = array();
+    while ($result = $SQLPrepare->fetch(PDO::FETCH_ASSOC)) {
+        array_push($resultArr, $result);
+    }
+    return $resultArr;
+}
+
+function getProductOrder_del($id) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT product_order.idproduct_order,product_order.idorder_p,product.name_product,unit.name_unit,factory.name_factory,factory.difference_amount_factory,product_order.amount_product_order,product_order.difference_product_order,product_order.type_product_order,unit.price_unit,product_order.status_checktransport FROM product_order INNER JOIN unit ON unit.idunit = product_order.idunit INNER JOIN product ON product.idproduct = unit.idproduct INNER JOIN factory ON factory.idfactory = product.idfactory WHERE product_order.idproduct_order = {$id}";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute();
+    //$resultArr = array();
+    $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
+    return $result;
+}
+
+function deleteProductOrder($id) {
+    $conn = dbconnect();
+    $SQLCommand = "DELETE FROM product_order WHERE idproduct_order =:id";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":id" => $id
+            )
+    );
+    if ($SQLPrepare->rowCount() > 0) {
+        return TRUE;
+    } else {
+        return FALSE;
     }
 }
 
@@ -304,5 +422,19 @@ function deleteOrder($idorder) {
         return FALSE;
     }
 }
+
+//ajax
+function getFactory_ajax($id) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT idproduct,product.idfactory,factory.name_factory,name_product FROM `product` INNER JOIN factory ON product.idfactory = factory.idfactory WHERE idproduct = {$id} ORDER BY name_product";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute();
+    $resultArr = array();
+    while ($result = $SQLPrepare->fetch(PDO::FETCH_ASSOC)) {
+        array_push($resultArr, $result);
+    }
+    return $resultArr;
+}
+    
 
 ?>
