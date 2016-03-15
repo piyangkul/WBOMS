@@ -18,7 +18,7 @@
                 }
                 ?>
                 <div class="form-group col-xs-12">
-                    <label for="date_start">วันที่เริ่มต้น //ระบบกำหนดให้เลย</label>
+                    <label for="date_start">วันที่เริ่มต้น</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-calendar-o" ></i></span>
                         <input type="date" class="form-control" name="date_start" readonly value="<?php echo date("$val_NextStartPeriod"); ?>" >

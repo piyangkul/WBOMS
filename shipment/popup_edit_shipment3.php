@@ -3,9 +3,11 @@ require_once 'function/func_shipment.php';
 $idshipment_period = $_GET['idshipment_period'];
 $getShipment_period = getShipment_periodByID($idshipment_period);
 $val_date_start = $getShipment_period['date_start'];
-$change_date_start = date("d-m-Y", strtotime($val_date_start));
+$date_start = date_create($val_date_start);
+$date_start->add(new DateInterval('P543Y0M0DT0H0M0S'));
 $val_date_end = $getShipment_period['date_end'];
-$change_date_end = date("d-m-Y", strtotime($val_date_end));
+$date_end = date_create($val_date_end);
+$date_end->add(new DateInterval('P543Y0M0DT0H0M0S'));
 
 $idfactory = $_GET['idfactory'];
 $getFactory = getFactoryByID($idfactory);
@@ -19,6 +21,8 @@ $status_shipment_factory = $_GET['status_shipment'];
 $getShipmentDetailByID = getShipmentDetailByID($idorder_transport, $idshipment_period, $idfactory);
 $val_idtransport = $getShipmentDetailByID['idtransport'];
 $val_date_transport = $getShipmentDetailByID['date_transport'];
+$date_transport = date_create($val_date_transport);
+$date_transport->add(new DateInterval('P543Y0M0DT0H0M0S'));
 $val_name_transport = $getShipmentDetailByID['name_transport'];
 $val_volume = $getShipmentDetailByID['volume'];
 $val_number = $getShipmentDetailByID['number'];
@@ -126,6 +130,8 @@ $val_price_transport = $getShipmentDetailByID['price_transport'];
                                         $i++;
                                         $val_idproduct_order = $value['idproduct_order'];
                                         $val_date_order_p = $value['date_order_p'];
+                                        $date_order_p = date_create($val_date_order_p);
+                                        $date_order_p->add(new DateInterval('P543Y0M0DT0H0M0S'));
                                         $val_name_shop = $value['name_shop'];
                                         $val_name_product = $value['name_product'];
                                         $val_price_unit = $value['price_unit'];
@@ -136,13 +142,13 @@ $val_price_transport = $getShipmentDetailByID['price_transport'];
                                             <td><input type="checkbox" checked="true" name="check_shipment[]" id="check_shipment_<?php echo $i; ?>" value="<?php echo $val_idproduct_order; ?>" onclick="chkCount('<?php echo $i; ?>')">
                                                 <input id="check_shipment_hidden_<?php echo $i; ?>" type="hidden" value="<?php echo $val_idproduct_order; ?>" name="check_shipment_hidden[]">
                                             </td>
-                                            <td><?php echo $val_date_order_p; ?></td>
+                                            <td><?php echo date_format($date_order_p, 'd-m-Y'); ?></td>
                                             <td><?php echo $val_name_shop; ?></td>
                                             <td><?php echo $val_name_product; ?></td>
                                             <td><?php echo $val_price_unit; ?></td>
                                             <td><?php echo $val_amount_product_order . " " . $val_name_unit; ?></td>
                                         </tr>
-                                    <?php  } ?>
+                                    <?php } ?>
                                 </tbody>
                             </table>
 
@@ -249,22 +255,23 @@ function chkTransport() {
 //        } else {
 //            $cost2 = $val_price_unit - $val_difference_product_order;
 //        }
-//        ?>
+//        
+?>
         <tr>
-            <td>//<?php // echo $i; ?></td>
-            <td>//<?php // echo $val_name_product; ?></td>
-            <td>//<?php // echo $val_amount_product_order . " " . $val_name_unit; ?></td> จำนวน
-            <td class="text-right">//<?php // echo number_format($val_price_unit, 2, '.', ''); ?></td> ราคาเปิด
-            <td>//<?php // echo $val_difference_amount . "%"; ?></td> ต้นทุนลด                                      
-            <td class="text-right">//<?php // echo number_format($cost, 2, '.', '') ?></td> ราคาต้นทุน
-            <td>//<?php // echo $val_difference_product_order; ?><?php // echo ($val_type_product_order == "PERCENT") ? "%" : "฿"; ?></td>
-            <td>//<?php // echo $cost2; ?></td>  ราคาขาย 
-            <td>//<?php // echo $val_price_unit * $val_amount_product_order; ?></td>
-            <td>//<?php // echo $cost * $val_amount_product_order; ?></td>  ราคาต้นทุนรวม 
-            <td>//<?php // echo $cost2 * $val_amount_product_order; ?></td>  ราคาขายรวม 
-            //<?php // $sum_sale_transport = $sum_sale_transport + $cost2 * $val_amount_product_order; ?>
+            <td>//<?php // echo $i;  ?></td>
+            <td>//<?php // echo $val_name_product;  ?></td>
+            <td>//<?php // echo $val_amount_product_order . " " . $val_name_unit;  ?></td> จำนวน
+            <td class="text-right">//<?php // echo number_format($val_price_unit, 2, '.', '');  ?></td> ราคาเปิด
+            <td>//<?php // echo $val_difference_amount . "%";  ?></td> ต้นทุนลด                                      
+            <td class="text-right">//<?php // echo number_format($cost, 2, '.', '')  ?></td> ราคาต้นทุน
+            <td>//<?php // echo $val_difference_product_order;  ?><?php // echo ($val_type_product_order == "PERCENT") ? "%" : "฿";  ?></td>
+            <td>//<?php // echo $cost2;  ?></td>  ราคาขาย 
+            <td>//<?php // echo $val_price_unit * $val_amount_product_order;  ?></td>
+            <td>//<?php // echo $cost * $val_amount_product_order;  ?></td>  ราคาต้นทุนรวม 
+            <td>//<?php // echo $cost2 * $val_amount_product_order;  ?></td>  ราคาขายรวม 
+            //<?php // $sum_sale_transport = $sum_sale_transport + $cost2 * $val_amount_product_order;  ?>
         </tr>
-    //<?php // } ?>
+    //<?php // }  ?>
 </table>-->
 
 <!--<td><input type="checkbox" checked="true" name="check_shipment[]" id="check_shipment_<?php echo $i; ?>" value="<?php echo $val_idproduct_order; ?>" onclick="chkCount('<?php echo $i; ?>')"></td>-->

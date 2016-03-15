@@ -14,9 +14,11 @@ if (isset($_GET['idshipment_period'])) {
     $idshipment_period = $_GET['idshipment_period'];
     $getShipment_period = getShipment_periodByID($idshipment_period);
     $val_date_start = $getShipment_period['date_start'];
-    $change_date_start = date("d-m-Y", strtotime($val_date_start));
+    $date_start = date_create($val_date_start);
+    $date_start->add(new DateInterval('P543Y0M0DT0H0M0S'));
     $val_date_end = $getShipment_period['date_end'];
-    $change_date_end = date("d-m-Y", strtotime($val_date_end));
+    $date_end = date_create($val_date_end);
+    $date_end->add(new DateInterval('P543Y0M0DT0H0M0S'));
 }
 $idfactory = isset($_GET['idfactory']) ? $_GET['idfactory'] : ""; //ถ้าไม่มีค่าก็เป็นค่าว่างๆเลย
 $getFactoryByID = getFactoryByID($idfactory);
@@ -36,6 +38,9 @@ $val_name_factory = $getFactoryByID['name_factory'];
         <link href="../assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
         <!-- CUSTOM STYLES-->
         <link href="../assets/css/custom.css" rel="stylesheet" />
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+            <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+            <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
     </head>
     <body>
         <div id="wrapper">
@@ -60,7 +65,7 @@ $val_name_factory = $getFactoryByID['name_factory'];
                     <div class="row">
                         <div class="col-md-12">
                             <div>
-                                <center><h4 class="text text-info"><b>รอบการส่งที่</b> <?php echo $change_date_start; ?> ถึง <?php echo $change_date_end; ?></h4></center>
+                                <center><h4 class="text text-info"><b>รอบการส่งที่</b> <?php echo date_format($date_start, 'd-m-Y'); ?> ถึง <?php echo date_format($date_end, 'd-m-Y'); ?></h4></center>
                             </div>
                             <br/>
                             <span>
@@ -261,21 +266,21 @@ $val_name_factory = $getFactoryByID['name_factory'];
                                                                                             </html>
                                                                                             <div class="modal fade" id="myModal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                                                                                 <div class="modal-dialog">
-                                                                                                    <div class="modal-content modal-lg">
+                                                                                                    <div class="modal-content modal-lg ui-front">
                                                                                                         <!-- Content -->
                                                                                                     </div>
                                                                                                 </div>
                                                                                             </div>
                                                                                             <div class="modal fade" id="myModal-sm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                                                                                 <div class="modal-dialog">
-                                                                                                    <div class="modal-content modal-sm">
+                                                                                                    <div class="modal-content modal-sm ui-front">
                                                                                                         <!-- Content -->
                                                                                                     </div>
                                                                                                 </div>
                                                                                             </div>
                                                                                             <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                                                                                 <div class="modal-dialog">
-                                                                                                    <div class="modal-content">
+                                                                                                    <div class="modal-content ui-front">
                                                                                                         <!-- Content -->
                                                                                                     </div>
                                                                                                 </div>

@@ -46,7 +46,7 @@ $yesterday = date('Y-m-d', strtotime($date2 . "-2 days"));
 //                }
                 ?>
                 <div class="form-group col-xs-12">
-                    <label for="date_start">วันที่เริ่มต้น //ระบบกำหนดให้เลย</label>
+                    <label for="date_start">วันที่เริ่มต้น</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-calendar-o"  ></i></span>
                         <input type="date" class="form-control" name="date_start" value="<?php echo $val_date_start; ?>" readonly/>

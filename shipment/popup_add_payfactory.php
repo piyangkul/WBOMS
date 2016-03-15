@@ -6,8 +6,12 @@ if (isset($_GET['idshipment_period'])and isset($_GET['idfactory'])) {
     $idshipment_period = $_GET['idshipment_period'];
     $getShipment_period = getShipment_periodByID($idshipment_period);
     $val_date_start = $getShipment_period['date_start'];
+    $date_start = date_create($val_date_start);
+    $date_start->add(new DateInterval('P543Y0M0DT0H0M0S'));
     $change_date_start = date("d-m-Y", strtotime($val_date_start));
     $val_date_end = $getShipment_period['date_end'];
+    $date_end = date_create($val_date_end);
+    $date_end->add(new DateInterval('P543Y0M0DT0H0M0S'));
     $change_date_end = date("d-m-Y", strtotime($val_date_end));
 
     $idfactory = $_GET['idfactory'];
@@ -52,7 +56,6 @@ $price_product_refund_factory = 0;
         });
     });
 </script>
-<h4 class="alert alert-danger" role="alert">1.ทำautoCompleteไม่ได้</h4>
 <form class="form" action="action/action_addPayfactory.php?page=<?php echo $page; ?>&idshipment_period=<?php echo $idshipment_period; ?>&idfactory=<?php echo $idfactory; ?>&status_shipment=<?php echo $status_shipment_factory; ?>" method="post">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -62,7 +65,7 @@ $price_product_refund_factory = 0;
         <div class="col-md-12 col-sm-12 ">
             <div class="form-group col-xs-12">
                 <div class="form-group col-xs-12">
-                    <center><h4 class="text text-info"><b>รอบการส่งที่</b> <?php echo $change_date_start; ?> ถึง <?php echo $change_date_end; ?></h4></center>
+                    <center><h4 class="text text-info"><b>รอบการส่งที่</b> <?php echo date_format($date_start, 'd-m-Y'); ?> ถึง <?php echo date_format($date_end, 'd-m-Y'); ?></h4></center>
                     <center><h4 class="text text-info"><b>โรงงาน</b> <?php echo $val_name_factory; ?></h4></center>
                     <center><h4 class="text text-info"><b>ยอดเงินที่โรงงานเรียกเก็บ</b> <?php echo number_format($price, 2); ?> บาท</h4></center>
                 </div>
@@ -187,13 +190,13 @@ $price_product_refund_factory = 0;
                                         <input type="text" onclick="chkCredit_pay_factory()" class="form-control" id="cheque_number" name="cheque_number" onkeypress='return event.charCode >= 48 && event.charCode <= 57;' disabled>
                                     </label>
                                 </div>
-                                <div class="form-group input-group ui-front">
+                                <div class="form-group input-group">
                                     <label class="radio-inline">
                                         <label>ชื่อธนาคารของเช็ค</label>
                                         <input type="text" onclick="chkCredit_pay_factory()" class="form-control" autocomplete=on id="cheque_name_bank" name="cheque_name_bank" disabled>
                                     </label>
                                 </div>
-                                <div class="form-group input-group ui-front">
+                                <div class="form-group input-group">
                                     <label class="radio-inline">
                                         <label>สาขาธนาคารของเช็ค</label>
                                         <input type="text" onclick="chkCredit_pay_factory()" class="form-control" autocomplete=on id="cheque_branch_bank" name="cheque_branch_bank" disabled>

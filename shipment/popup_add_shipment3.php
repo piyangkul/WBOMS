@@ -115,6 +115,8 @@ $price = $_GET['price'];//ใช้ไม่ได้
                                         $i++;
                                         $val_idproduct_order = $value['idproduct_order'];
                                         $val_date_order_p = $value['date_order_p'];
+                                        $date_order_p = date_create($val_date_order_p);
+                                        $date_order_p->add(new DateInterval('P543Y0M0DT0H0M0S'));
                                         $val_name_shop = $value['name_shop'];
                                         $val_name_product = $value['name_product'];
                                         $val_price_unit = $value['price_unit'];
@@ -124,7 +126,7 @@ $price = $_GET['price'];//ใช้ไม่ได้
                                         ?>
                                         <tr>
                                             <td><input type="checkbox" name="check_shipment[]" id="check_shipment_<?php echo $i; ?>" value="<?php echo $val_idproduct_order; ?>" onclick="chkCount('<?php echo $i; ?>')"></td>
-                                            <td><?php echo $val_date_order_p; ?></td>
+                                            <td><?php echo date_format($date_order_p, 'd-m-Y'); ?></td>
                                             <td><?php echo $val_name_shop; ?></td>
                                             <td><?php echo $val_name_product; ?></td>
                                             <td><?php echo $val_price_unit; ?></td>

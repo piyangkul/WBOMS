@@ -99,25 +99,27 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                                 //print_r($var_arr_des_by_indxB);
                                                                 $getLastidShipment = getLastidShipment();
                                                                 $val_last_idshipment_period = $getLastidShipment['idshipment_period'];
-                                                                $num = sizeof($var_arr_des_by_indxB);//ลำดับของรอบ โดยหาขนาดของarray
+                                                                $num = sizeof($var_arr_des_by_indxB); //ลำดับของรอบ โดยหาขนาดของarray
                                                                 foreach ($var_arr_des_by_indxB as $value) {
                                                                     $val_last_idshipment_period;
                                                                     $val_idshipment_period = $value['idshipment_period'];
                                                                     $val_date_start = $value['date_start'];
-                                                                    $change_date_start = date("d-m-Y", strtotime($val_date_start));
+                                                                    $date_start = date_create($val_date_start);
+                                                                    $date_start->add(new DateInterval('P543Y0M0DT0H0M0S'));
                                                                     $val_date_end = $value['date_end'];
-                                                                    $change_date_end = date("d-m-Y", strtotime($val_date_end));
-                                                                    $count_notFinish = $value['count_notFinish']!=NULL?$value['count_notFinish']:"-";
+                                                                    $date_end = date_create($val_date_end);
+                                                                    $date_end->add(new DateInterval('P543Y0M0DT0H0M0S'));
+                                                                    $count_notFinish = $value['count_notFinish'] != NULL ? $value['count_notFinish'] : "-";
                                                                     $Total2 = $value['Total2'];
                                                                     ?>
                                                                     <?php // print_r(end($getShipment_period)['idshipment_period']) ; ?>
                                                                     <?php //print_r($var_arr_des_by_indxB) ; ?>
                                                                     <tr>
                                                                         <td><?php echo $num--; ?></td><!--ลำดับของรอบ-->
-                                                                        <td><?php echo $change_date_start; ?></td>
-                                                                        <td><?php echo $change_date_end; ?></td>
-<!--                                                                        <td><?php //echo $count_notFinish."/".$Total2; ?> </td>-->
-                                                                        <td><?php echo get_numFactory_notFinish($val_idshipment_period)."/".get_numAllFactory_shipment1($val_idshipment_period); ?> </td>
+                                                                        <td><?php echo date_format($date_start, 'd-m-Y'); ?></td>
+                                                                        <td><?php echo date_format($date_end, 'd-m-Y'); ?></td>
+    <!--                                                                        <td><?php //echo $count_notFinish."/".$Total2;   ?> </td>-->
+                                                                        <td><?php echo get_numFactory_notFinish($val_idshipment_period) . "/" . get_numAllFactory_shipment1($val_idshipment_period); ?> </td>
                                                                         <td align="left">
                                                                             <a href="shipment2.php?idshipment_period=<?php echo $val_idshipment_period; ?>" class="btn btn-success" title="รายละเอียด">
                                                                                 <span class="glyphicon glyphicon-list-alt"></span>
@@ -134,31 +136,30 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                                                 </a>
                                                                                 <?php if ($val_idshipment_period == end($getShipment_period)['idshipment_period']) { ?> <!-- เป็นรอบบนสุดไหม-->
                                                                                     <a href="action/action_delPeriod_shipment.php?idshipment_period=<?php echo $val_idshipment_period; ?>" onclick="if (!confirm('คุณต้องการลบรอบการส่งสินค้าหรือไม่')) {
-                                                                                                            return false;
-                                                                                                        }" class="btn btn-danger " title="ลบ">
+                                                                                                return false;
+                                                                                            }" class="btn btn-danger " title="ลบ">
                                                                                         <span class="glyphicon glyphicon-trash"></span>
                                                                                     </a>
                                                                                 <?php } ?>
                                                                             <?php } ?>
                                                                         </td>
                                                                     </tr>
-                                                                    <?php $val_last_idshipment_period--;
+                                                                    <?php
+                                                                    $val_last_idshipment_period--;
                                                                 }
                                                                 ?>
-
                                                                 <?php
                                                                 function subval_sort($a, $subkey, $sort_by) {
                                                                     foreach ($a as $k => $v) {
                                                                         $b[$k] = strtolower($v[$subkey]);
                                                                     }
-
                                                                     if ($sort_by == "ASC")
                                                                         asort($b);
                                                                     else if ($sort_by == "DES")
                                                                         arsort($b);
                                                                     else
                                                                         return false;
-
+                                                                    
                                                                     foreach ($b as $key => $val) {
                                                                         $c[] = $a[$key];
                                                                     }
@@ -189,19 +190,16 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                             <!-- DATA TABLE SCRIPTS -->
                                             <script src="../assets/js/dataTables/jquery.dataTables.js"></script>
                                             <script src="../assets/js/dataTables/dataTables.bootstrap.js"></script>
-
-
-
                                             <script>
-                                                                                        function getmonth() {
-                                                                                            var date_start = $("#date_start").val();
-                                                                                            var datearr_start = date_start.split("-");
-                                                                                            var date_end = $("#date_end").val();
-                                                                                            var datearr_end = date_end.split("-");
-                                                                                            //                    alert(datearr_start[1] + " " + datearr_end[1]);
-                                                                                            var optionhtml = '<option selected value="">Choose</option><option value="' + datearr_start[1] + '">' + datearr_start[1] + '</option><option value="' + datearr_end[1] + '">' + datearr_end[1] + '</option>';
-                                                                                            $("#monthly").html(optionhtml);
-                                                                                        }
+                                                                            function getmonth() {
+                                                                                var date_start = $("#date_start").val();
+                                                                                var datearr_start = date_start.split("-");
+                                                                                var date_end = $("#date_end").val();
+                                                                                var datearr_end = date_end.split("-");
+                                                                                //                    alert(datearr_start[1] + " " + datearr_end[1]);
+                                                                                var optionhtml = '<option selected value="">Choose</option><option value="' + datearr_start[1] + '">' + datearr_start[1] + '</option><option value="' + datearr_end[1] + '">' + datearr_end[1] + '</option>';
+                                                                                $("#monthly").html(optionhtml);
+                                                                            }
                                             </script>
                                             <script>
                                                 $(function () {

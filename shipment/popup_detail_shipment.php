@@ -21,6 +21,8 @@ $price = $_GET['price'];
 
 $getShipmentDetailByID = getShipmentDetailByID($idorder_transport, $idshipment_period, $idfactory);
 $val_date_transport = $getShipmentDetailByID['date_transport'];
+$date_transport = date_create($val_date_transport);
+$date_transport->add(new DateInterval('P543Y0M0DT0H0M0S'));
 $val_name_transport = $getShipmentDetailByID['name_transport'];
 $val_volume = $getShipmentDetailByID['volume'];
 $val_number = $getShipmentDetailByID['number'];
@@ -44,7 +46,7 @@ $val_price_transport = $getShipmentDetailByID['price_transport'];
                     <label for="date_transport">วันที่ส่งสินค้า</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-calendar-o"  ></i></span>
-                        <input type="date" class="form-control" name="date_transport" value="<?php echo $val_date_transport; ?>" disabled/>
+                        <input type="date" class="form-control" name="date_transport" value="<?php echo date_format($date_transport, 'Y-m-d'); ?>" disabled/>
                     </div>
                 </div>
                 <div class="form-group col-xs-12">
