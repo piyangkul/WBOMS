@@ -8,6 +8,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
     $p = $_GET['p'];
 }
 ?>
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta charset="utf-8" />
