@@ -6,9 +6,11 @@ require_once '../shipment/function/func_shipment.php';
 $idshipment_period = $_GET['idshipment_period'];
 $getShipment_period = getShipment_periodByID($idshipment_period);
 $val_date_start = $getShipment_period['date_start'];
-$change_date_start = date("d-m-Y", strtotime($val_date_start));
+$date_start = date_create($val_date_start);
+$date_start->add(new DateInterval('P543Y0M0DT0H0M0S'));
 $val_date_end = $getShipment_period['date_end'];
-$change_date_end = date("d-m-Y", strtotime($val_date_end));
+$date_end = date_create($val_date_end);
+$date_end->add(new DateInterval('P543Y0M0DT0H0M0S'));
 
 $idfactory = $_GET['idfactory'];
 $getFactory = getFactoryByID($idfactory);
@@ -28,7 +30,7 @@ $val_shipment_period_idshipment = $getPricePayFactory['shipment_period_idshipmen
             <div class="form-group col-xs-12">
                 <div class="form-group col-xs-12">
 
-                    <center><h4 class="text text-info"><b>รอบการส่งที่</b> <?php echo $change_date_start; ?> ถึง <?php echo $change_date_end; ?></h4></center>
+                    <center><h4 class="text text-info"><b>รอบการส่งที่</b> <?php echo date_format($date_start, 'd-m-Y'); ?> ถึง <?php echo date_format($date_end, 'd-m-Y'); ?></h4></center>
                     <center><h4 class="text text-info"><b>โรงงาน</b> <?php echo $val_name_factory; ?></h4></center>
                     <center><h4 class="text text-info"><b>ยอดเงินที่โรงงานเรียกเก็บ</b> <?php echo number_format($val_price_pay_factory, 2); ?> บาท</h4></center>
                 </div>
@@ -72,6 +74,8 @@ $val_shipment_period_idshipment = $getPricePayFactory['shipment_period_idshipmen
                                                 $val_idproduct_order = $value['idproduct_order'];
                                                 $val_idorder_transport = $value['idorder_transport'];
                                                 $val_date_order_p = $value['date_order_p'];
+                                                $date_order_p = date_create($val_date_order_p);
+                                                $date_order_p->add(new DateInterval('P543Y0M0DT0H0M0S'));
                                                 $val_name_shop = $value['name_shop'];
                                                 $val_name_product = $value['name_product'];
                                                 $val_price_unit = $value['price_unit'];
@@ -83,8 +87,10 @@ $val_shipment_period_idshipment = $getPricePayFactory['shipment_period_idshipmen
                                                 $val_idtransport = $value['idtransport'];
 
                                                 $val_date_transport = $value['date_transport'];
-                                                if ($val_date_transport == NULL) {
-                                                    $val_date_transport = "-";
+                                                $date_transport = date_create($val_date_transport);
+                                                $date_transport->add(new DateInterval('P543Y0M0DT0H0M0S'));
+                                                if ($date_transport == NULL) {
+                                                    $date_transport = "-";
                                                 }
                                                 $val_name_transport = $value['name_transport'];
                                                 if ($val_name_transport == NULL) {
@@ -108,14 +114,14 @@ $val_shipment_period_idshipment = $getPricePayFactory['shipment_period_idshipmen
                                                 ?>
                                                 <tr>
                                                     <td><?php echo $i; ?></td>
-                                                    <td><?php echo $val_date_order_p; ?></td>
+                                                    <td><?php echo date_format($date_order_p, 'd-m-Y'); ?></td>
                                                     <td><?php echo $val_name_shop; ?></td>
                                                     <td><?php echo $val_name_product; ?></td>
                                                     <td class="text-right"><?php echo $val_price_unit; ?></td>
                                                     <td><?php echo $val_difference_amount_product . "%"; ?></td>
                                                     <td class="text-right"><?php echo number_format($cost, 2); ?></td><!-- ราคาต้นทุน-->
                                                     <td><?php echo $val_amount_product_order . " " . $val_name_unit; ?></td>
-                                                    <td><?php echo $val_date_transport; ?></td>
+                                                    <td><?php echo date_format($date_transport, 'd-m-Y'); ?></td>
                                                     <td><?php echo $val_name_transport . "/" . $val_volume . "/" . $val_number; ?></td>
                                                     <td class="text-right"><?php echo number_format($val_price_transport, 2); ?></td>
                                                     <td class="text-right"><?php echo number_format($total, 2); ?></td>
@@ -124,7 +130,7 @@ $val_shipment_period_idshipment = $getPricePayFactory['shipment_period_idshipmen
                                             <?php } ?>
                                         </tbody>
                                     </table>
-                                    <?php $total_transport = $val_price_pay_factory - $sum_sale_transport;?>
+                                    <?php $total_transport = $val_price_pay_factory - $sum_sale_transport; ?>
                                 </div>
                                 <div class="col-md-8 col-md-offset-8">ยอดเงินรวมสินค้าที่สั่งซื้อ &nbsp;&nbsp; <b><?php echo number_format($sum_sale_transport, 2); ?></b> &nbsp;&nbsp; บาท </div>
                                 <div class="col-md-8 col-md-offset-8">ยอดเงินรวมค่าขนส่ง &nbsp;&nbsp; <b><?php echo number_format($total_transport, 2); ?></b> &nbsp;&nbsp; บาท </div>
@@ -140,15 +146,19 @@ $val_shipment_period_idshipment = $getPricePayFactory['shipment_period_idshipmen
                 $val_price_product_refund_factory = $getPayFactory['price_product_refund_factory'];
                 $val_real_price_pay_factory = $getPayFactory['real_price_pay_factory'];
                 $val_date_pay_factory = $getPayFactory['date_pay_factory'];
+                $date_pay_factory = date_create($val_date_pay_factory);
+                $date_pay_factory->add(new DateInterval('P543Y0M0DT0H0M0S'));
                 $val_type_pay_factory = $getPayFactory['type_pay_factory'];
                 $val_date_pay_factory_credit = $getPayFactory['date_pay_factory_credit'];
+                $date_pay_factory_credit = date_create($val_date_pay_factory_credit);
+                $date_pay_factory_credit->add(new DateInterval('P543Y0M0DT0H0M0S'));
                 $val_cheque_number = $getPayFactory['cheque_number'];
                 $val_cheque_name_bank = $getPayFactory['cheque_name_bank'];
                 $val_cheque_branch_bank = $getPayFactory['cheque_branch_bank'];
                 ?>
                 <div class="form-group col-xs-1"></div>
                 <div class="form-group col-xs-5">
-                    <center><h4>วันที่จ่ายเงินโรงงาน <input type="date" class="form-control" id="date_pay_factory" name="date_pay_factory" value="<?php echo $val_date_pay_factory; ?>" readonly></h4></center>
+                    <center><h4>วันที่จ่ายเงินโรงงาน <input type="date" class="form-control" id="date_pay_factory" name="date_pay_factory" value="<?php echo date_format($date_pay_factory, 'Y-m-d'); ?>" readonly></h4></center>
                 </div>
 
                 <div class = "form-group col-md-4"></div>
@@ -168,7 +178,7 @@ $val_shipment_period_idshipment = $getPricePayFactory['shipment_period_idshipmen
                                     <div class="form-group input-group">
                                         <label class="radio-inline">
                                             <input type="radio" onclick="chkCredit_pay_factory()" name="type_pay_factory" id="credit" value="credit" disabled> <label>เช็ค</label>
-                                            <input type="date" class="form-control" id="date_pay_factory_credit" name="date_pay_factory_credit" value="<?php echo $val_date_pay_factory_credit; ?>" disabled>
+                                            <input type="date" class="form-control" id="date_pay_factory_credit" name="date_pay_factory_credit" value="<?php echo date_format($date_pay_factory_credit, 'Y-m-d'); ?>" disabled>
                                         </label>
                                     </div>
                                     <div class="form-group input-group">
@@ -198,7 +208,7 @@ $val_shipment_period_idshipment = $getPricePayFactory['shipment_period_idshipmen
                                     <div class="form-group input-group">
                                         <label class="radio-inline">
                                             <input type="radio" onclick="chkCredit_pay_factory()" name="type_pay_factory" id="credit" value="credit" checked disabled> <label>เช็ค</label>
-                                            <input type="date" class="form-control" id="date_pay_factory_credit" name="date_pay_factory_credit" value="<?php echo $val_date_pay_factory_credit; ?>" disabled>
+                                            <input type="date" class="form-control" id="date_pay_factory_credit" name="date_pay_factory_credit" value="<?php echo date_format($date_pay_factory_credit, 'Y-m-d'); ?>" disabled>
                                         </label>
                                     </div>
                                     <div class="form-group input-group">

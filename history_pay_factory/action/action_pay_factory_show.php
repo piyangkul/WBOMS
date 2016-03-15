@@ -25,16 +25,22 @@ require_once dirname(__FILE__) . '/../function/func_history_pay_factory.php';
         $i++;
         $val_shipment_period_idshipment = $value['shipment_period_idshipment'];
         $val_date_start = $value['date_start'];
+        $date_start = date_create($val_date_start);
+        $date_start->add(new DateInterval('P543Y0M0DT0H0M0S'));
         $val_date_end = $value['date_end'];
+        $date_end = date_create($val_date_end);
+        $date_end->add(new DateInterval('P543Y0M0DT0H0M0S'));
         $val_date_pay_factory = $value['date_pay_factory'];
+        $date_pay_factory = date_create($val_date_pay_factory);
+        $date_pay_factory->add(new DateInterval('P543Y0M0DT0H0M0S'));
         $val_price_pay_factory = $value['price_pay_factory'];
         $val_price_product_refund_factory = $value['price_product_refund_factory'];
         $val_real_price_pay_factory = $value['real_price_pay_factory'];
         ?>
         <tr>
-            <td><?php echo $val_date_start; ?></td>
-            <td><?php echo $val_date_end; ?></td>
-            <td><?php echo $val_date_pay_factory; ?></td>
+            <td><?php echo date_format($date_start, 'd-m-Y'); ?></td>
+            <td><?php echo date_format($date_end, 'd-m-Y'); ?></td>
+            <td><?php echo date_format($date_pay_factory, 'd-m-Y'); ?></td>
             <td class="text-right">
                 <?php echo "<a href='popup_price_payfactory.php?idshipment_period=$val_shipment_period_idshipment&idfactory=$idfactory' data-toggle='modal' data-target='#myModal-lg'> " . number_format($val_price_pay_factory, 2) . " </a>"; ?>
             </td>
