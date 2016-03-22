@@ -236,6 +236,9 @@ $price_product_refund_factory = 0;
     function chkdateCredit() {
         if ($('#credit').is(':checked')) {
             document.getElementById("date_pay_factory_credit").required = true;
+            document.getElementById("cheque_number").required = true;
+            document.getElementById("cheque_name_bank").required = true;
+            document.getElementById("cheque_branch_bank").required = true;
             // document.getElementById("cheque_number").required = true;
         } else {
             document.getElementById("date_pay_factory_credit").required = false;
