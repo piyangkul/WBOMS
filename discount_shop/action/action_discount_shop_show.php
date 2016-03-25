@@ -32,17 +32,19 @@ require_once dirname(__FILE__) . '/../function/func_discount_shop.php';
             $cost = $val_price_unit - $val_price_difference;
         }
         $val_date_difference = $value['date_difference'];
-        $change_date_difference = date("d-m-Y", strtotime($val_date_difference));
+//        $change_date_difference = date("d-m-Y", strtotime($val_date_difference));
+        $date_difference = date_create($val_date_difference);
+        $date_difference->add(new DateInterval('P543Y0M0DT0H0M0S'));
         ?>
         <tr>
             <td><?php echo $i; ?></td>
             <td><?php echo $val_shop_code; ?></td>
             <td><?php echo $val_name_shop; ?></td>
             <td><?php echo $val_price_difference; ?><?php echo ($val_type_money == "PERCENT") ? "%" : "฿"; ?></td>
-            <td><?php echo $cost; ?></td>
-            <td><?php echo $change_date_difference; ?></td>
+            <td class="text-right"><?php echo number_format($cost, 2); ?></td>
+            <td><?php echo date_format($date_difference, 'd-m-Y'); ?></td>
         </tr>
-<?php } ?> 
+    <?php } ?> 
 </tbody>
 </table>
 

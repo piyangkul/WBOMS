@@ -9,16 +9,6 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
     $p = $_GET['p'];
 }
 ?>
-<?php
-// ตอนส่งค่ากลับ
-if (isset($_GET['idproduct'])) {
-    $idshop = $_GET['idproduct'];
-//    $getShopsByID = getShopsByID($idshop);
-//    $val_shop_code = $getShopsByID['shop_code'];
-//    $val_name_shop = $getShopsByID['name_shop'];
-//    $data_search_shop = $val_name_shop . ' (' . $val_shop_code . ')';
-}
-?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
@@ -33,68 +23,6 @@ if (isset($_GET['idproduct'])) {
         <link href="../assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
         <!-- CUSTOM STYLES-->
         <link href="../assets/css/custom.css" rel="stylesheet" />
-        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" />
-        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-        <script>
-            var idproduct;
-            var data = JSON.stringify(<?php echo getProductByName_JSON(); ?>);//ดึงค่า
-            var Obj = JSON.parse(data);//Objตามจำนวนข้อมูล
-            //alert(Obj);
-            var Arr = new Array();
-            var JSON_productCode = new Array();
-            var JSON_productName = new Array();
-            var JSON_factoryName = new Array();
-            //pushข้อมูลลงArray
-            for (var i = 0; i < Obj.length; i++) {
-                //Arr.push(Obj[i].code_factory);
-                Arr.push("[" + Obj[i].product_code + "] " + Obj[i].name_product + " - "+ Obj[i].name_factory);
-                JSON_productCode["'" + Obj[i].product_code + "'"] = Obj[i].idproduct;
-                JSON_productName["'" + Obj[i].name_product + "'"] = Obj[i].idproduct;
-                JSON_factoryName["'" + Obj[i].name_factory + "'"] = Obj[i].idproduct;
-                console.log(JSON_productCode);
-                console.log(JSON_productName);
-                console.log(JSON_factoryName);
-            }
-
-            $(function () { // document ready
-                $("#searchProduct").autocomplete({
-                    source: Arr
-                });
-                // ตอนส่งค่ากลับ
-//                text_shop = "";
-//                text_shop = '<?php echo ((isset($data_search_shop) && $data_search_shop != "") ? $data_search_shop : ""); ?>';
-//                if (text_shop != "")
-//                {
-//                    shopNode = document.getElementById("searchProduct");
-//                    shopNode.value = text_shop;
-//                    shopNode.focus();
-//                    shopNode.blur();
-//                }
-
-            });
-
-            function getProductId(e) {
-                if ((e instanceof FocusEvent) || (e instanceof KeyboardEvent && e.keyCode === 13)) {
-                    var input = document.getElementById("searchProduct").value;
-                    //alert(input);
-                    firstParen = input.lastIndexOf("[");
-                    secondParen = input.lastIndexOf("]");
-                    input = input.substr(firstParen + 1, secondParen - firstParen - 1);
-                    //alert(input+ firstParen +","+ secondParen);
-                    if (JSON_productCode["'" + input + "'"] != null) {
-                        idproduct = JSON_productCode["'" + input + "'"];
-                    }
-                    else {
-                        idproduct = JSON_productName["'" + input + "'"];
-                    }
-                    console.log(idproduct);
-                    show_cost_product_table();
-                    show_discount_shop_table();
-                }
-                return false;
-            }
-        </script>
     </head>
     <body>
         <div id="wrapper">
@@ -113,20 +41,47 @@ if (isset($_GET['idproduct'])) {
                     </div>
                     <!-- /. ROW  -->
                     <hr />
-
+                    <span>
+                        <?php
+                        if (isset($_GET['action'])) {
+                            if ($_GET['action'] == "addCompleted") {
+                                echo '<center><h4 class="text-success">คุณได้ทำการเพิ่มสำเร็จแล้ว</h4></center>';
+                            } else if ($_GET['action'] == "addError") {
+                                echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถเพิ่มได้</h4></center>';
+                            } else if ($_GET['action'] == "editCompleted") {
+                                echo '<center><h4 class="text-success">คุณได้ทำการแก้ไขสำเร็จแล้ว</h4></center>';
+                            } else if ($_GET['action'] == "editError") {
+                                echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถแก้ไขได้</h4></center>';
+                            } else if ($_GET['action'] == "delCompleted") {
+                                echo '<center><h4 class="text-success">คุณได้ทำการลบสำเร็จแล้ว</h4></center>';
+                            } else if ($_GET['action'] == "delError") {
+                                echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถลบได้</h4></center>';
+                            }
+                        }
+                        ?>
+                    </span>
                     <!-- ค้นหา -->
                     <div class="row">
                         <div class="col-md-3"></div>                        
                         <div class="col-md-6 "> 
                             <div class="panel panel-default">
                                 <div class="panel-heading ">
-                                    <div class="table-responsive"> 
+                                    <div class="table-responsive">
                                         
                                         <div class="form-group">
                                             <label for="product_code">ค้นหารหัสหรือชื่อสินค้า</label>
                                             <div class="form-group input-group">
                                                 <span class="input-group-addon"><i class="fa fa-cube" ></i></span>
-                                                <input type="text" class="form-control" id="searchProduct" name="searchProduct" autocomplete=on placeholder="กรอกรหัสหรือชื่อสินค้า" onblur ="getProductId(event)" onkeypress="getProductId(event)" />
+                                                <input type="text" class="form-control" id="searchProduct" name="searchProduct" onkeyup="searchProduct()" placeholder="กรอกชื่อสินค้า" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="name_product">สินค้า</label>
+                                            <div class="form-group input-group">
+                                                <span class="input-group-addon"><i class="fa fa-cube" ></i></span>
+                                                <select class="form-control" id="idproduct" name="idproduct" onchange="show_cost_product_table()">
+                                                    <!--getProduct-->
+                                                </select>
                                             </div>
                                         </div>
                                         
@@ -147,7 +102,7 @@ if (isset($_GET['idproduct'])) {
                                 </div>
                                 <div class="panel-body">
                                     <div class="table-responsive" id="show_cost_product_table">
-                                        <!-- show_cost_product_table, action_cost_product_show -->
+                                        <!-- show_cost_product_table -->
                                     </div>
                                 </div>
                             </div>
@@ -165,7 +120,7 @@ if (isset($_GET['idproduct'])) {
                                 </div>
                                 <div class="panel-body">
                                     <div class="table-responsive" id="show_discount_shop_table">
-                                        <!-- show_discount_shop_table, action_discount_shop_show-->
+                                        <!-- show_discount_shop_table -->
                                     </div>
                                 </div>
                             </div>
@@ -181,7 +136,7 @@ if (isset($_GET['idproduct'])) {
         <!-- /. WRAPPER  -->
         <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
         <!-- JQUERY SCRIPTS -->
-        <!--<script src="../assets/js/jquery-1.10.2.js"></script>-->
+        <script src="../assets/js/jquery-1.10.2.js"></script>
         <!-- BOOTSTRAP SCRIPTS -->
         <script src="../assets/js/bootstrap.min.js"></script>
         <!-- METISMENU SCRIPTS -->
@@ -197,19 +152,30 @@ if (isset($_GET['idproduct'])) {
         <script>
             show_cost_product_table();
             function show_cost_product_table() {
-                $.get("action/action_cost_product_show.php?idproduct=" + idproduct, function (data, status) {//+"&id="+
+                var idproduct = $("#idproduct").val();
+                $.get("action/action_cost_product_show.php?idproduct=" + idproduct, function (data, status) {
                     $("#show_cost_product_table").html(data);
+                    show_discount_shop_table();
                 });
             }
-            
-            show_discount_shop_table();
+
+
             function show_discount_shop_table() {
-                $.get("action/action_discount_shop_show.php?idproduct=" + idproduct, function (data, status) {//+"&id="+
+                var idproduct = $("#idproduct").val();
+                $.get("action/action_discount_shop_show.php?idproduct=" + idproduct, function (data, status) {
                     $("#show_discount_shop_table").html(data);
                 });
             }
-        </script>
-        <script>
+            searchProduct();
+            function searchProduct() {
+                var searchProduct = $("#searchProduct").val();
+                $.get("discount_shop_search_product.php?searchProduct=" + searchProduct, function (data, status) {
+                    $("#idproduct").html(data);
+                    show_cost_product_table();
+                    show_discount_shop_table();
+                });
+            }
+
             $(function () {
                 $('[data-toggle="tooltip"]').tooltip();
             });

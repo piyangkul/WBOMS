@@ -31,10 +31,10 @@ $getCostProductByID = getCostProductByID($idproduct);
         $cost = $val_price_unit - (($val_difference_amount / 100.0) * $val_price_unit);
         ?>
         <tr>
-            <td>1<?php echo $val_name; ?></td>
-            <td class="text-right"><?php echo number_format($val_price_unit, 2, '.', ''); ?></td>
+            <td>1 <?php echo $val_name; ?></td>
+            <td class="text-right"><?php echo number_format($val_price_unit, 2); ?></td>
             <td><?php echo $val_difference_amount . "%"; ?></td>
-            <td class="text-right"><?php echo number_format($cost, 2, '.', '') ?></td>
+            <td class="text-right"><?php echo number_format($cost, 2) ?></td>
         </tr>
 
 </tbody>

@@ -49,3 +49,16 @@ function getProductByName($name_product) {
     }
     return $resultArr;
 }
+
+function getProductByName_JSON() {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT * FROM `view_product` WHERE `idunit_big` IS NULL ";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute();
+    $resultArr = array();
+    while ($result = $SQLPrepare->fetch(PDO::FETCH_ASSOC)) {
+        array_push($resultArr, $result);
+    }
+    return json_encode($resultArr); //, JSON_UNESCAPED_UNICODE);
+    //return "{}";
+}
