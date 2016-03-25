@@ -9,6 +9,15 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
     $p = $_GET['p'];
 }
 ?>
+<?php
+if (isset($_GET['idshop'])) {
+    $idshop = $_GET['idshop'];
+    $getShopsByID = getShopsByID($idshop);
+    $val_shop_code = $getShopsByID['shop_code'];
+    $val_name_shop = $getShopsByID['name_shop'];
+    $data_search_shop = $val_name_shop . ' (' . $val_shop_code . ')';
+}
+?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
@@ -43,10 +52,22 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                     console.log(JSON_shopCode);
                     console.log(JSON_shopName);
                 }
-                $(function () {
+
+                $(function () { // document ready
                     $("#shop").autocomplete({
                         source: Arr
                     });
+
+                    text_shop = "";
+                    text_shop = '<?php echo ((isset($data_search_shop) && $data_search_shop != "") ? $data_search_shop : ""); ?>';
+                    if (text_shop != "")
+                    {
+                        shopNode = document.getElementById("shop");
+                        shopNode.value = text_shop;
+                        shopNode.focus();
+                        shopNode.blur();
+                    }
+
                 });
 
                 function getShopId(e) {
@@ -87,7 +108,25 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                     </div>
                     <!-- /. ROW  -->
                     <hr />
-                    
+                    <span>
+                        <?php
+                        if (isset($_GET['action'])) {
+                            if ($_GET['action'] == "addPayshopCompleted") {
+                                echo '<center><h4 class="alert alert-success">คุณได้ทำการเพิ่มการเก็บเงินร้านค้าสำเร็จแล้ว</h4></center>';
+                            } else if ($_GET['action'] == "addPayshopError") {
+                                echo '<center><h4 class="alert alert-danger">ผิดพลาด!! ไม่สามารถเพิ่มการเก็บเงินร้านค้าได้</h4></center>';
+                            } else if ($_GET['action'] == "delPayshopCompleted") {
+                                echo '<center><h4 class="alert alert-success">คุณได้ทำการลบการเก็บเงินร้านค้าสำเร็จแล้ว</h4></center>';
+                            } else if ($_GET['action'] == "delPayshopError") {
+                                echo '<center><h4 class="alert alert-danger">ผิดพลาด!! ไม่สามารถลบการเก็บเงินร้านค้าได้</h4></center>';
+                            } else if ($_GET['action'] == "finishPayshopCompleted") {
+                                echo '<center><h4 class="alert alert-success">คุณได้ทำการเปลี่ยนสถานะเก็บเงินร้านค้าเป็นเสร็จสิ้นสำเร็จแล้ว</h4></center>';
+                            } else if ($_GET['action'] == "finishPayshopError") {
+                                echo '<center><h4 class="alert alert-danger">ผิดพลาด!! ไม่สามารถเปลี่ยนสถานะเก็บเงินร้านค้าเป็นเสร็จสิ้นได้</h4></center>';
+                            }
+                        }
+                        ?>
+                    </span>
                     <!-- ค้นหา -->
                     <div class="row">
                         <div class="col-md-3"></div>                        
@@ -108,8 +147,6 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                         </div>
                     </div>
                     <!--End ค้นหา -->
-                    <br/>
-                    <br/>
                     <!-- ข้อมูลการจ่ายเงินโรงงานรายเดือน-ปี -->
                     <div class="row">
                         <!--<div class="col-md-1"></div>-->                        
@@ -144,16 +181,16 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
         <!-- DATA TABLE SCRIPTS -->
         <script src="../assets/js/dataTables/jquery.dataTables.js"></script>
         <script src="../assets/js/dataTables/dataTables.bootstrap.js"></script>
+
         <script>
                                                     $(document).ready(function () {
-                                                        
                                                         $('#dataTables-example').dataTable();
                                                     });
         </script>
         <script>
             show_docket_table();
             function show_docket_table() {
-                $.get("action/action_docket_show.php?idshop=" + idshop, function (data, status) {
+                $.get("action/action_docket_show.php?idshop=" + idshop, function (data, status) {//+"&id="+
                     $("#show_docket_table").html(data);
                 });
             }
@@ -173,21 +210,21 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
 </html>
 <div class="modal fade" id="myModal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content modal-lg">
+        <div class="modal-content modal-lg ui-front">
             <!-- Content -->
         </div>
     </div>
 </div>
 <div class="modal fade" id="myModal-sm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content modal-sm">
+        <div class="modal-content modal-sm ui-front">
             <!-- Content -->
         </div>
     </div>
 </div>
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
+        <div class="modal-content ui-front">
             <!-- Content -->
         </div>
     </div>

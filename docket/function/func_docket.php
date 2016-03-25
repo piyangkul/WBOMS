@@ -4,7 +4,7 @@ require_once dirname(__FILE__) . '/../../config/connect.php';
 
 function getShopsJSON() {
     $conn = dbconnect();
-    $SQLCommand = "SELECT * FROM view_shop";
+    $SQLCommand = "SELECT * FROM view_shop ";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute();
     $resultArr = array();
@@ -15,22 +15,60 @@ function getShopsJSON() {
     //return "{}";
 }
 
-//action_docket_show
-function getPayByID($idshop) {
+function getShopsByID($idshop) {
     $conn = dbconnect();
-    $SQLCommand = "SELECT * FROM pay JOIN shipment_period ON shipment_period.idshipment_period=pay.idshipment_period WHERE pay.shop_idshop=:idshop ";
-
+    $SQLCommand = "SELECT * FROM view_shop WHERE idshop=:idshop";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
                 ":idshop" => $idshop
             )
     );
-    $resultArr = array();
-    while ($result = $SQLPrepare->fetch(PDO::FETCH_ASSOC)) {
-        array_push($resultArr, $result);
+    $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
+    return $result;
+}
+
+//action_docket_show
+function getPayByID($idshop) {
+    if ($idshop != "undefined") {
+
+        $conn = dbconnect();
+        $SQLCommand = "SELECT A.idshipment_period,A.date_start,A.date_end,pay.date_pay,pay.debt,pay.price_pay,pay.status_pay,pay.status_process FROM (SELECT shop.idshop,shipment_period.idshipment_period,shipment_period.date_start,shipment_period.date_end FROM shop,shipment_period) AS A left JOIN pay on A.idshop=pay.shop_idshop and A.idshipment_period=pay.idshipment_period where idshop=:idshop ";
+
+        $SQLPrepare = $conn->prepare($SQLCommand);
+        $SQLPrepare->execute(
+                array(
+                    ":idshop" => $idshop
+                )
+        );
+        $resultArr = array();
+        while ($result = $SQLPrepare->fetch(PDO::FETCH_ASSOC)) {
+            array_push($resultArr, $result);
+        }
+        return $resultArr;
+    } else {
+        return array();
     }
-    return $resultArr;
+}
+
+//action_finishPayshop อัพเดทสถานะการจ่ายเงินว่าเสร็จสิ้น
+function editStatus_finish_payShop($idshop, $idshipment_period) {
+    $conn = dbconnect();
+    $SQLCommand = "UPDATE `pay` SET `status_process`= 'finish' WHERE shop_idshop=:idshop AND idshipment_period=:idshipment_period ";
+
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idshop" => $idshop,
+                ":idshipment_period" => $idshipment_period
+            )
+    );
+
+    if ($SQLPrepare->rowCount() > 0) {
+        return TRUE;
+    } else {
+        return false;
+    }
 }
 
 //docket_paper แสดงสินค้า
@@ -50,6 +88,40 @@ function getProductDocketByID($idshop, $idshipment_period) {
         array_push($resultArr, $result);
     }
     return $resultArr;
+}
+
+//docket_paper แสดงสินค้าคืน ของรอบที่แล้ว
+function getProductRefundByID($idshop, $idshipment_period) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT * FROM order_product_refunds JOIN product_refunds ON order_product_refunds.idorder_product_refunds=product_refunds.order_product_refunds_idorder_product_refunds JOIN shop ON shop.idshop=order_product_refunds.shop_idshop JOIN product ON product.idproduct=product_refunds.product_idproduct JOIN unit ON unit.idproduct=product.idproduct JOIN difference ON difference.idproduct=product.idproduct JOIN factory ON product.idfactory=factory.idfactory "
+            . "WHERE shipment_period_idshipment_period=:idshipment_period AND difference.idshop=:idshop AND shop.idshop=:idshop AND product_refunds.idunit_product_refund=unit.idunit ";
+
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idshop" => $idshop,
+                ":idshipment_period" => $idshipment_period
+            )
+    );
+    $resultArr = array();
+    while ($result = $SQLPrepare->fetch(PDO::FETCH_ASSOC)) {
+        array_push($resultArr, $result);
+    }
+    return $resultArr;
+}
+
+//docket_paper ใช้หารอบเดือนที่แล้ว(สินค้าคืน)
+function getBeforeid($idshipment_period) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT * FROM `shipment_period` WHERE `idshipment_period`<:idshipment_period ORDER BY `idshipment_period` DESC LIMIT 1 ";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idshipment_period" => $idshipment_period
+            )
+    );
+    $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
+    return $result;
 }
 
 //docket_paper แสดงสินค้า mergeข้อมูลการขนส่งที่ส่งรอบเดียวกัน
@@ -73,10 +145,10 @@ function getProductDuplicateDocketByID($idshop, $idshipment_period, $name_transp
     return $count;
 }
 
-//popup_order_docket
-function getPayByID2($idshop,$idshipment_period) {
+//action_docket_show
+function getOrder_product_refundsByID($idshop, $idshipment_period) {
     $conn = dbconnect();
-    $SQLCommand = "SELECT * FROM `pay` WHERE `idshipment_period`=:idshipment_period AND `shop_idshop`=:idshop ";
+    $SQLCommand = "SELECT * FROM `order_product_refunds` WHERE `shop_idshop`=:idshop AND `shipment_period_idshipment_period`=:idshipment_period ";
 
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
@@ -87,4 +159,85 @@ function getPayByID2($idshop,$idshipment_period) {
     );
     $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
     return $result;
+}
+
+//ใช้หน้า action_addPayshop 
+function addPayshop($idshop, $idshipment_period, $price_order_total, $debt, $price_order_refund, $price_pay, $date_pay, $type_pay, $date_pay_credit, $status_pay, $cheque_number, $cheque_name_bank, $cheque_branch_bank, $status_process) {
+    $conn = dbconnect();
+    $SQLCommand = "INSERT INTO `pay`(`idshipment_period`, `shop_idshop`, `price_pay`, `price_order_total`, `price_order_refund`, `debt`, `date_pay`, `date_pay_credit`, `type_pay`, `status_pay`, `cheque_number`, `cheque_name_bank`, `cheque_branch_bank`, `status_process`) "
+            . "VALUES (:idshipment_period, :idshop, :price_pay, :price_order_total, :price_order_refund, :debt, :date_pay, :date_pay_credit,:type_pay ,:status_pay, :cheque_number, :cheque_name_bank, :cheque_branch_bank, :status_process) ";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idshop" => $idshop,
+                ":idshipment_period" => $idshipment_period,
+                ":price_order_total" => $price_order_total,
+                ":debt" => $debt,
+                ":price_order_refund" => $price_order_refund,
+                ":price_pay" => $price_pay,
+                ":date_pay" => $date_pay,
+                ":type_pay" => $type_pay,
+                ":date_pay_credit" => $date_pay_credit,
+                ":status_pay" => $status_pay,
+                ":cheque_number" => $cheque_number,
+                ":cheque_name_bank" => $cheque_name_bank,
+                ":cheque_branch_bank" => $cheque_branch_bank,
+                ":status_process" => $status_process
+            )
+    );
+    if ($SQLPrepare->rowCount() > 0) {
+        return $conn->lastInsertId();
+    } else {
+        echo $SQLCommand;
+        return false;
+    }
+}
+
+//autoComplete ชื่อกับสาขาธนาคาร popup_add_payshop
+function getBankShop() {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT * FROM `pay` ";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute();
+    $resultArr = array();
+    while ($result = $SQLPrepare->fetch(PDO::FETCH_ASSOC)) {
+        array_push($resultArr, $result);
+    }
+    return json_encode($resultArr); //, JSON_UNESCAPED_UNICODE);
+    //return "{}";
+}
+
+//popup_detail_payshop,action_docket_show
+function getPayDetailByID($idshop, $idshipment_period) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT * FROM `pay` JOIN shipment_period ON pay.idshipment_period=shipment_period.idshipment_period WHERE shipment_period.idshipment_period=:idshipment_period AND pay.shop_idshop=:idshop ";
+
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idshop" => $idshop,
+                ":idshipment_period" => $idshipment_period
+            )
+    );
+    $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
+    return $result;
+}
+
+//ใช้หน้า action_delPayshop
+function delPayshop($idshipment_period, $idshop) {
+    $conn = dbconnect();
+    $SQLCommand = "DELETE FROM `pay` WHERE `idshipment_period`=:idshipment_period AND `shop_idshop`=:idshop ";
+
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idshipment_period" => $idshipment_period,
+                ":idshop" => $idshop
+            )
+    );
+    if ($SQLPrepare->rowCount() > 0) {
+        return TRUE;
+    } else {
+        return false;
+    }
 }

@@ -7,9 +7,11 @@ require_once '../shipment/function/func_shipment.php';
 $idshipment_period = $_GET['idshipment_period'];
 $getShipment_period = getShipment_periodByID($idshipment_period);
 $val_date_start = $getShipment_period['date_start'];
-$change_date_start = date("d-m-Y", strtotime($val_date_start));
+$date_start = date_create($val_date_start);
+$date_start->add(new DateInterval('P543Y0M0DT0H0M0S'));
 $val_date_end = $getShipment_period['date_end'];
-$change_date_end = date("d-m-Y", strtotime($val_date_end));
+$date_end = date_create($val_date_end);
+$date_end->add(new DateInterval('P543Y0M0DT0H0M0S'));
 
 $idshop = $_GET['idshop'];
 $getShop = getShopByID($idshop);
@@ -20,10 +22,8 @@ $val_tel_shop = $getShop['tel_shop'];
 if ($val_tel_shop == NULL) {
     $val_tel_shop = "-";
 }
-$getPayByID2 = getPayByID2($idshop,$idshipment_period);
-$val_price_order_total = $getPayByID2['price_order_total'];
 ?>
-<form class="form" action="action/action_#.php?idshipment_period=<?php echo $idshipment_period; ?>&idshop=<?php echo $idshop; ?>" method="post">
+<form class="form" >
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">ข้อมูลสินค้าที่สั่งซื้อ</h4>
@@ -32,9 +32,9 @@ $val_price_order_total = $getPayByID2['price_order_total'];
         <div class="col-md-12 col-sm-12 ">
             <div class="form-group col-xs-12">
                 <div class="form-group col-xs-12">
-                    <center><h4 class="text text-info"><b>รอบการส่งที่</b> <?php echo $change_date_start; ?> ถึง <?php echo $change_date_end; ?></h4></center>
-                    <center><h4 class="text text-info"><b>ร้าน : </b> <?php echo $val_name_shop; ?>&nbsp; &nbsp; &nbsp; ที่อยู่ : <?php echo $val_name_region; ?>  จ. <?php echo $val_name_province; ?> &nbsp; &nbsp; เบอร์โทรศัพท์ : <?php echo $val_tel_shop; ?></h4></center>
-                    <center><h4 class="text text-info"><b>ยอดเงินที่เรียกเก็บ</b> <?php echo number_format($val_price_order_total, 2); ?> บาท</h4></center>
+                    <center><h4 class="text text-info"><b>รอบการส่งที่</b> <?php echo date_format($date_start, 'd-m-Y'); ?> ถึง <?php echo date_format($date_end, 'd-m-Y'); ?></h4></center>
+                    <center><h4 class="text text-info"><b>ร้าน : </b> <?php echo $val_name_shop; ?>&nbsp; &nbsp; &nbsp; <b>ที่อยู่ : </b><?php echo $val_name_region; ?>  จ. <?php echo $val_name_province; ?> &nbsp; &nbsp; <b>เบอร์โทรศัพท์ : </b><?php echo $val_tel_shop; ?></h4></center>
+                    <center><h4 class="text text-info" id="price_order_total2"></h4></center>
                 </div>
                 <div class = "row">
                     <!--<div class = "col-md-1 col-sm-1 "></div>-->
@@ -53,8 +53,8 @@ $val_price_order_total = $getPayByID2['price_order_total'];
                                         <th rowspan="2"><div align="center">โรงงาน</div></th>
                                         <th rowspan="2"><div align="center">ชื่อสินค้า</div></th>
                                         <th rowspan="2"><div align="center">จำนวน</div></th> 
-                                        <th rowspan="2"><div align="center">ราคาขาย/หน่วย</div></th>
-                                        <th rowspan="2"><div align="center">ราคาขาย</div></th>
+                                        <th rowspan="2"><div align="center">ราคา/หน่วย</div></th>
+                                        <th rowspan="2"><div align="center">ราคา</div></th>
                                         </tr>
 
                                         <tr>
@@ -80,6 +80,8 @@ $val_price_order_total = $getPayByID2['price_order_total'];
                                                 $val_amount_product_order = $value['amount_product_order'];
                                                 $val_name_unit = $value['name_unit'];
                                                 $val_date_transport = $value['date_transport'];
+                                                $date_transport = date_create($val_date_transport);
+                                                $date_transport->add(new DateInterval('P543Y0M0DT0H0M0S'));
                                                 $val_name_transport = $value['name_transport'];
                                                 $val_volume = $value['volume'];
                                                 if ($val_volume == NULL) {
@@ -105,7 +107,7 @@ $val_price_order_total = $getPayByID2['price_order_total'];
                                                     $test = getProductDuplicateDocketByID($idshop, $idshipment_period, $val_name_transport, $val_number, $val_volume, $val_idfactory);
                                                     if ($test > 1) {
                                                         if ($n == 0) {
-                                                            echo "<td style=\"vertical-align:middle\" " . "rowspan=" . '"' . $test . '" >' . $val_date_transport . '</td>';
+                                                            echo "<td style=\"vertical-align:middle\" " . "rowspan=" . '"' . $test . '" >' . date_format($date_transport, 'd-m-Y') . '</td>';
                                                             echo "<td style=\"vertical-align:middle\" " . "rowspan=" . '"' . $test . '" >' . $val_name_transport . "/" . $val_volume . "/" . $val_number . '</td>';
                                                             echo "<td class=\"text-right\" style=\"vertical-align:middle\" " . "rowspan=" . '"' . $test . '" valign="middle">' . number_format($val_price_transport, 2) . '</td>';
                                                             $sum_price_transport = $sum_price_transport + $val_price_transport;
@@ -116,7 +118,7 @@ $val_price_order_total = $getPayByID2['price_order_total'];
                                                         }
                                                     } else {
                                                         ?>
-                                                        <td><?php echo $val_date_transport; ?></td>
+                                                        <td><?php echo date_format($date_transport, 'd-m-Y'); ?></td>
                                                         <td><?php echo $val_name_transport . "/" . $val_volume . "/" . $val_number; ?></td>
                                                         <td class="text-right"><?php echo number_format($val_price_transport, 2); ?></td>
                                                         <?php
@@ -129,20 +131,22 @@ $val_price_order_total = $getPayByID2['price_order_total'];
                                                     <td class="text-right"><?php echo number_format($cost, 2); ?></td>
                                                     <td class="text-right"><?php echo number_format($sale, 2); ?></td>
                                                     <?php $sum_cost = $sum_cost + $sale; ?>
+                                                    <?php $price_order_total = $sum_cost + $sum_price_transport; ?>
                                                 </tr>
                                             <?php } ?>
                                         </tbody>
                                     </table>
-                                    <div align="right">ราคาขายรวม &nbsp;&nbsp; <b><?php echo number_format($sum_cost, 2); ?></b> &nbsp;&nbsp; บาท </div>                                  
+                                    <div align="right">ยอดสั่งซื้อ &nbsp;&nbsp; <b><?php echo number_format($sum_cost, 2); ?></b> &nbsp;&nbsp; บาท </div>                                  
                                     <div align="right">ค่าส่งรวม &nbsp;&nbsp; <b><?php echo number_format($sum_price_transport, 2); ?></b> &nbsp;&nbsp; บาท </div>
-                                    <div align="right">ยอดเงินเรียกเก็บสุทธิ &nbsp;&nbsp; <b><?php echo number_format($sum_cost + $sum_price_transport, 2); ?></b> &nbsp;&nbsp; บาท </div>
+                                    <div class="text-danger" align="right">ยอดสั่งซื้อรวม &nbsp;&nbsp; <b><?php echo number_format($sum_cost + $sum_price_transport, 2); ?></b> &nbsp;&nbsp; บาท </div>
+                                    <input type="hidden" id="price_order_total"  value="<?php echo number_format($price_order_total, 2); ?>" >                                 
                                 </div>                               
                             </div>
 
                         </div>
                     </div>
                 </div>
-                
+
             </div>
         </div>
     </div>
@@ -150,4 +154,15 @@ $val_price_order_total = $getPayByID2['price_order_total'];
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
     </div>
 </form>
+<script>
+    $(document).ready(function () {
+
+        var price_order_total = document.getElementById("price_order_total").value;
+        var a = ("ยอดสั่งซื้อรวม ").bold();
+        var b = (" บาท").bold();
+        document.getElementById("price_order_total2").innerHTML = a+price_order_total+b;
+        
+    });
+</script>
+
 <!--<h4 class="alert alert-danger" role="alert">1.ทำautoCompleteไม่ได้</h4>-->
