@@ -32,64 +32,64 @@ if (isset($_GET['idshop'])) {
         <link href="../assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
         <!-- CUSTOM STYLES-->
         <link href="../assets/css/custom.css" rel="stylesheet" />
-        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-            <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-            <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-            <script>
-                var idshop;
-                var data = JSON.stringify(<?php echo getShopsJSON(); ?>);//ดึงค่า
-                var Obj = JSON.parse(data);//Objตามจำนวนข้อมูล
-                //alert(Obj);
-                var Arr = new Array();
-                var JSON_shopCode = new Array();
-                var JSON_shopName = new Array();
-                //pushข้อมูลลงArray
-                for (var i = 0; i < Obj.length; i++) {
-                    //Arr.push(Obj[i].code_factory);
-                    Arr.push(Obj[i].name_shop + " (" + Obj[i].shop_code + ")");
-                    JSON_shopCode["'" + Obj[i].shop_code + "'"] = Obj[i].idshop;
-                    JSON_shopName["'" + Obj[i].name_shop + "'"] = Obj[i].idshop;
-                    console.log(JSON_shopCode);
-                    console.log(JSON_shopName);
-                }
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" />
+        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        <script>
+            var idshop;
+            var data = JSON.stringify(<?php echo getShopsJSON(); ?>);//ดึงค่า
+            var Obj = JSON.parse(data);//Objตามจำนวนข้อมูล
+            //alert(Obj);
+            var Arr = new Array();
+            var JSON_shopCode = new Array();
+            var JSON_shopName = new Array();
+            //pushข้อมูลลงArray
+            for (var i = 0; i < Obj.length; i++) {
+                //Arr.push(Obj[i].code_factory);
+                Arr.push(Obj[i].name_shop + " (" + Obj[i].shop_code + ")");
+                JSON_shopCode["'" + Obj[i].shop_code + "'"] = Obj[i].idshop;
+                JSON_shopName["'" + Obj[i].name_shop + "'"] = Obj[i].idshop;
+                console.log(JSON_shopCode);
+                console.log(JSON_shopName);
+            }
 
-                $(function () { // document ready
-                    $("#shop").autocomplete({
-                        source: Arr
-                    });
-
-                    text_shop = "";
-                    text_shop = '<?php echo ((isset($data_search_shop) && $data_search_shop != "") ? $data_search_shop : ""); ?>';
-                    if (text_shop != "")
-                    {
-                        shopNode = document.getElementById("shop");
-                        shopNode.value = text_shop;
-                        shopNode.focus();
-                        shopNode.blur();
-                    }
-
+            $(function () { // document ready
+                $("#shop").autocomplete({
+                    source: Arr
                 });
 
-                function getShopId(e) {
-                    if ((e instanceof FocusEvent) || (e instanceof KeyboardEvent && e.keyCode === 13)) {
-                        var input = document.getElementById("shop").value;
-                        //alert(input);
-                        firstParen = input.lastIndexOf("(");
-                        secondParen = input.lastIndexOf(")");
-                        input = input.substr(firstParen + 1, secondParen - firstParen - 1);
-                        //alert(input+ firstParen +","+ secondParen);
-                        if (JSON_shopCode["'" + input + "'"] != null) {
-                            idshop = JSON_shopCode["'" + input + "'"];
-                        }
-                        else {
-                            idshop = JSON_shopName["'" + input + "'"];
-                        }
-                        console.log(idshop);
-                        show_docket_table();
-                    }
-                    return false;
+                text_shop = "";
+                text_shop = '<?php echo ((isset($data_search_shop) && $data_search_shop != "") ? $data_search_shop : ""); ?>';
+                if (text_shop != "")
+                {
+                    shopNode = document.getElementById("shop");
+                    shopNode.value = text_shop;
+                    shopNode.focus();
+                    shopNode.blur();
                 }
-            </script>
+
+            });
+
+            function getShopId(e) {
+                if ((e instanceof FocusEvent) || (e instanceof KeyboardEvent && e.keyCode === 13)) {
+                    var input = document.getElementById("shop").value;
+                    //alert(input);
+                    firstParen = input.lastIndexOf("(");
+                    secondParen = input.lastIndexOf(")");
+                    input = input.substr(firstParen + 1, secondParen - firstParen - 1);
+                    //alert(input+ firstParen +","+ secondParen);
+                    if (JSON_shopCode["'" + input + "'"] != null) {
+                        idshop = JSON_shopCode["'" + input + "'"];
+                    }
+                    else {
+                        idshop = JSON_shopName["'" + input + "'"];
+                    }
+                    console.log(idshop);
+                    show_docket_table();
+                }
+                return false;
+            }
+        </script>
     </head>
     <body>
         <div id="wrapper">
