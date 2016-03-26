@@ -143,7 +143,7 @@ require_once dirname(__FILE__) . '/../function/func_docket.php';
             <td class="text-right"><!-- ยอดที่เก็บได้ -->
                 <?php echo number_format($val_price_pay - $val_debt, 2); ?>
             </td>
-            <td class="text-right"><!-- ยอดหนี้(รอบปัจจุบัน)-->
+            <td class="text-right" style="color: red"><!-- ยอดหนี้(รอบปัจจุบัน)-->
                 <?php echo number_format(-1 * $val_debt, 2); ?>
             </td>
             <td><?php echo $val_status_pay; ?></td>
