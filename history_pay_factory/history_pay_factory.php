@@ -109,7 +109,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                         <div class="form-group">
                                             <label for="name_factory">ค้นหารหัสหรือชื่อโรงงาน</label>
                                             <div class="form-group input-group">
-                                                <span class="input-group-addon"><i class="fa fa-cube" ></i></span>
+                                                <span class="input-group-addon"><i class="fa fa-building-o" ></i></span>
                                                 <input type="text" class="form-control" id="code_order" autocomplete=on name="code_order" placeholder="กรอกรหัสหรือชื่อโรงงาน" onblur ="getFactoryId(event)" onkeypress="getFactoryId(event)">
                                             </div>
 
@@ -133,7 +133,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                         <div class="col-md-10 ">
                             <div class="panel panel-primary">
                                 <div class="panel-heading">
-                                    <label>ข้อมูลการจ่ายเงินโรงงานรายเดือน-ปี</label>
+                                    <h4>ข้อมูลการจ่ายเงินโรงงานรายเดือน-ปี</h4>
                                 </div>
                                 <div class="panel-body">
                                     <div class="table-responsive" id="show_pay_factory_table">
