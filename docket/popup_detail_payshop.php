@@ -29,7 +29,7 @@ if (isset($_GET['idshipment_period'])and isset($_GET['idshop'])) {
     $sum_order = $_GET['sum_order'];
     $debt = $_GET['debt'];
     $price_product_refunds = $_GET['price_product_refunds'];
-    
+
 //    $getPayByID2 = getPayByID2($idshop, $idshipment_period);
 //    $val_price_order_total = $getPayByID2['price_pay'];
 
@@ -54,6 +54,12 @@ if (isset($_GET['idshipment_period'])and isset($_GET['idshop'])) {
     $val_cheque_number = $getPayDetailByID['cheque_number'];
     $val_cheque_name_bank = $getPayDetailByID['cheque_name_bank'];
     $val_cheque_branch_bank = $getPayDetailByID['cheque_branch_bank'];
+    $val_status_due = $getPayDetailByID['status_due'];
+    if ($val_status_due == "on") {
+        $val_status_due = "เช็คจ่ายตรงเวลา";
+    } else {
+        $val_status_due = "เช็คจ่ายเกินเวลา";
+    }
 
     $getPayDetailByID_before_idshipment_period = getPayDetailByID($idshop, $val_before_idshipment_period);
     $val_debt_before_shipment = $getPayDetailByID_before_idshipment_period['debt']; //ยอดค้างชำระ(รอบที่แล้ว)
@@ -212,7 +218,15 @@ if (isset($_GET['idshipment_period'])and isset($_GET['idshop'])) {
                                                 <input type="text" class="form-control" id="cheque_branch_bank" name="cheque_branch_bank" value="<?php echo $val_cheque_branch_bank; ?>" disabled>
                                             </label>
                                         </div>
-
+                                        <?php if ($val_status_due == "เช็คจ่ายตรงเวลา") { ?>
+                                            <div class="form-group alert alert-success text-center text-danger">
+                                                <h4><?php echo $val_status_due; ?> </h4>
+                                            </div>
+                                        <?php } else { ?>
+                                            <div class="form-group alert alert-danger text-center text-danger">
+                                                <h4><?php echo $val_status_due; ?> </h4>
+                                            </div>
+                                        <?php } ?>
                                     </div>
                                 <?php } ?>
                             <?php } ?>
@@ -287,6 +301,15 @@ if (isset($_GET['idshipment_period'])and isset($_GET['idshop'])) {
                                                     <input type="text" class="form-control" id="debt_lack" value="<?php echo number_format($val_debt, 2); ?>" disabled>
                                                 </label>
                                             </div>
+                                            <?php if ($val_status_due == "เช็คจ่ายตรงเวลา") { ?>
+                                                <div class="form-group alert alert-success text-center text-danger">
+                                                    <h4><?php echo $val_status_due; ?> </h4>
+                                                </div>
+                                            <?php } else { ?>
+                                                <div class="form-group alert alert-danger text-center text-danger">
+                                                    <h4><?php echo $val_status_due; ?> </h4>
+                                                </div>
+                                            <?php } ?>
                                         </div>
                                     <?php } ?>
                                 <?php } ?>

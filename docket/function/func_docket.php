@@ -162,10 +162,10 @@ function getOrder_product_refundsByID($idshop, $idshipment_period) {
 }
 
 //ใช้หน้า action_addPayshop 
-function addPayshop($idshop, $idshipment_period, $price_order_total, $debt, $price_order_refund, $price_pay, $date_pay, $type_pay, $date_pay_credit, $status_pay, $cheque_number, $cheque_name_bank, $cheque_branch_bank, $status_process) {
+function addPayshop($idshop, $idshipment_period, $price_order_total, $debt, $price_order_refund, $price_pay, $date_pay, $type_pay, $date_pay_credit, $status_pay, $cheque_number, $cheque_name_bank, $cheque_branch_bank, $status_process, $status_due) {
     $conn = dbconnect();
-    $SQLCommand = "INSERT INTO `pay`(`idshipment_period`, `shop_idshop`, `price_pay`, `price_order_total`, `price_order_refund`, `debt`, `date_pay`, `date_pay_credit`, `type_pay`, `status_pay`, `cheque_number`, `cheque_name_bank`, `cheque_branch_bank`, `status_process`) "
-            . "VALUES (:idshipment_period, :idshop, :price_pay, :price_order_total, :price_order_refund, :debt, :date_pay, :date_pay_credit,:type_pay ,:status_pay, :cheque_number, :cheque_name_bank, :cheque_branch_bank, :status_process) ";
+    $SQLCommand = "INSERT INTO `pay`(`idshipment_period`, `shop_idshop`, `price_pay`, `price_order_total`, `price_order_refund`, `debt`, `date_pay`, `date_pay_credit`, `type_pay`, `status_pay`, `cheque_number`, `cheque_name_bank`, `cheque_branch_bank`, `status_process`,`status_due`) "
+            . "VALUES (:idshipment_period, :idshop, :price_pay, :price_order_total, :price_order_refund, :debt, :date_pay, :date_pay_credit,:type_pay ,:status_pay, :cheque_number, :cheque_name_bank, :cheque_branch_bank, :status_process, :status_due) ";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
@@ -182,7 +182,8 @@ function addPayshop($idshop, $idshipment_period, $price_order_total, $debt, $pri
                 ":cheque_number" => $cheque_number,
                 ":cheque_name_bank" => $cheque_name_bank,
                 ":cheque_branch_bank" => $cheque_branch_bank,
-                ":status_process" => $status_process
+                ":status_process" => $status_process,
+                ":status_due" => $status_due
             )
     );
     if ($SQLPrepare->rowCount() > 0) {

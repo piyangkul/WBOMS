@@ -123,6 +123,8 @@ if (isset($_GET['idshop'])) {
                                 echo '<center><h4 class="alert alert-success">คุณได้ทำการเปลี่ยนสถานะเก็บเงินร้านค้าเป็นเสร็จสิ้นสำเร็จแล้ว</h4></center>';
                             } else if ($_GET['action'] == "finishPayshopError") {
                                 echo '<center><h4 class="alert alert-danger">ผิดพลาด!! ไม่สามารถเปลี่ยนสถานะเก็บเงินร้านค้าเป็นเสร็จสิ้นได้</h4></center>';
+                            } else if ($_GET['action'] == "addPayshop_shipment_Error") {
+                                echo '<center><h4 class="alert alert-danger">ผิดพลาด!! ไม่สามารถเปลี่ยนสถานะเก็บเงินร้านค้าเป็นเสร็จสิ้นได้ เนื่องจากวันที่เริ่มและสิ้นสุดไม่อยู่เดือนเดียวกัน</h4></center>';
                             }
                         }
                         ?>
@@ -137,7 +139,7 @@ if (isset($_GET['idshop'])) {
                                         <div class="form-group">
                                             <label for="name_shop">ค้นหารหัสหรือชื่อร้านค้า</label>
                                             <div class="form-group input-group">
-                                                <span class="input-group-addon"><i class="fa fa-cube" ></i></span>
+                                                <span class="input-group-addon"><i class="fa fa-shopping-cart" ></i></span>
                                                 <input type="text" class="form-control" id="shop" autocomplete=on name="shop" placeholder="กรอกรหัสหรือชื่อร้านค้า" onblur ="getShopId(event)" onkeypress="getShopId(event)">
                                             </div>
                                         </div>
@@ -153,7 +155,7 @@ if (isset($_GET['idshop'])) {
                         <div class="col-md-12 ">
                             <div class="panel panel-primary">
                                 <div class="panel-heading">
-                                    <label>ข้อมูลการเก็บเงินร้านค้ารายเดือน-ปี</label>
+                                    <h4>ข้อมูลการเก็บเงินร้านค้ารายเดือน-ปี</h4>
                                 </div>
                                 <div class="panel-body">
                                     <div class="table-responsive" id="show_docket_table">
