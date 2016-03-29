@@ -27,10 +27,13 @@
                 <a <?php if ($p == "shipment") echo 'class="active-menu"'; ?> href="../shipment/shipment1.php"><i class="fa fa-road fa-3x"></i> Shipment </a>
             </li>
             <li>
+                <a <?php if ($p == "product_refunds") echo 'class="active-menu"'; ?>  href="../interface_product_refunds/product_refunds.php"><span class="fa fa-folder-open-o fa-3x"></span> Product Refunds </a>
+            </li>
+            <li>
                 <a <?php if ($p == "docket") echo 'class="active-menu"'; ?> href="../docket/docket.php"><i class="fa fa-file-text-o fa-3x"></i> Shop Bill </a>
             </li>
             <li>
-                <a <?php if ($p == "history_pay_factory") echo 'class="active-menu"'; ?> href="../history_pay_factory/history_pay_factory.php"><i class="fa fa-folder-open-o fa-3x"></i> History Pay Factory </a>
+                <a <?php if ($p == "history_pay_factory") echo 'class="active-menu"'; ?> href="../history_pay_factory/history_pay_factory.php"><i class="fa fa-list-ol fa-3x"></i> History Pay Factory </a>
             </li>
             <li>
                 <a <?php if ($p == "stat_shop_bill") echo 'class="active-menu"'; ?> href="../stat_shop_bill/stat_shop_bill.php"><i class="fa fa-bar-chart fa-3x"></i> Statistic Shop Bill </a>
@@ -39,47 +42,44 @@
                 <a <?php if ($p == "stat") echo 'class="active-menu"'; ?> href="../stat/stat.php"><i class="fa fa-line-chart fa-3x"></i> Statistic Finance</a>
             </li>
             <li>
-                <a <?php if ($p == "product_refunds") echo 'class="active-menu"'; ?>  href="../interface_product_refunds/product_refunds.php"><span class="fa fa-folder-open-o fa-3x"></span> Product Refunds </a>
-            </li>
-            <li>
                 <a <?php if ($p == "membership") echo 'class="active-menu"'; ?> href="../membership/membership.php"><i class="fa fa-users fa-3x"></i> Membership </a>
             </li>
 
-<!--            <li class>
-                <a href="#">
-                    <i class="fa fa-sitemap fa-3x"></i> 
-                    "Multi-Level Dropdown"
-                    <span class="fa arrow"></span>
-                </a>
-                <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
-                    ::before
-                    <li>
-                        <a href="#">Second Level Link</a>
-                    </li>
-                    <li>
-                        <a href="#">Second Level Link</a>
-                    </li>
-                    <li>
-                        <a href="#">Second Level Link<span class="fa arrow"></span></a>
-                        <ul class="nav nav-third-level">
-                            <li>
-                                <a href="#">Third Level Link</a>
-                            </li>
-                            <li>
-                                <a href="#">Third Level Link</a>
-                            </li>
-                            <li>
-                                <a href="#">Third Level Link</a>
-                            </li>
-
-                        </ul>
-
-                    </li>
-                    ::after
-                </ul>
-            </li>-->
+            <!--            <li class>
+                            <a href="#">
+                                <i class="fa fa-sitemap fa-3x"></i> 
+                                "Multi-Level Dropdown"
+                                <span class="fa arrow"></span>
+                            </a>
+                            <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
+                                ::before
+                                <li>
+                                    <a href="#">Second Level Link</a>
+                                </li>
+                                <li>
+                                    <a href="#">Second Level Link</a>
+                                </li>
+                                <li>
+                                    <a href="#">Second Level Link<span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                        <li>
+                                            <a href="#">Third Level Link</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Third Level Link</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Third Level Link</a>
+                                        </li>
             
+                                    </ul>
             
+                                </li>
+                                ::after
+                            </ul>
+                        </li>-->
+
+
             <!--
             <li>
                 <a  href="#"><i class="fa fa-square-o fa-3x"></i> Blank Page</a>
