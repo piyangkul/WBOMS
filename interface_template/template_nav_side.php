@@ -27,10 +27,16 @@
                 <a <?php if ($p == "shipment") echo 'class="active-menu"'; ?> href="../shipment/shipment1.php"><i class="fa fa-road fa-3x"></i> Shipment </a>
             </li>
             <li>
-                <a <?php if ($p == "docket") echo 'class="active-menu"'; ?> href="../docket/docket.php"><i class="fa fa-file-text-o fa-3x"></i> Cover Page </a>
+                <a <?php if ($p == "docket") echo 'class="active-menu"'; ?> href="../docket/docket.php"><i class="fa fa-file-text-o fa-3x"></i> Shop Bill </a>
             </li>
             <li>
                 <a <?php if ($p == "history_pay_factory") echo 'class="active-menu"'; ?> href="../history_pay_factory/history_pay_factory.php"><i class="fa fa-folder-open-o fa-3x"></i> History Pay Factory </a>
+            </li>
+            <li>
+                <a <?php if ($p == "stat_shop_bill") echo 'class="active-menu"'; ?> href="../stat_shop_bill/stat_shop_bill.php"><i class="fa fa-bar-chart fa-3x"></i> Statistic Shop Bill </a>
+            </li>
+            <li>
+                <a <?php if ($p == "stat") echo 'class="active-menu"'; ?> href="../stat/stat.php"><i class="fa fa-line-chart fa-3x"></i> Statistic Finance</a>
             </li>
             <li>
                 <a <?php if ($p == "membership") echo 'class="active-menu"'; ?> href="../membership/membership.php"><i class="fa fa-users fa-3x"></i> Membership </a>
