@@ -39,6 +39,9 @@
                 <a <?php if ($p == "stat") echo 'class="active-menu"'; ?> href="../stat/stat.php"><i class="fa fa-line-chart fa-3x"></i> Statistic Finance</a>
             </li>
             <li>
+                <a <?php if ($p == "product_refunds") echo 'class="active-menu"'; ?>  href="../interface_product_refunds/product_refunds.php"><span class="fa fa-folder-open-o fa-3x"></span> Product Refunds </a>
+            </li>
+            <li>
                 <a <?php if ($p == "membership") echo 'class="active-menu"'; ?> href="../membership/membership.php"><i class="fa fa-users fa-3x"></i> Membership </a>
             </li>
 
