@@ -280,7 +280,7 @@ function getPriceFactoryByIDshipment_period($idshipment_period, $idfactory) {
 function getFactoryByIDshipment_period4($idshipment_period) {
     $conn = dbconnect();
     $SQLCommand = "SELECT * FROM (SELECT * FROM `view_getfactorybyidshipment_period` WHERE `idshipment_period` = :idshipment_period )AS A 
-RIGHT JOIN ((SELECT idfactory,name_factory FROM `view_getfactorybyidshipment_period` WHERE `idshipment_period` = :idshipment_period ) UNION (SELECT factory.idfactory,factory.name_factory FROM factory JOIN product ON factory.idfactory=product.idfactory JOIN unit ON unit.idproduct=product.idproduct JOIN product_order ON product_order.idunit=unit.idunit WHERE status_checktransport = 'uncheck' )) AS B ON A.idfactory = B.idfactory ";
+RIGHT JOIN ((SELECT idfactory,name_factory FROM `view_getfactorybyidshipment_period` WHERE `idshipment_period` = :idshipment_period ) UNION (SELECT factory.idfactory,factory.name_factory FROM factory JOIN product ON factory.idfactory=product.idfactory JOIN unit ON unit.idproduct=product.idproduct JOIN product_order ON product_order.idunit=unit.idunit WHERE status_checktransport = 'uncheck' )) AS B ON A.idfactory = B.idfactory ORDER BY A.idfactory ";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
@@ -413,7 +413,7 @@ function getShipmentByID($idfactory, $idshipment_period) {
             . "ON view_product_order_shipment.idproduct_order = view_transport_shipment.product_order_idproduct_order "
             . "WHERE view_product_order_shipment.idfactory = :idfactory "
             . "AND (view_transport_shipment.idshipment_period = :idshipment_period "
-            . "OR view_transport_shipment.idshipment_period IS NULL )";
+            . "OR view_transport_shipment.idshipment_period IS NULL ) ORDER BY date_order_p ";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(

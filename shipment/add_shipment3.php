@@ -153,8 +153,8 @@ if (isset($_GET['idshipment_period'])and isset($_GET['idfactory'])) {
                             <?php } ?>
                             <?php // if ($val_status_shipment == 'check_price') { ?> <!--สถานะรอการจ่ายเงินโรงงาน และ ไม่มีข้อมูลการจ่ายเงิน ($val_idpay_factory == NULL) -->
 <!--                                <a href="popup_add_payfactory.php?page=shipment3&idshipment_period=//<?php echo $idshipment_period; ?>&idfactory=<?php echo $idfactory; ?>&price=<?php echo $total_price; ?>" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal-lg">
-        <span class="fa fa-building-o"></span> เพิ่มข้อมูลการจ่ายเงินโรงงาน
-    </a>-->
+    <span class="fa fa-building-o"></span> เพิ่มข้อมูลการจ่ายเงินโรงงาน
+</a>-->
                             <?php // } ?>
                             <?php
                             $getShipmentsByID = getShipmentByID($idfactory, $idshipment_period);
@@ -162,6 +162,10 @@ if (isset($_GET['idshipment_period'])and isset($_GET['idfactory'])) {
                             foreach ($getShipmentsByID as $value) {
                                 $i++;
                                 $val_status_checktransport = $value['status_checktransport'];
+                                if ($val_status_checktransport == "uncheck") {
+                                    //echo $val_status_checktransport;
+                                    break;
+                                }
                                 ?>
                                 <?php //echo $val_status_checktransport; ?>
                             <?php } ?>
@@ -174,8 +178,8 @@ if (isset($_GET['idshipment_period'])and isset($_GET['idfactory'])) {
                                     <span class = "fa fa-building-o fa-lg"></span> ดูรายละเอียดการจ่ายโรงงาน
                                 </a>
                                 <a href="action/action_delPayfactory.php?page=shipment3&idshipment_period=<?php echo $idshipment_period; ?>&idfactory=<?php echo $idfactory; ?>&price=<?php echo $total_price; ?>&status_shipment=<?php echo $status_shipment_factory; ?>" onclick="if (!confirm('คุณต้องการลบการจ่ายเงินโรงงานหรือไม่')) {
-                                                return false;
-                                            }" class="btn btn-danger btn-lg" title="ลบการจ่ายเงินโรงงาน">
+                                            return false;
+                                        }" class="btn btn-danger btn-lg" title="ลบการจ่ายเงินโรงงาน">
                                     <span class = "fa fa-building-o"></span> ลบข้อมูลการจ่ายเงินโรงงาน
                                 </a>
                             <?php } elseif ($val_status_shipment == 'finish') { ?>
@@ -288,7 +292,7 @@ if (isset($_GET['idshipment_period'])and isset($_GET['idfactory'])) {
                                                                     } else {
                                                                         ?>
                                                                         <td><?php echo date_format($date_transport, 'd-m-Y'); ?></td>
-                                                                        <!--<td><?php //echo ($val_name_transport == "-" ? ($val_name_transport . "/" . $val_volume . "/" . $val_number) : ("<a href='popup_edit_shipment3.php?idshipment_period=$idshipment_period&idfactory=$idfactory&idorder_transport=$val_idorder_transport&idtransport=$val_idtransport' data-toggle='modal' data-target='#myModal'>$val_name_transport/$val_volume/$val_number </a>"));       ?></td>-->
+                                                                        <!--<td><?php //echo ($val_name_transport == "-" ? ($val_name_transport . "/" . $val_volume . "/" . $val_number) : ("<a href='popup_edit_shipment3.php?idshipment_period=$idshipment_period&idfactory=$idfactory&idorder_transport=$val_idorder_transport&idtransport=$val_idtransport' data-toggle='modal' data-target='#myModal'>$val_name_transport/$val_volume/$val_number </a>"));        ?></td>-->
                                                                         <td><?php
                                                                             if ($val_name_transport == "-") {
                                                                                 echo $val_name_transport . "/" . $val_volume . "/" . $val_number;
@@ -315,8 +319,8 @@ if (isset($_GET['idshipment_period'])and isset($_GET['idfactory'])) {
                                                                                 <span class="glyphicon glyphicon-edit"></span>
                                                                             </a>                                                 
                                                                             <a href="action/action_delProduct_order.php?idproduct_order=<?php echo $val_idproduct_order; ?>&idshipment_period=<?php echo $idshipment_period; ?>&idfactory=<?php echo $idfactory; ?>&price=<?php echo $total_price; ?>" onclick="if (!confirm('คุณต้องการลบรายการสินค้าหรือไม่')) {
-                                                                                                            return false;
-                                                                                                        }" class="btn btn-danger " title="ลบ">
+                                                                                        return false;
+                                                                                    }" class="btn btn-danger " title="ลบ">
                                                                                 <span class="glyphicon glyphicon-trash"></span>
                                                                             </a>
                                                                         <?php } ?>
@@ -354,7 +358,7 @@ if (isset($_GET['idshipment_period'])and isset($_GET['idfactory'])) {
 
 
                                                                     <td><?php echo date_format($date_transport, 'd-m-Y'); ?></td>
-                                                                    <!--<td><?php //echo ($val_name_transport == "-" ? ($val_name_transport . "/" . $val_volume . "/" . $val_number) : ("<a href='popup_edit_shipment3.php?idshipment_period=$idshipment_period&idfactory=$idfactory&idorder_transport=$val_idorder_transport&idtransport=$val_idtransport' data-toggle='modal' data-target='#myModal'>$val_name_transport/$val_volume/$val_number </a>"));       ?></td>-->
+                                                                    <!--<td><?php //echo ($val_name_transport == "-" ? ($val_name_transport . "/" . $val_volume . "/" . $val_number) : ("<a href='popup_edit_shipment3.php?idshipment_period=$idshipment_period&idfactory=$idfactory&idorder_transport=$val_idorder_transport&idtransport=$val_idtransport' data-toggle='modal' data-target='#myModal'>$val_name_transport/$val_volume/$val_number </a>"));        ?></td>-->
                                                                     <td><?php
                                                                         if ($val_name_transport == "-") {
                                                                             echo $val_name_transport . "/" . $val_volume . "/" . $val_number;
@@ -382,13 +386,13 @@ if (isset($_GET['idshipment_period'])and isset($_GET['idfactory'])) {
                                                                             <span class="glyphicon glyphicon-edit"></span>
                                                                         </a>
                                                                         <a href="action/action_delProduct_order.php?idproduct_order=<?php echo $val_idproduct_order; ?>&idshipment_period=<?php echo $idshipment_period; ?>&idfactory=<?php echo $idfactory; ?>&price=<?php echo $total_price; ?>&status_shipment=<?php echo $status_shipment_factory; ?>" onclick="if (!confirm('คุณต้องการลบรายการสินค้าหรือไม่')) {
-                                                                                                    return false;
-                                                                                                }" class="btn btn-danger " title="ลบ">
+                                                                                    return false;
+                                                                                }" class="btn btn-danger " title="ลบ">
                                                                             <span class="glyphicon glyphicon-trash"></span>
                                                                         </a>
                                                                         <a href="action/action_postponeProduct_order.php?idproduct_order=<?php echo $val_idproduct_order; ?>&idshipment_period=<?php echo $idshipment_period; ?>&idfactory=<?php echo $idfactory; ?>&price=<?php echo $total_price; ?>&status_shipment=<?php echo $status_shipment_factory; ?>" onclick="if (!confirm('คุณต้องการเลื่อนรายการสินค้าไปส่งในรอบถัดไปหรือไม่')) {
-                                                                                                    return false;
-                                                                                                }" class="btn btn-primary" title="เลื่อนรายการสินค้าไปรอบถัดไป">
+                                                                                    return false;
+                                                                                }" class="btn btn-primary" title="เลื่อนรายการสินค้าไปรอบถัดไป">
                                                                             <span class="glyphicon glyphicon-repeat"></span>
                                                                         </a>
                                                                     <?php } ?>
@@ -425,9 +429,9 @@ if (isset($_GET['idshipment_period'])and isset($_GET['idfactory'])) {
         <!-- METISMENU SCRIPTS -->
         <script src="../assets/js/jquery.metisMenu.js"></script>
         <script>
-                                                                            $(document.body).on('hidden.bs.modal', function () {
-                                                                                $('#myModal').removeData('bs.modal');
-                                                                            });
+                                                            $(document.body).on('hidden.bs.modal', function () {
+                                                                $('#myModal').removeData('bs.modal');
+                                                            });
         </script>
         <script>
             $(document.body).on('hidden.bs.modal', function () {
