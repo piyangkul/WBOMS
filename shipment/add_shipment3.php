@@ -153,7 +153,7 @@ if (isset($_GET['idshipment_period'])and isset($_GET['idfactory'])) {
                             <?php } ?>
                             <?php // if ($val_status_shipment == 'check_price') { ?> <!--สถานะรอการจ่ายเงินโรงงาน และ ไม่มีข้อมูลการจ่ายเงิน ($val_idpay_factory == NULL) -->
 <!--                                <a href="popup_add_payfactory.php?page=shipment3&idshipment_period=//<?php echo $idshipment_period; ?>&idfactory=<?php echo $idfactory; ?>&price=<?php echo $total_price; ?>" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal-lg">
-    <span class="fa fa-building-o"></span> เพิ่มข้อมูลการจ่ายเงินโรงงาน
+<span class="fa fa-building-o"></span> เพิ่มข้อมูลการจ่ายเงินโรงงาน
 </a>-->
                             <?php // } ?>
                             <?php
@@ -245,11 +245,13 @@ if (isset($_GET['idshipment_period'])and isset($_GET['idfactory'])) {
                                                     $val_idtransport = $value['idtransport'];
 
                                                     $val_date_transport = $value['date_transport'];
+                                                    echo $val_date_transport;
                                                     $date_transport = date_create($val_date_transport);
                                                     $date_transport->add(new DateInterval('P543Y0M0DT0H0M0S'));
                                                     if ($val_date_transport == NULL) {
-                                                        $val_date_transport = "-";
+                                                        $date_transport = "-";
                                                     }
+
 
                                                     $val_name_transport = $value['name_transport'];
                                                     if ($val_name_transport == NULL) {
@@ -292,7 +294,7 @@ if (isset($_GET['idshipment_period'])and isset($_GET['idfactory'])) {
                                                                     } else {
                                                                         ?>
                                                                         <td><?php echo date_format($date_transport, 'd-m-Y'); ?></td>
-                                                                        <!--<td><?php //echo ($val_name_transport == "-" ? ($val_name_transport . "/" . $val_volume . "/" . $val_number) : ("<a href='popup_edit_shipment3.php?idshipment_period=$idshipment_period&idfactory=$idfactory&idorder_transport=$val_idorder_transport&idtransport=$val_idtransport' data-toggle='modal' data-target='#myModal'>$val_name_transport/$val_volume/$val_number </a>"));        ?></td>-->
+                                                                        <!--<td><?php //echo ($val_name_transport == "-" ? ($val_name_transport . "/" . $val_volume . "/" . $val_number) : ("<a href='popup_edit_shipment3.php?idshipment_period=$idshipment_period&idfactory=$idfactory&idorder_transport=$val_idorder_transport&idtransport=$val_idtransport' data-toggle='modal' data-target='#myModal'>$val_name_transport/$val_volume/$val_number </a>"));             ?></td>-->
                                                                         <td><?php
                                                                             if ($val_name_transport == "-") {
                                                                                 echo $val_name_transport . "/" . $val_volume . "/" . $val_number;
@@ -356,9 +358,15 @@ if (isset($_GET['idshipment_period'])and isset($_GET['idfactory'])) {
                                                                     ?>
 
 
+                                                                    <td><?php
+                                                                        if ($val_date_transport == NULL) {
+                                                                            echo $date_transport = "-";
+                                                                        } else {
+                                                                            echo date_format($date_transport, 'd-m-Y');
+                                                                        }
+                                                                        ?></td>
 
-                                                                    <td><?php echo date_format($date_transport, 'd-m-Y'); ?></td>
-                                                                    <!--<td><?php //echo ($val_name_transport == "-" ? ($val_name_transport . "/" . $val_volume . "/" . $val_number) : ("<a href='popup_edit_shipment3.php?idshipment_period=$idshipment_period&idfactory=$idfactory&idorder_transport=$val_idorder_transport&idtransport=$val_idtransport' data-toggle='modal' data-target='#myModal'>$val_name_transport/$val_volume/$val_number </a>"));        ?></td>-->
+                                                                <!--<td><?php //echo ($val_name_transport == "-" ? ($val_name_transport . "/" . $val_volume . "/" . $val_number) : ("<a href='popup_edit_shipment3.php?idshipment_period=$idshipment_period&idfactory=$idfactory&idorder_transport=$val_idorder_transport&idtransport=$val_idtransport' data-toggle='modal' data-target='#myModal'>$val_name_transport/$val_volume/$val_number </a>"));            ?></td>-->
                                                                     <td><?php
                                                                         if ($val_name_transport == "-") {
                                                                             echo $val_name_transport . "/" . $val_volume . "/" . $val_number;
