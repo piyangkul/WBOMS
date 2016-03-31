@@ -103,7 +103,7 @@ if (isset($_GET['idshop'])) {
                     <div class="row">
                         <div class="col-md-12">
                             <h2> Shop Bill </h2>   
-                            <h5> การจัดการร้านค้า </h5>
+                            <h5> การเก็บเงินร้านค้า </h5>
                         </div>
                     </div>
                     <!-- /. ROW  -->

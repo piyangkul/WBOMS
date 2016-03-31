@@ -8,9 +8,9 @@ print_r($_GET);
 echo '</pre>';
 
 $idshipment_period = $_GET['idshipment_period'];
-$getShipment_period = getShipment_periodByID($idshipment_period);
-$val_date_start = $getShipment_period['date_start'];
-$val_date_end = $getShipment_period['date_end'];
+$getNextid = getNextid($idshipment_period);
+$val_date_start = $getNextid['date_start'];
+$val_date_end = $getNextid['date_end'];
 
 $idshop = $_GET['idshop'];
 //กลุ่มhidden
@@ -22,7 +22,7 @@ $date_pay = $_POST['date_pay']; //วันที่จ่ายเงิน
 $type_pay_get = $_POST['type_pay_get']; //ประเภทการจ่ายเงิน
 $type_pay_lack = $_POST['type_pay_lack'];
 if ($type_pay_get != NULL) {
-    $type_pay = $type_pay_get;
+    $type_pay = $type_pay_get; //cash,credit
 } else {
     $type_pay = $type_pay_lack;
 }
@@ -30,7 +30,7 @@ $date_pay_credit = $_POST['date_pay_credit']; //วันที่เช็ค
 $cheque_number = $_POST['cheque_number'];
 $cheque_name_bank = $_POST['cheque_name_bank'];
 $cheque_branch_bank = $_POST['cheque_branch_bank'];
-$status_pay = $_POST['status_pay'];
+$status_pay = $_POST['status_pay']; //get,lack,unget 
 
 $debt_lack = $_POST['debt_lack']; //ยอดเงินหนี้
 $debt_unget = $_POST['debt_unget'];
@@ -50,18 +50,70 @@ $month_end = date_format($date_end, 'm');
 
 $date_cheque = date_create($date_pay_credit);
 $month_cheque = date_format($date_cheque, 'm');
-//echo $month_cheque;
-
-if ($month_cheque == $month_end) {
-    $status_due = "on";
-    $Payshop = addPayshop($idshop, $idshipment_period, $price_order_total, $debt, $price_order_refund, $price_pay, $date_pay, $type_pay, $date_pay_credit, $status_pay, $cheque_number, $cheque_name_bank, $cheque_branch_bank, $status_process, $status_due);
-    if ($Payshop > 0) {
-        header("location: ../docket.php?idshop=$idshop&action=addPayshopCompleted");
-    } else {
-        header("location: ../docket.php?idshop=$idshop&action=addPayshopError");
+//echo $month_end;
+//if ($month_cheque > $month_end) {
+// $status_due = "over";
+// echo $status_due;
+//}
+// else {
+//    $status_due = "on";
+// echo $status_due;
+//}
+if ($status_pay == "get") {
+    if ($type_pay == "cash") {
+        $Payshop = addPayshop($idshop, $idshipment_period, $price_order_total, $debt, $price_order_refund, $price_pay, $date_pay, $type_pay, $date_pay_credit, $status_pay, $cheque_number, $cheque_name_bank, $cheque_branch_bank, $status_process, $status_due);
+        if ($Payshop > 0) {
+            header("location: ../docket.php?idshop=$idshop&action=addPayshopCompleted");
+        } else {
+            header("location: ../docket.php?idshop=$idshop&action=addPayshopError");
+        }
+    } elseif ($type_pay == "credit") {
+        if ($month_cheque > $month_end) {//3=2
+            $status_due = "over";
+            $Payshop = addPayshop($idshop, $idshipment_period, $price_order_total, $debt, $price_order_refund, $price_pay, $date_pay, $type_pay, $date_pay_credit, $status_pay, $cheque_number, $cheque_name_bank, $cheque_branch_bank, $status_process, $status_due);
+            if ($Payshop > 0) {
+                header("location: ../docket.php?idshop=$idshop&action=addPayshopCompleted");
+            } else {
+                header("location: ../docket.php?idshop=$idshop&action=addPayshopError");
+            }
+        } else {
+            $status_due = "on";
+            $Payshop = addPayshop($idshop, $idshipment_period, $price_order_total, $debt, $price_order_refund, $price_pay, $date_pay, $type_pay, $date_pay_credit, $status_pay, $cheque_number, $cheque_name_bank, $cheque_branch_bank, $status_process, $status_due);
+            if ($Payshop > 0) {
+                header("location: ../docket.php?idshop=$idshop&action=addPayshopCompleted");
+            } else {
+                header("location: ../docket.php?idshop=$idshop&action=addPayshopError");
+            }
+        }
     }
-} else {
-    $status_due = "over";
+} elseif ($status_pay == "lack") {
+    if ($type_pay == "cash") {
+        $Payshop = addPayshop($idshop, $idshipment_period, $price_order_total, $debt, $price_order_refund, $price_pay, $date_pay, $type_pay, $date_pay_credit, $status_pay, $cheque_number, $cheque_name_bank, $cheque_branch_bank, $status_process, $status_due);
+        if ($Payshop > 0) {
+            header("location: ../docket.php?idshop=$idshop&action=addPayshopCompleted");
+        } else {
+            header("location: ../docket.php?idshop=$idshop&action=addPayshopError");
+        }
+    } elseif ($type_pay == "credit") {
+        if ($month_cheque > $month_end) {//และไม่จ่ายสด 
+            $status_due = "over";
+            $Payshop = addPayshop($idshop, $idshipment_period, $price_order_total, $debt, $price_order_refund, $price_pay, $date_pay, $type_pay, $date_pay_credit, $status_pay, $cheque_number, $cheque_name_bank, $cheque_branch_bank, $status_process, $status_due);
+            if ($Payshop > 0) {
+                header("location: ../docket.php?idshop=$idshop&action=addPayshopCompleted");
+            } else {
+                header("location: ../docket.php?idshop=$idshop&action=addPayshopError");
+            }
+        } else {
+            $status_due = "on";
+            $Payshop = addPayshop($idshop, $idshipment_period, $price_order_total, $debt, $price_order_refund, $price_pay, $date_pay, $type_pay, $date_pay_credit, $status_pay, $cheque_number, $cheque_name_bank, $cheque_branch_bank, $status_process, $status_due);
+            if ($Payshop > 0) {
+                header("location: ../docket.php?idshop=$idshop&action=addPayshopCompleted");
+            } else {
+                header("location: ../docket.php?idshop=$idshop&action=addPayshopError");
+            }
+        }
+    }
+} elseif ($status_pay == "unget") {
     $Payshop = addPayshop($idshop, $idshipment_period, $price_order_total, $debt, $price_order_refund, $price_pay, $date_pay, $type_pay, $date_pay_credit, $status_pay, $cheque_number, $cheque_name_bank, $cheque_branch_bank, $status_process, $status_due);
     if ($Payshop > 0) {
         header("location: ../docket.php?idshop=$idshop&action=addPayshopCompleted");
@@ -70,3 +122,6 @@ if ($month_cheque == $month_end) {
     }
 }
 
+//get_cash get_cheque-->on,over lack_cash lack_cheqe-->on,over unget
+//$type_pay -->cash,credit
+//$status_pay --> get,lack,unget

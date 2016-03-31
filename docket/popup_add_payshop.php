@@ -42,6 +42,11 @@ if (isset($_GET['idshipment_period'])and isset($_GET['idshop'])) {
     $date2 = str_replace('-', '/', $val_next_date_end);
     $endNextdate = date('Y-m-d', strtotime($date2 . "0 days"));
     
+    $Nextid_cheque = getNextid($idshipment_period+1);
+        $val_next_date_end_cheque = $Nextid_cheque['date_end'];
+    $date_cheque = str_replace('-', '/', $val_next_date_end_cheque);
+    $endNextdate_cheque = date('Y-m-d', strtotime($date_cheque . "0 days"));
+    
     $getPayDetailByID_before_idshipment_period = getPayDetailByID($idshop, $val_before_idshipment_period);
     $val_debt_before_shipment = $getPayDetailByID_before_idshipment_period['debt']; //ยอดค้างชำระ(รอบที่แล้ว)
     $price_pay = ($sum_order + $val_debt_before_shipment) - $price_product_refunds;
@@ -81,9 +86,10 @@ if (isset($_GET['idshipment_period'])and isset($_GET['idshop'])) {
 <form class="form" onsubmit="return validateMyForm();" action="action/action_addPayshop.php?idshipment_period=<?php echo $idshipment_period; ?>&idshop=<?php echo $idshop; ?>" method="post">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">เพิ่มการเก็บเงินร้านค้า //วันที่จ่ายเช็คตั้งแต่วันที่ของปลายรอบนี้ถึงรอบถัดไป</h4>
+        <h4 class="modal-title" id="myModalLabel">เพิ่มการเก็บเงินร้านค้า //วันที่จ่ายเช็คตั้งแต่วันที่ของปลายรอบนี้ถึงรอบ2เดือนถัดไป</h4>
     </div>
     <div class="row">
+        <!--<h4 class="alert alert-danger" role="alert">1.ทำสถานะ status_due เป็นวันของเช็คผิด </h4>-->
         <div class="col-md-12 col-sm-12 ">
             <div class="form-group col-xs-12">
                 <div class="form-group col-xs-12">
@@ -174,7 +180,7 @@ if (isset($_GET['idshipment_period'])and isset($_GET['idshop'])) {
                     <center><h4>ยอดค้างชำระ(จากรอบที่แล้ว) <input type="text" class="form-control" value="<?php echo number_format($val_debt_before_shipment, 2); ?>" readonly> </h4></center>
                     <center><h4>ยอดเงินสินค้าคืนรวม <input type="text" class="form-control" value="<?php echo number_format($sum_refund, 2); ?>" readonly> </h4></center>
                     <center><h4 class="text text-danger">ยอดเงินเรียกเก็บสุทธิ <input type="text" class="form-control"  value="<?php echo number_format($price_pay, 2); ?>" readonly></h4></center>
-                    <center><h4>วันที่จ่ายเงินร้านค้า <input type="date" class="form-control" id="date_pay" name="date_pay" value="<?php echo $date->format('Y-m-d'); ?>" required></h4></center>
+                    <center><h4>วันที่จ่ายเงินร้านค้า <input type="date" class="form-control" id="date_pay" name="date_pay" min="<?php echo $val_date_end; ?>" max="<?php echo $endNextdate; ?>" required></h4></center><!-- value="<?php //echo $date->format('Y-m-d'); ?>" -->
                 </div>
 
                 <div class = "form-group col-md-4"></div>
@@ -208,7 +214,7 @@ if (isset($_GET['idshipment_period'])and isset($_GET['idshop'])) {
                                 <div class="form-group input-group">
                                     <label class="radio-inline">
                                         <input type="radio" onclick="chkCredit_pay()" name="type_pay_get" id="credit_get" value="credit" > <label>เช็ค</label>
-                                        <input type="date" class="form-control" id="date_pay_credit" min="<?php echo $val_date_end; ?>" max="<?php echo $endNextdate; ?>" name="date_pay_credit" disabled>
+                                        <input type="date" class="form-control" id="date_pay_credit" max="<?php echo $endNextdate_cheque; ?>" min="<?php echo $val_date_end; ?>" name="date_pay_credit" disabled>
                                     </label>
                                 </div>
                                 <div class="form-group input-group">
@@ -240,7 +246,7 @@ if (isset($_GET['idshipment_period'])and isset($_GET['idshop'])) {
                                 <div class="form-group input-group">
                                     <label class="radio-inline">
                                         <input type="radio" onclick="chkCredit_pay2()" name="type_pay_lack" id="credit_lack" value="credit" > <label>เช็ค</label>
-                                        <input type="date" class="form-control" id="date_pay_credit2" min="<?php echo $val_date_end; ?>" max="<?php echo $endNextdate; ?>" name="date_pay_credit" disabled>
+                                        <input type="date" class="form-control" id="date_pay_credit2" max="<?php echo $endNextdate_cheque; ?>" min="<?php echo $val_date_end; ?>" name="date_pay_credit" disabled>
                                     </label>
                                 </div>
                                 <div class="form-group input-group">

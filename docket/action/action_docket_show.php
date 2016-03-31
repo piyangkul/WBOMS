@@ -20,6 +20,7 @@ require_once dirname(__FILE__) . '/../function/func_docket.php';
 <tbody>
     <?php
     $idshop = $_GET['idshop'];
+    $check_popup_addShop = TRUE;
     $getPayByID = getPayByID($idshop);
 //    echo "<pre>";
 //    print_r($getPayByID);
@@ -102,13 +103,13 @@ require_once dirname(__FILE__) . '/../function/func_docket.php';
             $sale = $cost * $val_amount_product_order; //ราคาขาย
             $sum_cost = $sum_cost + $sale; //ราคาขายรวม
 
-            $test = getProductDuplicateDocketByID($idshop, $val_idshipment_period, $val_name_transport, $val_number, $val_volume, $val_idfactory);
-            if ($test > 1) {
+            $getProductDuplicateDocketByID = getProductDuplicateDocketByID($idshop, $val_idshipment_period, $val_name_transport, $val_number, $val_volume, $val_idfactory);
+            if ($getProductDuplicateDocketByID > 1) {
                 if ($n == 0) {
                     $sum_price_transport = $sum_price_transport + $val_price_transport; //ราคาค่าส่งรวม
                 }
                 $n++;
-                if ($n == $test) {
+                if ($n == $getProductDuplicateDocketByID) {
                     $n = 0;
                 }
             } else {
@@ -156,11 +157,16 @@ require_once dirname(__FILE__) . '/../function/func_docket.php';
                 <a href="docket_paper.php?idshipment_period=<?php echo $val_idshipment_period; ?>&idshop=<?php echo $idshop; ?>" class="btn btn-primary" data-toggle="tooltip" title="ดูใบปะหน้า">
                     <span class="fa fa-file-text-o"></span>
                 </a>
-                <?php if ($val_date_pay == "") { ?><!-- ถ้ายังไม่มีการเก็บเงิน -->
-                    <!-- เพิ่มการเก็บเงินร้านค้า -->
-                    <a href="popup_add_payshop.php?idshipment_period=<?php echo $val_idshipment_period; ?>&idshop=<?php echo $idshop; ?>&sum_order=<?php echo $sum_order; ?>&debt=<?php echo $val_debt; ?>&price_product_refunds=<?php echo $val_order_price_product_refunds; ?>" class="btn btn-info" data-toggle = "modal" data-target = "#myModal-lg" data-toggle="tooltip" title="เพิ่มการเก็บเงินร้านค้า">
-                        <span class = "fa fa-plus fa-fw"></span><span class = "fa fa-shopping-cart fa-lg"></span>
-                    </a>
+                <?php if ($val_date_pay == "") { ?><!-- ถ้ายังไม่มีการเก็บเงิน ,ถ้ารอบข้างบนยังไม่finish -->
+                    <?php if ($check_popup_addShop) { ?>
+                        <!-- เพิ่มการเก็บเงินร้านค้า -->
+                        <a href="popup_add_payshop.php?idshipment_period=<?php echo $val_idshipment_period; ?>&idshop=<?php echo $idshop; ?>&sum_order=<?php echo $sum_order; ?>&debt=<?php echo $val_debt; ?>&price_product_refunds=<?php echo $val_order_price_product_refunds; ?>" class="btn btn-info" data-toggle = "modal" data-target = "#myModal-lg" data-toggle="tooltip" title="เพิ่มการเก็บเงินร้านค้า">
+                            <span class = "fa fa-plus fa-fw"></span><span class = "fa fa-shopping-cart fa-lg"></span>
+                        </a>
+                        <?php
+                        $check_popup_addShop = FALSE;
+                    }
+                    ?>
                 <?php } else { ?> <!-- ถ้าเพิ่มการเก็บเงินแล้ว -->
 
                     <!-- ดูการเก็บเงินร้านค้า -->
