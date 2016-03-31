@@ -101,8 +101,8 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                         <div class="form-group">
                                             <label for="name_factory">ค้นหาปี</label>
                                             <div class="form-group input-group">
-                                                <span class="input-group-addon"><i class="fa fa-calendar" ></i></span>
-                                                <input type="text" class="form-control" id="code" autocomplete=on name="code" placeholder="กรอกรหัสหรือชื่อโรงงาน" onblur ="getFactoryId(event)" onkeypress="getFactoryId(event)">
+                                                <span class="input-group-addon"><i class="fa fa-calendar-o" ></i></span>
+                                                <input type="text" class="form-control" id="code" autocomplete=on name="code" placeholder="กรอกปี พ.ศ.หรือ ค.ศ." onblur ="getFactoryId(event)" onkeypress="getFactoryId(event)">
                                             </div>
                                         </div>
 

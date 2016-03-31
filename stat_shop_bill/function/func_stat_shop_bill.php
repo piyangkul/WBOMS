@@ -83,3 +83,52 @@ function getStatus_pay_UNGET($year_pay, $status_pay, $idshop) {
     $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
     return $result;
 }
+
+//popup_unget
+function getPay_unget($idshop,$status_pay) {
+    if ($idshop != "undefined") {
+
+        $conn = dbconnect();
+        $SQLCommand = "SELECT A.idshipment_period,A.date_start,A.date_end,pay.date_pay,pay.debt,pay.price_pay,pay.status_pay,pay.status_process FROM (SELECT shop.idshop,shipment_period.idshipment_period,shipment_period.date_start,shipment_period.date_end FROM shop,shipment_period) AS A left JOIN pay on A.idshop=pay.shop_idshop and A.idshipment_period=pay.idshipment_period where idshop=:idshop AND status_pay=:status_pay ORDER BY `date_pay` ";
+
+        $SQLPrepare = $conn->prepare($SQLCommand);
+        $SQLPrepare->execute(
+                array(
+                    ":idshop" => $idshop,
+                    ":status_pay" => $status_pay
+                )
+        );
+        $resultArr = array();
+        while ($result = $SQLPrepare->fetch(PDO::FETCH_ASSOC)) {
+            array_push($resultArr, $result);
+        }
+        return $resultArr;
+    } else {
+        return array();
+    }
+}
+
+//popup_lack_over และ on
+function getPay_lack($idshop,$status_pay,$status_due) {
+    if ($idshop != "undefined") {
+
+        $conn = dbconnect();
+        $SQLCommand = "SELECT A.idshipment_period,A.date_start,A.date_end,pay.date_pay,pay.debt,pay.price_pay,pay.status_pay,pay.status_process FROM (SELECT shop.idshop,shipment_period.idshipment_period,shipment_period.date_start,shipment_period.date_end FROM shop,shipment_period) AS A left JOIN pay on A.idshop=pay.shop_idshop and A.idshipment_period=pay.idshipment_period where idshop=:idshop AND status_pay=:status_pay AND status_due=:status_due ORDER BY `date_pay` ";
+
+        $SQLPrepare = $conn->prepare($SQLCommand);
+        $SQLPrepare->execute(
+                array(
+                    ":idshop" => $idshop,
+                    ":status_pay" => $status_pay,
+                    ":status_due" => $status_due
+                )
+        );
+        $resultArr = array();
+        while ($result = $SQLPrepare->fetch(PDO::FETCH_ASSOC)) {
+            array_push($resultArr, $result);
+        }
+        return $resultArr;
+    } else {
+        return array();
+    }
+}
