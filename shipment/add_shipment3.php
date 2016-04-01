@@ -245,7 +245,7 @@ if (isset($_GET['idshipment_period'])and isset($_GET['idfactory'])) {
                                                     $val_idtransport = $value['idtransport'];
 
                                                     $val_date_transport = $value['date_transport'];
-                                                    echo $val_date_transport;
+                                                    //echo $val_date_transport;
                                                     $date_transport = date_create($val_date_transport);
                                                     $date_transport->add(new DateInterval('P543Y0M0DT0H0M0S'));
                                                     if ($val_date_transport == NULL) {
