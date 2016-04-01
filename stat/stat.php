@@ -46,9 +46,10 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                     <!-- /. ROW  -->
                     <hr />
                     <div class="row">
+                        <div class="alert alert-danger" role="alert">แก้:filer เดือน-ปี</div>
                         <div class="col-md-12">                          
                             <a href="chart.php" class="btn btn-warning btn-lg">
-                                <span class="fa fa-line-chart"></span> Chart
+                                <span class="fa fa-bar-chart"></span> Chart
                             </a>
                             <br/>
                             <br/>
@@ -73,13 +74,13 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                             <tbody>
                                                 <?php
                                                 //ดึงข้อมูลจากตาราง
-
                                                 $getIncome_Outcome = getIncome_Outcome();
                                                 $var_arr_des_by_indxB = subval_sort($getIncome_Outcome, "date_start", "DES"); //กลับลำดับ
                                                 $num = sizeof($var_arr_des_by_indxB); //ลำดับของรอบ โดยหาขนาดของarray
                                                 //$i = 0;
                                                 foreach ($var_arr_des_by_indxB as $value) {
                                                     //$i++;
+                                                    $val_idshipment_period = $value['idshipment_period'];
                                                     $val_date_start = $value['date_start'];
                                                     $date_start = date_create($val_date_start);
                                                     $date_start->add(new DateInterval('P543Y0M0DT0H0M0S'));
@@ -94,24 +95,33 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                         <td><?php echo $num--; ?></td>                            
                                                         <td><?php echo date_format($date_start, 'd-m-Y'); ?></td>
                                                         <td><?php echo date_format($date_end, 'd-m-Y'); ?></td>
-                                                        <td class="text-right"><?php echo number_format($val_income, 2); ?></td>
+                                                        
+                                                        <?php if ($val_income == NULL) { ?>
+                                                        <td class="text-right"><?php echo "รอเพิ่มข้อมูล"; ?></td>
+                                                        <?php } else { ?> 
+                                                        <td class="text-right">
+                                                            <?php echo "<a href='popup_stat_income.php?idshipment_period=$val_idshipment_period' data-toggle='modal' data-target='#myModal-lg'> " . number_format($val_income, 2) . " </a>"; ?>
+                                                        </td>
+                                                        <?php } ?>
+                                                        
                                                         <?php if ($val_outcome == NULL) { ?>
                                                             <td class="text-right"><?php echo "รอเพิ่มข้อมูล"; ?></td>
                                                         <?php } else { ?> 
-                                                            <td class="text-right"><?php echo number_format($val_outcome, 2); ?></td>
+                                                            <td class="text-right">
+                                                                <?php echo "<a href='popup_stat_outcome.php?idshipment_period=$val_idshipment_period' data-toggle='modal' data-target='#myModal-lg'> " . number_format($val_outcome, 2) . " </a>"; ?>
+                                                            </td>
                                                         <?php } ?>
-                                                        <?php if ($profit > 0) { ?>
+                                                            
+                                                        <?php if ($profit >= 0) { ?>
                                                             <td class="text-right"><?php echo number_format($profit, 2); ?></td>
                                                         <?php } else { ?> 
                                                             <td class="text-right" style="color: red"><?php echo number_format($profit, 2); ?></td>
                                                         <?php } ?> 
                                                     </tr>
-
                                                     <?php
                                                 }
                                                 ?>
                                                 <?php
-
                                                 function subval_sort($a, $subkey, $sort_by) {
                                                     foreach ($a as $k => $v) {
                                                         $b[$k] = strtolower($v[$subkey]);
@@ -165,7 +175,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
             });
 
             $(document.body).on('hidden.bs.modal', function () {
-                $('#myModal').removeData('bs.modal');
+                $('#myModal-lg').removeData('bs.modal');
             });
         </script>
 
