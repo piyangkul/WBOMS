@@ -152,21 +152,36 @@ require_once dirname(__FILE__) . '/../function/func_docket.php';
                 </td>
             <?php } ?>
             <td><?php echo $val_status_pay; ?></td>
+
             <td>
                 <!-- ดูใบปะหน้า -->
                 <a href="docket_paper.php?idshipment_period=<?php echo $val_idshipment_period; ?>&idshop=<?php echo $idshop; ?>" class="btn btn-primary" data-toggle="tooltip" title="ดูใบปะหน้า">
                     <span class="fa fa-file-text-o"></span>
                 </a>
                 <?php if ($val_date_pay == "") { ?><!-- ถ้ายังไม่มีการเก็บเงิน ,ถ้ารอบข้างบนยังไม่finish -->
-                    <?php if ($check_popup_addShop) { ?>
-                        <!-- เพิ่มการเก็บเงินร้านค้า -->
-                        <a href="popup_add_payshop.php?idshipment_period=<?php echo $val_idshipment_period; ?>&idshop=<?php echo $idshop; ?>&sum_order=<?php echo $sum_order; ?>&debt=<?php echo $val_debt; ?>&price_product_refunds=<?php echo $val_order_price_product_refunds; ?>" class="btn btn-info" data-toggle = "modal" data-target = "#myModal-lg" data-toggle="tooltip" title="เพิ่มการเก็บเงินร้านค้า">
-                            <span class = "fa fa-plus fa-fw"></span><span class = "fa fa-shopping-cart fa-lg"></span>
-                        </a>
-                        <?php
-                        $check_popup_addShop = FALSE;
+
+                    <?php
+                    $getPayByID_check_process = getPayByID($idshop);
+                    $i2 = 0;
+                    foreach ($getPayByID_check_process as $value) {
+                        $i2++;
+                        $val_status_process_check_process = $value['status_process'];
+                        if ($val_status_process_check_process == "add") { //status_process เป็น add จะไม่ให้แสดง
+                            break;
+                        }
+                        ?>
+
+                        <?php if ($check_popup_addShop && $val_status_process_check_process != "") { ?><!-- ทำให้ปุ่มเพิ่มออกครั้งเดียว และต้องไม่เป็น NULL ด้วย-->
+                            <!-- เพิ่มการเก็บเงินร้านค้า -->
+                            <a href="popup_add_payshop.php?idshipment_period=<?php echo $val_idshipment_period; ?>&idshop=<?php echo $idshop; ?>&sum_order=<?php echo $sum_order; ?>&debt=<?php echo $val_debt; ?>&price_product_refunds=<?php echo $val_order_price_product_refunds; ?>" class="btn btn-info" data-toggle = "modal" data-target = "#myModal-lg" data-toggle="tooltip" title="เพิ่มการเก็บเงินร้านค้า">
+                                <span class = "fa fa-plus fa-fw"></span><span class = "fa fa-shopping-cart fa-lg"></span>
+                            </a>
+                            <?php
+                            $check_popup_addShop = FALSE;
+                        }
                     }
                     ?>
+
                 <?php } else { ?> <!-- ถ้าเพิ่มการเก็บเงินแล้ว -->
 
                     <!-- ดูการเก็บเงินร้านค้า -->

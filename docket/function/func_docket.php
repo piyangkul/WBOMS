@@ -33,7 +33,7 @@ function getPayByID($idshop) {
     if ($idshop != "undefined") {
 
         $conn = dbconnect();
-        $SQLCommand = "SELECT A.idshipment_period,A.date_start,A.date_end,pay.date_pay,pay.debt,pay.price_pay,pay.status_pay,pay.status_process FROM (SELECT shop.idshop,shipment_period.idshipment_period,shipment_period.date_start,shipment_period.date_end FROM shop,shipment_period) AS A left JOIN pay on A.idshop=pay.shop_idshop and A.idshipment_period=pay.idshipment_period where idshop=:idshop ";
+        $SQLCommand = "SELECT A.idshipment_period,A.date_start,A.date_end,pay.date_pay,pay.debt,pay.price_pay,pay.status_pay,pay.status_process FROM (SELECT shop.idshop,shipment_period.idshipment_period,shipment_period.date_start,shipment_period.date_end FROM shop,shipment_period) AS A left JOIN pay on A.idshop=pay.shop_idshop and A.idshipment_period=pay.idshipment_period where idshop=:idshop ORDER BY A.date_start ";
 
         $SQLPrepare = $conn->prepare($SQLCommand);
         $SQLPrepare->execute(

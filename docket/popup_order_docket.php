@@ -71,6 +71,7 @@ if ($val_tel_shop == NULL) {
                                             $n = 0;
                                             $sum_cost = 0;
                                             $sum_price_transport = 0;
+                                            $price_order_total = 0;
                                             foreach ($getProductDocketByID as $value) {
                                                 $i++;
                                                 $val_idfactory = $value['idfactory'];
@@ -131,7 +132,7 @@ if ($val_tel_shop == NULL) {
                                                     <td class="text-right"><?php echo number_format($cost, 2); ?></td>
                                                     <td class="text-right"><?php echo number_format($sale, 2); ?></td>
                                                     <?php $sum_cost = $sum_cost + $sale; ?>
-                                                    <?php $price_order_total = $sum_cost + $sum_price_transport; ?>
+                                                    <?php $price_order_total = $sum_cost + $sum_price_transport; ?>                                                   
                                                 </tr>
                                             <?php } ?>
                                         </tbody>
@@ -160,8 +161,8 @@ if ($val_tel_shop == NULL) {
         var price_order_total = document.getElementById("price_order_total").value;
         var a = ("ยอดสั่งซื้อรวม ").bold();
         var b = (" บาท").bold();
-        document.getElementById("price_order_total2").innerHTML = a+price_order_total+b;
-        
+        document.getElementById("price_order_total2").innerHTML = a + price_order_total + b;
+
     });
 </script>
 
