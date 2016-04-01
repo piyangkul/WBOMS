@@ -117,7 +117,7 @@ $val_shipment_period_idshipment = $getPricePayFactory['shipment_period_idshipmen
                                                     <td><?php echo date_format($date_order_p, 'd-m-Y'); ?></td>
                                                     <td><?php echo $val_name_shop; ?></td>
                                                     <td><?php echo $val_name_product; ?></td>
-                                                    <td class="text-right"><?php echo $val_price_unit; ?></td>
+                                                    <td class="text-right"><?php echo number_format($val_price_unit,2); ?></td>
                                                     <td><?php echo $val_difference_amount_product . "%"; ?></td>
                                                     <td class="text-right"><?php echo number_format($cost, 2); ?></td><!-- ราคาต้นทุน-->
                                                     <td><?php echo $val_amount_product_order . " " . $val_name_unit; ?></td>
