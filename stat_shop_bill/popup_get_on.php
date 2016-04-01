@@ -8,7 +8,7 @@ $idshop = $_GET['idshop'];
 $getShopsByID = getShopsByID($idshop);
 $name_shop = $getShopsByID['name_shop'];
 $status_pay = $_GET['status_pay'];
-//$status_due = "on";
+$status_due = "on";
 ?>
 
 <form class="form" action="" method="POST">
@@ -41,9 +41,9 @@ $status_pay = $_GET['status_pay'];
                     </thead>
                     <tbody>
                         <?php
-                        $getPay_cash = getPay_cash($idshop, $status_pay);
+                        $getPay_get = getPay_get_and_lack($idshop, $status_pay,$status_due);
                         $i = 0;
-                        foreach ($getPay_cash as $value) {
+                        foreach ($getPay_get as $value) {
                             $i++;
                             $val_idshipment_period = $value['idshipment_period'];
                             $val_date_start = $value['date_start'];

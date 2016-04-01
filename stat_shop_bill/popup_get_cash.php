@@ -12,7 +12,7 @@ $status_pay = $_GET['status_pay'];
 <form class="form" action="" method="POST">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">ตารางข้อมูลการเก็บเงิน(ประเภทเก็บไม่ได้)ของร้าน <?php echo $name_shop; ?> </h4>
+        <h4 class="modal-title" id="myModalLabel">ตารางข้อมูลการเก็บเงิน(ประเภทเก็บครบและเงินสด) </h4>
     </div>
     <div class="row">
         <div class="col-md-12 col-sm-12 ">
@@ -33,15 +33,14 @@ $status_pay = $_GET['status_pay'];
                     <th><div align="center">ยอดที่เก็บได้</div></th>
                     <th><div align="center">ยอดหนี้</div></th>
                     <th><div align="center">สถานะ</div></th><!--สถานะการเก็บเงิน เก็บได้ เก็บไม่ได้-->
-                    <th><div align="center">การกระทำ</div></th>
+                    <!--<th><div align="center">การกระทำ</div></th>-->
                     </tr>
                     </thead>
                     <tbody>
                         <?php
-                        $idshop = $_GET['idshop'];
-                        $getPay_unget = getPay_unget($idshop, $status_pay);
+                        $getPay_cash = getPay_cash($idshop, $status_pay);
                         $i = 0;
-                        foreach ($getPay_unget as $value) {
+                        foreach ($getPay_cash as $value) {
                             $i++;
                             $val_idshipment_period = $value['idshipment_period'];
                             $val_date_start = $value['date_start'];
@@ -148,10 +147,12 @@ $status_pay = $_GET['status_pay'];
                                     <?php echo number_format($val_debt_before_shipment, 2); ?>
                                 </td>
                                 <td class="text-right"><!-- ยอดสั่งซื้อ -->
-                                    <?php echo "<a href='../docket/popup_order_docket.php?idshipment_period=$val_idshipment_period&idshop=$idshop' data-toggle='modal' data-target='#myModal-lg'> " . number_format($sum_order, 2) . " </a>"; ?>
+                                    <?php echo number_format($sum_order, 2); ?>
+                                    <?php //echo "<a href='../docket/popup_order_docket.php?idshipment_period=$val_idshipment_period&idshop=$idshop' data-toggle='modal' data-target='#myModal-lg'> " . number_format($sum_order, 2) . " </a>"; ?>
                                 </td>
                                 <td class="text-right"><!-- สินค้าคืน(รอบที่แล้ว)-->
-                                    <?php echo "<a href='popup_product_refund.php?idshipment_period=$val_idshipment_period&idshop=$idshop' data-toggle='modal' data-target='#myModal-lg'> " . number_format($val_order_price_product_refunds, 2) . " </a>"; ?>
+                                    <?php echo number_format($val_order_price_product_refunds, 2); ?>
+                                    <?php //echo "<a href='popup_product_refund.php?idshipment_period=$val_idshipment_period&idshop=$idshop' data-toggle='modal' data-target='#myModal-lg'> " . number_format($val_order_price_product_refunds, 2) . " </a>"; ?>
                                 </td>
                                 <td class="text-right"><!-- ยอดเรียกเก็บสุทธิ -->
                                     <?php echo number_format($val_debt_before_shipment + $sum_order - $val_order_price_product_refunds, 2); ?>
@@ -167,18 +168,18 @@ $status_pay = $_GET['status_pay'];
                                     </td>
                                 <?php } ?>
                                 <td><?php echo $val_status_pay; ?></td>
-                                <td>
-                                    <!-- ดูใบปะหน้า -->
+    <!--                                    <td>
+                                     ดูใบปะหน้า 
                                     <a href="../docket/docket_paper.php?idshipment_period=<?php echo $val_idshipment_period; ?>&idshop=<?php echo $idshop; ?>" class="btn btn-primary" data-toggle="tooltip" title="ดูใบปะหน้า">
                                         <span class="fa fa-file-text-o"></span>
                                     </a>
 
-                                    <!-- ดูการเก็บเงินร้านค้า -->
-                                    <a href="../docket/popup_detail_payshop.php?idshipment_period=<?php echo $val_idshipment_period; ?>&idshop=<?php echo $idshop; ?>&sum_order=<?php echo $sum_order; ?>&debt=<?php echo $val_debt; ?>&price_product_refunds=<?php echo $val_order_price_product_refunds; ?>" class="btn btn-success" data-toggle = "modal" data-target = "#myModal-lg" data-toggle="tooltip" title="ดูการเก็บเงินร้านค้า">
+                                     ดูการเก็บเงินร้านค้า 
+                                    <a href="popup_detail_payshop.php?idshipment_period=<?php echo $val_idshipment_period; ?>&idshop=<?php echo $idshop; ?>&sum_order=<?php echo $sum_order; ?>&debt=<?php echo $val_debt; ?>&price_product_refunds=<?php echo $val_order_price_product_refunds; ?>" class="btn btn-success" data-toggle = "modal" data-target = "#myModal-lg" data-toggle="tooltip" title="ดูการเก็บเงินร้านค้า">
                                         <span class = "fa fa-file-text-o fa-fw"></span><span class = "fa fa-shopping-cart fa-lg"></span>
                                     </a>
 
-                                </td>
+                                </td>-->
                             </tr>
                         <?php } ?>
                     </tbody>
@@ -191,3 +192,4 @@ $status_pay = $_GET['status_pay'];
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
     </div>
 </form>
+<!--<div class="alert alert-danger" role="alert">ยังไม่ได้แก้ sql </div>-->

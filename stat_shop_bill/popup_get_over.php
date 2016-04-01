@@ -8,14 +8,12 @@ $idshop = $_GET['idshop'];
 $getShopsByID = getShopsByID($idshop);
 $name_shop = $getShopsByID['name_shop'];
 $status_pay = $_GET['status_pay'];
-//$status_due = "on";
+$status_due = "over";
 ?>
-
 <form class="form" action="" method="POST">
-    <!--    <div class="modal" id="myModal">-->
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">ตารางข้อมูลการเก็บเงิน(ประเภทเก็บไม่ครบและจ่ายตรงเวลา) <?php //echo $name_shop;    ?> </h4>
+        <h4 class="modal-title" id="myModalLabel">ตารางข้อมูลการเก็บเงิน(ประเภทเก็บครบและจ่ายเกินเวลา) </h4>
     </div>
     <div class="row">
         <div class="col-md-12 col-sm-12 ">
@@ -41,9 +39,9 @@ $status_pay = $_GET['status_pay'];
                     </thead>
                     <tbody>
                         <?php
-                        $getPay_cash = getPay_cash($idshop, $status_pay);
+                        $getPay_get = getPay_unget($idshop, $status_pay, $status_due);
                         $i = 0;
-                        foreach ($getPay_cash as $value) {
+                        foreach ($getPay_get as $value) {
                             $i++;
                             $val_idshipment_period = $value['idshipment_period'];
                             $val_date_start = $value['date_start'];
@@ -194,6 +192,5 @@ $status_pay = $_GET['status_pay'];
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
     </div>
-    <!--</div>-->
 </form>
 <!--<div class="alert alert-danger" role="alert">ยังไม่ได้แก้ sql </div>-->

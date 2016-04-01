@@ -72,10 +72,27 @@ require_once dirname(__FILE__) . '/../function/func_stat_shop_bill.php';
         <tr>
             <td><?php echo $val_shop_code; ?></td>
             <td><?php echo $val_name_shop; ?></td>
-            <td><?php echo "<a href='popup_get_cash.php?year_pay=$year_pay&idshop=$val_idshop' data-toggle='modal' data-target='#myModal-lg'> " . $val_get_cash . " </a>"; ?></td>
-            <td><?php echo $val_get_on; ?></td>
 
-            <td><?php echo $val_get_over; ?></td>
+            <!-- เก็บครบ เงินสด -->
+            <?php if ($val_get_cash == 0) { ?>
+                <td><?php echo $val_get_cash; ?></td>
+            <?php } else { ?>
+                <td><?php echo "<a href='popup_get_cash.php?year_pay=$year_pay&idshop=$val_idshop&status_pay=$status_pay_get' data-toggle='modal' data-target='#myModal-lg'> " . $val_get_cash . " </a>"; ?></td>
+            <?php } ?>
+
+            <!-- เก็บครบ ตรงเวลา -->
+            <?php if ($val_get_on == 0) { ?>
+                <td><?php echo $val_get_on; ?></td>
+            <?php } else { ?>
+                <td><?php echo "<a href='popup_get_on.php?year_pay=$year_pay&idshop=$val_idshop&status_pay=$status_pay_get' data-toggle='modal' data-target='#myModal-lg'> " . $val_get_on . " </a>"; ?></td>
+            <?php } ?>
+
+            <!-- เก็บครบ เกินเวลา -->
+            <?php if ($val_get_over == 0) { ?>
+                <td><?php echo $val_get_over; ?></td>
+            <?php } else { ?>
+                <td><?php echo "<a href='popup_get_over.php?year_pay=$year_pay&idshop=$val_idshop&status_pay=$status_pay_get' id='openBtn' data-toggle='modal' data-target='#myModal-lg'> " . $val_get_over . " </a>"; ?></td>
+            <?php } ?>
 
             <!-- เก็บไม่ครบ เงินสด -->
             <?php if ($val_lack_cash == 0) { ?>
@@ -107,7 +124,6 @@ require_once dirname(__FILE__) . '/../function/func_stat_shop_bill.php';
 
         </tr>
     <?php } ?>
-
 </tbody>
 </table>
 <script>

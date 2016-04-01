@@ -41,7 +41,7 @@ $status_due = "over";
                     </thead>
                     <tbody>
                         <?php
-                        $getPay_lack = getPay_lack($idshop, $status_pay, $status_due);
+                        $getPay_lack = getPay_get_and_lack($idshop, $status_pay, $status_due);
                         $i = 0;
                         foreach ($getPay_lack as $value) {
                             $i++;
