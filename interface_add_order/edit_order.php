@@ -19,6 +19,7 @@ $val_date_order_p = $getOrderEdit['date_order_p'];
 $val_time_order_p = $getOrderEdit['time_order_p'];
 $val_name_shop = $getOrderEdit['name_shop'];
 $val_detail_order_p = $getOrderEdit['detail_order_p'];
+$total_price_all = 0;
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -44,7 +45,7 @@ $val_detail_order_p = $getOrderEdit['detail_order_p'];
         <script>
 
             /*  $(function () {
-             var data = JSON.stringify(<?php //getShop2();                                            ?>);
+             var data = JSON.stringify(<?php //getShop2();                                                  ?>);
              //var www = JSON.parse(data);
              //alert(www);
              alert(data);
@@ -166,7 +167,9 @@ $val_detail_order_p = $getOrderEdit['detail_order_p'];
                                                                     <td><?= $val_difference_product_order; ?></td>
                                                                     <td>-</td>
                                                                     <td class ="text-right"><?= number_format($total_percent, 2); ?></td>
-                                                                <?php }
+                                                                    <?php
+                                                                    $total_price_all += $total_percent;
+                                                                }
                                                                 ?>
                                                                 <?php if ($val_type_product_order === 'BATH') {
                                                                     ?>
@@ -174,6 +177,7 @@ $val_detail_order_p = $getOrderEdit['detail_order_p'];
                                                                     <td><?= $val_difference_product_order; ?></td>                                                                  
                                                                     <td class ="text-right"><?= number_format($total_bath, 2); ?></td> 
                                                                     <?php
+                                                                    $total_price_all += $total_bath;
                                                                 }
 
                                                                 if ($val_status_checktransport === 'check') {
@@ -202,13 +206,13 @@ $val_detail_order_p = $getOrderEdit['detail_order_p'];
 
                                                 </table>
                                             </div>
-                                            <label>สินค้าเพิ่มใหม่</label>
-                                            <div id="showUnit"></div>
+                                            <!--<label>สินค้าเพิ่มใหม่</label>
+                                            <!--<div id="showUnit"></div>-->
 
                                             <div class="col-md-6"></div>
                                             <div class="col-md-4">
                                                 <label for="disabled_no">ราคาขายรวมต่อบิล</label>
-                                                <input type="text" class="form-control" id="disabled_no" placeholder=" " disabled>
+                                                <input type="text" class="form-control" id="total_price_all" name="total_price_all" value="<?= number_format($total_price_all, 2); ?>"  readonly>
                                             </div>   
                                         </div>
                                     </div>

@@ -15,9 +15,12 @@ if ($_GET['p'] == "addProduct") {
     $DifferenceBath = $_GET['DifferenceBath'];
     $total_price = $_GET['total_price'];
     $total = $_GET['total'];
-    // $type = $_GET['type'];
-    $idproductE = EditProductOrder($idProduct_order, $idUnit, $AmountProduct, $DifferencePer, $total_price);
-
+    $type = $_GET['type'];
+    if ($type === "PERCENT") {
+        $idproductE = EditProductOrder($idProduct_order, $idUnit, $AmountProduct, $DifferencePer, $total_price);
+    } elseif ($type === "BATH") {
+        $idproductE = EditProductOrder($idProduct_order, $idUnit, $AmountProduct, $DifferenceBath, $total_price);
+    }
     /* echo "$DifferenceBATH";
       echo "$DifferencePer";
       echo "$type"; */

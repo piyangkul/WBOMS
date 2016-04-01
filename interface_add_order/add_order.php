@@ -7,6 +7,12 @@ $p = 'history_order';
 if (isset($_GET['p']) && !empty($_GET['p'])) {
     $p = $_GET['p'];
 }
+date_default_timezone_set("Asia/Bangkok");
+$date = date("Y-m-d");
+$var = date('H:i');
+
+//$t=time("");
+//echo $t;
 require_once '/function/func_addorder.php';
 ?>
 <!DOCTYPE html>
@@ -32,47 +38,48 @@ require_once '/function/func_addorder.php';
         <link rel="stylesheet" href="/resources/demos/style.css"/>
         <script>
             //alert('<?//= getShop2(); ?>');
-            var Shop = JSON.stringify(<?php echo getShop2(); ?>);
+                var Shop = JSON.stringify(<?php echo getShop2(); ?>);
 
-            //alert(Product);
-            //alert(data);
-            var ShopP = JSON.parse(Shop);
+                //alert(Product);
+                //alert(data);
+                var ShopP = JSON.parse(Shop);
 
-            //alert(ProductP);
-            //data = JSON.parse(www+'');
-            /*alert(data);*/
-            //document.write(www[0].idshop+www[0].name_shop);
-            var shopName = new Array();
-            var shopId = new Array();
-            // var idshop;
+                //alert(ProductP);
+                //data = JSON.parse(www+'');
+                /*alert(data);*/
+                //document.write(www[0].idshop+www[0].name_shop);
+                var shopName = new Array();
+                var shopId = new Array();
+                // var idshop;
 
 
-            for (var i = 0; i < ShopP.length; i++) {
-                shopName.push(ShopP[i].name_shop);
-                shopId["'" + ShopP[i].name_shop + "'"] = ShopP[i].idshop;
-                //var obj = JSON.parse(item);
-                //shopName[i++] = item["shop_name"];
-                // shopId[i++] = item["idshop"];
-                //alert(www[i].name_shop);
-                //alert(item["shop_name"]);
+                for (var i = 0; i < ShopP.length; i++) {
+                    shopName.push(ShopP[i].name_shop);
+                    shopId["'" + ShopP[i].name_shop + "'"] = ShopP[i].idshop;
+                    //var obj = JSON.parse(item);
+                    //shopName[i++] = item["shop_name"];
+                    // shopId[i++] = item["idshop"];
+                    //alert(www[i].name_shop);
+                    //alert(item["shop_name"]);
 
-            }
+                }
 
-            //alert(data);
-            $(function () {
-                $("#name_shop").autocomplete({
-                    source: shopName
+                //alert(data);
+                $(function () {
+                    $("#name_shop").autocomplete({
+                        source: shopName
+                    });
                 });
-            });
 
-            function getShopId() {
-                //alert("Hello");
-                var price = document.getElementById("name_shop").value;
-                //alert(shopId["'" + price + "'"]);
-                document.getElementById("idshop").value = shopId["'" + price + "'"];
-                //idshop = shopId["'" + price + "'"];
-                //alert(idshop);
-            }
+                function getShopId() {
+                    //alert("Hello");
+                    var price = document.getElementById("name_shop").value;
+                    //alert(shopId["'" + price + "'"]);
+                    document.getElementById("idshop").value = shopId["'" + price + "'"];
+                    //idshop = shopId["'" + price + "'"];
+                    //alert(idshop);
+                }
+
         </script>
 
     </head>
@@ -109,11 +116,11 @@ require_once '/function/func_addorder.php';
                                                     <input type="text" class="form-control" id="code_order" name="code_order" placeholder="ID บิล">
                                                 </div>
                                                 <div >
-                                                    <p>วันที่สั่งซื้อ <input type="date" class="form-control" id ="date_order" name="date_order" ></p>
-                                                    <input type="time" class="form-control" id ="time_order" name="time_order"></input>
+                                                    <p>วันที่สั่งซื้อ <input type="date" class="form-control" id ="date_order" name="date_order" value="<?=$date;?>"</p>
+                                                    <input type="time" class="form-control" id ="time_order" name="time_order" value="<?=$var?>"></input>
                                                 </div>
                                                 <div>
-                                                    <label for="disabled_shop">ชื่อร้านค้า></label>
+                                                    <label for="disabled_shop">ชื่อร้านค้า</label>
                                                     <input type="text" class="form-control" id="name_shop" name="name_shop" placeholder="กรุณาระบุชื่อร้านค้า" autocomplete= on onblur="getShopId()"></input>                    
                                                     <input type="hidden" id="idshop" name="idshop"></input>
                                                 </div>
@@ -138,8 +145,9 @@ require_once '/function/func_addorder.php';
                                                 <a href="addproduct_addorder.php" class="btn btn-info btn-lg">
                                                     <span class="glyphicon glyphicon-plus"></span> เพิ่มสินค้า
                                                 </a>
-                                                <button class="btn btn-danger btn-lg" type="button" onclick="if (confirm('คุณต้องการลบหน่วยสินค้าทั้งหมดหรือไม่')) {
-                                                            resetUnit();
+                                                <button class="btn btn-danger btn-lg" type="button" onclick="if (confirm('คุณต้องการลบหน่วยสินค้าทั้งหมดหรือ
+                                                                    ไม่')) {
+                                                                    resetUnit();
                                                         }">
                                                     <span class="glyphicon glyphicon-trash"></span> ลบสินค้าทั้งหมด
                                                 </button>
@@ -278,7 +286,6 @@ require_once '/function/func_addorder.php';
                                                         document.getElementById("total_price").value = total;
                                                         document.getElementById("cal_difference").value = totals;
                                                     }
-
                                                     function ChangeProduct() {
                                                         var x = document.getElementById("factoryName").value;
                                                         document.getElementById("idFactory2").innerHTML = "You selected: " + x;

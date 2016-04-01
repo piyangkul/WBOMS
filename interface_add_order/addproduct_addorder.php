@@ -82,8 +82,10 @@ require_once '/function/func_addorder.php';
             var factoryId = new Array();
             var factoryDiff = new Array();
             var factoryType = new Array();
+            var Name = new Array();
             for (var i = 0; i < ProductP.length; i++) {
                 productName.push(ProductP[i].name_product);
+                // Name.push(ProductP[i].name_product + " " + ProductP[i].name_factory);
                 productId["'" + ProductP[i].name_product + "'"] = ProductP[i].idproduct;
                 factoryName["'" + ProductP[i].name_product + "'"] = ProductP[i].name_factory;
                 factoryId["'" + ProductP[i].name_product + "'"] = ProductP[i].idfactory;
@@ -123,7 +125,7 @@ require_once '/function/func_addorder.php';
                         //alert(response);
                     }
                 });
-            } 
+            }
         </script>
 
     </head>
@@ -194,7 +196,7 @@ require_once '/function/func_addorder.php';
                                                         <input type="text" class="form-control" id="cal_difference" readonly="true" ></input>
                                                     </div>
                                                     <label class="radio"> ขายลดเปอร์เซ็นต์//8% = 44.8 </label>
-                                                    <input type="text" class="form-control" placeholder="กรอก%ขายลด"  id="DifferencePer" value="" onkeyup="updateTotalPer()"/></input>
+                                                    <input type="text" class="form-control" placeholder="กรอก%ขายลด"  id="DifferencePer" value="" onkeyup="updateAmount()"/></input>
 
                                                     <h id="type"></h>
                                                 </div>
@@ -211,7 +213,7 @@ require_once '/function/func_addorder.php';
                                             <div class="panel-body">
                                                 <div class="table-responsive ">
                                                     <label for="name_product"> ขายเพิ่มสุทธิ </label>
-                                                    <input type="text" class="form-control" placeholder="กรอกราคาขายเพิ่มสุทธิ" id="DifferenceBath" value="" onkeyup="updateTotalBath()"> </input>
+                                                    <input type="text" class="form-control" placeholder="กรอกราคาขายเพิ่มสุทธิ" id="DifferenceBath" value="" onkeyup="updateAmount()"> </input>
                                                     <h id="type"></h>
                                                 </div>
                                             </div>
@@ -292,11 +294,25 @@ require_once '/function/func_addorder.php';
                             function updateAmount() {
                                 var price = document.getElementById("price").value;
                                 var amount = document.getElementById("AmountProduct").value;
-                                var difference = document.getElementById("difference").value;
+                                //var difference = document.getElementById("difference").value;
                                 var total = amount * price;
-                                var totals = total - (total * (difference / 100))
-                                document.getElementById("total_price").value = total;
-                                document.getElementById("cal_difference").value = totals;
+                                // var totals = total - (total * (difference / 100));
+                                var total_all;
+                                var type = document.getElementById("typefactory").value;
+                                if (type === "PERCENT") {
+                                    var diffper = document.getElementById("DifferencePer").value;
+                                    var difference = document.getElementById("difference").value;
+                                    var totals = total - (total * (difference / 100));
+                                    total_all = (total - (total * (diffper / 100)));
+                                    document.getElementById("cal_difference").value = totals.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+                                }
+                                else if (type === "BATH") {
+                                    var diffbath = document.getElementById("DifferenceBath").value;
+                                    total_all = total + (diffbath * amount);
+                                }
+                                document.getElementById("total_price").value = total.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+                                document.getElementById("cal_difference").value = totals.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+                                document.getElementById("total").value = total_all.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
                             }
 
                             function ChangeProduct() {
@@ -399,9 +415,9 @@ require_once '/function/func_addorder.php';
                                 var DifferencePer = $("#DifferencePer").val();
                                 var DifferenceBath = $("#DifferenceBath").val();
                                 var price = $("#price").val();
-                                var total_price = $("#total_price").val();
-                                var total = $("#total").val();
-                                var type = $("#type").val();
+                                var total_price = $("#total_price").val().replace(",","");
+                                var total = $("#total").val().replace(",","");
+                                var type = document.getElementById("typefactory").value;
                                 //alert(idUnit);
                                 //alert(AmountProduct);
                                 //alert(DifferencePer);

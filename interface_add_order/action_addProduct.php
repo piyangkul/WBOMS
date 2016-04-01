@@ -162,7 +162,7 @@ else if ($_GET['p'] == "editProduct") {
                         <td><?php echo $_SESSION["product"][$i]["difference"]; ?></td>
                         <td><?php echo $_SESSION["product"][$i]["DifferencePer"]; ?></td>
                         <td><?php echo $_SESSION["product"][$i]["DifferenceBath"]; ?></td>
-                        <td class ="text-right"><?php echo number_format($_SESSION["product"][$i]["total"] * $_SESSION["product"][$i]["AmountProduct"],2); ?></td>
+                        <td class ="text-right"><?php echo number_format($_SESSION["product"][$i]["total"] * $_SESSION["product"][$i]["AmountProduct"], 2); ?></td>
                         <td>
                             <a href="editproduct_addorder.php?idproduct_order=<?= $i ?>&idunit=<?php echo $idUnitS; ?>&amount=<?= $_SESSION["product"][$i]["AmountProduct"]; ?>&DifferencePer=<?= $_SESSION["product"][$i]["DifferencePer"]; ?>&DifferenceBath=<?= $_SESSION["product"][$i]["DifferenceBath"]; ?>&type=<?= $_SESSION["product"][$i]["type"]; ?>" class="btn btn-warning " data-toggle="tooltip" title="แก้ไข">
                                 <span class="glyphicon glyphicon-edit"></span>

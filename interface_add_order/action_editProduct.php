@@ -17,7 +17,7 @@ if ($_GET['p'] == "addProduct") {
     $total = $_GET['total'];
     $type = $_GET['type'];
 
-    if (isset($_SESSION["editcountProduct"])) {
+    /*if (isset($_SESSION["editcountProduct"])) {
         $_SESSION["editcountProduct"] ++;
     } else
         $_SESSION["editcountProduct"] = 1;
@@ -32,11 +32,15 @@ if ($_GET['p'] == "addProduct") {
     $_SESSION["editproduct"][$_SESSION["editcountProduct"]]["price"] = $price;
     $_SESSION["editproduct"][$_SESSION["editcountProduct"]]["total_price"] = $total_price;
     $_SESSION["editproduct"][$_SESSION["editcountProduct"]]["total"] = $total;
-    $_SESSION["editproduct"][$_SESSION["editcountProduct"]]["type"] = $type;
-
+    $_SESSION["editproduct"][$_SESSION["editcountProduct"]]["type"] = $type;*/
+    if ($type === "PERCENT") {
+        $idproduct = addProductOrder($idUnit, $idorder, $AmountProduct, $DifferencePer, $type, $price);
+    }
+    if ($type === "BATH") {
+        $idproduct = addProductOrder($idUnit, $idorder, $products[$i]['AmountProduct'], $DifferenceBath,$type, $price);
+    }
     echo "1";
-}
-else if ($_GET['p'] == "editProduct") {
+} /*else if ($_GET['p'] == "editProduct") {
     $product_order = $_GET['idproduct_order'];
     $idUnit = $_GET['idUnit'];
     $productName = $_GET['productName'];
@@ -151,13 +155,16 @@ else if ($_GET['p'] == "editProduct") {
                             }
                             ?></td>
                         <td><?php echo $_SESSION["editproduct"][$i]["AmountProduct"]; ?></td>
-                        <td class ="text-right"><?php echo number_format($_SESSION["editproduct"][$i]["total_price"],2); ?></td>
+                        <td class ="text-right"><?php echo number_format($_SESSION["editproduct"][$i]["total_price"], 2); ?></td>
                         <td><?php echo $_SESSION["editproduct"][$i]["difference"]; ?></td>
                         <td><?php echo $_SESSION["editproduct"][$i]["DifferencePer"]; ?></td>
                         <td><?php echo $_SESSION["editproduct"][$i]["DifferenceBath"]; ?></td>
-                        <td class ="text-right"><?php echo number_format($_SESSION["editproduct"][$i]["total"],2); ?></td>
+                        <td class ="text-right"><?php echo number_format($_SESSION["editproduct"][$i]["total"], 2); ?></td>
                         <td>
-                            <a href="editproduct_editorder.php?idorder=<?=$_SESSION["editproduct"][$i]["idorder"];; ?>&idproduct_order=<?= $i; ?>&idunit=<?php echo $idUnitS; ?>&amount=<?= $_SESSION["editproduct"][$i]["AmountProduct"]; ?>&DifferencePer=<?= $_SESSION["editproduct"][$i]["DifferencePer"]; ?>&DifferenceBath=<?= $_SESSION["editproduct"][$i]["DifferenceBath"]; ?>&type=<?= $_SESSION["editproduct"][$i]["type"]; ?>" class="btn btn-warning " data-toggle="tooltip" title="แก้ไข">
+                            <a href="editproduct_editorder.php?idorder=<?=
+                            $_SESSION["editproduct"][$i]["idorder"];
+                            ;
+                            ?>&idproduct_order=<?= $i; ?>&idunit=<?php echo $idUnitS; ?>&amount=<?= $_SESSION["editproduct"][$i]["AmountProduct"]; ?>&DifferencePer=<?= $_SESSION["editproduct"][$i]["DifferencePer"]; ?>&DifferenceBath=<?= $_SESSION["editproduct"][$i]["DifferenceBath"]; ?>&type=<?= $_SESSION["editproduct"][$i]["type"]; ?>" class="btn btn-warning " data-toggle="tooltip" title="แก้ไข">
                                 <span class="glyphicon glyphicon-edit"></span>
                             </a>
                             <a class = "btn btn-danger" data-toggle = "modal" data-toggle = "tooltip" title = "ลบ" id="deleteProduct<?= $i; ?>" name="deleteProduct<?= $i; ?>" onclick="delProduct(<?= $i; ?>);">
