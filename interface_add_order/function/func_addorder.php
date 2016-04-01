@@ -16,7 +16,7 @@ function getShop() {
 
 function getShop2() {
     $conn = dbconnect();
-    $SQLCommand = "SELECT idshop,name_shop FROM shop";
+    $SQLCommand = "SELECT * FROM shop";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute();
     $resultArr = array();
@@ -343,13 +343,14 @@ function EditProductOrder($idproduct_order, $idunit, $amount_product_order, $dif
     }
 }
 
-function edit_unit($id) {
+function edit_unit($id,$idunit) {
     $conn = dbconnect();
-    $SQLCommand = "SELECT idunit,name_unit,price_unit,type_unit FROM unit WHERE idproduct = :id";
+    $SQLCommand = "SELECT idunit,name_unit,price_unit,type_unit FROM unit WHERE idproduct = :id AND idunit != :idunit";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
-                ":id" => $id
+                ":id" => $id,
+                ":idunit" => $idunit
             )
     );
     $resultArr = array();
