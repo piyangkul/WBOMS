@@ -24,7 +24,7 @@
                 <a <?php if ($p == "stat_shop_bill") echo 'class="active-menu"'; ?> href="../stat_shop_bill/stat_shop_bill.php"><i class="fa fa-bar-chart fa-3x"></i> Statistic Shop Bill </a>
             </li>
             <li>
-                <a <?php if ($p == "stat") echo 'class="active-menu"'; ?> href="../stat/stat.php"><i class="fa fa-line-chart fa-3x"></i> Statistic Finance</a>
+                <a <?php if ($p == "stat") echo 'class="active-menu"'; ?> href="../stat/stat.php"><i class="fa fa-bar-chart fa-3x"></i> Statistic Finance</a>
             </li>
             <li>
                 <a <?php if ($p == "product") echo 'class="active-menu"'; ?> href="../interface_product/product.php"><i class="fa fa-cube fa-3x"></i> Product </a>
