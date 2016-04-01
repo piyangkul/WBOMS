@@ -223,11 +223,11 @@ if (isset($_GET['idshipment_period'])and isset($_GET['idfactory'])) {
                                             <tbody>
                                                 <?php
                                                 //มีเงื่อนไข การกำหนดช่วงเวลาที่สั่ง
-                                                $getShipmentsByID = getShipmentByID($idfactory, $idshipment_period);
-                                                $i = 0;
+                                                $getShipmentsByID2 = getShipmentByID($idfactory, $idshipment_period);
+                                                $i2 = 0;
                                                 $n = 0;
-                                                foreach ($getShipmentsByID as $value) {
-                                                    $i++;
+                                                foreach ($getShipmentsByID2 as $value) {
+                                                    $i2++;
                                                     $val_idorder_p = $value['idorder_p'];
                                                     $val_idproduct = $value['idproduct'];
                                                     $val_idproduct_order = $value['idproduct_order'];
@@ -266,14 +266,15 @@ if (isset($_GET['idshipment_period'])and isset($_GET['idfactory'])) {
                                                         $val_number = "-";
                                                     }
                                                     $val_price_transport = $value['price_transport'];
+                                                    //echo $val_status_checktransport;
                                                     ?>
                                                     <?php
-                                                    if ($val_status_checktransport != "postpone") {
+                                                    if ($val_status_checktransport != "postpone") {//check uncheck
                                                         if ($status_shipment_factory == "pay" || $status_shipment_factory == "finish") {
                                                             ?> <!-- สถานะโรงงาน -->
                                                             <?php if ($val_confirm_status_shipment == "pay" || $val_confirm_status_shipment == "finish") { ?> <!-- สถานะรายการสินค้า -->
                                                                 <tr>
-                                                                    <td><?php echo $i; ?></td>
+                                                                    <td><?php echo $i2; ?></td>
                                                                     <td><?php echo date_format($date_order_p, 'd-m-Y'); ?></td>
                                                                     <td><?php echo $val_name_shop; ?></td>
                                                                     <td><?php echo $val_name_product; ?></td>
@@ -309,7 +310,7 @@ if (isset($_GET['idshipment_period'])and isset($_GET['idfactory'])) {
 
 
                                                                     <td>
-                                                                        <?php if ($val_date_transport != "-") { ?>
+                                                                        <?php if ($date_transport != "-") { ?>
                                                                             <a href="popup_detail_shipment.php?idshipment_period=<?php echo $idshipment_period; ?>&idfactory=<?php echo $idfactory; ?>&idorder_transport=<?php echo $val_idorder_transport; ?>&idtransport=<?php echo $val_idtransport; ?>&volume=<?php echo $val_volume; ?>&number=<?php echo $val_number; ?>&price_transport=<?php echo $val_price_transport; ?>&status_shipment=<?php echo $val_confirm_status_shipment; ?>&price=<?php echo $total_price; ?>" class="btn btn-success " data-toggle="modal" data-target="#myModal-lg" data-toggle="tooltip" title="รายละเอียด">
                                                                                 <span class="glyphicon glyphicon-list-alt"></span>
                                                                             </a>
@@ -382,7 +383,7 @@ if (isset($_GET['idshipment_period'])and isset($_GET['idfactory'])) {
                                                                 ?>
 
                                                                 <td>
-                                                                    <?php if ($val_date_transport != "-") { ?>
+                                                                    <?php if ($date_transport != "-") { ?>
                                                                         <a href="popup_detail_shipment.php?idshipment_period=<?php echo $idshipment_period; ?>&idfactory=<?php echo $idfactory; ?>&idorder_transport=<?php echo $val_idorder_transport; ?>&idtransport=<?php echo $val_idtransport; ?>&volume=<?php echo $val_volume; ?>&number=<?php echo $val_number; ?>&price_transport=<?php echo $val_price_transport; ?>&status_shipment=<?php echo $val_confirm_status_shipment; ?>&price=<?php echo $total_price; ?>" class="btn btn-success " data-toggle="modal" data-target="#myModal-lg" data-toggle="tooltip" title="รายละเอียด">
                                                                             <span class="glyphicon glyphicon-list-alt"></span>
                                                                         </a>
