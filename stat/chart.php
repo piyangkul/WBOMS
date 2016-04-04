@@ -8,6 +8,17 @@ $p = 'stat';
 if (isset($_GET['p']) && !empty($_GET['p'])) {
     $p = $_GET['p'];
 }
+$year_start = $_GET['year_start'];
+$month_start = $_GET['month_start'];
+$year_end = $_GET['year_end'];
+$month_end = $_GET['month_end'];
+
+//if (isset($_GET['get_year_start'])) {
+//    $year_start = $_GET['get_year_start'];
+//    $month_start = $_GET['get_month_start'];
+//    $year_end = $_GET['get_year_end'];
+//    $month_end = $_GET['get_month_end'];
+//}
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -66,7 +77,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                         <tbody>
                             <?php
                             //ดึงข้อมูลจากตาราง
-                            $getIncome_Outcome = getIncome_Outcome();
+                            $getIncome_Outcome = getIncome_Outcome($month_start, $year_start, $month_end, $year_end);
                             foreach ($getIncome_Outcome as $value) {
                                 $val_date_start = $value['date_start'];
                                 $date_start = date_create($val_date_start);
@@ -80,10 +91,10 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                 ?>
                                 <tr>
                                     <td><?php
-                                        echo date_format($date_start, 'd-m-Y');
-                                        echo" ถึง ";
-                                        echo date_format($date_end, 'd-m-Y');
-                                        ?>
+                            echo date_format($date_start, 'd-m-Y');
+                            echo" ถึง ";
+                            echo date_format($date_end, 'd-m-Y');
+                                ?>
                                     </td>
                                     <td><?php echo $val_income; ?></td>   
                                     <td><?php echo $val_outcome; ?></td>   
@@ -130,7 +141,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                 $('#myModal').removeData('bs.modal');
             });
             function Back() {
-                window.location.assign("stat.php");
+                window.location.assign("stat.php?year_start=<?php echo $year_start; ?>&month_start=<?php echo $month_start; ?>&year_end=<?php echo $year_end; ?>&month_end=<?php echo $month_end; ?>");
             }
         </script>
 
