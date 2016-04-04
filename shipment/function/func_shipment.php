@@ -1023,17 +1023,34 @@ function getPayFactory($idfactory, $idshipment_period) {
     return $result;
 }
 
-//ยังไม่เสร็จเปลี่ยนหน่วยไม่ได้
-function editProduct_order($idproduct_order, $idamount_product_order) {
+function getUnit($idproduct,$idunit) {
     $conn = dbconnect();
-    $SQLCommand = "UPDATE `product_order` SET `amount_product_order`=:amount_product_order "
+    $SQLCommand = "SELECT * FROM `unit` WHERE idproduct = :idproduct AND idunit != :idunit";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idproduct" => $idproduct,
+                ":idunit" => $idunit
+    ));
+    $resultArr = array();
+    while ($result = $SQLPrepare->fetch(PDO::FETCH_ASSOC)) {
+        array_push($resultArr, $result);
+    }
+    return $resultArr;
+}
+
+
+function editProduct_order($idproduct_order, $idamount_product_order,$idunit) {
+    $conn = dbconnect();
+    $SQLCommand = "UPDATE `product_order` SET `amount_product_order`=:amount_product_order,idunit = :idunit "
             . "WHERE `idproduct_order`=:idproduct_order";
 
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
                 ":idproduct_order" => $idproduct_order,
-                ":amount_product_order" => $idamount_product_order
+                ":amount_product_order" => $idamount_product_order,
+                ":idunit" => $idunit
             )
     );
 
@@ -1043,6 +1060,27 @@ function editProduct_order($idproduct_order, $idamount_product_order) {
         return false;
     }
 }
+
+////ยังไม่เสร็จเปลี่ยนหน่วยไม่ได้
+//function editProduct_order($idproduct_order, $idamount_product_order) {
+//    $conn = dbconnect();
+//    $SQLCommand = "UPDATE `product_order` SET `amount_product_order`=:amount_product_order "
+//            . "WHERE `idproduct_order`=:idproduct_order";
+//
+//    $SQLPrepare = $conn->prepare($SQLCommand);
+//    $SQLPrepare->execute(
+//            array(
+//                ":idproduct_order" => $idproduct_order,
+//                ":amount_product_order" => $idamount_product_order
+//            )
+//    );
+//
+//    if ($SQLPrepare->rowCount() > 0) {
+//        return TRUE;
+//    } else {
+//        return false;
+//    }
+//}
 
 //
 //function add($p1, $p2, $p3) {
