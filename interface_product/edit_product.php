@@ -12,14 +12,14 @@ require_once 'function/func_product.php';
 $val_idproduct = $_GET['idproduct']; //ส่งค่าpara
 $getProductDetail = getProductDetail($val_idproduct);
 $getProductUnit = getProductUnit($val_idproduct);
-//echo "<pre>";
-//print_r($getProductDetail);
-//echo "</pre>";
+$countUnitS = countUnit($val_idproduct);
+$countUnit = $countUnitS['numunit'];
 $val_name_product = $getProductDetail['name_product']; //ชื่อสินค้า
 $val_detail_product = $getProductDetail['detail_product']; //รายละเอียดสินค้า
 $val_name_factoryID = $getProductDetail['idfactory']; //ไอดีโรงงาน
 $val_name_factory = $getProductDetail['name_factory']; //ชื่อโรงงาน
 $val_difference_amount_product = $getProductDetail['difference_amount_product']; // % ส่วนลด
+$numUnit = 0;
 ?>
 
 <?php
@@ -49,6 +49,13 @@ foreach ($getProducts as $value) {
         <link href="../assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
         <!-- CUSTOM STYLES-->
         <link href="../assets/css/custom.css" rel="stylesheet" />
+        <!-- GOOGLE FONTS-->
+        <link href='../http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+        <!-- Date Picker -->
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"/>
+        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        <link rel="stylesheet" href="/resources/demos/style.css"/>
     </head>
     <body>
         <div id="wrapper">
@@ -93,6 +100,7 @@ foreach ($getProducts as $value) {
                                                     require_once '../interface_factory/function/func_factory.php';
                                                     $getFactorys = getFactorys();
                                                     foreach ($getFactorys as $value) {
+
                                                         $val_idfactory = $value['idfactory'];
                                                         $val_name_factory = $value['name_factory'];
                                                         ?>
@@ -100,7 +108,7 @@ foreach ($getProducts as $value) {
                                                     <?php } ?>
                                                 </select>
                                             </div>
-                                            <div class="form-group">
+                                            <div class="form-group col-xs-12">
                                                 <label for="porductDetail">รายละเอียด</label>
                                                 <textarea class="form-control" id="porductDetail" name="porductDetail"><?php echo $val_detail_product; ?></textarea>
                                             </div>
@@ -120,24 +128,45 @@ foreach ($getProducts as $value) {
                                     </div>
                                     <div class="panel-body">
                                         <div class="table-responsive">
-                                            <a href="popup_add_product_unit.php" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal1">
+                                            <a href="popup_edit_product_addunit.php?idproduct=<?= $val_idproduct; ?>" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal1">
                                                 <span class="glyphicon glyphicon-plus"></span> เพิ่มหน่วยสินค้า
                                             </a>
-                                            <button class="btn btn-danger btn-lg" type="button" onclick="resetUnit();">
-                                                <span class="glyphicon glyphicon-trash"></span> ลบหน่วยสินค้าทั้งหมด
-                                            </button>
                                             <br/><br/>
                                             <table class="table table-striped table-bordered table-hover text-center" id="dataTables-example">
                                                 <thead>
                                                     <tr>
+                                                        <th>หน่วย</th>
                                                         <th>จำนวนต่อหน่วยใหญ่</th>
                                                         <th>หน่วยใหญ่</th>
-                                                        <th>จำนวนต่อหน่วยรอง</th>
-                                                        <th>หน่วยรอง</th>
+                                                        <th>ราคาหน่วย</th>
                                                         <th>การกระทำ</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                    <?php
+                                                    $numUnit++;
+                                                    $getUnitBig = getProductBigUnit($val_idproduct);
+                                                    $valIdUnitBig = $getUnitBig['idunit'];
+                                                    $valNameBigUnit = $getUnitBig['name_unit'];
+                                                    $valAmountBig = $getUnitBig['amount_unit'];
+                                                    $val_price_bigunit = $getUnitBig['price_unit'];
+                                                    ?>
+                                                    <tr>
+                                                        <td><?php echo $valNameBigUnit; ?></td>
+                                                        <td><?php echo $valAmountBig; ?></td>
+                                                        <td>-</td>
+                                                        <td><?php echo $val_price_bigunit; ?></td>
+                                                        <td>
+                                                            <!-- Button trigger modal -->
+                                                            <a href="popup_edit_product_editunitBig.php?unitid=<?php echo $valIdUnitBig; ?>&countUnit=<?= $countUnit; ?>&idproduct=<?= $val_idproduct; ?>" class="btn btn-warning" data-toggle="modal" data-target="#myModal2" data-toggle="tooltip" title="แก้ไข">
+                                                                <span class="glyphicon glyphicon-edit"></span> 
+                                                            </a>
+                                                            <!--                                                            <a href="popup_delete_product_unit.php" class="btn btn-danger" data-toggle="modal" data-target="#myModal3" data-toggle="tooltip" title="ลบ">
+                                                                                                                            <span class="glyphicon glyphicon-trash"></span>
+                                                                                                                        </a>-->
+                                                        </td>
+                                                    </tr> 
+                                                    ?>
                                                     <?php
                                                     $bigUnitName;
                                                     $bigPiceUnit;
@@ -147,19 +176,21 @@ foreach ($getProducts as $value) {
                                                             $bigPiceUnit = $value['price_unit'];
                                                             continue;
                                                         }
+                                                        $numUnit++;
                                                         $valIdunit = $value['idunit'];
                                                         $valUnit = $value['name'];
                                                         $valAmount = $value['amount_unit'];
                                                         $valBigUnit = $value['name_big'];
+                                                        $val_price_smallunit = $value['price_unit'];
                                                         ?>
                                                         <tr>
-                                                            <td>1</td>
-                                                            <td><?php echo $valUnit; ?></td>
-                                                            <td><?php echo $valAmount; ?></td>
+                                                            <td id="nameUnitSmall<?= $valIdunit; ?>"><?php echo $valUnit; ?></td>
+                                                            <td id="AmountPerUnitSmall<?= $valIdunit; ?>"><?php echo $valAmount; ?></td>
                                                             <td><?php echo $valBigUnit; ?></td>
+                                                            <td id="PriceSmall<?= $valIdunit; ?>"><?php echo $val_price_smallunit; ?></td>
                                                             <td>
                                                                 <!-- Button trigger modal -->
-                                                                <a href="popup_edit_product_unit.php?unitid=<?php echo $valIdunit; ?>" class="btn btn-warning" data-toggle="modal" data-target="#myModal2" data-toggle="tooltip" title="แก้ไข">
+                                                                <a href="popup_edit_product_editunit.php?unitid=<?php echo $valIdunit; ?>&idUnitBig=<?= $valIdUnitBig; ?>&countUnit=<?= $countUnit; ?>" class="btn btn-warning" data-toggle="modal" data-target="#myModal2" data-toggle="tooltip" title="แก้ไข">
                                                                     <span class="glyphicon glyphicon-edit"></span> 
                                                                 </a>
                                                                 <!--                                                            <a href="popup_delete_product_unit.php" class="btn btn-danger" data-toggle="modal" data-target="#myModal3" data-toggle="tooltip" title="ลบ">
@@ -190,16 +221,16 @@ foreach ($getProducts as $value) {
 
                                             <div class="form-group col-xs-12">
                                                 <label for="bigestUnit">หน่วยใหญ่ที่สุด</label>
-                                                <input type="text" class="form-control" id="bigestUnit" placeholder="n/a" value="<?php echo $val_name; ?>" disabled>
+                                                <input type="text" class="form-control" id="bigestUnit" placeholder="n/a" value="<?php echo $valNameBigUnit; ?>" disabled>
                                             </div>
                                             <div class="form-group col-xs-12">
                                                 <label for="bigestPrice"> ราคาเปิดต่อหน่วยใหญ่ที่สุด </label>
-                                                <input type="text" class="form-control" id="bigestPrice" placeholder="n/a" value="<?php echo $val_price_unit; ?>" onchange="calBigestPrice();" readonly>
+                                                <input type="text" class="form-control" id="bigestPrice" placeholder="n/a" value="<?php echo $val_price_bigunit; ?>" onchange="calBigestPrice();" readonly>
                                             </div>
 
                                             <div class="form-group col-xs-12">
                                                 <label for="difference_amount">ต้นทุนลดเป็น% (%ที่โรงงานลดให้เรา)//ลด10%</label>
-                                                <input type="text" class="form-control" id="difference_amount" placeholder="n/a" name="difference_amount" value="<?php echo $val_difference_amount_product; ?>"  onchange="calBigestPrice();" required>
+                                                <input type="text" class="form-control" id="difference_amount" placeholder="n/a" name="difference_amount" value="<?php echo $val_difference_amount_product; ?>"  onkeyup="calBigestPrice();" required>
                                             </div>
                                             <div class="form-group col-xs-12">
                                                 <label for="bigestPriceResult"> ดังนั้นราคาต้นทุนต่อหน่วยใหญ่สุด//ระบบคำนวณอัตโนมัติ </label>
@@ -226,12 +257,13 @@ foreach ($getProducts as $value) {
                     </form>
                 </div>
             </div>
-        <!-- /. PAGE WRAPPER  -->
+            <!-- /. PAGE WRAPPER  -->
         </div>
         <!-- /. WRAPPER  -->
         <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
         <!-- JQUERY SCRIPTS -->
         <script src="../assets/js/jquery-1.10.2.js"></script>
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
         <!-- BOOTSTRAP SCRIPTS -->
         <script src="../assets/js/bootstrap.min.js"></script>
         <!-- METISMENU SCRIPTS -->
@@ -244,7 +276,7 @@ foreach ($getProducts as $value) {
 </html>
 <script>
                                                     $(document.body).on('hidden.bs.modal', function () {
-                                                        $('#myModal2').removeData('bs.modal');
+                                                        $('#myModal').removeData('bs.modal');
                                                     });
 
                                                     function resetUnit() {
@@ -269,6 +301,7 @@ foreach ($getProducts as $value) {
                                                         var total = bigestPrice - (bigestPrice * (difference_amount / 100.0));
                                                         $("#bigestPriceResult").val(total);
                                                     }
+
 </script>
 <!-- Modalเพิ่มหน่วย -->
 <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

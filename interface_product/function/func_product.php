@@ -265,7 +265,7 @@ function editUnit($idunit, $idunit_big, $idproduct, $name_unit, $price_unit, $ty
             array(
                 ":idunit" => $idunit,
                 ":idunit_big" => $idunit_big,
-                ":idproduct" => $idproduct,   
+                ":idproduct" => $idproduct,
                 ":name_unit" => $name_unit,
                 ":price_unit" => $price_unit,
                 ":type_unit" => $type_unit,
@@ -278,4 +278,170 @@ function editUnit($idunit, $idunit_big, $idproduct, $name_unit, $price_unit, $ty
     } else {
         return false;
     }
+}
+
+function getFactory2() {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT idfactory,name_factory FROM factory";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute();
+    $resultArr = array();
+    while ($result = $SQLPrepare->fetch(PDO::FETCH_ASSOC)) {
+        array_push($resultArr, $result);
+    }
+    return json_encode($resultArr); //, JSON_UNESCAPED_UNICODE);
+    //return "{}";
+}
+
+function getProductBigUnit($idproduct) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT unit.idunit,unit.idunit_big,unit.idproduct,name_unit,product.name_product,price_unit,type_unit,unit.amount_unit FROM unit INNER JOIN product ON unit.idproduct = product.idproduct WHERE unit.idproduct = :idproduct AND idunit_big = 0";
+//    echo $SQLCommand;
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idproduct" => $idproduct
+            )
+    );
+
+    $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
+    return $result;
+}
+
+function EditUnitE($idunit, $name_unit, $amount_unit, $price_unit, $type_unit) {
+    $conn = dbconnect();
+    $SQLCommand = "UPDATE `unit` SET `name_unit`=:name_unit,`price_unit`=:price_unit,`type_unit`=:type_unit,`amount_unit`=:amount_unit "
+            . "WHERE `idunit`=:idunit";
+
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idunit" => $idunit,
+                ":name_unit" => $name_unit,
+                ":price_unit" => $price_unit,
+                ":type_unit" => $type_unit,
+                ":amount_unit" => $amount_unit
+            )
+    );
+
+    if ($SQLPrepare->rowCount() > 0) {
+        return $conn->lastInsertId();
+    } else {
+        return false;
+    }
+}
+
+function EditCalUnit($idunit, $amount_unit, $price_unit) {
+    $conn = dbconnect();
+    $SQLCommand = "UPDATE `unit` SET `price_unit`=:price_unit,`amount_unit`=:amount_unit "
+            . "WHERE `idunit`=:idunit";
+
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idunit" => $idunit,
+                ":price_unit" => $price_unit,
+                ":amount_unit" => $amount_unit
+            )
+    );
+
+    if ($SQLPrepare->rowCount() > 0) {
+        return $conn->lastInsertId();
+    } else {
+        return false;
+    }
+}
+
+function countUnit($idproduct) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT COUNT(idproduct) AS numunit FROM `unit` WHERE idproduct = :idproduct";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idproduct" => $idproduct
+            )
+    );
+
+    $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
+    return $result;
+}
+
+function getCalUnit($idunit_big) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT idunit,idunit_big,amount_unit,price_unit FROM `unit` WHERE idunit_big = :idunit_big";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idunit_big" => $idunit_big
+            )
+    );
+
+    $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
+    return $result;
+}
+
+function getUnitAdd($idproduct) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT idunit,name_unit,idproduct,price_unit FROM unit WHERE idproduct= :idproduct";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idproduct" => $idproduct
+    ));
+    $resultArr = array();
+    while ($result = $SQLPrepare->fetch(PDO::FETCH_ASSOC)) {
+        array_push($resultArr, $result);
+    }
+    return $resultArr;
+}
+
+function ajax_priceUnit($idUnit) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT idunit,price_unit FROM `unit` WHERE idunit = :idunit";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idunit" => $idUnit
+            )
+    );
+
+    $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
+    return $result;
+}
+
+function EditUnitAdd($idproduct, $idunit_big, $name_unit, $price_unit, $type, $amount_unit) {
+    $conn = dbconnect();
+    $SQLCommand = "INSERT INTO `unit`(`idproduct`, `idunit_big`, `name_unit`, `price_unit`, `type_unit`, `amount_unit`) "
+            . "VALUES (:idproduct, :idunit_big, :name_unit, :price_unit, :type_unit, :amount_unit)";
+
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idproduct" => $idproduct,
+                ":idunit_big" => $idunit_big,
+                ":name_unit" => $name_unit,
+                ":price_unit" => $price_unit,
+                ":type_unit" => $type_unit,
+                ":amount_unit" => $amount_unit
+            )
+    );
+
+    if ($SQLPrepare->rowCount() > 0) {
+        return $conn->lastInsertId();
+    } else {
+        return false;
+    }
+}
+function getCalUnitBig($idunit) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT idunit,idunit_big,amount_unit,price_unit FROM `unit` WHERE idunit = :idunit";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idunit" => $idunit
+            )
+    );
+
+    $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
+    return $result;
 }

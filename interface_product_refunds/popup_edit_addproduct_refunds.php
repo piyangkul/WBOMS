@@ -138,6 +138,7 @@ $idorder = $_GET['idorder'];
                 showUnit();
             }
         });
+        window.location.href = 'edit_product_refunds.php?idorder=' + idorder;
     }
 
 </script>

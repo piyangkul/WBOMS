@@ -23,3 +23,4 @@ if ($checkEditProduct) {
 } else {
     header("location: ../product.php?action=editProductError");
 }
+?>

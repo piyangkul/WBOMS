@@ -44,7 +44,7 @@ echo $val_date_product_refunds;
         <script>
 
             /*  $(function () {
-             var data = JSON.stringify(<?php //getShop2();                                                                    ?>);
+             var data = JSON.stringify(<?php //getShop2();                                                                      ?>);
              //var www = JSON.parse(data);
              //alert(www);
              alert(data);
@@ -172,13 +172,14 @@ echo $val_date_product_refunds;
                                                                 }
                                                                 ?>    
                                                             </tr>
-                                                        
+
                                                             <?php
                                                         }
                                                         ?>
+                                                        <tr id="showUnit">
+                                                        </tr>
                                                 </table>
                                             </div>
-                                            <label>สินค้าเพิ่มใหม่</label>
                                             <div id="showUnit"></div>
                                             <div class="col-md-6"></div>
                                             <div class="col-md-4">
@@ -296,7 +297,7 @@ echo $val_date_product_refunds;
     function updateAmount() {
         var price = document.getElementById("price").value;
         var amount = document.getElementById("AmountProduct").value;
-        var x = price.replace(",","");
+        var x = price.replace(",", "");
         var total = amount * x;
         document.getElementById("total_price").value = total.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
     }

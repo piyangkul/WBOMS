@@ -11,7 +11,7 @@ echo "</pre>";
 //ส่งข้อมูล หน้า add product มาหน้านี้ 
 //$productCode = $_POST['productCode'];
 $productName = $_POST['productName'];
-$factoryID = $_POST['factoryid'];
+$factoryID = $_POST['idfactory'];
 $productDetail = $_POST['porductDetail'];
 $difference_amount = $_POST['difference_amount'];
 $bigestPriceResult = $_POST['bigestPriceResult'];

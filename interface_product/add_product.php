@@ -7,7 +7,7 @@ $p = 'product';
 if (isset($_GET['p']) && !empty($_GET['p'])) {
     $p = $_GET['p'];
 }
-
+require_once '/function/func_product.php';
 //echo "<pre>";
 //print_r($_POST);
 //print_r($_SESSION["unit"]);
@@ -27,6 +27,38 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
         <link href="../assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
         <!-- CUSTOM STYLES-->
         <link href="../assets/css/custom.css" rel="stylesheet" />
+        <!-- GOOGLE FONTS-->
+        <link href='../http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+        <!-- Date Picker -->
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"/>
+        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        <link rel="stylesheet" href="/resources/demos/style.css"/>
+        <script>
+            var Factory = JSON.stringify(<?php echo getFactory2(); ?>);
+            var FactoryP = JSON.parse(Factory);
+            var factoryName = new Array();
+            var factoryId = new Array();
+            for (var i = 0; i < FactoryP.length; i++) {
+                factoryName.push(FactoryP[i].name_factory);
+                factoryId["'" + FactoryP[i].name_factory + "'"] = FactoryP[i].idfactory;
+            }
+            $(function () {
+                $("#name_factory").autocomplete({
+                    source: factoryName
+                });
+            });
+
+            function getFactoryId() {
+                var price = document.getElementById("name_factory").value;
+                document.getElementById("idfactory").value = factoryId["'" + price + "'"];
+                var idfactory = $("#idfactory").val();
+                $.get("action/action_getDiff_factory.php?idfactory=" + idfactory, function (data, status) {
+                    $("#difference_amount").val(data);
+                    calBigestPrice();
+                });
+            }
+        </script>
     </head>
     <body>
         <div id="wrapper">
@@ -54,28 +86,14 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                 <div class="panel panel-default">
                                     <div class="panel-heading ">
                                         <div class="table-responsive">
-<!--                                            <div class="form-group">
-                                                <label for="productCode">รหัสสินค้า//ระบบกำหนดให้เมื่อเลือกโรงงาน</label>
-                                                <input type="text" maxlength="7" class="form-control" id="productCode" name="productCode" readonly>
-                                            </div>-->
                                             <div class="form-group">
                                                 <label for="productName"> ชื่อสินค้า </label><label class="text-danger">*</label>
                                                 <input type="text" class="form-control" id="productName" name="productName" placeholder="กรอกชื่อสินค้า" required="">
                                             </div>
                                             <div class="form-group">
                                                 <label for="factoryName"> ชื่อโรงงาน </label><label class="text-danger">*</label>
-                                                <select class="form-control" id="factoryid" name="factoryid" required onchange="getDiff_factory();">
-                                                    <option selected value="">Choose</option>
-                                                    <?php
-                                                    require_once '../interface_factory/function/func_factory.php';
-                                                    $getFactorys = getFactorys();
-                                                    foreach ($getFactorys as $value) {
-                                                        $val_idfactory = $value['idfactory'];
-                                                        $val_name_factory = $value['name_factory'];
-                                                        ?>
-                                                        <option value="<?php echo $val_idfactory; ?>"><?php echo $val_name_factory; ?></option>
-                                                    <?php } ?>
-                                                </select>
+                                                <input type="text" class="form-control" id="name_factory" name="name_factory" placeholder="กรุณาระบุชื่อโรงงาน" autocomplete= on onblur="getFactoryId()"></input>                    
+                                                <input type="hidden" id="idfactory" name="idfactory" onchange="getDiff_factory()"></input>
                                             </div>
                                             <div class="form-group">
                                                 <label for="porductDetail">รายละเอียด</label>
@@ -100,7 +118,9 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                             <a href="popup_add_product_unit.php" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">
                                                 <span class="glyphicon glyphicon-plus"></span> เพิ่มหน่วยสินค้า
                                             </a>
-                                            <button class="btn btn-danger btn-lg" type="button" onclick="if(confirm('คุณต้องการลบหน่วยสินค้าทั้งหมดหรือไม่')){resetUnit();}">
+                                            <button class="btn btn-danger btn-lg" type="button" onclick="if (confirm('คุณต้องการลบหน่วยสินค้าทั้งหมดหรือไม่')) {
+                                                        resetUnit();
+                                                    }">
                                                 <span class="glyphicon glyphicon-trash"></span> ลบหน่วยสินค้าทั้งหมด
                                             </button>
                                             <br/><br/>
@@ -167,6 +187,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
         <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
         <!-- JQUERY SCRIPTS -->
         <script src="../assets/js/jquery-1.10.2.js"></script>
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
         <!-- BOOTSTRAP SCRIPTS -->
         <script src="../assets/js/bootstrap.min.js"></script>
         <!-- METISMENU SCRIPTS -->
@@ -211,7 +232,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                 });
             }
             function getDiff_factory() {
-                var idfactory = $("#factoryid").val();
+                var idfactory = $("#idfactory").val();
                 $.get("action/action_getDiff_factory.php?idfactory=" + idfactory, function (data, status) {
                     $("#difference_amount").val(data);
                     calBigestPrice();
