@@ -158,7 +158,7 @@ $totaldiff = ($price * $amount_product_order) - ((($price * $amount_product_orde
                                     <input type="text" class="form-control" id="name_factory" name="name_factory" placeholder="กรุณาระบุชื่อสินค้า" value ="<?= $nameFactory ?>" disabled></input>
                                     <input type="hidden" id="idfactory" name="idfactory" value ="<?= $idFactory ?>"></input>
                                 </div>
-                                <div class="form-group col-xs-12">
+                                <div class="form-group col-xs-12" style="float:left;width:50%;">
                                     <label for="name_product"> หน่วย</label>  <font size="1" color ="red">*กรุณาเลือกสินค้าก่อน</font>
 
                                     <select class="form-control" id="idUnit" name="idUnit" onchange="LoadData(this.value)" required>
@@ -175,7 +175,7 @@ $totaldiff = ($price * $amount_product_order) - ((($price * $amount_product_orde
                                     </select>                
                                     <div id="tee"></div>
                                 </div>
-                                <div class="form-group col-xs-12">
+                                <div class="form-group col-xs-12" style="float:left;width:50%;">
                                     <label for="amount_product">จำนวน</label>
                                     <input type="text" class="form-control" id="AmountProduct" placeholder="กรอกจำนวนสินค้า" onkeyup="updateAmount()" value="<?= $amount_product_order; ?>">
                                 </div>
@@ -282,7 +282,7 @@ $totaldiff = ($price * $amount_product_order) - ((($price * $amount_product_orde
                                 var difference = $("#difference").val();
                                 var DifferencePer = $("#DifferencePer").val();
                                 var DifferenceBath = $("#DifferenceBath").val();
-                                var price = $("#price").val();
+                                var price = $("#price").val().replace(",","");
                                 var total_price = $("#total_price").val();
                                 var total = $("#total").val();
                                 var type = $("#type").val();

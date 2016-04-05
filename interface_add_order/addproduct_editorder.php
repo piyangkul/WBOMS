@@ -160,14 +160,14 @@ $idorder = $_GET['idorder'];
                                     <input type="text" class="form-control" id="name_factory" name="name_factory" placeholder="กรุณาระบุชื่อสินค้า" disabled></input>
                                     <input type="hidden" id="idfactory" name="idfactory"></input>
                                 </div>
-                                <div class="form-group col-xs-12">
+                                <div class="form-group col-xs-12" style="float:left;width:50%;">
                                     <label> หน่วย</label>  <font size="1" color ="red">*กรุณาเลือกสินค้าก่อน</font>
                                     <select class="form-control" id="idUnit" name="idUnit" onchange="LoadData(this.value)" required>
                                         <option>กรุณาเลือกหน่วยขาย</option>
                                     </select>
                                     <div id="tee"></div>
                                 </div>
-                                <div class="form-group col-xs-12">
+                                <div class="form-group col-xs-12" style="float:left;width:50%;">
                                     <label for="amount_product">จำนวน</label>
                                     <input type="text" class="form-control" id="AmountProduct" placeholder="กรอกจำนวนสินค้า" onkeyup="updateAmount()"></input>
                                 </div>

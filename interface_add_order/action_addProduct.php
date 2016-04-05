@@ -110,7 +110,7 @@ else if ($_GET['p'] == "editProduct") {
                 <th>ชื่อโรงงาน</th>
                 <th>หน่วย</th>
                 <th>จำนวน</th>
-                <th>ราคาเปิด</th>
+                <th>ราคาต่อหน่วย</th>
                 <th>ต้นทุนลด%</th>
                 <th>ขายลด%</th>
                 <th>ขายเพิ่มสุทธิ</th>
@@ -123,7 +123,7 @@ else if ($_GET['p'] == "editProduct") {
             if (isset($_SESSION["countProduct"])) {
 
                 for ($i = 1; $i <= $_SESSION["countProduct"]; $i++) {
-                    $sum += $_SESSION["product"][$i]["total"] * $_SESSION["product"][$i]["AmountProduct"];
+                    $sum += $_SESSION["product"][$i]["total"];
                     //$j = $_SESSION["unit"][$i]["under_unit"];
                     $idUnitS = $_SESSION["product"][$i]["idUnit"];
                     $idFactoryS = $_SESSION["product"][$i]["factoryName"];
@@ -158,7 +158,7 @@ else if ($_GET['p'] == "editProduct") {
                             }
                             ?></td>
                         <td><?php echo $_SESSION["product"][$i]["AmountProduct"]; ?></td>
-                        <td  class ="text-right"><?php echo number_format($_SESSION["product"][$i]["total_price"],2); ?></td>
+                        <td  class ="text-right"><?php echo number_format($_SESSION["product"][$i]["total_price"] / $_SESSION["product"][$i]["AmountProduct"], 2); ?></td>
                         <td><?php echo $_SESSION["product"][$i]["difference"]; ?></td>
                         <td><?php echo $_SESSION["product"][$i]["DifferencePer"]; ?></td>
                         <td><?php echo $_SESSION["product"][$i]["DifferenceBath"]; ?></td>
@@ -168,8 +168,8 @@ else if ($_GET['p'] == "editProduct") {
                                 <span class="glyphicon glyphicon-edit"></span>
                             </a>
                             <a class = "btn btn-danger" data-toggle = "modal" data-toggle = "tooltip" title = "ลบ" id="deleteProduct<?= $i; ?>" name="deleteProduct<?= $i; ?>" onclick="if (confirm('คุณต้องการลบหน่วยสินค้าทั้งหมดหรือไม่')) {
-                                                    delProduct(<?= $i; ?>);
-                                                }">
+                                        delProduct(<?= $i; ?>);
+                                    }">
                                 <span class = "glyphicon glyphicon-trash"></span>
                             </a>     
                         </td>
@@ -183,7 +183,7 @@ else if ($_GET['p'] == "editProduct") {
     <div class="col-md-6"></div>
     <div class="col-md-4">
         <label for="disabled_no">ราคาขายรวมต่อบิล</label>
-        <input type="text" class="form-control" id="disabled_no" placeholder=" " value="<?= $sum ?>" readonly="true">
+        <input type="text" class="form-control" id="disabled_no" placeholder=" " value="<?= number_format($sum,2) ?>" readonly="true">
     </div>
     <script>
         function delProduct(str) {

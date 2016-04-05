@@ -116,12 +116,12 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                     //$val_count_idproduct_order = $value['count_idproduct_order'];
                                                     ?>
                                                     <tr>
-                                                        <td><?php echo $i; ?></td>
-                                                        <td><?php echo $val_code_order_p; ?></td>
-                                                        <td><?php echo $val_date_order_p; ?></td>
-                                                        <td><?php echo $val_time_order_p; ?></td>
-                                                        <td><?php echo $val_name_shop; ?></td>
-                                                        <td><?php echo $val_count_product; ?></td>
+                                                        <td class ="text-center"><?php echo $i; ?></td>
+                                                        <td class ="text-center"><?php echo $val_code_order_p; ?></td>
+                                                        <td class ="text-center"><?php echo $val_date_order_p; ?></td>
+                                                        <td class ="text-center"><?php echo $val_time_order_p; ?></td>
+                                                        <td class ="text-center"><?php echo $val_name_shop; ?></td>
+                                                        <td class ="text-center"><?php echo $val_count_product; ?></td>
                                                         <td class ="text-right"><?php echo number_format($val_price_product_order, 2); ?></td>
                                                         <td> <center>
 

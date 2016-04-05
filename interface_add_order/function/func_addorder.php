@@ -87,7 +87,7 @@ function getProduct($id) {
 function getProduct4() {
     $conn = dbconnect();
     //$SQLCommand = "SELECT idproduct,idfactory,name_product FROM `product` WHERE idfactory = {$id} ORDER BY name_product";
-    $SQLCommand = "SELECT idproduct,product.idfactory,name_product,name_factory,difference_amount_factory,factory.type_factory FROM `product`  INNER JOIN factory ON factory.idfactory = product.idfactory";
+    $SQLCommand = "SELECT idproduct,product.idfactory,name_product,name_factory,difference_amount_product,factory.type_factory FROM `product`  INNER JOIN factory ON factory.idfactory = product.idfactory";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute();
     $resultArr = array();

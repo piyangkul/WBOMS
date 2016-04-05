@@ -89,7 +89,7 @@ require_once '/function/func_addorder.php';
                 productId["'" + ProductP[i].name_product + "'"] = ProductP[i].idproduct;
                 factoryName["'" + ProductP[i].name_product + "'"] = ProductP[i].name_factory;
                 factoryId["'" + ProductP[i].name_product + "'"] = ProductP[i].idfactory;
-                factoryDiff["'" + ProductP[i].name_product + "'"] = ProductP[i].difference_amount_factory;
+                factoryDiff["'" + ProductP[i].name_product + "'"] = ProductP[i].difference_amount_product;
                 factoryType["'" + ProductP[i].name_product + "'"] = ProductP[i].type_factory;
             }
             $(function () {
@@ -160,14 +160,14 @@ require_once '/function/func_addorder.php';
                                     <input type="hidden" id="idfactory" name="idfactory"></input>
                                     <input type="hidden" class="form-control" id="typefactory" name="typefactory"></input>
                                 </div>
-                                <div class="form-group col-xs-12">
+                                <div class="form-group col-xs-12" style="float:left;width:50%;">
                                     <label> หน่วย</label>  <font size="1" color ="red">*กรุณาเลือกสินค้าก่อน</font>
                                     <select class="form-control" id="idUnit" name="idUnit" onchange="LoadData(this.value)" required>
                                         <option>กรุณาเลือกหน่วยขาย</option>
                                     </select>
                                     <div id="tee"></div>
                                 </div>
-                                <div class="form-group col-xs-12">
+                                <div class="form-group col-xs-12" style="float:left;width:50%;">
                                     <label for="amount_product">จำนวน</label>
                                     <input type="text" class="form-control" id="AmountProduct" placeholder="กรอกจำนวนสินค้า" onkeyup="updateAmount()"></input>
                                 </div>
@@ -188,14 +188,14 @@ require_once '/function/func_addorder.php';
                                             <div class="panel-body">
                                                 <div class="table-responsive">
                                                     <div class="form-group">
-                                                        <label for="disabled_cost_discounts_percent" id="name_difference"> ต้นทุนลดเป็น% (%ที่โรงงานลดให้เรา) </label>
+                                                        <label for="disabled_cost_discounts_percent" id="name_difference"> เปอร์เซ็นต์ส่วนลดราคาต้นทุน </label>
                                                         <input type="text" class="form-control" id="difference" readonly="true" onkeyup="cal_difference()"></input>
                                                     </div>
                                                     <div class="form-group">
-                                                        <label for="exampleInputName2"> ดังนั้นราคาต้นทุน //ระบบคิดอัตโนมัติตามหน่วยที่เลือก</label>
+                                                        <label for="exampleInputName2"> ราคาต้นทุน</label>
                                                         <input type="text" class="form-control" id="cal_difference" readonly="true" ></input>
                                                     </div>
-                                                    <label class="radio"> ขายลดเปอร์เซ็นต์//8% = 44.8 </label>
+                                                    <label class="radio"> เปอร์เซ็นต์ส่วนลดต้นทุนราคาขายจริง</label>
                                                     <input type="text" class="form-control" placeholder="กรอก%ขายลด"  id="DifferencePer" value="" onkeyup="updateAmount()"/></input>
 
                                                     <h id="type"></h>
@@ -208,7 +208,7 @@ require_once '/function/func_addorder.php';
                                     <div class="col-md-12 col-sm-12 ">
                                         <div class="panel panel-info">
                                             <div class="panel-heading">
-                                                <label>ส่วนต่างราคาขาย//ระบบจะดึงส่วนต่างราคาขายที่ให้แต่ละร้านค้า(สินค้าเชื่อมร้านค้า) </label>
+                                                <label>ส่วนต่างราคาขาย </label>
                                             </div>
                                             <div class="panel-body">
                                                 <div class="table-responsive ">
@@ -221,7 +221,7 @@ require_once '/function/func_addorder.php';
                                     </div>
                                 </div>
                                 <div class="form-group col-xs-12">
-                                    <label for="exampleInputName2"> ดังนั้นราคาขาย//ระบบคำนวนอัตโนมัติ(ราคาเปิด-ส่วนต่างราคาขาย=560-44.8) </label>
+                                    <label for="exampleInputName2"> ราคาขายจริง </label>
                                     <input  type="text" class="form-control" id="total" readonly="true" value=""></input>
                                 </div>
                             </div>
@@ -299,6 +299,7 @@ require_once '/function/func_addorder.php';
                                 // var totals = total - (total * (difference / 100));
                                 var total_all;
                                 var type = document.getElementById("typefactory").value;
+                                //alert(type);
                                 if (type === "PERCENT") {
                                     var diffper = document.getElementById("DifferencePer").value;
                                     var difference = document.getElementById("difference").value;
@@ -309,6 +310,7 @@ require_once '/function/func_addorder.php';
                                 else if (type === "BATH") {
                                     var diffbath = document.getElementById("DifferenceBath").value;
                                     total_all = total + (diffbath * amount);
+                                    document.getElementById("total").value = total_all.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
                                 }
                                 document.getElementById("total_price").value = total.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
                                 document.getElementById("cal_difference").value = totals.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
@@ -415,8 +417,8 @@ require_once '/function/func_addorder.php';
                                 var DifferencePer = $("#DifferencePer").val();
                                 var DifferenceBath = $("#DifferenceBath").val();
                                 var price = $("#price").val();
-                                var total_price = $("#total_price").val().replace(",","");
-                                var total = $("#total").val().replace(",","");
+                                var total_price = $("#total_price").val().replace(",", "");
+                                var total = $("#total").val().replace(",", "");
                                 var type = document.getElementById("typefactory").value;
                                 //alert(idUnit);
                                 //alert(AmountProduct);
