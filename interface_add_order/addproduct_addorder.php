@@ -24,12 +24,12 @@ require_once '/function/func_addorder.php';
         <!-- CUSTOM STYLES-->
         <link href="../assets/css/custom.css" rel="stylesheet" />
         <!-- GOOGLE FONTS-->
-        <link href='../http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+        <!--<link href='../http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />-->
         <!-- Date Picker -->
         <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"/>
         <script src="//code.jquery.com/jquery-1.10.2.js"></script>
         <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-        <link rel="stylesheet" href="/resources/demos/style.css"/>
+       <!-- <link rel="stylesheet" href="/resources/demos/style.css"/>-->
         <script>
             //alert('<?//= getShop2(); ?>');
             var Shop = JSON.stringify(<?php echo getShop2(); ?>);
