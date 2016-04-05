@@ -253,7 +253,6 @@ require_once '/function/func_addorder.php';
         <!-- METISMENU SCRIPTS -->
         <script src="../assets/js/jquery.metisMenu.js"></script>
         <!-- CUSTOM SCRIPTS -->
-        <script src="../assets/js/custom.js"></script>
     </body>
 </html>
 <script>
