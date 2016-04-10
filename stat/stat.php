@@ -8,12 +8,12 @@ $p = 'stat';
 if (isset($_GET['p']) && !empty($_GET['p'])) {
     $p = $_GET['p'];
 }
-if (isset($_GET['year_start'])) {
+if (isset($_GET['year_start'])) {           //ถ้ามีค่าที่รับมา
     $get_year_start = $_GET['year_start'];
     $get_month_start = $_GET['month_start'];
     $get_year_end = $_GET['year_end'];
     $get_month_end = $_GET['month_end'];
-} else {
+} else {                                    //ไม่มีค่าที่รับมา
     $get_year_start = 0;
     $get_month_start = 0;
     $get_year_end = 0;
@@ -112,7 +112,8 @@ if (isset($_GET['year_start'])) {
                                                 <label for="month_end">เลือกเดือนสิ้นสุด</label>
                                                 <div class="form-group input-group">
                                                     <span class="input-group-addon"><i class="fa fa-calendar-o" ></i></span>
-                                                    <select class="form-control" id="month_end" name="month_end" onchange="show_stat_table();"></select>
+                                                    <select class="form-control" id="month_end" name="month_end" onchange="change_stat_table();
+                                                            "></select>
                                                 </div>
                                             </div>
 
@@ -166,9 +167,15 @@ if (isset($_GET['year_start'])) {
         <script>
                                 $(document).ready(function () {
                                     $('#dataTables-example').dataTable({"sort": false});
-                                });</script>
+                                    search_start();
+                                    search_YearEnd();
+                                    search_MonthEnd();
+                                    show_stat_table();
+                                });
+        </script>
         <script>
-            search_start();
+
+            //search_start();
             function search_start() {
                 var get_year_start = "<?php echo $get_year_start; ?>";
                 var get_month_start = "<?php echo $get_month_start; ?>";
@@ -184,54 +191,62 @@ if (isset($_GET['year_start'])) {
                 //show_stat_table();
             }
 
-            search_YearEnd();
+            //search_YearEnd();
             function search_YearEnd() {
                 var get_year_end = "<?php echo $get_year_end; ?>";
                 var year_start = $("#year_start").val();
                 var month_start = $("#month_start").val();
                 $.get('stat_search_year_end.php?year_start=' + year_start + '&month_start=' + month_start + '&get_year_end=' + get_year_end, function (data, status) {
                     $("#year_end").html(data);
-                    //show_stat_table();
-                });
-            }
-            
-            search_MonthEnd();
-            function search_MonthEnd() {
-                var get_month_end = "<?php echo $get_month_end; ?>";
-                var year_start = $("#year_start").val();
-                var month_start = $("#month_start").val();
-                var year_end = $("#year_end").val();
-                //console.log(month_start);
-                $.get('stat_search_month_end.php?year_start=' + year_start + '&month_start=' + month_start + '&year_end=' + year_end + '&get_month_end=' + get_month_end, function (data, status) {
-                    $("#month_end").html(data);
+                    search_MonthEnd();
                     //show_stat_table();
                 });
             }
 
-            show_stat_table();
-            function show_stat_table() {
-                var get_year_start = "<?php echo $get_year_start; ?>";
-                var get_month_start = "<?php echo $get_month_start; ?>";
-                var get_year_end = "<?php echo $get_year_end; ?>";
+            //search_MonthEnd();
+            function search_MonthEnd() {
                 var get_month_end = "<?php echo $get_month_end; ?>";
-                var year_start = $("#year_start").val();
+                var year_start = $("#year_start").val();//รับค่าselect
+                //alert(year_start);
                 var month_start = $("#month_start").val();
                 var year_end = $("#year_end").val();
-                var month_end = $("#month_end").val();
-                $.get('action/action_stat_show.php?year_start=' + year_start + '&month_start=' + month_start + '&year_end=' + year_end + '&month_end=' + month_end + '&get_year_start=' + get_year_start + '&get_month_start=' + get_month_start + '&get_year_end=' + get_year_end + '&get_month_end=' + get_month_end, function (data, status) {
+                $.get('stat_search_month_end.php?year_start=' + year_start + '&month_start=' + month_start + '&year_end=' + year_end + '&get_month_end=' + get_month_end, function (data, status) {
+                    $("#month_end").html(data);
+                });
+
+            }
+            
+            //show_stat_table();
+            function show_stat_table() {
+                var year_start = "<?php echo $get_year_start; ?>";
+                var month_start = "<?php echo $get_month_start; ?>";
+                var year_end = "<?php echo $get_year_end; ?>";
+                var month_end = "<?php echo $get_month_end; ?>";
+
+                //alert(year_start);
+                $.get('action/action_stat_show.php?year_start=' + year_start + '&month_start=' + month_start + '&year_end=' + year_end + '&month_end=' + month_end, function (data, status) {
                     $("#show_stat_table").html(data);
                 });
             }
 
+            function change_stat_table() {
+                var year_start = $("#year_start").val();
+                var month_start = $("#month_start").val();
+                var year_end = $("#year_end").val();
+                var month_end = $("#month_end").val();
+
+                $.get('action/action_stat_show.php?year_start=' + year_start + '&month_start=' + month_start + '&year_end=' + year_end + '&month_end=' + month_end, function (data, status) {
+                    $("#show_stat_table").html(data);
+                });
+            }
 
             function go_to_chart() {
                 var year_start = $("#year_start").val();
                 var month_start = $("#month_start").val();
                 var year_end = $("#year_end").val();
                 var month_end = $("#month_end").val();
-                var x = location.href = 'chart.php?year_start=' + year_start + '&month_start=' + month_start + '&year_end=' + year_end + '&month_end=' + month_end ;
+                var x = location.href = 'chart.php?year_start=' + year_start + '&month_start=' + month_start + '&year_end=' + year_end + '&month_end=' + month_end;
             }
-
         </script>
         <script>
             $(function () {
