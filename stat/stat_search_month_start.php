@@ -46,6 +46,6 @@ $get_month_start = $_GET['get_month_start'];
 //    }
 //    
 ?>
-    <!--<option value="<?php echo $val_month_start; ?>" <?php if ($val_month_start == $get_month_start) { ?> selected <?php } ?> ><?php echo "เดือน: $val_month_start $name_month "; ?></option>-->
+    <!--<option value="<?php //echo $val_month_start; ?>" <?php //if ($val_month_start == $get_month_start) { ?> selected <?php //} ?> ><?php //echo "เดือน: $val_month_start $name_month "; ?></option>-->
 <?php
 // } ?>
