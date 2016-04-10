@@ -87,7 +87,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                     <th><div align="center">ชื่อโรงงาน</div></th>
                                                     <th><div align="center">เบอร์โทรศัพท์</div></th>
                                                     <th><div align="center">ผู้ติดต่อ</div></th>
-                                                    <th><div align="center">ส่วนลดต้นทุนมาตราฐาน</div></th>
+                                                    <th><div align="center">ส่วนลดต้นทุนมาตรฐาน</div></th>
                                                     <th><div align="center">การกระทำ</div></th>
                                                 </tr>
                                             </thead>
@@ -121,8 +121,8 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                                 <span class="glyphicon glyphicon-edit"></span>
                                                             </a>
                                                             <a href="action/action_delFactory.php?idfactory=<?php echo $val_idfactory; ?>" onclick="if (!confirm('คุณต้องการลบหรือไม่')) {
-                                                                        return false;
-                                                                    }" class="btn btn-danger " title="ลบ">
+                                                                            return false;
+                                                                        }" class="btn btn-danger " title="ลบ">
                                                                 <span class="glyphicon glyphicon-trash"></span>
                                                             </a>
                                                         </td>
@@ -155,9 +155,9 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
         <script src="../assets/js/dataTables/jquery.dataTables.js"></script>
         <script src="../assets/js/dataTables/dataTables.bootstrap.js"></script>
         <script>
-                                                            $(document).ready(function () {
-                                                                $('#dataTables-example').dataTable();
-                                                            });
+                                                                $(document).ready(function () {
+                                                                    $('#dataTables-example').dataTable();
+                                                                });
         </script>
         <script>
             $(function () {

@@ -12,6 +12,7 @@ if (isset($_GET['idfactory'])) {
     $val_contact_factory = $getFactorys['contact_factory'];
     $val_difference_amount = $getFactorys['difference_amount_factory'];
     $val_detail_factory = $getFactorys['detail_factory'];
+    $val_type_factory = $getFactorys['type_factory'];
 }
 ?>
 ﻿<form class="form" action="action/action_editFactory.php?idfactory=<?php echo $idfactory; ?>" method="post">
@@ -52,13 +53,61 @@ if (isset($_GET['idfactory'])) {
                         <input type="text" class="form-control" id="contact_factory" name="contact_factory" value="<?php echo $val_contact_factory; ?>" >
                     </div>
                 </div>
-                <div class="form-group col-xs-12">
-                    <label for="difference_amount_factory">ส่วนลดต้นทุนมาตราฐานของโรงงานเป็น%</label><label class="text-danger">*</label>
-                    <div class="form-group input-group">
-                        <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
-                        <input type="text" class="form-control" id="difference_amount_factory" name="difference_amount_factory" value="<?php echo $val_difference_amount; ?>" >
+                <?php if ($val_type_factory === 'PERCENT') {
+                    ?>
+                    <div class="from-group col-md-12 col-sm-12 ">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <label>ประเภทส่วนลด</label>
+                            </div>
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <div class="form-group col-xs-12" style="float: left;width: 50%;">
+                                        <input type="radio" id="per" name="type" onclick="chkPer()" value="PERCENT" checked> เปอร์เซนต์
+                                    </div>
+                                    <div class="form-group col-xs-12" style="float: left;width: 50%;">
+                                        <input type="radio" id="bath" name="type" onclick="chkBath()" value="BATH"> สุทธิ           
+                                    </div>
+                                    <div class="form-group col-xs-12">
+                                        <label for="difference_amount_factory">ส่วนลดต้นทุนมาตราฐานของโรงงานเป็น%</label><label class="text-danger">*</label>
+                                        <div class="form-group input-group">
+                                            <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
+                                            <input type="text" class="form-control" id="difference_amount_factory" name="difference_amount_factory" value="<?php echo $val_difference_amount; ?>" >
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
+
+                <?php } ?>
+                <?php if ($val_type_factory === 'BATH') {
+                    ?>
+                     <div class="from-group col-md-12 col-sm-12 ">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <label>ประเภทส่วนลด</label>
+                            </div>
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <div class="form-group col-xs-12" style="float: left;width: 50%;">
+                                        <input type="radio" id="per" name="type" onclick="chkPer()" value="PERCENT" > เปอร์เซนต์
+                                    </div>
+                                    <div class="form-group col-xs-12" style="float: left;width: 50%;">
+                                        <input type="radio" id="bath" name="type" onclick="chkBath()" value="BATH" checked> สุทธิ           
+                                    </div>
+                                    <div class="form-group col-xs-12">
+                                        <label for="difference_amount_factory">ส่วนลดต้นทุนมาตราฐานของโรงงานเป็น%</label><label class="text-danger">*</label>
+                                        <div class="form-group input-group">
+                                            <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
+                                            <input type="text" class="form-control" id="difference_amount_factory" name="difference_amount_factory" value="<?php echo $val_difference_amount; ?>" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <?php } ?>
                 <div class="form-group col-xs-12">
                     <label for="address_factory">ที่อยู่</label><label class="text-danger">*</label>
                     <div class="form-group input-group">
@@ -81,3 +130,14 @@ if (isset($_GET['idfactory'])) {
         <button type="submit" class="btn btn-primary">Save changes</button>
     </div>
 </form>
+<script>
+    function chkPer()
+    {
+        var num = document.getElementById("difference_amount_factory").value.length;
+        document.getElementById("difference_amount_factory").disabled = false;
+    }
+    function chkBath() {
+        document.getElementById("difference_amount_factory").value = 0;
+        document.getElementById("difference_amount_factory").disabled = true;
+    }
+</script>

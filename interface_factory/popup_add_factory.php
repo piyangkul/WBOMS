@@ -35,11 +35,29 @@
                         <input type="text" class="form-control" name="contact_factory" placeholder="กรอกผู้ติดต่อ" value="" required=""/>
                     </div>
                 </div>
-                <div class="form-group col-xs-12">
-                    <label for="difference_amount_factory">ส่วนลดต้นทุนมาตราฐานของโรงงานเป็น%</label><label class="text-danger">*</label>
-                    <div class="form-group input-group">
-                        <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
-                        <input type="text" class="form-control" name="difference_amount_factory" placeholder="กรอกต้นทุนลด%" value="" required=""/>
+                
+                <div class="from-group col-md-12 col-sm-12 ">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <label>ประเภทส่วนลด</label>
+                        </div>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <div class="form-group col-xs-12" style="float: left;width: 50%;">
+                                    <input type="radio" id="per" name="type" onclick="chkPer()" value="PERCENT" checked> เปอร์เซนต์
+                                </div>
+                                <div class="form-group col-xs-12" style="float: left;width: 50%;">
+                                    <input type="radio" id="bath" name="type" onclick="chkBath()" value="BATH"> สุทธิ              
+                                </div>
+                                <div class="form-group col-xs-12">
+                                    <label for="difference_amount_factory">ส่วนลดต้นทุนมาตราฐานของโรงงานเป็น%</label><label class="text-danger">*</label>
+                                    <div class="form-group input-group">
+                                        <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
+                                        <input type="text" class="form-control" id="difference_amount_factory" name="difference_amount_factory" onblur="chkPer()" placeholder="กรอกต้นทุนลด%" value="" required="" onchange="typefactory()" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="form-group col-xs-12">
@@ -59,8 +77,21 @@
             </div>
         </div>
     </div>
+
+
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button type="submit" name="submit_factory" class="btn btn-primary">Save changes</button>
     </div>
 </form>
+<script>
+    function chkPer()
+    {
+        var num = document.getElementById("difference_amount_factory").value.length;
+        document.getElementById("difference_amount_factory").disabled = false;
+    }
+    function chkBath() {
+        document.getElementById("difference_amount_factory").value = 0;
+        document.getElementById("difference_amount_factory").disabled = true;
+    }
+</script>

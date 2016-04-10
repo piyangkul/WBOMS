@@ -21,10 +21,10 @@ function checkDuplicateFactory($name_factory) {
     }
 }
 
-function addFactory($code_factory,$name_factory, $tel_factory, $address_factory, $contact_factory, $difference_amount_factory, $detail_factory) {
+function addFactory($code_factory, $name_factory, $tel_factory, $address_factory, $contact_factory, $difference_amount_factory, $detail_factory, $type_factory) {
     $conn = dbconnect();
-    $SQLCommand = "INSERT INTO `factory`(`code_factory`, `name_factory`, `tel_factory`, `address_factory`, `contact_factory`, `difference_amount_factory`, `detail_factory`) "
-            . "VALUES (:code_factory, :name_factory, :tel_factory, :address_factory, :contact_factory, :difference_amount_factory, :detail_factory)";
+    $SQLCommand = "INSERT INTO `factory`(`code_factory`, `name_factory`, `tel_factory`, `address_factory`, `contact_factory`, `difference_amount_factory`, `detail_factory`,type_factory) "
+            . "VALUES (:code_factory, :name_factory, :tel_factory, :address_factory, :contact_factory, :difference_amount_factory, :detail_factory,:type_factory)";
 
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
@@ -35,7 +35,8 @@ function addFactory($code_factory,$name_factory, $tel_factory, $address_factory,
                 ":address_factory" => $address_factory,
                 ":contact_factory" => $contact_factory,
                 ":difference_amount_factory" => $difference_amount_factory,
-                ":detail_factory" => $detail_factory
+                ":detail_factory" => $detail_factory,
+                ":type_factory" => $type_factory
             )
     );
 
@@ -77,7 +78,7 @@ function getFactoryByID($idfactory) {
             . "`address_factory`, "
             . "`contact_factory`, "
             . "`difference_amount_factory`, "
-            . "`detail_factory` FROM `factory`"
+            . "`detail_factory`,type_factory FROM `factory`"
             . "WHERE `idfactory`=:idfactory ";
 
     $SQLPrepare = $conn->prepare($SQLCommand);
@@ -91,7 +92,7 @@ function getFactoryByID($idfactory) {
     return $result;
 }
 
-function editFactory($code_factory, $name_factory, $tel_factory, $address_factory, $contact_factory, $difference_amount_factory, $detail_factory, $idfactory) {
+function editFactory($code_factory, $name_factory, $tel_factory, $address_factory, $contact_factory, $difference_amount_factory, $detail_factory, $idfactory, $type_factory) {
     $conn = dbconnect();
     $SQLCommand = "UPDATE `factory` SET "
             . "`code_factory`=:code_factory,"
@@ -100,7 +101,8 @@ function editFactory($code_factory, $name_factory, $tel_factory, $address_factor
             . "`address_factory`=:address_factory,"
             . "`contact_factory`=:contact_factory,"
             . "`difference_amount_factory`=:difference_amount_factory,"
-            . "`detail_factory`=:detail_factory "
+            . "`detail_factory`=:detail_factory,"
+            . "type_factory = :type_factory "
             . "WHERE `idfactory`=:idfactory";
 
     $SQLPrepare = $conn->prepare($SQLCommand);
@@ -113,7 +115,8 @@ function editFactory($code_factory, $name_factory, $tel_factory, $address_factor
                 ":contact_factory" => $contact_factory,
                 ":difference_amount_factory" => $difference_amount_factory,
                 ":detail_factory" => $detail_factory,
-                ":idfactory" => $idfactory
+                ":idfactory" => $idfactory,
+                ":type_factory" => $type_factory
             )
     );
 
