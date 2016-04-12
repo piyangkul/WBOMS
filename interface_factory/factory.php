@@ -75,7 +75,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                             <!-- ตารางโรงงาน -->
                             <div class="panel panel-primary">
                                 <div class="panel-heading">
-                                    <h5>ตารางโรงงาน</h5>
+                                    <h4>ตารางโรงงาน</h4>
                                 </div>
                                 <div class="panel-body">
                                     <div class="table-responsive">
