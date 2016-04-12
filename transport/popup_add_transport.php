@@ -12,28 +12,28 @@
                     <label for="idtransport">รหัสบริษัทขนส่ง</label><label class="text-danger">*</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-circle-o-notch"  ></i></span>
-                        <input type="text" class="form-control" name="code_transport" placeholder="กรุณากรอกรหัสบริษัทขนส่ง" required=""/>
+                        <input type="text" class="form-control" name="code_transport" placeholder="กรอกรหัสบริษัทขนส่ง" required=""/>
                     </div>
                 </div>
                 <div class="form-group col-xs-12">
                     <label for="name_transport">ชื่อบริษัทขนส่ง</label><label class="text-danger">*</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-truck"  ></i></span>
-                        <input type="text" class="form-control" name="name_transport" placeholder="กรุณากรอกชื่อบริษัทขนส่ง" required=""/>
+                        <input type="text" class="form-control" name="name_transport" placeholder="กรอกชื่อบริษัทขนส่ง" required=""/>
                     </div>
                 </div>
                 <div class="form-group col-xs-12">
                     <label for="tel_transport">เบอร์โทรศัพท์</label><label class="text-danger">*</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-phone"  ></i></span>
-                        <input type="text" maxlength="10" class="form-control" name="tel_transport" placeholder="กรุณากรอกเบอร์โทรศัพท์" required=""/>
+                        <input type="text" maxlength="10" class="form-control" name="tel_transport" placeholder="กรอกเบอร์โทรศัพท์" required=""/>
                     </div>
                 </div>
                 <div class="form-group col-xs-12">
                     <label for="address_transport">ที่อยู่</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-home"  ></i></span>
-                        <textarea rows="4" cols="50" class="form-control" name="address_transport" placeholder="กรุณากรอกที่อยู่" value=""/></textarea>
+                        <textarea rows="4" cols="50" class="form-control" name="address_transport" placeholder="กรอกที่อยู่" value=""/></textarea>
                     </div>
                 </div>
             </div>

@@ -11,7 +11,7 @@ $name_transport = $_POST['name_transport'];
 $tel_transport = $_POST['tel_transport'];
 $address_transport = $_POST['address_transport'];
 
-if (!checkDuplicateTranport($name_transport, $address_transport)) {
+if (!checkDuplicateTranport($name_transport, $code_transport)) {
     $transportID = addTransport($code_transport, $name_transport, $tel_transport, $address_transport);
     if ($transportID > 0) {
         header("location: ../transport.php?action=addTransportCompleted");
