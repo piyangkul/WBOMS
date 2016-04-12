@@ -8,9 +8,13 @@ if (isset($_GET['idshop'])) {
     $val_tel_shop = $getShop['tel_shop'];
     $val_address_shop = $getShop['address_shop'];
     $val_name_province = $getShop['name_province'];
+//    $val_name_region = $getShop['name_region'];
     $val_detail_shop = $getShop['detail_shop'];
+
     $val_idprovince_s = $getShop['idprovince'];
     $val_name_province_s = $getShop['name_province'];
+    $val_name_code_s = $getShop['code_province'];
+    $val_name_region_s = $getShop['name_region'];
     ?>
     <form class="form"action="action/action_editShop.php?idshop=<?php echo $idshop; ?>" method="post">
         <div class="modal-header">
@@ -48,13 +52,17 @@ if (isset($_GET['idshop'])) {
                         <div class="btn-group">
                             <select id="aaa" name ="idprovince" class="form-control" required >
                                 <?php
+                                echo"<option name ='idprovince' value = $val_idprovince_s >$val_name_province_s:$val_name_code_s [$val_name_region_s] </option>";
+                                $i = 0;
                                 $getProvince = getProvince();
-                                echo"<option name ='idprovince' value = $val_idprovince_s >$val_name_province_s</option>";
                                 foreach ($getProvince as $value) {
+                                    $i++;
                                     $val_idprovince = $value["idprovince"];
+                                    $val_name_region = $value["name_region"];
                                     $val_name_province = $value["name_province"];
+                                    $val_code_province = $value["code_province"];
                                     if ($val_idprovince != $val_idprovince_s) {
-                                        echo "<option name ='idprovince' value = $val_idprovince >$val_name_province</option>";
+                                        echo "<option name ='idprovince' value = $val_idprovince> $val_name_province:$val_code_province [$val_name_region] </option>";
                                     }
                                 }
                                 ?>

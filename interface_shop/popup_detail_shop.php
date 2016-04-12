@@ -9,8 +9,11 @@ if (isset($_GET['idshop'])) {
     $val_address_shop = $getShop['address_shop'];
     $val_name_province = $getShop['name_province'];
     $val_detail_shop = $getShop['detail_shop'];
+    
     $val_idprovince_s = $getShop['idprovince'];
     $val_name_province_s = $getShop['name_province'];
+    $val_name_code_s = $getShop['code_province'];
+    $val_name_region_s = $getShop['name_region'];
     ?>
     <form class="form"action="action/action_editShop.php?idshop=<?php echo $idshop; ?>" method="post">
         <div class="modal-header">
@@ -49,12 +52,14 @@ if (isset($_GET['idshop'])) {
                             <select id="aaa" name ="idprovince" class="form-control" disabled>
                                 <?php
                                 $getProvince = getProvince();
-                                echo"<option name ='idprovince' value = $val_idprovince_s >$val_name_province_s</option>";
+                                echo"<option name ='idprovince' value = $val_idprovince_s >$val_name_province_s:$val_name_code_s [$val_name_region_s] </option>";
                                 foreach ($getProvince as $value) {
                                     $val_idprovince = $value["idprovince"];
-                                    $val_name_province = $value["name_province"];
+                                $val_name_region = $value["name_region"];
+                                $val_name_province = $value["name_province"];
+                                $val_code_province = $value["code_province"];
                                     if ($val_idprovince != $val_idprovince_s) {
-                                        echo "<option name ='idprovince' value = $val_idprovince >$val_name_province</option>";
+                                        echo "<option name ='idprovince' value = $val_idprovince >$val_name_province:$val_code_province [$val_name_region] </option>";
                                     }
                                 }
                                 ?>

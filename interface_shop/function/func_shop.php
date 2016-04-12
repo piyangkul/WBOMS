@@ -118,7 +118,7 @@ function getShops() {
 
 function getShopByID($idshop) {
     $conn = dbconnect();
-    $SQLCommand = "SELECT `idshop`, `idprovince`, `name_province`, `name_region`, `name_shop`, `tel_shop`, `detail_shop`, `address_shop`, `shop_code` FROM `view_shop` WHERE idshop = :idshop";
+    $SQLCommand = "SELECT `idshop`, `idprovince`, `name_province`, `code_province`, `name_region`, `name_shop`, `tel_shop`, `detail_shop`, `address_shop`, `shop_code` FROM `view_shop` WHERE idshop = :idshop";
 
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
@@ -149,7 +149,7 @@ function getShopByID2($idshop) {
 
 function getProvince() {
     $conn = dbconnect();
-    $SQLCommand = "SELECT*FROM province";
+    $SQLCommand = "SELECT * FROM province JOIN region ON province.idregion=region.idregion ORDER BY name_province ASC ";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
     );
