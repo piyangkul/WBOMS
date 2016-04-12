@@ -105,7 +105,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                 foreach ($getOrder as $value) {
                                                     $i++;
                                                     $val_idorder_p = $value['idorder_p'];
-                                                    $val_code_order_p = $value['code_order_p'];
+                                                    $val_code_order_p = $value['code'];
                                                     $val_date_order_p = $value['date_order_p'];
                                                     $val_time_order_p = $value['time_order_p'];
                                                     $val_name_shop = $value['name_shop'];

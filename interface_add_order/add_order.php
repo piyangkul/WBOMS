@@ -38,47 +38,47 @@ require_once '/function/func_addorder.php';
         <link rel="stylesheet" href="/resources/demos/style.css"/>
         <script>
             //alert('<?//= getShop2(); ?>');
-                var Shop = JSON.stringify(<?php echo getShop2(); ?>);
+            var Shop = JSON.stringify(<?php echo getShop2(); ?>);
 
-                //alert(Product);
-                //alert(data);
-                var ShopP = JSON.parse(Shop);
+            //alert(Product);
+            //alert(data);
+            var ShopP = JSON.parse(Shop);
 
-                //alert(ProductP);
-                //data = JSON.parse(www+'');
-                /*alert(data);*/
-                //document.write(www[0].idshop+www[0].name_shop);
-                var shopName = new Array();
-                var shopId = new Array();
-                // var idshop;
+            //alert(ProductP);
+            //data = JSON.parse(www+'');
+            /*alert(data);*/
+            //document.write(www[0].idshop+www[0].name_shop);
+            var shopName = new Array();
+            var shopId = new Array();
+            // var idshop;
 
 
-                for (var i = 0; i < ShopP.length; i++) {
-                    shopName.push(ShopP[i].name_shop);
-                    shopId["'" + ShopP[i].name_shop + "'"] = ShopP[i].idshop;
-                    //var obj = JSON.parse(item);
-                    //shopName[i++] = item["shop_name"];
-                    // shopId[i++] = item["idshop"];
-                    //alert(www[i].name_shop);
-                    //alert(item["shop_name"]);
+            for (var i = 0; i < ShopP.length; i++) {
+                shopName.push(ShopP[i].name_shop);
+                shopId["'" + ShopP[i].name_shop + "'"] = ShopP[i].idshop;
+                //var obj = JSON.parse(item);
+                //shopName[i++] = item["shop_name"];
+                // shopId[i++] = item["idshop"];
+                //alert(www[i].name_shop);
+                //alert(item["shop_name"]);
 
-                }
+            }
 
-                //alert(data);
-                $(function () {
-                    $("#name_shop").autocomplete({
-                        source: shopName
-                    });
+            //alert(data);
+            $(function () {
+                $("#name_shop").autocomplete({
+                    source: shopName
                 });
+            });
 
-                function getShopId() {
-                    //alert("Hello");
-                    var price = document.getElementById("name_shop").value;
-                    //alert(shopId["'" + price + "'"]);
-                    document.getElementById("idshop").value = shopId["'" + price + "'"];
-                    //idshop = shopId["'" + price + "'"];
-                    //alert(idshop);
-                }
+            function getShopId() {
+                //alert("Hello");
+                var price = document.getElementById("name_shop").value;
+                //alert(shopId["'" + price + "'"]);
+                document.getElementById("idshop").value = shopId["'" + price + "'"];
+                //idshop = shopId["'" + price + "'"];
+                //alert(idshop);
+            }
 
         </script>
 
@@ -95,7 +95,9 @@ require_once '/function/func_addorder.php';
                 <div id="page-inner">
                     <form action="action/action_addOrder.php" method="post"> 
                         <div class="row">
+
                             <div class="col-md-12">
+
                                 <h2> Add Order </h2>   
                                 <h5> เพิ่มคำสั่งซื้อ </h5>
 
@@ -103,7 +105,11 @@ require_once '/function/func_addorder.php';
                         </div>
                         <!-- /. ROW  -->
                         <hr />
+                        <a href="order.php" class="btn btn-danger btn-lg">
+                            <span class="fa fa-arrow-circle-left"></span> Back
+                        </a>
                         <div class="row">
+
                             <div class="col-md-3"></div>
                             <div class="col-md-5">
                                 <!-- บิล -->
@@ -112,17 +118,19 @@ require_once '/function/func_addorder.php';
                                         <div class="table-responsive">
                                             <div class="form-group">
                                                 <div>
-                                                    <label for="disabled_no">No.บิล</label>
-                                                    <input type="text" class="form-control" id="code_order" name="code_order" placeholder="ID บิล">
-                                                </div>
-                                                <div >
-                                                    <p>วันที่สั่งซื้อ <input type="date" class="form-control" id ="date_order" name="date_order" value="<?=$date;?>"</p>
-                                                    <input type="time" class="form-control" id ="time_order" name="time_order" value="<?=$var?>"></input>
-                                                </div>
-                                                <div>
                                                     <label for="disabled_shop">ชื่อร้านค้า</label>
                                                     <input type="text" class="form-control" id="name_shop" name="name_shop" placeholder="กรุณาระบุชื่อร้านค้า" autocomplete= on onblur="getShopId()"></input>                    
                                                     <input type="hidden" id="idshop" name="idshop"></input>
+                                                </div>
+                                                <!--<div>
+                                                    <label for="disabled_no">No.บิล</label>
+                                                    <input type="text" class="form-control" id="code_order" name="code_order" placeholder="ID บิล">
+                                                </div>-->
+                                                <label>วันที่สั่งซื้อ </label>
+                                                <div class="input-group">                                         
+                                                    <span class="input-group-addon"><i class="fa fa-calendar-o" ></i></span>
+                                                    <input type="date" class="form-control" id ="date_order" name="date_order" value="<?= $date; ?>">
+                                                        <input type="time" class="form-control" id ="time_order" name="time_order" value="<?= $var ?>"></input>
                                                 </div>
                                             </div>                                        
                                         </div>
@@ -145,9 +153,8 @@ require_once '/function/func_addorder.php';
                                                 <a href="addproduct_addorder.php" class="btn btn-info btn-lg">
                                                     <span class="glyphicon glyphicon-plus"></span> เพิ่มสินค้า
                                                 </a>
-                                                <button class="btn btn-danger btn-lg" type="button" onclick="if (confirm('คุณต้องการลบหน่วยสินค้าทั้งหมดหรือ
-                                                                    ไม่')) {
-                                                                    resetUnit();
+                                                <button class="btn btn-danger btn-lg" type="button" onclick="if (confirm('คุณต้องการลบหน่วยสินค้าทั้งหมดหรือไม่')) {
+                                                            resetUnit();
                                                         }">
                                                     <span class="glyphicon glyphicon-trash"></span> ลบสินค้าทั้งหมด
                                                 </button>
@@ -166,12 +173,13 @@ require_once '/function/func_addorder.php';
                                     </div>
                                     <div class="row">
                                         <div class="col-md-4"></div>                              
-                                        <button type="submit" class="btn btn-info btn-lg text-center">
-                                            <span class="glyphicon glyphicon-floppy-save"></span> บันทึก
-                                        </button>
+
                                         <a href="order.php" class="btn btn-danger btn-lg text-center">
                                             <span class="glyphicon glyphicon-floppy-remove"></span> ยกเลิก
                                         </a>
+                                        <button type="submit" class="btn btn-info btn-lg text-center">
+                                            <span class="glyphicon glyphicon-floppy-save"></span> บันทึก
+                                        </button>
                                     </div>
                             </div>
                         </div>
@@ -223,31 +231,7 @@ require_once '/function/func_addorder.php';
                                                         $('#myModal').removeData('bs.modal');
                                                     });
                                                     showUnit();
-                                                    function delProduct(str) {
-                                                        var x;
-                                                        var idproduct_order = str;
-
-                                                        if (confirm("คุณต้องการลบสินค้าตัวนี้ใช่ไหม" + str) == true) {
-                                                            x = "You pressed OK!";
-                                                            var p = "&idproduct_order=" + idproduct_order;
-                                                            alert(p);
-                                                            $.get("action_editProductD.php?p=addProduct" + p, function (data, status) {
-                                                                alert("Data: " + data + "\nStatus: " + status);
-                                                                if (data == "1") {
-                                                                    $("#alert").html("บันทึกแล้ว")
-                                                                    showUnitD();
-                                                                }
-                                                                else {
-                                                                    showUnitD();
-
-                                                                }
-                                                            });
-                                                            document.getElementById('editProduct' + idproduct_order).style.display = 'none';
-                                                            document.getElementById('deleteProduct' + idproduct_order).style.display = 'none';
-                                                            document.getElementById("del" + idproduct_order).innerHTML = 'สินค้าตัวนี้ถูกลบ';
-                                                            document.getElementById("del" + idproduct_order).style.color = "red";
-                                                        }
-                                                    }
+                                                
                                                     function showUnit() {
                                                         $.get("action_addProduct.php?p=showUnit", function (data, status) {
                                                             $("#showUnit").html(data);

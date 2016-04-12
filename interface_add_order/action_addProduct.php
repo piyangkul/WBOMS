@@ -61,14 +61,7 @@ else if ($_GET['p'] == "editProduct") {
     $_SESSION["product"]["$product_order"]["type"] = $type;
 
     echo "1";
-} else if ($_GET['p'] == "delProduct") {
-    $product_order = $_GET['idproduct_order'];
-    if (isset($_SESSION["countProduct"]["$product_order"])) {
-        unset($_SESSION["countProduct"]["$product_order"]["total"]);
-        echo 1;
-    }
-    echo 1;
-}
+} 
 //    echo $_SESSION["countUnit"];
 /* if (isset($_SESSION["countUnit"])) {
   echo 1;
@@ -162,12 +155,12 @@ else if ($_GET['p'] == "editProduct") {
                         <td><?php echo $_SESSION["product"][$i]["difference"]; ?></td>
                         <td><?php echo $_SESSION["product"][$i]["DifferencePer"]; ?></td>
                         <td><?php echo $_SESSION["product"][$i]["DifferenceBath"]; ?></td>
-                        <td class ="text-right"><?php echo number_format($_SESSION["product"][$i]["total"] * $_SESSION["product"][$i]["AmountProduct"], 2); ?></td>
+                        <td class ="text-right"><?php echo number_format($_SESSION["product"][$i]["total"], 2); ?></td>
                         <td>
                             <a href="editproduct_addorder.php?idproduct_order=<?= $i ?>&idunit=<?php echo $idUnitS; ?>&amount=<?= $_SESSION["product"][$i]["AmountProduct"]; ?>&DifferencePer=<?= $_SESSION["product"][$i]["DifferencePer"]; ?>&DifferenceBath=<?= $_SESSION["product"][$i]["DifferenceBath"]; ?>&type=<?= $_SESSION["product"][$i]["type"]; ?>" class="btn btn-warning " data-toggle="tooltip" title="แก้ไข">
                                 <span class="glyphicon glyphicon-edit"></span>
                             </a>
-                            <a class = "btn btn-danger" data-toggle = "modal" data-toggle = "tooltip" title = "ลบ" id="deleteProduct<?= $i; ?>" name="deleteProduct<?= $i; ?>" onclick="if (confirm('คุณต้องการลบหน่วยสินค้าทั้งหมดหรือไม่')) {
+                            <a class = "btn btn-danger" data-toggle = "modal" data-toggle = "tooltip" title = "ลบ" id="deleteProduct<?= $i; ?>" name="deleteProduct<?= $i; ?>" onclick="if (confirm('คุณต้องการลบหน่วยสินค้าหรือไม่')) {
                                         delProduct(<?= $i; ?>);
                                     }">
                                 <span class = "glyphicon glyphicon-trash"></span>
@@ -183,16 +176,18 @@ else if ($_GET['p'] == "editProduct") {
     <div class="col-md-6"></div>
     <div class="col-md-4">
         <label for="disabled_no">ราคาขายรวมต่อบิล</label>
-        <input type="text" class="form-control" id="disabled_no" placeholder=" " value="<?= number_format($sum,2) ?>" readonly="true">
+        <input type="text" class="form-control" id="disabled_no" placeholder=" " value="<?= number_format($sum, 2) ?>" readonly="true">
     </div>
     <script>
         function delProduct(str) {
             var idunit = str;
             var p = "&idproduct_order=" + idunit;
-            $.get("action_addProduct.php?p=delProduct" + p, function (data, status) {
+            //alert(p);
+            $.get("action_addProductD.php?p=delProduct" + p, function (data, status) {
+                //alert("Data: " + data + "\nStatus: " + status);
                 if (data != "-1") {
+                    alert("ลบสินค้าตัวนี้แล้ว");
                     showUnit();
-                    alert("ลบหน่วยทั้งหมดแล้ว");
                 }
                 else {
                     alert("ไม่สามารถลบหน่วยได้");

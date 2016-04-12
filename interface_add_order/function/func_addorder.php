@@ -87,7 +87,7 @@ function getProduct($id) {
 function getProduct4() {
     $conn = dbconnect();
     //$SQLCommand = "SELECT idproduct,idfactory,name_product FROM `product` WHERE idfactory = {$id} ORDER BY name_product";
-    $SQLCommand = "SELECT idproduct,product.idfactory,name_product,name_factory,difference_amount_product,factory.type_factory FROM `product`  INNER JOIN factory ON factory.idfactory = product.idfactory";
+    $SQLCommand = "SELECT * FROM view_product";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute();
     $resultArr = array();
@@ -343,7 +343,7 @@ function EditProductOrder($idproduct_order, $idunit, $amount_product_order, $dif
     }
 }
 
-function edit_unit($id,$idunit) {
+function edit_unit($id, $idunit) {
     $conn = dbconnect();
     $SQLCommand = "SELECT idunit,name_unit,price_unit,type_unit FROM unit WHERE idproduct = :id AND idunit != :idunit";
     $SQLPrepare = $conn->prepare($SQLCommand);
@@ -436,6 +436,31 @@ function getFactory_ajax($id) {
     }
     return $resultArr;
 }
-    
+
+function countCode($idshop) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT COUNT(idshop) AS CountCode FROM `order_p` WHERE idshop = :idshop";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idshop" => $idshop
+    ));
+    //$resultArr = array();
+    $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
+    return $result;
+}
+
+function getCodeshop($idshop) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT code_shop FROM shop WHERE idshop = :idshop";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idshop" => $idshop
+    ));
+    //$resultArr = array();
+    $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
+    return $result;
+}
 
 ?>

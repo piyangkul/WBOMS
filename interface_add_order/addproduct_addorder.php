@@ -29,7 +29,7 @@ require_once '/function/func_addorder.php';
         <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"/>
         <script src="//code.jquery.com/jquery-1.10.2.js"></script>
         <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-       <!-- <link rel="stylesheet" href="/resources/demos/style.css"/>-->
+        <!-- <link rel="stylesheet" href="/resources/demos/style.css"/>-->
         <script>
             //alert('<?//= getShop2(); ?>');
             var Shop = JSON.stringify(<?php echo getShop2(); ?>);
@@ -75,7 +75,9 @@ require_once '/function/func_addorder.php';
             }
             //auto complete
             var Product = JSON.stringify(<?php echo getProduct4(); ?>);
+
             var ProductP = JSON.parse(Product);
+            var Arr = new Array();
             var productName = new Array();
             var productId = new Array();
             var factoryName = new Array();
@@ -84,13 +86,15 @@ require_once '/function/func_addorder.php';
             var factoryType = new Array();
             var Name = new Array();
             for (var i = 0; i < ProductP.length; i++) {
-                productName.push(ProductP[i].name_product);
+                productName.push("[" + ProductP[i].product_code + "] " + ProductP[i].name_product + " - " + ProductP[i].name_factory);
                 // Name.push(ProductP[i].name_product + " " + ProductP[i].name_factory);
-                productId["'" + ProductP[i].name_product + "'"] = ProductP[i].idproduct;
-                factoryName["'" + ProductP[i].name_product + "'"] = ProductP[i].name_factory;
-                factoryId["'" + ProductP[i].name_product + "'"] = ProductP[i].idfactory;
-                factoryDiff["'" + ProductP[i].name_product + "'"] = ProductP[i].difference_amount_product;
-                factoryType["'" + ProductP[i].name_product + "'"] = ProductP[i].type_factory;
+                productName["'" + "[" + ProductP[i].product_code + "] " + ProductP[i].name_product + " - " + ProductP[i].name_factory + "'"] = ProductP[i].name_product;
+                productId["'" + "[" + ProductP[i].product_code + "] " + ProductP[i].name_product + " - " + ProductP[i].name_factory + "'"] = ProductP[i].idproduct;
+                factoryName["'" + "[" + ProductP[i].product_code + "] " + ProductP[i].name_product + " - " + ProductP[i].name_factory + "'"] = ProductP[i].name_factory;
+                factoryId["'" + "[" + ProductP[i].product_code + "] " + ProductP[i].name_product + " - " + ProductP[i].name_factory + "'"] = ProductP[i].idfactory;
+                factoryDiff["'" + "[" + ProductP[i].product_code + "] " + ProductP[i].name_product + " - " + ProductP[i].name_factory + "'"] = ProductP[i].difference_amount_product;
+                factoryType["'" + "[" + ProductP[i].product_code + "] " + ProductP[i].name_product + " - " + ProductP[i].name_factory + "'"] = ProductP[i].type_factory;
+                //document.write(ProductP[i].name_product);
             }
             $(function () {
                 $("#name_product").autocomplete({
@@ -148,15 +152,14 @@ require_once '/function/func_addorder.php';
                                 <div class="form-group col-xs-12">
                                 </div>
                                 <div class="form-group col-xs-12">
-                                    <label for="name_product">ชื่อสินค้า</label>
-                                    <input type="text" class="form-control" id="name_product" name="name_product" placeholder="กรุณาระบุชื่อสินค้า" onblur="getProductID()" autocomplete= "on" ></input>
+                                    <label for="name_product">ชื่อสินค้า</label><font size="1" color ="red">*กรุณาเลือกสินค้า</font>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-cube" ></i></span>
+                                        <input type="text" class="form-control" id="name_product" name="name_product" placeholder="กรุณาระบุชื่อสินค้า" onblur="getProductID()" autocomplete= "on" ></input>
+                                    </div>
                                     <input type="hidden" id="idproduct" name="idproduct"></input>
                                     <h id="idFactory2"></h>
-                                </div>
-
-                                <div class="form-group col-xs-12">
-                                    <label for="name_factory">ชื่อโรงงาน</label> <font size="1" color ="red">*กรุณาเลือกสินค้า</font>
-                                    <input type="text" class="form-control" id="name_factory" name="name_factory" placeholder="กรุณาระบุชื่อสินค้า" disabled></input>
+                                    <input type="hidden" class="form-control" id="name_factory" name="name_factory" placeholder="กรุณาระบุชื่อสินค้า" disabled></input>
                                     <input type="hidden" id="idfactory" name="idfactory"></input>
                                     <input type="hidden" class="form-control" id="typefactory" name="typefactory"></input>
                                 </div>
@@ -230,7 +233,7 @@ require_once '/function/func_addorder.php';
 
                     <div class="form-group col-xs-12">
                         <p id="alertPass"></p>
-                        <a href="add_order.php" type="button" class="btn btn-info btn-lg text-center" onclick="addProduct();" data-dismiss="modal">
+                        <a type="button" class="btn btn-info btn-lg text-center" onclick="addProduct();" data-dismiss="modal">
                             <span class="glyphicon glyphicon-floppy-save"></span> บันทึก
                         </a>
                         <a href="add_order.php" class="btn btn-danger btn-lg text-center">
@@ -419,45 +422,53 @@ require_once '/function/func_addorder.php';
                                 var total_price = $("#total_price").val().replace(",", "");
                                 var total = $("#total").val().replace(",", "");
                                 var type = document.getElementById("typefactory").value;
-                                //alert(idUnit);
-                                //alert(AmountProduct);
-                                //alert(DifferencePer);
-                                //alert(DifferenceBath);
-                                var p = "&idUnit=" + idUnit + "&productName=" + productName + "&factoryName=" + factoryName + "&difference=" + difference + "&AmountProduct=" + AmountProduct + "&DifferencePer=" + DifferencePer + "&DifferenceBath=" + DifferenceBath + "&price=" + price + "&total_price=" + total_price + "&total=" + total + "&type=" + type;
-                                alert(p);
-                                $.get("action_addProduct.php?p=addProduct" + p, function (data, status) {
-                                    alert("Data: " + data + "\nStatus: " + status);
-                                    if (data == "1") {
-                                        $("#alert").html("บันทึกแล้ว")
-                                        $("#idUnit").val("");
-                                        $("#productName").val("");
-                                        $("#factoryName").val("");
-                                        $("#difference").val("");
-                                        $("#AmountProduct").val("");
-                                        $("#DifferencePer").val("");
-                                        $("#DifferenceBath").val("");
-                                        $("#price").val("");
-                                        $("#total_price").val("");
-                                        $("#total").val("");
-                                        $("#type").val("");
-                                        showUnit();
-                                    }
-                                    else {
-                                        $("#idUnit").val("");
-                                        $("#productName").val("");
-                                        $("#factoryName").val("");
-                                        $("#difference").val("");
-                                        $("#AmountProduct").val("");
-                                        $("#DifferencePer").val("");
-                                        $("#DifferenceBath").val("");
-                                        $("#price").val("");
-                                        $("#total_price").val("");
-                                        $("#total").val("");
-                                        $("#type").val("");
-                                        showUnit();
+                                var chk = $("#name_product").val();
+                                if (chk.length < 1 || idUnit.length < 1 || AmountProduct.length < 1 || DifferenceBath.length < 1 && DifferencePer.length < 1) {
+                                    alert("กรุณากรอกข้อมูลให้ครบถ้วน");
+                                }
 
-                                    }
-                                });
+                                else {
+                                    //alert(idUnit);
+                                    //alert(AmountProduct);
+                                    //alert(DifferencePer);
+                                    //alert(DifferenceBath);
+                                    var p = "&idUnit=" + idUnit + "&productName=" + productName + "&factoryName=" + factoryName + "&difference=" + difference + "&AmountProduct=" + AmountProduct + "&DifferencePer=" + DifferencePer + "&DifferenceBath=" + DifferenceBath + "&price=" + price + "&total_price=" + total_price + "&total=" + total + "&type=" + type;
+                                    alert(p);
+                                    $.get("action_addProduct.php?p=addProduct" + p, function (data, status) {
+                                        alert("Data: " + data + "\nStatus: " + status);
+                                        if (data == "1") {
+                                            $("#alert").html("บันทึกแล้ว")
+                                            $("#idUnit").val("");
+                                            $("#productName").val("");
+                                            $("#factoryName").val("");
+                                            $("#difference").val("");
+                                            $("#AmountProduct").val("");
+                                            $("#DifferencePer").val("");
+                                            $("#DifferenceBath").val("");
+                                            $("#price").val("");
+                                            $("#total_price").val("");
+                                            $("#total").val("");
+                                            $("#type").val("");
+                                            showUnit();
+                                        }
+                                        else {
+                                            $("#idUnit").val("");
+                                            $("#productName").val("");
+                                            $("#factoryName").val("");
+                                            $("#difference").val("");
+                                            $("#AmountProduct").val("");
+                                            $("#DifferencePer").val("");
+                                            $("#DifferenceBath").val("");
+                                            $("#price").val("");
+                                            $("#total_price").val("");
+                                            $("#total").val("");
+                                            $("#type").val("");
+                                            showUnit();
+
+                                        }
+                                    });
+                                    window.location.href = 'add_order.php';
+                                }
                             }
 
 </script>
