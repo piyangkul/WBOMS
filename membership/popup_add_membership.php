@@ -12,35 +12,35 @@
                     <label for="name">ชื่อ</label><label class="text-danger">*</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-circle-o-notch"  ></i></span>
-                        <input type="text" class="form-control" placeholder="กรุณากรอกชื่อ" name ="name_member" required=""/>
+                        <input type="text" class="form-control" placeholder="กรอกชื่อ" name ="name_member" required=""/>
                     </div>
                 </div>
                 <div class="form-group col-xs-12">
                     <label for="lastname">นามสกุล</label><label class="text-danger">*</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-circle-o-notch"  ></i></span>
-                        <input type="text" class="form-control" placeholder="กรุณากรอกนามสกุล" name="lastname_member" required=""/>
+                        <input type="text" class="form-control" placeholder="กรอกนามสกุล" name="lastname_member" required=""/>
                     </div>
                 </div>
                 <div class="form-group col-xs-12">
                     <label for="username">Username</label><label class="text-danger">*</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-user"  ></i></span>
-                        <input type="text" class="form-control" placeholder="กรุณากรอก Username " name = "username" required=""/>
+                        <input type="text" class="form-control" placeholder="กรอก Username " name = "username" required=""/>
                     </div>
                 </div>
                 <div class="form-group col-xs-12">
                     <label for="password">Password</label><label class="text-danger">*</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-lock"  ></i></span>
-                        <input type="password" onchange="chkPassMatch()" class="form-control" placeholder="Password" name ="password" id = "password" required=""/>
+                        <input type="password" onchange="chkPassMatch()" class="form-control" placeholder="กรอก Password" name ="password" id = "password" required=""/>
                     </div>
                 </div>
                 <div class="form-group col-xs-12">
                     <label for="password">Confirm Password</label><label class="text-danger">*</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-lock"  ></i></span>
-                        <input type="password" onchange="chkPassMatch()" class="form-control" placeholder="Confirm Password" name ="confirm_password" id = "confirm_password" required=""/>
+                        <input type="password" onchange="chkPassMatch()" class="form-control" placeholder="กรอก Password อีกครั้ง" name ="confirm_password" id = "confirm_password" required=""/>
                     </div>
                 </div>
             </div>

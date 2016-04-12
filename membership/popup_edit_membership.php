@@ -27,7 +27,7 @@ if (isset($_GET['idmember'])) {
                     <label>ชื่อ</label><label class="text-danger">*</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-circle-o-notch"  ></i></span>
-                        <input type="text" class="form-control" id="Name" name="name_member" value="<?php echo $val_name; ?>"  />
+                        <input type="text" class="form-control" id="Name" name="name_member" value="<?php echo $val_name; ?>"  required/>
                     </div>
                 </div>
 
@@ -35,7 +35,7 @@ if (isset($_GET['idmember'])) {
                     <label>นามสกุล</label><label class="text-danger">*</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-circle-o-notch"  ></i></span>
-                        <input type="text" class="form-control" id="sName" name="lastname_member" value="<?php echo $val_lastname; ?>"  />
+                        <input type="text" class="form-control" id="sName" name="lastname_member" value="<?php echo $val_lastname; ?>" required />
                     </div>
                 </div>
                 <div class="form-group col-xs-12">
@@ -49,14 +49,14 @@ if (isset($_GET['idmember'])) {
                     <label>Password</label><label class="text-danger">*</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-lock"  ></i></span>
-                        <input type="password" onchange="chkPassMatch()" class="form-control" name ="password" id = "password" value="<?php echo $val_password; ?>" />
+                        <input type="password" onchange="chkPassMatch()" class="form-control" name ="password" id = "password" value="<?php echo $val_password; ?>" required />
                     </div>
                 </div>
                 <div class="form-group col-xs-12">
                     <label>Confirm Password</label><label class="text-danger">*</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-lock"  ></i></span>
-                        <input type="password" onchange="chkPassMatch()" class="form-control" name ="confirm_password" id = "confirm_password" value="<?php echo $val_password; ?>" />
+                        <input type="password" onchange="chkPassMatch()" class="form-control" name ="confirm_password" id = "confirm_password" value="<?php echo $val_password; ?>" required />
                     </div>
                 </div>
             </div>
