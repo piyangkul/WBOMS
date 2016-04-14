@@ -59,7 +59,7 @@ $status_shipment_factory = $_GET['status_shipment'];
                             <?php ?>
                         </select>
                     </div>
-                </div>-->
+                </div>
             </div>
         </div>
     </div>

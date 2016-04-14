@@ -12,8 +12,52 @@ $getFactory = getFactoryByID($idfactory);
 $val_name_factory = $getFactory['name_factory'];
 
 $status_shipment_factory = $_GET['status_shipment'];
-$price = $_GET['price'];//ใช้ไม่ได้
+$price = $_GET['price']; //ใช้ไม่ได้
 ?>
+<script>
+    var idtransport;
+    var data = JSON.stringify(<?php echo getTransport(); ?>);//ดึงค่า
+    var Obj = JSON.parse(data);//Objตามจำนวนข้อมูล
+    //alert(Obj);
+    var Arr = new Array();
+    var JSON_transportCode = new Array();
+    var JSON_transportName = new Array();
+    //pushข้อมูลลงArray
+    for (var i = 0; i < Obj.length; i++) {
+        //Arr.push(Obj[i].code_transport);
+        Arr.push(Obj[i].name_transport + " (" + Obj[i].code_transport + ")");
+        JSON_transportCode["'" + Obj[i].code_transport + "'"] = Obj[i].idtransport;
+        JSON_transportName["'" + Obj[i].name_transport + "'"] = Obj[i].idtransport;
+        console.log(JSON_transportCode);
+        console.log(JSON_transportName);
+    }
+    $(function () {
+        $("#idtransport").autocomplete({
+            source: Arr
+        });
+    });
+
+    function getFactoryId(e) {
+        if ((e instanceof FocusEvent) || (e instanceof KeyboardEvent && e.keyCode === 13)) {
+            var input = document.getElementById("idtransport").value;
+            //alert(input);
+            firstParen = input.lastIndexOf("(");
+            secondParen = input.lastIndexOf(")");
+            input = input.substr(firstParen + 1, secondParen - firstParen - 1);
+            //alert(input+ firstParen +","+ secondParen);
+            if (JSON_transportCode["'" + input + "'"] != null) {
+                idtransport = JSON_transportCode["'" + input + "'"];
+            }
+            else {
+                idtransport = JSON_transportName["'" + input + "'"];
+            }
+            console.log(idtransport);
+            //$("#test").text(idtransport);
+            document.getElementById("id").value = idtransport;
+        }
+        return false;
+    }
+</script>
 <form class="form" action="action/action_addShipment.php?idshipment_period=<?php echo $idshipment_period; ?>&idfactory=<?php echo $idfactory; ?>&status_shipment=<?php echo $status_shipment_factory; ?>" method="post">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -26,49 +70,60 @@ $price = $_GET['price'];//ใช้ไม่ได้
                 <div class="form-group col-xs-12">
                 </div>
                 <div class="form-group col-xs-12">
-                    <label for="date_transport">วันที่ส่งสินค้า<label class="text-danger">*</label></label>
+                    <label for="date_transport">วันที่ส่งสินค้า</label><label class="text-danger">*</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-calendar-o"  ></i></span>
                         <input type="date" class="form-control" min="<?php echo date("$val_date_start"); ?>" max="<?php echo date("$val_date_end"); ?>" name="date_transport" id="date_transport" required/>
                     </div>
                 </div>
+
                 <div class="form-group col-xs-12">
-                    <label for="name_transport">ชื่อบริษัทขนส่ง</label><label class="text-danger">*</label>
+                    <label for="name_transport">รหัสหรือชื่อบริษัทขนส่ง</label><label class="text-danger">*</label>
                     <div class="form-group input-group">
-                        <span class="input-group-addon"><i class="fa fa-truck"  ></i></span>
-                        <select class="form-control" id="idtransport" name="idtransport" id="idtransport" required >
-                            <option selected value="">กรุณาเลือกบริษัทขนส่ง</option>
-                            <?php
-                            require_once '../transport/function/func_transport.php';
-                            $getTransports = getTransports();
-                            foreach ($getTransports as $value) {
-                                $val_idtransport = $value['idtransport'];
-                                $val_name_transport = $value['name_transport'];
-                                ?>
-                                <option value="<?php echo $val_idtransport; ?>"><?php echo $val_name_transport; ?></option>
-                            <?php } ?>
-                        </select>
+                        <span class="input-group-addon"><i class="fa fa-truck" ></i></span>
+                        <input type="text" class="form-control" id="idtransport" autocomplete=on name="idtransport_show" placeholder="กรอกรหัสหรือชื่อบริษัทขนส่ง" onblur ="getFactoryId(event)" onkeypress="getFactoryId(event)" required >
+                        <input type="hidden" id="id" name="idtransport" required>
+                    </div>
+                </div>
+
+                <!--                <div class="form-group col-xs-12">
+                                    <label for="name_transport">ชื่อบริษัทขนส่ง</label><label class="text-danger">*</label>
+                                    <div class="form-group input-group">
+                                        <span class="input-group-addon"><i class="fa fa-truck"  ></i></span>
+                                        <select class="form-control" id="idtransport" name="idtransport" id="idtransport" required >
+                                            <option selected value="">กรุณาเลือกบริษัทขนส่ง</option>
+                <?php
+//                            require_once '../transport/function/func_transport.php';
+//                            $getTransports = getTransports();
+//                            foreach ($getTransports as $value) {
+//                                $val_idtransport = $value['idtransport'];
+//                                $val_name_transport = $value['name_transport'];
+                ?>
+                                                <option value="<?php echo $val_idtransport; ?>"><?php echo $val_name_transport; ?></option>
+                <?php //} ?>
+                                        </select>
+                                    </div>
+                                </div>-->
+
+                <div class="form-group col-xs-12">
+                    <label for="volume">เล่มที่</label><label class="text-danger">*</label>
+                    <div class="form-group input-group">
+                        <span class="input-group-addon"><i class="fa fa-circle-o-notch"  ></i></span>
+                        <input type="text" class="form-control" placeholder="กรุณากรอกเล่มที่ " name="volume" onkeypress='return event.charCode >= 48 && event.charCode <= 57;' required/>
                     </div>
                 </div>
                 <div class="form-group col-xs-12">
-                    <label for="volume">เล่มที่</label>
+                    <label for="number">เลขที่</label><label class="text-danger">*</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-circle-o-notch"  ></i></span>
-                        <input type="text" class="form-control" placeholder="กรุณากรอกเล่มที่ " name="volume" required/>
-                    </div>
-                </div>
-                <div class="form-group col-xs-12">
-                    <label for="number">เลขที่</label>
-                    <div class="form-group input-group">
-                        <span class="input-group-addon"><i class="fa fa-circle-o-notch"  ></i></span>
-                        <input type="text" class="form-control" placeholder="กรุณากรอกเลขที่" name="number" required />
+                        <input type="text" class="form-control" placeholder="กรุณากรอกเลขที่" name="number" onkeypress='return event.charCode >= 48 && event.charCode <= 57;' required />
                     </div>
                 </div>
                 <div class="form-group col-xs-12">
                     <label for="price_transport">ค่าส่งสินค้า</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-dollar" ></i></span>
-                        <input type="text" class="form-control" id="price_transport" name ="price_transport" value="0" />
+                        <input type="text" class="form-control" id="price_transport" name ="price_transport" value="0" onkeypress='return event.charCode >= 48 && event.charCode <= 57;' />
                         <span class="input-group-addon">.00</span>
                     </div>
                 </div>

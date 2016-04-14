@@ -42,8 +42,9 @@ $price_product_refund_factory = 0;
     var Arr2 = new Array();
     //pushข้อมูลลงArray
     for (var i = 0; i < Obj.length; i++) {
-        Arr.push(Obj[i].cheque_name_bank);
-        Arr2.push(Obj[i].cheque_branch_bank);
+        Arr.push(Obj[i].cheque_name_bank+"");
+        Arr2.push(Obj[i].cheque_branch_bank+"");
+        console.log(Arr);
     }
     $(function () {
         $("#cheque_name_bank").autocomplete({
@@ -59,7 +60,7 @@ $price_product_refund_factory = 0;
 <form class="form" action="action/action_addPayfactory.php?page=<?php echo $page; ?>&idshipment_period=<?php echo $idshipment_period; ?>&idfactory=<?php echo $idfactory; ?>&status_shipment=<?php echo $status_shipment_factory; ?>" method="post">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">เพิ่มการจ่ายเงินโรงงาน //วันที่จ่ายเช็คตั้งแต่วันที่ของปลายรอบนี้ถึงรอบถัดไป</h4>
+        <h4 class="modal-title" id="myModalLabel">เพิ่มการจ่ายเงินโรงงาน</h4>
     </div>
     <div class="row">
         <div class="col-md-12 col-sm-12 ">
@@ -190,7 +191,7 @@ $price_product_refund_factory = 0;
                                         <input type="text" onclick="chkCredit_pay_factory()" class="form-control" id="cheque_number" name="cheque_number" onkeypress='return event.charCode >= 48 && event.charCode <= 57;' disabled>
                                     </label>
                                 </div>
-                                <div class="form-group input-group">
+                                <div class="form-group input-group ui-front">
                                     <label class="radio-inline">
                                         <label>ชื่อธนาคารของเช็ค</label>
                                         <input type="text" onclick="chkCredit_pay_factory()" class="form-control" autocomplete=on id="cheque_name_bank" name="cheque_name_bank" disabled>
@@ -203,6 +204,9 @@ $price_product_refund_factory = 0;
                                     </label>
                                 </div>
                             </div>
+                            <label class="text-danger">* วันที่จ่ายเช็ค </label>
+                            <label class="text-danger">เริ่มตั้งแต่วันที่สิ้นสุดของรอบนี้ ถึงวันที่สิ้นสุดรอบถัดไป</label> 
+                            <label class="text-danger">แต่ถ้าไม่มีรอบถัดไประบบจะบังคับให้เป็นวันที่ปัจจุบัน(วันนี้)</label>
                         </div>
                     </div>
                 </div>
