@@ -87,7 +87,7 @@ function getProduct($id) {
 function getProduct4() {
     $conn = dbconnect();
     //$SQLCommand = "SELECT idproduct,idfactory,name_product FROM `product` WHERE idfactory = {$id} ORDER BY name_product";
-    $SQLCommand = "SELECT * FROM view_product";
+    $SQLCommand = "SELECT * FROM view_product GROUP BY name_product";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute();
     $resultArr = array();
@@ -148,7 +148,7 @@ function getUnit2($id) {
 
 function getUnit3($id) {
     $conn = dbconnect();
-    $SQLCommand = "SELECT idunit,name_unit,price_unit,factory.difference_amount_factory,unit.price_unit,type_unit,unit.idproduct,factory.name_factory,name_product,product.idfactory FROM `unit` INNER JOIN product ON product.idproduct=unit.idproduct INNER JOIN factory ON factory.idfactory = product.idfactory WHERE type_unit = 'PRIMARY' AND idunit = :id ";
+    $SQLCommand = "SELECT idunit,name_unit,price_unit,factory.difference_amount_factory,unit.price_unit,type_unit,unit.idproduct,factory.name_factory,name_product,product.idfactory,concat(factory.code_factory,product.idproduct) AS code_product FROM `unit` INNER JOIN product ON product.idproduct=unit.idproduct INNER JOIN factory ON factory.idfactory = product.idfactory WHERE type_unit = 'PRIMARY' AND idunit = :id";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
@@ -503,9 +503,12 @@ function getIDProduct($id) {
 
 function hisDiff($id) {
     $conn = dbconnect();
-    $SQLCommand = "SELECT product.idproduct,MAX(difference.date_difference) AS maxdate,difference.price_difference FROM product INNER JOIN difference ON product.idproduct =difference.idproduct WHERE product.idproduct = 6";
+    $SQLCommand = "SELECT product.idproduct,MAX(difference.date_difference) AS maxdate,difference.price_difference FROM product INNER JOIN difference ON product.idproduct =difference.idproduct WHERE product.idproduct = :id";
     $SQLPrepare = $conn->prepare($SQLCommand);
-    $SQLPrepare->execute();
+    $SQLPrepare->execute(
+             array(
+                ":id" => $id
+            ));
     //$resultArr = array();
     $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
     return $result;

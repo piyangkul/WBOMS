@@ -62,11 +62,6 @@ if (isset($_GET['idshop'])) {
             for (var i = 0; i < ShopP.length; i++) {
                 shopName.push(ShopP[i].name_shop);
                 shopId["'" + ShopP[i].name_shop + "'"] = ShopP[i].idshop;
-                //var obj = JSON.parse(item);
-                //shopName[i++] = item["shop_name"];
-                // shopId[i++] = item["idshop"];
-                //alert(www[i].name_shop);
-                //alert(item["shop_name"]);
 
             }
 
@@ -78,12 +73,9 @@ if (isset($_GET['idshop'])) {
             });
 
             function getShopId() {
-                //alert("Hello");
                 var price = document.getElementById("name_shop").value;
-                //alert(shopId["'" + price + "'"]);
                 document.getElementById("idshop").value = shopId["'" + price + "'"];
-                //idshop = shopId["'" + price + "'"];
-                //alert(idshop);
+
             }
 
         </script>
@@ -304,8 +296,13 @@ if (isset($_GET['idshop'])) {
                                                         });
                                                     }
                                                     function addProduct_Order() {
-                                                        var idshop = document.getElementById("idshop").value;
-                                                        window.location.href = 'addproduct_addorder.php?idshop=' + idshop;
+                                                        if (document.getElementById("name_shop").value.length > 0) {
+                                                            var idshop = document.getElementById("idshop").value;
+                                                            window.location.href = 'addproduct_addorder.php?idshop=' + idshop;
+                                                        }
+                                                        else{
+                                                            alert("กรุณากรอกชื่อร้านค้า");
+                                                        }
 
                                                     }
 

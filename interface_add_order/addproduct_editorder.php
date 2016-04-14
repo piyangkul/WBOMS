@@ -84,12 +84,15 @@ $idorder = $_GET['idorder'];
             var factoryDiff = new Array();
             var factoryType = new Array();
             for (var i = 0; i < ProductP.length; i++) {
-                productName.push(ProductP[i].name_product);
-                productId["'" + ProductP[i].name_product + "'"] = ProductP[i].idproduct;
-                factoryName["'" + ProductP[i].name_product + "'"] = ProductP[i].name_factory;
-                factoryId["'" + ProductP[i].name_product + "'"] = ProductP[i].idfactory;
-                factoryDiff["'" + ProductP[i].name_product + "'"] = ProductP[i].difference_amount_factory;
-                factoryType["'" + ProductP[i].name_product + "'"] = ProductP[i].type_factory;
+                productName.push("[" + ProductP[i].product_code + "] " + ProductP[i].name_product + " - " + ProductP[i].name_factory);
+                // Name.push(ProductP[i].name_product + " " + ProductP[i].name_factory);
+                productName["'" + "[" + ProductP[i].product_code + "] " + ProductP[i].name_product + " - " + ProductP[i].name_factory + "'"] = ProductP[i].name_product;
+                productId["'" + "[" + ProductP[i].product_code + "] " + ProductP[i].name_product + " - " + ProductP[i].name_factory + "'"] = ProductP[i].idproduct;
+                factoryName["'" + "[" + ProductP[i].product_code + "] " + ProductP[i].name_product + " - " + ProductP[i].name_factory + "'"] = ProductP[i].name_factory;
+                factoryId["'" + "[" + ProductP[i].product_code + "] " + ProductP[i].name_product + " - " + ProductP[i].name_factory + "'"] = ProductP[i].idfactory;
+                factoryDiff["'" + "[" + ProductP[i].product_code + "] " + ProductP[i].name_product + " - " + ProductP[i].name_factory + "'"] = ProductP[i].difference_amount_product;
+                factoryType["'" + "[" + ProductP[i].product_code + "] " + ProductP[i].name_product + " - " + ProductP[i].name_factory + "'"] = ProductP[i].type_factory;
+                //document.write(ProductP[i].name_product);
             }
             $(function () {
                 $("#name_product").autocomplete({

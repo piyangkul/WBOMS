@@ -134,7 +134,7 @@ require_once '/function/func_addorder.php';
                     }
                 });
 
-                var iddiff = productId["'" + name_shop + "'"];
+              var iddiff = productId["'" + name_shop + "'"];
                 $.ajax({type: "GET",
                     url: "action/action_ajax_hisdiff.php",
                     async: false,
@@ -143,6 +143,7 @@ require_once '/function/func_addorder.php';
                     success: function (www)
                     {
                         $("#DifferencePer").val(www);
+                        $("#DifferenceBath").val(www);
                         //alert(response);
                     }
                 });
@@ -251,7 +252,7 @@ require_once '/function/func_addorder.php';
 
                     <div class="form-group col-xs-12">
                         <p id="alertPass"></p>
-                        <a href="add_order.php" class="btn btn-danger btn-lg text-center">
+                        <a href="add_order.php?idshop=<?=$idshop;?>" class="btn btn-danger btn-lg text-center">
                             <span class="glyphicon glyphicon-floppy-remove"></span> ยกเลิก
                         </a>
                         <a type="button" class="btn btn-info btn-lg text-center" onclick="addProduct();" data-dismiss="modal">
@@ -447,52 +448,83 @@ require_once '/function/func_addorder.php';
                                 }
 
                                 else {
-                                    //alert(idUnit);
-                                    //alert(AmountProduct);
-                                    //alert(DifferencePer);
-                                    //alert(DifferenceBath);
-                                    var p = "&idUnit=" + idUnit + "&productName=" + productName + "&factoryName=" + factoryName + "&difference=" + difference + "&AmountProduct=" + AmountProduct + "&DifferencePer=" + DifferencePer + "&DifferenceBath=" + DifferenceBath + "&price=" + price + "&total_price=" + total_price + "&total=" + total + "&type=" + type;
-                                    alert(p);
-                                    $.get("action_addProduct.php?p=addProduct" + p, function (data, status) {
-                                        alert("Data: " + data + "\nStatus: " + status);
-                                        if (data == "1") {
-                                            $("#alert").html("บันทึกแล้ว")
-                                            $("#idUnit").val("");
-                                            $("#productName").val("");
-                                            $("#factoryName").val("");
-                                            $("#difference").val("");
-                                            $("#AmountProduct").val("");
-                                            $("#DifferencePer").val("");
-                                            $("#DifferenceBath").val("");
-                                            $("#price").val("");
-                                            $("#total_price").val("");
-                                            $("#total").val("");
-                                            $("#type").val("");
-                                            showUnit();
-                                        }
-                                        else {
-                                            $("#idUnit").val("");
-                                            $("#productName").val("");
-                                            $("#factoryName").val("");
-                                            $("#difference").val("");
-                                            $("#AmountProduct").val("");
-                                            $("#DifferencePer").val("");
-                                            $("#DifferenceBath").val("");
-                                            $("#price").val("");
-                                            $("#total_price").val("");
-                                            $("#total").val("");
-                                            $("#type").val("");
-                                            showUnit();
-
-                                        }
-                                    });
                                     if ($("#idshop").val().length > 0) {
                                         var idshop = $("#idshop").val();
                                         window.location.href = 'add_order.php?idshop=' + idshop;
+                                        var p = "&idUnit=" + idUnit + "&productName=" + productName + "&factoryName=" + factoryName + "&difference=" + difference + "&AmountProduct=" + AmountProduct + "&DifferencePer=" + DifferencePer + "&DifferenceBath=" + DifferenceBath + "&price=" + price + "&total_price=" + total_price + "&total=" + total + "&type=" + type + "&idshop=" + idshop;
+                                        $.get("action_addProduct.php?p=addProduct" + p, function (data, status) {
+                                            // alert("Data: " + data + "\nStatus: " + status);
+                                            if (data == "1") {
+                                                $("#alert").html("บันทึกแล้ว")
+                                                $("#idUnit").val("");
+                                                $("#productName").val("");
+                                                $("#factoryName").val("");
+                                                $("#difference").val("");
+                                                $("#AmountProduct").val("");
+                                                $("#DifferencePer").val("");
+                                                $("#DifferenceBath").val("");
+                                                $("#price").val("");
+                                                $("#total_price").val("");
+                                                $("#total").val("");
+                                                $("#type").val("");
+                                                showUnit();
+                                            }
+                                            else {
+                                                $("#idUnit").val("");
+                                                $("#productName").val("");
+                                                $("#factoryName").val("");
+                                                $("#difference").val("");
+                                                $("#AmountProduct").val("");
+                                                $("#DifferencePer").val("");
+                                                $("#DifferenceBath").val("");
+                                                $("#price").val("");
+                                                $("#total_price").val("");
+                                                $("#total").val("");
+                                                $("#type").val("");
+                                                showUnit();
+
+                                            }
+                                        });
                                     }
                                     else {
+                                        var p = "&idUnit=" + idUnit + "&productName=" + productName + "&factoryName=" + factoryName + "&difference=" + difference + "&AmountProduct=" + AmountProduct + "&DifferencePer=" + DifferencePer + "&DifferenceBath=" + DifferenceBath + "&price=" + price + "&total_price=" + total_price + "&total=" + total + "&type=" + type;
+                                        $.get("action_addProduct.php?p=addProduct" + p, function (data, status) {
+                                            // alert("Data: " + data + "\nStatus: " + status);
+                                            if (data == "1") {
+                                                $("#alert").html("บันทึกแล้ว")
+                                                $("#idUnit").val("");
+                                                $("#productName").val("");
+                                                $("#factoryName").val("");
+                                                $("#difference").val("");
+                                                $("#AmountProduct").val("");
+                                                $("#DifferencePer").val("");
+                                                $("#DifferenceBath").val("");
+                                                $("#price").val("");
+                                                $("#total_price").val("");
+                                                $("#total").val("");
+                                                $("#type").val("");
+                                                showUnit();
+                                            }
+                                            else {
+                                                $("#idUnit").val("");
+                                                $("#productName").val("");
+                                                $("#factoryName").val("");
+                                                $("#difference").val("");
+                                                $("#AmountProduct").val("");
+                                                $("#DifferencePer").val("");
+                                                $("#DifferenceBath").val("");
+                                                $("#price").val("");
+                                                $("#total_price").val("");
+                                                $("#total").val("");
+                                                $("#type").val("");
+                                                showUnit();
+
+                                            }
+                                        });
                                         window.location.href = 'add_order.php';
                                     }
+
+
                                 }
                             }
 
