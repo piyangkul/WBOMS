@@ -20,6 +20,7 @@ $status_shipment_factory = $_GET['status_shipment'];
 
 $getShipmentDetailByID = getShipmentDetailByID($idorder_transport, $idshipment_period, $idfactory);
 $val_idtransport = $getShipmentDetailByID['idtransport'];
+$val_code_transport = $getShipmentDetailByID['code_transport'];
 $val_date_transport = $getShipmentDetailByID['date_transport'];
 $date_transport = date_create($val_date_transport);
 $date_transport->add(new DateInterval('P543Y0M0DT0H0M0S'));
@@ -28,6 +29,50 @@ $val_volume = $getShipmentDetailByID['volume'];
 $val_number = $getShipmentDetailByID['number'];
 $val_price_transport = $getShipmentDetailByID['price_transport'];
 ?>
+<script>
+    var idtransport;
+    var data = JSON.stringify(<?php echo getTransport(); ?>);//ดึงค่า
+    var Obj = JSON.parse(data);//Objตามจำนวนข้อมูล
+    //alert(Obj);
+    var Arr = new Array();
+    var JSON_transportCode = new Array();
+    var JSON_transportName = new Array();
+    //pushข้อมูลลงArray
+    for (var i = 0; i < Obj.length; i++) {
+        //Arr.push(Obj[i].code_transport);
+        Arr.push(Obj[i].name_transport + " (" + Obj[i].code_transport + ")");
+        JSON_transportCode["'" + Obj[i].code_transport + "'"] = Obj[i].idtransport;
+        JSON_transportName["'" + Obj[i].name_transport + "'"] = Obj[i].idtransport;
+        console.log(JSON_transportCode);
+        console.log(JSON_transportName);
+    }
+    $(function () {
+        $("#idtransport").autocomplete({
+            source: Arr
+        });
+    });
+
+    function getFactoryId(e) {
+        if ((e instanceof FocusEvent) || (e instanceof KeyboardEvent && e.keyCode === 13)) {
+            var input = document.getElementById("idtransport").value;
+            //alert(input);
+            firstParen = input.lastIndexOf("(");
+            secondParen = input.lastIndexOf(")");
+            input = input.substr(firstParen + 1, secondParen - firstParen - 1);
+            //alert(input+ firstParen +","+ secondParen);
+            if (JSON_transportCode["'" + input + "'"] != null) {
+                idtransport = JSON_transportCode["'" + input + "'"];
+            }
+            else {
+                idtransport = JSON_transportName["'" + input + "'"];
+            }
+            console.log(idtransport);
+            //$("#test").text(idtransport);
+            document.getElementById("id").value = idtransport;
+        }
+        return false;
+    }
+</script>
 <form class="form" action="action/action_editShipment.php?idorder_transport=<?php echo $idorder_transport; ?>&idshipment_period=<?php echo $idshipment_period; ?>&idfactory=<?php echo $idfactory; ?>&price_pay_factory=<?php echo $price; ?>&status_shipment=<?php echo $status_shipment_factory; ?>" method="post">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -40,41 +85,51 @@ $val_price_transport = $getShipmentDetailByID['price_transport'];
                 <div class="form-group col-xs-12">
                 </div>
                 <div class="form-group col-xs-12">
-                    <label for="date_transport">วันที่ส่งสินค้า<label class="text-danger">*</label></label>
+                    <label for="date_transport">วันที่ส่งสินค้า</label><label class="text-danger">*</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-calendar-o"  ></i></span>
                         <input type="date" class="form-control" name="date_transport" id="date_transport" value="<?php echo $val_date_transport; ?>" required/>
                     </div>
                 </div>
                 <div class="form-group col-xs-12">
+                    <label for="name_transport">รหัสหรือชื่อบริษัทขนส่ง</label><label class="text-danger">*</label>
+                    <div class="form-group input-group">
+                        <span class="input-group-addon"><i class="fa fa-truck" ></i></span>
+                        <input type="text" class="form-control" id="idtransport" autocomplete=on value="<?php echo $val_name_transport; echo ' (';echo $val_code_transport; echo ')'; ?>" name="idtransport_show" onblur ="getFactoryId(event)" onkeypress="getFactoryId(event)" required >
+                        <input type="hidden" id="id" name="idtransport" value="<?php echo $val_idtransport; ?>">
+                    </div>
+                </div>
+                
+<!--                <div class="form-group col-xs-12">
                     <label for="name_transport">ชื่อบริษัทขนส่ง</label><label class="text-danger">*</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-truck"  ></i></span>
                         <select class="form-control" id="idtransport" name="idtransport" id="idtransport" required >
-                            <option selected value="<?php echo $val_idtransport; ?>"><?php echo $val_name_transport; ?></option>
+                            <option selected value="<?php// echo $val_idtransport; ?>"><?php// echo $val_name_transport; ?></option>
                             <?php
-                            require_once '../transport/function/func_transport.php';
-                            $getTransports = getTransports();
-                            foreach ($getTransports as $value) {
-                                $val_idtransport_s = $value['idtransport'];
-                                $val_name_transport_s = $value['name_transport'];
-                                ?>
-                                <?php if ($val_idtransport_s != $val_idtransport) { ?>
-                                    <option value="<?php echo $val_idtransport_s; ?>"><?php echo $val_name_transport_s; ?></option>
-                                <?php } ?>
-                            <?php } ?>
+//                            require_once '../transport/function/func_transport.php';
+//                            $getTransports = getTransports();
+//                            foreach ($getTransports as $value) {
+//                                $val_idtransport_s = $value['idtransport'];
+//                                $val_name_transport_s = $value['name_transport'];
+//                                ?>
+                                <?php //if ($val_idtransport_s != $val_idtransport) { ?>
+                                    <option value="<?php //echo $val_idtransport_s; ?>"><?php //echo $val_name_transport_s; ?></option>
+                                <?php //} ?>
+                            <?php//} ?>
                         </select>
                     </div>
-                </div>
+                </div>-->
+                
                 <div class="form-group col-xs-12">
-                    <label for="volume">เล่มที่</label>
+                    <label for="volume">เล่มที่</label><label class="text-danger">*</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-circle-o-notch"  ></i></span>
                         <input type="text" class="form-control" placeholder="กรุณากรอกเล่มที่ " name="volume" value="<?php echo $val_volume; ?>" required/>
                     </div>
                 </div>
                 <div class="form-group col-xs-12">
-                    <label for="number">เลขที่</label>
+                    <label for="number">เลขที่</label><label class="text-danger">*</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-circle-o-notch"  ></i></span>
                         <input type="text" class="form-control" placeholder="กรุณากรอกเลขที่" name="number" value="<?php echo $val_number; ?>" required />

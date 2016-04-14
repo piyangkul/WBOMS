@@ -11,6 +11,7 @@ require_once 'function/func_shipment.php';
 //$val_name_shop = $getProduct_order['name_shop'];
 $status_shipment = $_GET['status_shipment'];
 $idorder_transport = $_GET['idorder_transport'];
+//echo $idorder_transport;
 $idshipment_period = $_GET['idshipment_period'];
 $idfactory = $_GET['idfactory'];
 $idtransport = $_GET['idtransport'];
@@ -38,10 +39,10 @@ $val_price_transport = $getShipmentDetailByID['price_transport'];
             <div class="form-group col-xs-12">
                 <div class="form-group col-xs-12">
                 </div>
-<!--                <div class="alert alert-danger" role="alert">
-                    1.กดได้อันเดียว
-                    2.กรณี2สินค้าส่งพร้อมกัน ให้แสดงข้อมูลสินค้ามาทั้ง2อย่างไม่ได้ (ตารางรายการสินค้าจากบิลขนส่ง)
-                </div>-->
+                <!--                <div class="alert alert-danger" role="alert">
+                                    1.กดได้อันเดียว
+                                    2.กรณี2สินค้าส่งพร้อมกัน ให้แสดงข้อมูลสินค้ามาทั้ง2อย่างไม่ได้ (ตารางรายการสินค้าจากบิลขนส่ง)
+                                </div>-->
                 <div class="form-group col-xs-12">
                     <label for="date_transport">วันที่ส่งสินค้า</label>
                     <div class="form-group input-group">
@@ -129,6 +130,7 @@ $val_price_transport = $getShipmentDetailByID['price_transport'];
                                 $i = 0;
                                 foreach ($getProductDetail_shipment as $value) {
                                     $i++;
+                                    $val_idorder_transport = $value['idorder_transport'];
                                     $val_name_product = $value['name_product'];
                                     $val_amount_product_order = $value['amount_product_order'];
                                     $val_name_unit = $value['name_unit'];
@@ -163,11 +165,12 @@ $val_price_transport = $getShipmentDetailByID['price_transport'];
                                         <td class="text-right"><?php echo number_format($cost2 * $val_amount_product_order, 2); ?></td> <!-- ราคาขายรวม--> 
                                         <?php $sum_sale_transport = $sum_sale_transport + $cost * $val_amount_product_order; ?>
                                     </tr>
-                                <?php } ?>
+                                <input type="hidden" value="<?php echo $val_idorder_transport; ?>" name="check_idorder_transport_hidden[]">
+                            <?php } ?>
                         </table>
                     </div>
                     <div class="col-md-6 col-md-offset-6">ยอดเงินสินค้าที่สั่งซื้อของบิล &nbsp;&nbsp; <b><?php echo number_format($sum_sale_transport, 2); ?></b> &nbsp;&nbsp; บาท </div>
-                    <div class="col-md-6 col-md-offset-6">ยอดเงินที่ต้องจ่ายโรงงานของบิล &nbsp;&nbsp; <b><?php echo number_format($sum_sale_transport+$val_price_transport, 2); ?></b> &nbsp;&nbsp; บาท </div>
+                    <div class="col-md-6 col-md-offset-6">ยอดเงินที่ต้องจ่ายโรงงานของบิล &nbsp;&nbsp; <b><?php echo number_format($sum_sale_transport + $val_price_transport, 2); ?></b> &nbsp;&nbsp; บาท </div>
                 </div>
 
             </div>
@@ -183,8 +186,8 @@ $val_price_transport = $getShipmentDetailByID['price_transport'];
             ?>
             <button type = "submit" name = "sumbit" class = "btn btn-primary" disabled>Confirm</button>
             <br><?php echo '<center><h4 class="text-danger">ไม่สามารถกดConfirmได้ เนื่องจากคุณทำการตรวจสอบไปแล้ว</h4></center>'; ?><!-- สถานะรอตรวจสอบยอดบิล Lv2 -->
-         
- <?php }
+
+        <?php }
         ?>
     </div>
 </form>
