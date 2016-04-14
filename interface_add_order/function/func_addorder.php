@@ -345,7 +345,7 @@ function EditProductOrder($idproduct_order, $idunit, $amount_product_order, $dif
 
 function edit_unit($id, $idunit) {
     $conn = dbconnect();
-    $SQLCommand = "SELECT idunit,name_unit,price_unit,type_unit FROM unit WHERE idproduct = :id AND idunit != :idunit";
+    $SQLCommand = "SELECT idunit,name_unit,price_unit,type_unit FROM unit WHERE idproduct = :id AND idunit != :idunit AND type_unit = 'PRIMARY'";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
@@ -523,5 +523,19 @@ function getShopAdd_Order($idshop) {
     $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
     return $result;
 }
-
+function deleteDifference($id) {
+    $conn = dbconnect();
+    $SQLCommand = "DELETE FROM difference WHERE idproduct =:id";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":id" => $id
+            )
+    );
+    if ($SQLPrepare->rowCount() > 0) {
+        return TRUE;
+    } else {
+        return FALSE;
+    }
+}
 ?>

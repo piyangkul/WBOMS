@@ -61,7 +61,7 @@ else if ($_GET['p'] == "editProduct") {
     $_SESSION["product"]["$product_order"]["type"] = $type;
 
     echo "1";
-} 
+}
 //    echo $_SESSION["countUnit"];
 /* if (isset($_SESSION["countUnit"])) {
   echo 1;
@@ -152,17 +152,24 @@ else if ($_GET['p'] == "editProduct") {
                             ?></td>
                         <td><?php echo $_SESSION["product"][$i]["AmountProduct"]; ?></td>
                         <td  class ="text-right"><?php echo number_format($_SESSION["product"][$i]["total_price"] / $_SESSION["product"][$i]["AmountProduct"], 2); ?></td>
-                        <td><?php echo $_SESSION["product"][$i]["difference"]; ?></td>
-                        <td><?php echo $_SESSION["product"][$i]["DifferencePer"]; ?></td>
-                        <td><?php echo $_SESSION["product"][$i]["DifferenceBath"]; ?></td>
+                        <?php if ($_SESSION["product"][$i]["type"] === "PERCENT") { ?>
+                            <td><?php echo $_SESSION["product"][$i]["difference"]; ?></td>                        
+                            <td><?php echo $_SESSION["product"][$i]["DifferencePer"]; ?></td>
+                            <td>-</td>
+                        <?php } ?>
+                        <?php if ($_SESSION["product"][$i]["type"] === "BATH") { ?>
+                            <td>-</td>                        
+                            <td>-</td>
+                            <td><?php echo $_SESSION["product"][$i]["DifferenceBath"]; ?></td>
+                        <?php } ?>
                         <td class ="text-right"><?php echo number_format($_SESSION["product"][$i]["total"], 2); ?></td>
                         <td>
                             <a href="editproduct_addorder.php?idproduct_order=<?= $i ?>&idunit=<?php echo $idUnitS; ?>&amount=<?= $_SESSION["product"][$i]["AmountProduct"]; ?>&DifferencePer=<?= $_SESSION["product"][$i]["DifferencePer"]; ?>&DifferenceBath=<?= $_SESSION["product"][$i]["DifferenceBath"]; ?>&type=<?= $_SESSION["product"][$i]["type"]; ?>" class="btn btn-warning " data-toggle="tooltip" title="แก้ไข">
                                 <span class="glyphicon glyphicon-edit"></span>
                             </a>
                             <a class = "btn btn-danger" data-toggle = "modal" data-toggle = "tooltip" title = "ลบ" id="deleteProduct<?= $i; ?>" name="deleteProduct<?= $i; ?>" onclick="if (confirm('คุณต้องการลบหน่วยสินค้าหรือไม่')) {
-                                        delProduct(<?= $i; ?>);
-                                    }">
+                                                    delProduct(<?= $i; ?>);
+                                                }">
                                 <span class = "glyphicon glyphicon-trash"></span>
                             </a>     
                         </td>

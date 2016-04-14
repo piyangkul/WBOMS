@@ -167,7 +167,7 @@ echo $totaldiffPer;
                                     <select class="form-control" id="idUnit" name="idUnit" onchange="LoadData(this.value)" required>
                                         <option selected value="<?= $idunit ?>"><?= $nameUnit ?></option>   
                                         <?php
-                                        $getUnit = edit_unit($idProduct);
+                                        $getUnit = edit_unit($idProduct, $idunit);
                                         foreach ($getUnit as $value) {
                                             $val_idunit = $value['idunit'];
                                             $val_name_unit = $value['name_unit'];
@@ -190,7 +190,7 @@ echo $totaldiffPer;
                                     <label for="disabled_price_unit">ราคาเปิดทั้งหมด //ระบบคิดอัตโนมัติตามหน่วยที่เลือก</label>
                                     <input type="text" class="form-control" id="total_price" readonly="true" onkeyup="cal_difference()" value="<?= $price * $amountProduct; ?>">
                                 </div>
-                                
+
                                 <div class="form-group col-xs-12">
                                     <div class="col-md-12 col-sm-12 ">
                                         <div class="panel panel-info">
@@ -204,7 +204,7 @@ echo $totaldiffPer;
                                                             <div class="table-responsive ">
                                                                 <label for="name_product"> ขายเพิ่มสุทธิ </label>
                                                                 <input type="text" class="form-control" placeholder="กรอกราคาขายเพิ่มสุทธิ" id="DifferenceBath" value="<?= $diffBath; ?>" onkeyup="updateTotalBath()"> </input>
-                                                                 <h id="type" value="BATH"></h>
+                                                                <input type="hidden" id="type" name="type" value="<?= $type ?>">
                                                             </div>
                                                         </div>
                                                     <?php } elseif ($type === "PERCENT") { ?>
@@ -220,7 +220,7 @@ echo $totaldiffPer;
                                                                 </div>
                                                                 <label class="radio"> ขายลดเปอร์เซ็นต์//8% = 44.8 </label>
                                                                 <input type="text" class="form-control" placeholder="กรอก%ขายลด"  id="DifferencePer"  value="<?= $diffPer; ?>" onkeyup="updateTotalPer()"/></input>
-                                                                <h id="type" value="PERCENT"></h>
+                                                                <input type="hidden" id="type" name="type" value="<?= $type ?>">
                                                             </div>
                                                         </div>
                                                     <?php } ?>
@@ -278,22 +278,33 @@ echo $totaldiffPer;
 <script>
                             showUnit();
                             function editProduct() {
+
                                 var product_order = <?= $idproduct_order; ?>;
+                                // alert(product_order);
                                 var idUnit = $("#idUnit").val();
-                                var productName = $("#idproduct").val();
-                                var factoryName = $("#idfactory").val();
-                                var AmountProduct = $("#AmountProduct").val();
-                                var difference = $("#difference").val();
-                                var DifferencePer = $("#DifferencePer").val();
-                                var DifferenceBath = $("#DifferenceBath").val();
-                                var price = $("#price").val();
-                                var total_price = $("#total_price").val();
-                                var total = $("#total").val();
-                                var type =  <?=$type;?>;
                                 //alert(idUnit);
+                                var productName = $("#idproduct").val();
+                                //alert(productName);
+                                var factoryName = $("#idfactory").val();
+                                //alert(factoryName);
+                                var AmountProduct = $("#AmountProduct").val();
                                 //alert(AmountProduct);
+                                var difference = $("#difference").val();
+                                //alert(difference);
+                                var DifferencePer = $("#DifferencePer").val();
                                 //alert(DifferencePer);
-                                //alert(DifferenceBath)^
+                                var DifferenceBath = $("#DifferenceBath").val();
+                                //alert(DifferenceBath);
+                                var price = $("#price").val();
+                                //alert(price);
+                                var total_price = $("#total_price").val().replace(",","");
+                                //alert(total_price);
+                                var total = $("#total").val().replace(",","");
+                                //alert(total);
+                                var type = $("#type").val();
+                                //alert(type);
+
+
                                 var p = "&idproduct_order=" + product_order + "&idUnit=" + idUnit + "&productName=" + productName + "&factoryName=" + factoryName + "&difference=" + difference + "&AmountProduct=" + AmountProduct + "&DifferencePer=" + DifferencePer + "&DifferenceBath=" + DifferenceBath + "&price=" + price + "&total_price=" + total_price + "&total=" + total + "&type=" + type;
                                 alert(p);
                                 $.get("action_addProduct.php?p=editProduct" + p, function (data, status) {
@@ -328,7 +339,8 @@ echo $totaldiffPer;
                                         showUnit();
 
                                     }
-                                });
+                                }
+                                );
                             }
 
 
@@ -337,38 +349,49 @@ echo $totaldiffPer;
                                     $("#showUnit").html(data);
                                 });
                             }
-                            function updateTotalPer() {
-                                var x = document.getElementById("DifferencePer").value;
-                                var price = document.getElementById("total_price").value;
-                                var total = price - (price * (x / 100));
-                                document.getElementById("total").value = total;
-                                document.getElementById("DifferenceBath").disabled = true;
-                                document.getElementById("type").value = "PERCENT";
-                                if (x === "") {
-                                    document.getElementById("DifferenceBath").disabled = false;
-                                }
-                            }
-                            function updateTotalBath() {
-                                var x = document.getElementById("DifferenceBath").value;
-                                var price = document.getElementById("total_price").value;
-                                var qwer = document.getElementById("idFactory2").value;
-                                var amount = document.getElementById("AmountProduct").value;
-                                var total = (qwer - x) * amount;
-                                document.getElementById("total").value = total;
-                                document.getElementById("type").value = "BATH";
-                                document.getElementById("DifferencePer").disabled = true;
-                                if (x === "") {
-                                    document.getElementById("DifferencePer").disabled = false;
-                                }
-                            }
+                            /* function updateTotalPer() {
+                             var x = document.getElementById("DifferencePer").value;
+                             var price = document.getElementById("total_price").value;
+                             var total = price - (price * (x / 100));
+                             document.getElementById("total").value = total;
+                             document.getElementById("DifferenceBath").disabled = true;
+                             document.getElementById("type").value = "PERCENT";
+                             if (x === "") {
+                             document.getElementById("DifferenceBath").disabled = false;
+                             }
+                             }
+                             function updateTotalBath() {
+                             var x = document.getElementById("DifferenceBath").value;
+                             var price = document.getElementById("total_price").value;
+                             var qwer = document.getElementById("idFactory2").value;
+                             var amount = document.getElementById("AmountProduct").value;
+                             var total = (qwer - x) * amount;
+                             document.getElementById("total").value = total;
+                             document.getElementById("type").value = "BATH";
+                             document.getElementById("DifferencePer").disabled = true;
+                             if (x === "") {
+                             document.getElementById("DifferencePer").disabled = false;
+                             }
+                             }*/
                             function updateAmount() {
-                                var price = document.getElementById("idFactory2").value;
+                                var price = document.getElementById("price").value;
                                 var amount = document.getElementById("AmountProduct").value;
-                                var difference = document.getElementById("difference").value;
                                 var total = amount * price;
-                                var totals = total - (total * (difference / 100))
-                                document.getElementById("total_price").value = total;
-                                document.getElementById("cal_difference").value = totals;
+                                var total_all;
+                                var type = document.getElementById("type").value;
+                                if (type === "PERCENT") {
+                                    var diffper = document.getElementById("DifferencePer").value;
+                                    var difference = document.getElementById("difference").value;
+                                    var totals = total - (total * (difference / 100));
+                                    total_all = (total - (total * (diffper / 100)));
+                                    document.getElementById("cal_difference").value = totals.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+                                }
+                                else if (type === "BATH") {
+                                    var diffbath = document.getElementById("DifferenceBath").value;
+                                    total_all = total + (diffbath * amount);
+                                }
+                                document.getElementById("total_price").value = total.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+                                document.getElementById("total").value = total_all.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
                             }
 
                             function ChangeProduct() {
@@ -461,6 +484,7 @@ echo $totaldiffPer;
                                 }
 
                             }
+
 
 
 </script>

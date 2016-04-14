@@ -125,7 +125,10 @@ if (isset($_GET['idshop'])) {
                                             <div class="form-group">
                                                 <div>
                                                     <label for="disabled_shop">ชื่อร้านค้า</label>
-                                                    <input type="text" class="form-control" id="name_shop" name="name_shop" placeholder="กรุณาระบุชื่อร้านค้า" autocomplete= on onblur="getShopId()" value="<?= $nameshop; ?>"></input>                    
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"><i class="fa fa-shopping-cart"  ></i></span>
+                                                        <input type="text" class="form-control" id="name_shop" name="name_shop" placeholder="กรุณาระบุชื่อร้านค้า" autocomplete= on onblur="getShopId()" value="<?= $nameshop; ?>"></input>        
+                                                    </div>
                                                     <input type="hidden" id="idshop" name="idshop" value="<?= $idshop; ?>"></input>
                                                 </div>
                                                 <!--<div>
