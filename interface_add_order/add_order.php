@@ -1,5 +1,6 @@
 ﻿<?php
 session_start();
+require_once '/function/func_addorder.php';
 if (!isset($_SESSION['member']))
     header('Location: ../index.php');
 
@@ -10,10 +11,15 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
 date_default_timezone_set("Asia/Bangkok");
 $date = date("Y-m-d");
 $var = date('H:i');
-
+$idshop = 0;
+$nameshop = "";
+if (isset($_GET['idshop'])) {
+    $idshop = $_GET['idshop'];
+    $getShopAdd_Order = getShopAdd_Order($idshop);
+    $nameshop = $getShopAdd_Order['name_shop'];
+}
 //$t=time("");
 //echo $t;
-require_once '/function/func_addorder.php';
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -119,8 +125,8 @@ require_once '/function/func_addorder.php';
                                             <div class="form-group">
                                                 <div>
                                                     <label for="disabled_shop">ชื่อร้านค้า</label>
-                                                    <input type="text" class="form-control" id="name_shop" name="name_shop" placeholder="กรุณาระบุชื่อร้านค้า" autocomplete= on onblur="getShopId()"></input>                    
-                                                    <input type="hidden" id="idshop" name="idshop"></input>
+                                                    <input type="text" class="form-control" id="name_shop" name="name_shop" placeholder="กรุณาระบุชื่อร้านค้า" autocomplete= on onblur="getShopId()" value="<?= $nameshop; ?>"></input>                    
+                                                    <input type="hidden" id="idshop" name="idshop" value="<?= $idshop; ?>"></input>
                                                 </div>
                                                 <!--<div>
                                                     <label for="disabled_no">No.บิล</label>
@@ -150,7 +156,7 @@ require_once '/function/func_addorder.php';
                                         </div>
                                         <div class="panel-body">
                                             <div class="table-responsive">
-                                                <a href="addproduct_addorder.php" class="btn btn-info btn-lg">
+                                                <a class="btn btn-info btn-lg" onclick="addProduct_Order()">
                                                     <span class="glyphicon glyphicon-plus"></span> เพิ่มสินค้า
                                                 </a>
                                                 <button class="btn btn-danger btn-lg" type="button" onclick="if (confirm('คุณต้องการลบหน่วยสินค้าทั้งหมดหรือไม่')) {
@@ -231,7 +237,7 @@ require_once '/function/func_addorder.php';
                                                         $('#myModal').removeData('bs.modal');
                                                     });
                                                     showUnit();
-                                                
+
                                                     function showUnit() {
                                                         $.get("action_addProduct.php?p=showUnit", function (data, status) {
                                                             $("#showUnit").html(data);
@@ -294,5 +300,11 @@ require_once '/function/func_addorder.php';
                                                             }
                                                         });
                                                     }
+                                                    function addProduct_Order() {
+                                                        var idshop = document.getElementById("idshop").value;
+                                                        window.location.href = 'addproduct_addorder.php?idshop=' + idshop;
+
+                                                    }
+
 
 </script>

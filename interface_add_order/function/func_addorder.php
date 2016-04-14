@@ -463,4 +463,65 @@ function getCodeshop($idshop) {
     return $result;
 }
 
+function addDiff($idproduct, $idshop, $type_money, $price_difference, $date_difference) {
+    $conn = dbconnect();
+    $date = str_replace('-', '/', $date_difference);
+    $Nextdate = date('Y-m-d', strtotime($date . "0 days"));
+    //$val_date; //คือวันที่ที่จะแก้ไข
+    //$Nextdate; //คือวันที่ที่จะลงdbคือถูกแปลงแล้ว
+    $SQLCommand = "INSERT INTO difference (idproduct,idshop,type_money,price_difference,date_difference) "
+            . "VALUES (:idproduct, :idshop, :type_money, :price_difference,:date_difference )";
+
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idproduct" => $idproduct,
+                ":idshop" => $idshop,
+                ":type_money" => $type_money,
+                ":price_difference" => $price_difference,
+                ":date_difference" => $Nextdate
+            )
+    );
+
+    if ($SQLPrepare->rowCount() > 0) {
+        return $conn->lastInsertId();
+    } else {
+//        echo $SQLCommand;
+        return false;
+    }
+}
+
+function getIDProduct($id) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT * FROM unit WHERE unit.idunit = {$id}";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute();
+    //$resultArr = array();
+    $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
+    return $result;
+}
+
+function hisDiff($id) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT product.idproduct,MAX(difference.date_difference) AS maxdate,difference.price_difference FROM product INNER JOIN difference ON product.idproduct =difference.idproduct WHERE product.idproduct = 6";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute();
+    //$resultArr = array();
+    $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
+    return $result;
+}
+
+function getShopAdd_Order($idshop) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT name_shop FROM shop WHERE idshop = :idshop ";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idshop" => $idshop
+            )
+    );
+    $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
+    return $result;
+}
+
 ?>

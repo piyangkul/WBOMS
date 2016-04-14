@@ -7,6 +7,10 @@ $p = 'history_order';
 if (isset($_GET['p']) && !empty($_GET['p'])) {
     $p = $_GET['p'];
 }
+$idshop;
+if (isset($_GET['idshop'])) {
+    $idshop = $_GET['idshop'];
+}
 require_once '/function/func_addorder.php';
 ?>
 <!DOCTYPE html>
@@ -129,6 +133,19 @@ require_once '/function/func_addorder.php';
                         //alert(response);
                     }
                 });
+
+                var iddiff = productId["'" + name_shop + "'"];
+                $.ajax({type: "GET",
+                    url: "action/action_ajax_hisdiff.php",
+                    async: false,
+                    data: "q=" + iddiff,
+                    dataType: 'html',
+                    success: function (www)
+                    {
+                        $("#DifferencePer").val(www);
+                        //alert(response);
+                    }
+                });
             }
         </script>
 
@@ -161,6 +178,7 @@ require_once '/function/func_addorder.php';
                                     <h id="idFactory2"></h>
                                     <input type="hidden" class="form-control" id="name_factory" name="name_factory" placeholder="กรุณาระบุชื่อสินค้า" disabled></input>
                                     <input type="hidden" id="idfactory" name="idfactory"></input>
+                                    <input type="hidden" id="idshop" name="idshop" value="<?= $idshop; ?>"></input>
                                     <input type="hidden" class="form-control" id="typefactory" name="typefactory"></input>
                                 </div>
                                 <div class="form-group col-xs-12" style="float:left;width:50%;">
@@ -233,12 +251,13 @@ require_once '/function/func_addorder.php';
 
                     <div class="form-group col-xs-12">
                         <p id="alertPass"></p>
-                        <a type="button" class="btn btn-info btn-lg text-center" onclick="addProduct();" data-dismiss="modal">
-                            <span class="glyphicon glyphicon-floppy-save"></span> บันทึก
-                        </a>
                         <a href="add_order.php" class="btn btn-danger btn-lg text-center">
                             <span class="glyphicon glyphicon-floppy-remove"></span> ยกเลิก
                         </a>
+                        <a type="button" class="btn btn-info btn-lg text-center" onclick="addProduct();" data-dismiss="modal">
+                            <span class="glyphicon glyphicon-floppy-save"></span> บันทึก
+                        </a>
+
                     </div>  
                     <!--</form>-->
                 </div>
@@ -467,8 +486,14 @@ require_once '/function/func_addorder.php';
 
                                         }
                                     });
-                                    window.location.href = 'add_order.php';
+                                    if ($("#idshop").val().length > 0) {
+                                        var idshop = $("#idshop").val();
+                                        window.location.href = 'add_order.php?idshop=' + idshop;
+                                    }
+                                    else {
+                                        window.location.href = 'add_order.php';
+                                    }
                                 }
                             }
 
-</script>
+</script>   
