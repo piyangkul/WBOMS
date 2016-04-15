@@ -14,11 +14,12 @@ $getProductOrder = getProductOrder($val_idorder);
 //echo "<pre>";
 //print_r($getProductDetail);
 //echo "</pre>";
-$val_code_order_p = $getOrderEdit['code_order_p'];
+$val_code_order_p = $getOrderEdit['code_order'];
 $val_date_order_p = $getOrderEdit['date_order_p'];
 $val_time_order_p = $getOrderEdit['time_order_p'];
 $val_name_shop = $getOrderEdit['name_shop'];
 $val_detail_order_p = $getOrderEdit['detail_order_p'];
+$total_price_all = 0;
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -43,9 +44,8 @@ $val_detail_order_p = $getOrderEdit['detail_order_p'];
         <link rel="stylesheet" href="/resources/demos/style.css"/>
         <script>
 
-
             /*  $(function () {
-             var data = JSON.stringify(<?php //getShop2();              ?>);
+             var data = JSON.stringify(<?php //getShop2();                                                                  ?>);
              //var www = JSON.parse(data);
              //alert(www);
              alert(data);
@@ -69,36 +69,40 @@ $val_detail_order_p = $getOrderEdit['detail_order_p'];
                     <form action="action/action_editOrder.php?idorder=<?php echo $val_idorder; ?>" method="post"> 
                         <div class="row">
                             <div class="col-md-12">
-                                <h2> Add Order </h2>   
-                                <h5> เพิ่มคำสั่งซื้อ </h5>
-
+                                <h2> Detail Order </h2>   
+                                <h5> รายละเอียดคำสั่งซื้อ </h5>
                             </div>
                         </div>
                         <!-- /. ROW  -->
                         <hr />
+                        <a href="order.php" class="btn btn-danger btn-lg">
+                            <span class="fa fa-arrow-circle-left"></span> Back
+                        </a>
                         <div class="row">
                             <div class="col-md-3"></div>
                             <div class="col-md-5">
                                 <!-- บิล -->
                                 <div class="panel panel-default">
-
                                     <div class="panel-heading ">
                                         <div class="table-responsive">
 
                                             <div class="form-group">
-                                                <div>
-                                                    <label for="disabled_no">No.บิล</label>
-                                                    <input type="text" class="form-control" id="code_order" name="code_order" placeholder="ID บิล" value="<?= $val_code_order_p ?>"disabled>                    
-                                                </div>
-                                                <p id="www"></p>
-                                                <div >
-                                                    <p>วันที่สั่งซื้อ <input type="date" class="form-control" id ="date_order" name="date_order"disabled></p>
-                                                    <input type="time" class="form-control" id ="time_order" name="time_order" value="<?= $val_time_order_p ?>" disabled>
-                                                </div>
-                                                <div>
-                                                    <label for="disabled_shop">ชื่อร้านค้า</label>
+                                                <label>ชื่อร้านค้า</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="fa fa-shopping-cart"  ></i></span>
                                                     <input type="text" class="form-control" id="name_order" name="name_shop" placeholder="ชื่อร้านค้า" value="<?= $val_name_shop ?>" disabled>
                                                 </div>
+                                                <div>
+                                                    <label>No.บิล</label>
+                                                    <input type="text" class="form-control" id="code_order" name="code_order" placeholder="ID บิล" value="<?= $val_code_order_p ?>" disabled/>                    
+                                                </div>
+                                                <label>วันที่สั่งซื้อ</label> 
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="fa fa-calendar-o" ></i></span>
+                                                    <input type="date" class="form-control" id ="date_order" name="date_order" value="<?= $val_date_order_p; ?>" disabled/>
+                                                    <input type="time" class="form-control" id ="time_order" name="time_order" value="<?= $val_time_order_p ?>" disabled/>
+                                                </div>
+
                                             </div>                                        
 
                                         </div>
@@ -119,9 +123,7 @@ $val_detail_order_p = $getOrderEdit['detail_order_p'];
                                         </div>
                                         <div class="panel-body">
                                             <div class="table-responsive">
-
-                                                <a href="popup_edit_addproduct_order.php" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">
-                                                    <span class="glyphicon glyphicon-plus"></span> เพิ่มสินค้า </a>
+                                                
                                                 <table class="table table-striped table-bordered table-hover text-center" id="dataTables-example">
                                                     <thead>
                                                         <tr>
@@ -130,12 +132,12 @@ $val_detail_order_p = $getOrderEdit['detail_order_p'];
                                                             <th>ชื่อโรงงาน</th>
                                                             <th>หน่วย</th>
                                                             <th>จำนวน</th>
-                                                            <th>ราคาเปิด</th>
+                                                            <th>ราคาต่อหน่วย</th>
                                                             <th>ต้นทุนลด%</th>
                                                             <th>ขายลด%</th>
                                                             <th>ขายเพิ่มสุทธิ</th>
                                                             <th>ราคาขาย</th>
-                                                           
+                                                            <th>สถานะ</th> 
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -143,6 +145,7 @@ $val_detail_order_p = $getOrderEdit['detail_order_p'];
                                                         $i = 0;
                                                         foreach ($getProductOrder as $value) {
                                                             $i++;
+                                                            $val_idproduct_order = $value['idproduct_order'];
                                                             $val_name_product = $value['name_product'];
                                                             $val_name_unit = $value['name_unit'];
                                                             $val_name_factory = $value['name_factory'];
@@ -153,7 +156,8 @@ $val_detail_order_p = $getOrderEdit['detail_order_p'];
                                                             $val_price_unit = $value['price_unit'];
                                                             $total_open = $val_price_unit * $val_amount_product_order;
                                                             $total_percent = $total_open - ($total_open * ($val_difference_product_order / 100));
-                                                            $total_bath = $total_open - ($val_difference_product_order * $val_amount_product_order);
+                                                            $val_status_checktransport = $value['status_checktransport'];
+                                                            $total_bath = $total_open + ($val_difference_product_order * $val_amount_product_order);
                                                             ?>
                                                             <tr>
                                                                 <td><?= $i; ?></td>
@@ -161,34 +165,51 @@ $val_detail_order_p = $getOrderEdit['detail_order_p'];
                                                                 <td><?= $val_name_factory; ?></td>
                                                                 <td><?= $val_name_unit; ?></td> 
                                                                 <td><?= $val_amount_product_order; ?></td>
-                                                                <td><?= $total_open; ?> </td>
+                                                                <td class ="text-right"><?= number_format($val_price_unit, 2); ?> </td>
                                                                 <td><?= $val_difference_amount_factory; ?></td>
                                                                 <?php if ($val_type_product_order === 'PERCENT') { ?>
                                                                     <td><?= $val_difference_product_order; ?></td>
                                                                     <td>-</td>
-                                                                    <td><?= $total_percent; ?></td>
-                                                                <?php }
+                                                                    <td class ="text-right"><?= number_format($total_percent, 2); ?></td>
+                                                                    <?php
+                                                                    $total_price_all += $total_percent;
+                                                                }
                                                                 ?>
                                                                 <?php if ($val_type_product_order === 'BATH') {
                                                                     ?>
                                                                     <td>-</td>
                                                                     <td><?= $val_difference_product_order; ?></td>                                                                  
-                                                                    <td><?= $total_bath; ?></td>
-                                                                <?php }
+                                                                    <td class ="text-right"><?= number_format($total_bath, 2); ?></td> 
+                                                                    <?php
+                                                                    $total_price_all += $total_bath;
+                                                                }
+
+                                                                if ($val_status_checktransport === 'check') {
+                                                                    ?> <td>
+                                                                        <font color="green"><b>สินค้าถูกจัดส่งแล้ว</b></font>
+                                                                    </td>
+                                                                    <?php
+                                                                } else {
+                                                                    ?>
+                                                                    <td>
+                                                                        <font color="red"><b>สินค้ายังไม่ถูกจัดส่ง</b></font>
+                                                                    </td>
+                                                                    <?php
+                                                                }
                                                                 ?>    
-
-
                                                             </tr>
                                                         <?php } ?>
+
                                                 </table>
-
-                                                <div class="col-md-6"></div>
-                                                <div class="col-md-4">
-                                                    <label for="disabled_no">ราคาขายรวมต่อบิล</label>
-                                                    <input type="text" class="form-control" id="disabled_no" placeholder=" " disabled>
-                                                </div>
                                             </div>
+                                            <!--<label>สินค้าเพิ่มใหม่</label>
+                                            <!--<div id="showUnit"></div>-->
 
+                                            <div class="col-md-6"></div>
+                                            <div class="col-md-4">
+                                                <label for="disabled_no">ราคาขายรวมต่อบิล</label>
+                                                <input type="text" class="form-control" id="total_price_all" name="total_price_all" value="<?= number_format($total_price_all, 2); ?>"  readonly>
+                                            </div>   
                                         </div>
                                     </div>
                                     <!--End  ตารางสินค้าที่สั่งซื้อ --> 
@@ -196,15 +217,8 @@ $val_detail_order_p = $getOrderEdit['detail_order_p'];
                                         <div class="col-md-2"></div>
                                         <div class="form-group col-xs-8">
                                             <label for="exampleInputName2">รายละเอียดเพิ่มเติม</label>
-                                            <textarea rows="4" cols="50" id = "detail_order" name ="detail_order" class="form-control" placeholder="กรอกรายละเอียดเพิ่มเติม" value="" disabled><?= $val_detail_order_p?></textarea>
+                                            <textarea rows="4" cols="50" id = "detail_order" name ="detail_order" class="form-control" placeholder="กรอกรายละเอียดเพิ่มเติม" value="" disabled=""><?= $val_detail_order_p ?></textarea>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-4"></div>                              
-                                        
-                                        <a href="order.php" class="btn btn-danger btn-lg text-center">
-                                            <span class="glyphicon glyphicon-floppy-remove"></span> ยกเลิก
-                                        </a>
                                     </div>
                             </div>
                         </div>
@@ -252,14 +266,54 @@ $val_detail_order_p = $getOrderEdit['detail_order_p'];
     </div>
 </div>
 <script>
-            $(document.body).on('hidden.bs.modal', function () {
-                $('#myModal').removeData('bs.modal');
-            });</script>
+</script>
 <script>
     showUnit();
+    showUnitE();
+    showUnitD();
+    function delProduct(str) {
+        var x;
+        var idproduct_order = str;
+        var idorder = <?= $val_idorder; ?>;
+        if (confirm("คุณต้องการลบสินค้าตัวนี้ใช่ไหม") == true) {
+            x = "You pressed OK!";
+            var p = "&idproduct_order=" + idproduct_order;
+            //alert(p);
+            $.get("action_editProductD.php?p=addProduct" + p, function (data, status) {
+                //alert("Data: " + data + "\nStatus: " + status);
+                if (data == "1") {
+                    $("#alert").html("บันทึกแล้ว")
+                    showUnitD();
+                }
+                else {
+                    showUnitD();
+
+                }
+            });
+            document.getElementById('editProduct' + idproduct_order).style.display = 'none';
+            document.getElementById('deleteProduct' + idproduct_order).style.display = 'none';
+            document.getElementById("del" + idproduct_order).innerHTML = 'สินค้าตัวนี้ถูกลบ';
+            document.getElementById("del" + idproduct_order).style.color = "red";
+            window.location.href = 'edit_order.php?idorder=' + idorder;
+
+        }
+    }
+    $(document.body).on('hidden.bs.modal', function () {
+        $('#myModal').removeData('bs.modal');
+    });
     function showUnit() {
         $.get("action_editProduct.php?p=showUnit", function (data, status) {
             $("#showUnit").html(data);
+        });
+    }
+    function showUnitE() {
+        $.get("action_editProductE.php?p=showUnit", function (data, status) {
+            $("#showUnitE").html(data);
+        });
+    }
+    function showUnitD() {
+        $.get("action_editProductD.php?p=showUnit", function (data, status) {
+            $("#showUnitD").html(data);
         });
     }
     function updateTotalPer() {
@@ -326,7 +380,7 @@ $val_detail_order_p = $getOrderEdit['detail_order_p'];
                 success: function (response)
                 {
                     $("#total_price").val(response);
-                    // alert(response);
+                    $("#price").val(response);
                     $("#idFactory2").val(response);
                 }
             });

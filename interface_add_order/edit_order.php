@@ -187,7 +187,7 @@ $total_price_all = 0;
 
                                                                 if ($val_status_checktransport === 'check') {
                                                                     ?> <td>
-                                                                        <b>สินค้าถูกจัดส่งแล้ว</font></b>
+                                                                        <font color="green"><b>สินค้าถูกจัดส่งแล้ว</b></font>
                                                                     </td>
                                                                     <?php
                                                                 } else {

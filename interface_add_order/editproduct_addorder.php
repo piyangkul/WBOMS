@@ -147,7 +147,7 @@ if (isset($_GET['idshop'])) {
                 <div id="page-inner">
                     <!-- <form action="action/action_addOrder.php" method="post"> -->
                     <div class="modal-header">
-                        <h4 class="modal-title" id="myModalLabel">เพิ่มสินค้า</h4>
+                        <h4 class="modal-title" id="myModalLabel">แก้ไขสินค้า</h4>
                     </div>
                     <br/>
                     <a href="add_order.php?idshop=<?= $idshop; ?>" class="btn btn-danger btn-lg">
