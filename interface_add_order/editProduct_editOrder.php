@@ -191,7 +191,7 @@ echo $totaldiffPer;
                                     <label for="disabled_price_unit">ราคาเปิดทั้งหมด //ระบบคิดอัตโนมัติตามหน่วยที่เลือก</label>
                                     <input type="text" class="form-control" id="total_price" readonly="true" onkeyup="cal_difference()" value="<?= $price * $amountProduct; ?>">
                                 </div>
-                            
+
                                 <div class="form-group col-xs-12">
                                     <div class="col-md-12 col-sm-12 ">
                                         <div class="panel panel-info">
@@ -250,11 +250,12 @@ echo $totaldiffPer;
 
                     <div class="form-group col-xs-12">
                         <p id="alertPass"></p>
-                        <a href="edit_order.php?idorder=<?= $idorder; ?>" type="button" class="btn btn-info btn-lg text-center" onclick="editProduct();" data-dismiss="modal">
-                            <span class="glyphicon glyphicon-floppy-save"></span> บันทึก
-                        </a>
+
                         <a href="add_order.php" class="btn btn-danger btn-lg text-center">
                             <span class="glyphicon glyphicon-floppy-remove"></span> ยกเลิก
+                        </a>
+                        <a href="edit_order.php?idorder=<?= $idorder; ?>" type="button" class="btn btn-info btn-lg text-center" onclick="editProduct();" data-dismiss="modal">
+                            <span class="glyphicon glyphicon-floppy-save"></span> บันทึก
                         </a>
                     </div>  
                     <!--</form>-->

@@ -130,8 +130,8 @@ if (isset($_GET['idshop'])) {
                                                 <label>วันที่สั่งซื้อ </label>
                                                 <div class="input-group">                                         
                                                     <span class="input-group-addon"><i class="fa fa-calendar-o" ></i></span>
-                                                    <input type="date" class="form-control" id ="date_order" name="date_order" value="<?= $date; ?>">
-                                                        <input type="time" class="form-control" id ="time_order" name="time_order" value="<?= $var ?>"></input>
+                                                    <input type="date" class="form-control" id ="date_order" name="date_order" value="<?= $date; ?>"/>
+                                                    <input type="time" class="form-control" id ="time_order" name="time_order" value="<?= $var ?>"></input>
                                                 </div>
                                             </div>                                        
                                         </div>
@@ -300,7 +300,7 @@ if (isset($_GET['idshop'])) {
                                                             var idshop = document.getElementById("idshop").value;
                                                             window.location.href = 'addproduct_addorder.php?idshop=' + idshop;
                                                         }
-                                                        else{
+                                                        else {
                                                             alert("กรุณากรอกชื่อร้านค้า");
                                                         }
 

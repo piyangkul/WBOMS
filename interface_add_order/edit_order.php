@@ -14,7 +14,7 @@ $getProductOrder = getProductOrder($val_idorder);
 //echo "<pre>";
 //print_r($getProductDetail);
 //echo "</pre>";
-$val_code_order_p = $getOrderEdit['code_order_p'];
+$val_code_order_p = $getOrderEdit['code_order'];
 $val_date_order_p = $getOrderEdit['date_order_p'];
 $val_time_order_p = $getOrderEdit['time_order_p'];
 $val_name_shop = $getOrderEdit['name_shop'];
@@ -45,7 +45,7 @@ $total_price_all = 0;
         <script>
 
             /*  $(function () {
-             var data = JSON.stringify(<?php //getShop2();                                                  ?>);
+             var data = JSON.stringify(<?php //getShop2();                                                                 ?>);
              //var www = JSON.parse(data);
              //alert(www);
              alert(data);
@@ -71,11 +71,13 @@ $total_price_all = 0;
                             <div class="col-md-12">
                                 <h2> Edit Order </h2>   
                                 <h5> แก้ไขคำสั่งซื้อ </h5>
-
                             </div>
                         </div>
                         <!-- /. ROW  -->
                         <hr />
+                        <a href="order.php" class="btn btn-danger btn-lg">
+                            <span class="fa fa-arrow-circle-left"></span> Back
+                        </a>
                         <div class="row">
                             <div class="col-md-3"></div>
                             <div class="col-md-5">
@@ -85,19 +87,22 @@ $total_price_all = 0;
                                         <div class="table-responsive">
 
                                             <div class="form-group">
-                                                <div>
-                                                    <label for="disabled_no">No.บิล</label>
-                                                    <input type="text" class="form-control" id="code_order" name="code_order" placeholder="ID บิล" value="<?= $val_code_order_p ?>">                    
-                                                </div>
-                                                <p id="www"></p>
-                                                <div >
-                                                    <p>วันที่สั่งซื้อ <input type="date" class="form-control" id ="date_order" name="date_order" value="<?= $val_date_order_p; ?>"></p>
-                                                    <input type="time" class="form-control" id ="time_order" name="time_order" value="<?= $val_time_order_p ?>">
-                                                </div>
-                                                <div>
-                                                    <label for="disabled_shop">ชื่อร้านค้า</label>
+                                                <label>ชื่อร้านค้า</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="fa fa-shopping-cart"  ></i></span>
                                                     <input type="text" class="form-control" id="name_order" name="name_shop" placeholder="ชื่อร้านค้า" value="<?= $val_name_shop ?>" disabled>
                                                 </div>
+                                                <div>
+                                                    <label>No.บิล</label>
+                                                    <input type="text" class="form-control" id="code_order" name="code_order" placeholder="ID บิล" value="<?= $val_code_order_p ?>" disabled/>                    
+                                                </div>
+                                                <label>วันที่สั่งซื้อ</label> 
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="fa fa-calendar-o" ></i></span>
+                                                    <input type="date" class="form-control" id ="date_order" name="date_order" value="<?= $val_date_order_p; ?>"/>
+                                                    <input type="time" class="form-control" id ="time_order" name="time_order" value="<?= $val_time_order_p ?>"/>
+                                                </div>
+
                                             </div>                                        
 
                                         </div>
@@ -225,13 +230,13 @@ $total_price_all = 0;
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-4"></div>                              
-                                        <button type="submit" class="btn btn-info btn-lg text-center">
-                                            <span class="glyphicon glyphicon-floppy-save"></span> บันทึก
-                                        </button>
+                                        <div class="col-md-4"></div>
                                         <a href="add_order.php" class="btn btn-danger btn-lg text-center">
                                             <span class="glyphicon glyphicon-floppy-remove"></span> ยกเลิก
                                         </a>
+                                        <button type="submit" class="btn btn-info btn-lg text-center">
+                                            <span class="glyphicon glyphicon-floppy-save"></span> บันทึก
+                                        </button>
                                     </div>
                             </div>
                         </div>
@@ -287,13 +292,13 @@ $total_price_all = 0;
     function delProduct(str) {
         var x;
         var idproduct_order = str;
-
+        var idorder = <?= $val_idorder; ?>;
         if (confirm("คุณต้องการลบสินค้าตัวนี้ใช่ไหม") == true) {
             x = "You pressed OK!";
             var p = "&idproduct_order=" + idproduct_order;
-            alert(p);
+            //alert(p);
             $.get("action_editProductD.php?p=addProduct" + p, function (data, status) {
-                alert("Data: " + data + "\nStatus: " + status);
+                //alert("Data: " + data + "\nStatus: " + status);
                 if (data == "1") {
                     $("#alert").html("บันทึกแล้ว")
                     showUnitD();
@@ -307,6 +312,8 @@ $total_price_all = 0;
             document.getElementById('deleteProduct' + idproduct_order).style.display = 'none';
             document.getElementById("del" + idproduct_order).innerHTML = 'สินค้าตัวนี้ถูกลบ';
             document.getElementById("del" + idproduct_order).style.color = "red";
+            window.location.href = 'edit_order.php?idorder=' + idorder;
+
         }
     }
     $(document.body).on('hidden.bs.modal', function () {

@@ -111,8 +111,10 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                     $val_name_shop = $value['name_shop'];
                                                     $val_count_product = $value['count_product'];
                                                     $val_price_product_order = $value['price_product_order'];
-
-
+                                                    $getPrice_percent = getPricePercent($val_idorder_p);
+                                                    $price_percent = $getPrice_percent['price_percent'];
+                                                    $getPrice_bath = getPriceBath($val_idorder_p);
+                                                    $price_bath = $getPrice_bath['price_bath'];
                                                     //$val_count_idproduct_order = $value['count_idproduct_order'];
                                                     ?>
                                                     <tr>
@@ -122,7 +124,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                         <td class ="text-center"><?php echo $val_time_order_p; ?></td>
                                                         <td class ="text-center"><?php echo $val_name_shop; ?></td>
                                                         <td class ="text-center"><?php echo $val_count_product; ?></td>
-                                                        <td class ="text-right"><?php echo number_format($val_price_product_order, 2); ?></td>
+                                                        <td class ="text-right"><?php echo number_format($price_percent+$price_bath, 2); ?></td>
                                                         <td> <center>
 
                                                                 <a href="detail_order.php?idorder=<?php echo $val_idorder_p; ?>" class="btn btn-success" data-toggle="tooltip" title="รายละเอียด">

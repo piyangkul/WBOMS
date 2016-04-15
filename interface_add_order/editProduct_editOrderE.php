@@ -11,8 +11,10 @@ require_once '/function/func_addorder.php';
 $idorder = $_GET['idorder'];
 $idproduct_order = $_GET['idproduct_order'];
 $getProduct_Order = edit_product_order($idproduct_order);
+$code_product = $getProduct_Order['code_product'];
 $nameFactory = $getProduct_Order['name_factory'];
 $nameProduct = $getProduct_Order['name_product'];
+$nameP = '[' . $code_product . ']' . $nameProduct . ' - ' . $nameFactory;
 $idUnit = $getProduct_Order['idunit'];
 $name_unit = $getProduct_Order['name_unit'];
 $idProduct = $getProduct_Order['idproduct'];
@@ -141,6 +143,10 @@ $totaldiff = ($price * $amount_product_order) - ((($price * $amount_product_orde
                     <div class="modal-header">
                         <h4 class="modal-title" id="myModalLabel">แก้ไขสินค้า</h4>
                     </div>
+                    <br/>
+                    <a href="edit_order.php?idorder=<?= $idorder; ?>" class="btn btn-danger btn-lg">
+                        <span class="fa fa-arrow-circle-left"></span> Back
+                    </a>
                     <div class="row">
                         <div class="col-md-12 col-sm-12 ">
                             <div class="form-group col-xs-12">
@@ -148,23 +154,23 @@ $totaldiff = ($price * $amount_product_order) - ((($price * $amount_product_orde
                                 </div>
                                 <div class="form-group col-xs-12">
                                     <label for="name_product">ชื่อสินค้า</label>
-                                    <input type="text" class="form-control" id="name_product" name="name_product" placeholder="กรุณาระบุชื่อสินค้า" value ="<?= $nameProduct ?>" disabled=""></input>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-cube" ></i></span>
+                                        <input type="text" class="form-control" id="name_product" name="name_product" placeholder="กรุณาระบุชื่อสินค้า" value ="<?= $nameP ?>" disabled=""></input>
+                                    </div>
                                     <input type="hidden" id="idproduct" name="idproduct" value="<?= $idProduct ?>"></input>
                                     <h id="idFactory2"></h>
-                                </div>
-
-                                <div class="form-group col-xs-12">
-                                    <label for="name_factory">ชื่อโรงงาน</label> <font size="1" color ="red">*กรุณาเลือกสินค้า</font>
-                                    <input type="text" class="form-control" id="name_factory" name="name_factory" placeholder="กรุณาระบุชื่อสินค้า" value ="<?= $nameFactory ?>" disabled></input>
+                                    <input type="hidden" class="form-control" id="name_factory" name="name_factory" placeholder="กรุณาระบุชื่อสินค้า" value ="<?= $nameFactory ?>" disabled></input>
                                     <input type="hidden" id="idfactory" name="idfactory" value ="<?= $idFactory ?>"></input>
                                 </div>
+
                                 <div class="form-group col-xs-12" style="float:left;width:50%;">
                                     <label for="name_product"> หน่วย</label>  <font size="1" color ="red">*กรุณาเลือกสินค้าก่อน</font>
 
                                     <select class="form-control" id="idUnit" name="idUnit" onchange="LoadData(this.value)" required>
                                         <option selected value="<?= $idUnit; ?>"><?= $name_unit; ?></option>   
                                         <?php
-                                        $getUnit = edit_unit($idProduct,$idUnit);
+                                        $getUnit = edit_unit($idProduct, $idUnit);
                                         foreach ($getUnit as $value) {
                                             $val_idunit = $value['idunit'];
                                             $val_name_unit = $value['name_unit'];
@@ -177,7 +183,7 @@ $totaldiff = ($price * $amount_product_order) - ((($price * $amount_product_orde
                                 </div>
                                 <div class="form-group col-xs-12" style="float:left;width:50%;">
                                     <label for="amount_product">จำนวน</label>
-                                    <input type="text" class="form-control" id="AmountProduct" placeholder="กรอกจำนวนสินค้า" onkeyup="updateAmount()" value="<?= $amount_product_order; ?>">
+                                    <input type="text" class="form-control" id="AmountProduct" placeholder="กรอกจำนวนสินค้า" onkeyup="updateAmount()" value="<?= $amount_product_order; ?>" required="">
                                 </div>
                                 <div class="form-group col-xs-12">
                                     <label for="disabled_price_unit">ราคาเปิดต่อหน่วย //ระบบคิดอัตโนมัติตามหน่วยที่เลือก</label>
@@ -245,12 +251,13 @@ $totaldiff = ($price * $amount_product_order) - ((($price * $amount_product_orde
 
                     <div class="form-group col-xs-12">
                         <p id="alertPass"></p>
-                        <a href="edit_order.php?idorder=<?= $idorder; ?>" type="button" class="btn btn-info btn-lg text-center" onclick="editProduct();" data-dismiss="modal">
-                            <span class="glyphicon glyphicon-floppy-save"></span> บันทึก
-                        </a>
-                        <a href="add_order.php" class="btn btn-danger btn-lg text-center">
+                        <a href="edit_order.php?idorder=<?= $idorder; ?>" class="btn btn-danger btn-lg text-center">
                             <span class="glyphicon glyphicon-floppy-remove"></span> ยกเลิก
                         </a>
+                        <a type="button" class="btn btn-info btn-lg text-center" onclick="editProduct();" data-dismiss="modal">
+                            <span class="glyphicon glyphicon-floppy-save"></span> บันทึก
+                        </a>
+
                     </div>  
                     <!--</form>-->
                 </div>
@@ -275,6 +282,7 @@ $totaldiff = ($price * $amount_product_order) - ((($price * $amount_product_orde
                             showUnit();
                             function editProduct() {
                                 var idproduct_order = <?= $idproduct_order; ?>;
+                                var idorder = <?= $idorder ?>;
                                 var idUnit = $("#idUnit").val();
                                 var productName = $("#productName").val();
                                 var factoryName = $("#factoryName").val();
@@ -282,48 +290,49 @@ $totaldiff = ($price * $amount_product_order) - ((($price * $amount_product_orde
                                 var difference = $("#difference").val();
                                 var DifferencePer = $("#DifferencePer").val();
                                 var DifferenceBath = $("#DifferenceBath").val();
-                                var price = $("#price").val().replace(",","");
-                                var total_price = $("#total_price").val();
-                                var total = $("#total").val();
+                                var price = $("#price").val().replace(",", "");
+                                var total_price = $("#total_price").val().replace(",", "");
+                                var total = $("#total").val().replace(",", "");
                                 var type = $("#type").val();
-                                //alert(idproduct_order);
-                                //alert(AmountProduct);
-                                //alert(DifferencePer);
-                                //alert(DifferenceBath);
-                                var p = "&idproduct_order=" + idproduct_order + "&idUnit=" + idUnit + "&productName=" + productName + "&factoryName=" + factoryName + "&difference=" + difference + "&AmountProduct=" + AmountProduct + "&DifferencePer=" + DifferencePer + "&DifferenceBath=" + DifferenceBath + "&price=" + price + "&total_price=" + total_price + "&total=" + total + "&type=" + type;
-                                //alert(p);
-                                $.get("action_editProductE.php?p=addProduct" + p, function (data, status) {
-                                    alert("Data: " + data + "\nStatus: " + status);
-                                    if (data == "1") {
-                                        $("#alert").html("บันทึกแล้ว")
-                                        $("#idUnit").val("");
-                                        $("#productName").val("");
-                                        $("#factoryName").val("");
-                                        $("#difference").val("");
-                                        $("#AmountProduct").val("");
-                                        $("#DifferencePer").val("");
-                                        $("#DifferenceBath").val("");
-                                        $("#price").val("");
-                                        $("#total_price").val("");
-                                        $("#total").val("");
-                                        $("#type").val("");
-                                        showUnitE();
-                                    }
-                                    else {
-                                        $("#idUnit").val("");
-                                        $("#productName").val("");
-                                        $("#factoryName").val("");
-                                        $("#difference").val("");
-                                        $("#AmountProduct").val("");
-                                        $("#DifferencePer").val("");
-                                        $("#DifferenceBath").val("");
-                                        $("#price").val("");
-                                        $("#total_price").val("");
-                                        $("#total").val("");
-                                        $("#type").val("");
-                                        showUnitE();
-                                    }
-                                });
+                                if (AmountProduct.length > 0 && (DifferencePer > 0 || DifferenceBath > 0)) {
+                                    var p = "&idproduct_order=" + idproduct_order + "&idUnit=" + idUnit + "&productName=" + productName + "&factoryName=" + factoryName + "&difference=" + difference + "&AmountProduct=" + AmountProduct + "&DifferencePer=" + DifferencePer + "&DifferenceBath=" + DifferenceBath + "&price=" + price + "&total_price=" + total_price + "&total=" + total + "&type=" + type;
+                                    $.get("action_editProductE.php?p=addProduct" + p, function (data, status) {
+                                        // alert("Data: " + data + "\nStatus: " + status);
+                                        if (data == "1") {
+                                            $("#alert").html("บันทึกแล้ว")
+                                            $("#idUnit").val("");
+                                            $("#productName").val("");
+                                            $("#factoryName").val("");
+                                            $("#difference").val("");
+                                            $("#AmountProduct").val("");
+                                            $("#DifferencePer").val("");
+                                            $("#DifferenceBath").val("");
+                                            $("#price").val("");
+                                            $("#total_price").val("");
+                                            $("#total").val("");
+                                            $("#type").val("");
+                                            showUnitE();
+                                        }
+                                        else {
+                                            $("#idUnit").val("");
+                                            $("#productName").val("");
+                                            $("#factoryName").val("");
+                                            $("#difference").val("");
+                                            $("#AmountProduct").val("");
+                                            $("#DifferencePer").val("");
+                                            $("#DifferenceBath").val("");
+                                            $("#price").val("");
+                                            $("#total_price").val("");
+                                            $("#total").val("");
+                                            $("#type").val("");
+                                            showUnitE();
+                                        }
+                                    });
+                                    window.location.href = "edit_order.php?idorder=" + idorder;
+                                }
+                                else {
+                                    alert("กรุณากรอกข้อมูลให้ครบถ้วน")
+                                }
                             }
 
 

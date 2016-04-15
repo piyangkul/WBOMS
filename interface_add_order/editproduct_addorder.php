@@ -32,7 +32,6 @@ $nameP = "[" . $code_product . "]" . $nameProduct . " - " . $nameFactory;
 if (isset($_GET['idshop'])) {
     $idshop = $_GET['idshop'];
 }
-echo $idshop;
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -57,83 +56,83 @@ echo $idshop;
         <link rel="stylesheet" href="/resources/demos/style.css"/>
         <script>
             //alert('<?//= getShop2(); ?>');
-            var Shop = JSON.stringify(<?php echo getShop2(); ?>);
+                var Shop = JSON.stringify(<?php echo getShop2(); ?>);
 
-            //alert(Product);
-            //alert(data);
-            var ShopP = JSON.parse(Shop);
+                //alert(Product);
+                //alert(data);
+                var ShopP = JSON.parse(Shop);
 
-            //alert(ProductP);
-            //data = JSON.parse(www+'');
-            /*alert(data);*/
-            //document.write(www[0].idshop+www[0].name_shop);
-            var shopName = new Array();
-            var shopId = new Array();
-            // var idshop;
+                //alert(ProductP);
+                //data = JSON.parse(www+'');
+                /*alert(data);*/
+                //document.write(www[0].idshop+www[0].name_shop);
+                var shopName = new Array();
+                var shopId = new Array();
+                // var idshop;
 
 
-            for (var i = 0; i < ShopP.length; i++) {
-                shopName.push(ShopP[i].name_shop);
-                shopId["'" + ShopP[i].name_shop + "'"] = ShopP[i].idshop;
-                //var obj = JSON.parse(item);
-                //shopName[i++] = item["shop_name"];
-                // shopId[i++] = item["idshop"];
-                //alert(www[i].name_shop);
-                //alert(item["shop_name"]);
+                for (var i = 0; i < ShopP.length; i++) {
+                    shopName.push(ShopP[i].name_shop);
+                    shopId["'" + ShopP[i].name_shop + "'"] = ShopP[i].idshop;
+                    //var obj = JSON.parse(item);
+                    //shopName[i++] = item["shop_name"];
+                    // shopId[i++] = item["idshop"];
+                    //alert(www[i].name_shop);
+                    //alert(item["shop_name"]);
 
-            }
+                }
 
-            //alert(data);
-            $(function () {
-                $("#name_shop").autocomplete({
-                    source: shopName
+                //alert(data);
+                $(function () {
+                    $("#name_shop").autocomplete({
+                        source: shopName
+                    });
                 });
-            });
 
-            function getShopId() {
-                //alert("Hello");
-                var price = document.getElementById("name_shop").value;
-                //alert(shopId["'" + price + "'"]);
-                document.getElementById("idshop").value = shopId["'" + price + "'"];
-                //idshop = shopId["'" + price + "'"];
-                //alert(idshop);
-            }
-            //auto complete
-            var Product = JSON.stringify(<?php echo getProduct4(); ?>);
-            var ProductP = JSON.parse(Product);
-            var productName = new Array();
-            var productId = new Array();
-            var factoryName = new Array;
-            var factoryId = new Array;
-            for (var i = 0; i < ProductP.length; i++) {
-                productName.push(ProductP[i].name_product);
-                productId["'" + ProductP[i].name_product + "'"] = ProductP[i].idproduct;
-                factoryName["'" + ProductP[i].name_product + "'"] = ProductP[i].name_factory;
-                factoryId["'" + ProductP[i].name_product + "'"] = ProductP[i].idfactory;
-            }
-            $(function () {
-                $("#name_product").autocomplete({
-                    source: productName
+                function getShopId() {
+                    //alert("Hello");
+                    var price = document.getElementById("name_shop").value;
+                    //alert(shopId["'" + price + "'"]);
+                    document.getElementById("idshop").value = shopId["'" + price + "'"];
+                    //idshop = shopId["'" + price + "'"];
+                    //alert(idshop);
+                }
+                //auto complete
+                var Product = JSON.stringify(<?php echo getProduct4(); ?>);
+                var ProductP = JSON.parse(Product);
+                var productName = new Array();
+                var productId = new Array();
+                var factoryName = new Array;
+                var factoryId = new Array;
+                for (var i = 0; i < ProductP.length; i++) {
+                    productName.push(ProductP[i].name_product);
+                    productId["'" + ProductP[i].name_product + "'"] = ProductP[i].idproduct;
+                    factoryName["'" + ProductP[i].name_product + "'"] = ProductP[i].name_factory;
+                    factoryId["'" + ProductP[i].name_product + "'"] = ProductP[i].idfactory;
+                }
+                $(function () {
+                    $("#name_product").autocomplete({
+                        source: productName
+                    });
                 });
-            });
-            function getProductID() {
-                var name_shop = document.getElementById("name_product").value;
-                document.getElementById("name_factory").value = factoryName["'" + name_shop + "'"];
-                document.getElementById("idproduct").value = productId["'" + name_shop + "'"];
-                document.getElementById("idfactory").value = factoryId["'" + name_shop + "'"];
-                var id = productId["'" + name_shop + "'"];
-                $.ajax({type: "GET",
-                    url: "action/action_ajax_product.php",
-                    async: false,
-                    data: "q=" + id,
-                    dataType: 'html',
-                    success: function (response)
-                    {
-                        $("#idUnit").html(response);
-                        //alert(response);
-                    }
-                });
-            }
+                function getProductID() {
+                    var name_shop = document.getElementById("name_product").value;
+                    document.getElementById("name_factory").value = factoryName["'" + name_shop + "'"];
+                    document.getElementById("idproduct").value = productId["'" + name_shop + "'"];
+                    document.getElementById("idfactory").value = factoryId["'" + name_shop + "'"];
+                    var id = productId["'" + name_shop + "'"];
+                    $.ajax({type: "GET",
+                        url: "action/action_ajax_product.php",
+                        async: false,
+                        data: "q=" + id,
+                        dataType: 'html',
+                        success: function (response)
+                        {
+                            $("#idUnit").html(response);
+                            //alert(response);
+                        }
+                    });
+                }
         </script>
 
     </head>
@@ -150,6 +149,11 @@ echo $idshop;
                     <div class="modal-header">
                         <h4 class="modal-title" id="myModalLabel">เพิ่มสินค้า</h4>
                     </div>
+                    <br/>
+                    <a href="add_order.php?idshop=<?= $idshop; ?>" class="btn btn-danger btn-lg">
+                        <span class="fa fa-arrow-circle-left"></span> Back
+                    </a>
+
                     <div class="row">
                         <div class="col-md-12 col-sm-12 ">
                             <div class="form-group col-xs-12">
@@ -294,87 +298,92 @@ echo $idshop;
                                 var total_price = $("#total_price").val().replace(",", "");
                                 var total = $("#total").val().replace(",", "");
                                 var type = $("#type").val();
-                                if ($("#idshop").val().length > 0) {
-                                    var idshop = $("#idshop").val();
-                                    var p = "&idproduct_order=" + product_order + "&idUnit=" + idUnit + "&productName=" + productName + "&factoryName=" + factoryName + "&difference=" + difference + "&AmountProduct=" + AmountProduct + "&DifferencePer=" + DifferencePer + "&DifferenceBath=" + DifferenceBath + "&price=" + price + "&total_price=" + total_price + "&total=" + total + "&type=" + type + "&idshop=" + idshop;
-                                    alert(p);
-                                    $.get("action_addProduct.php?p=editProduct" + p, function (data, status) {
-                                        alert("Data: " + data + "\nStatus: " + status);
-                                        if (data == "1") {
-                                            $("#alert").html("บันทึกแล้ว")
-                                            $("#idUnit").val("");
-                                            $("#productName").val("");
-                                            $("#factoryName").val("");
-                                            $("#difference").val("");
-                                            $("#AmountProduct").val("");
-                                            $("#DifferencePer").val("");
-                                            $("#DifferenceBath").val("");
-                                            $("#price").val("");
-                                            $("#total_price").val("");
-                                            $("#total").val("");
-                                            $("#type").val("");
-                                            showUnit();
-                                        }
-                                        else {
-                                            $("#idUnit").val("");
-                                            $("#productName").val("");
-                                            $("#factoryName").val("");
-                                            $("#difference").val("");
-                                            $("#AmountProduct").val("");
-                                            $("#DifferencePer").val("");
-                                            $("#DifferenceBath").val("");
-                                            $("#price").val("");
-                                            $("#total_price").val("");
-                                            $("#total").val("");
-                                            $("#type").val("");
-                                            showUnit();
+                                if (AmountProduct.length > 0 && (DifferencePer > 0 || DifferenceBath > 0)) {
+                                    if ($("#idshop").val().length > 0) {
+                                        var idshop = $("#idshop").val();
+                                        var p = "&idproduct_order=" + product_order + "&idUnit=" + idUnit + "&productName=" + productName + "&factoryName=" + factoryName + "&difference=" + difference + "&AmountProduct=" + AmountProduct + "&DifferencePer=" + DifferencePer + "&DifferenceBath=" + DifferenceBath + "&price=" + price + "&total_price=" + total_price + "&total=" + total + "&type=" + type + "&idshop=" + idshop;
+                                        // alert(p);
+                                        $.get("action_addProduct.php?p=editProduct" + p, function (data, status) {
+                                            //alert("Data: " + data + "\nStatus: " + status);
+                                            if (data == "1") {
+                                                $("#alert").html("บันทึกแล้ว")
+                                                $("#idUnit").val("");
+                                                $("#productName").val("");
+                                                $("#factoryName").val("");
+                                                $("#difference").val("");
+                                                $("#AmountProduct").val("");
+                                                $("#DifferencePer").val("");
+                                                $("#DifferenceBath").val("");
+                                                $("#price").val("");
+                                                $("#total_price").val("");
+                                                $("#total").val("");
+                                                $("#type").val("");
+                                                showUnit();
+                                            }
+                                            else {
+                                                $("#idUnit").val("");
+                                                $("#productName").val("");
+                                                $("#factoryName").val("");
+                                                $("#difference").val("");
+                                                $("#AmountProduct").val("");
+                                                $("#DifferencePer").val("");
+                                                $("#DifferenceBath").val("");
+                                                $("#price").val("");
+                                                $("#total_price").val("");
+                                                $("#total").val("");
+                                                $("#type").val("");
+                                                showUnit();
 
+                                            }
                                         }
+                                        );
+                                        window.location.href = 'add_order.php?idshop=' + idshop;
                                     }
-                                    );
-                                    window.location.href = 'add_order.php?idshop=' + idshop;
+                                    else {
+                                        var p = "&idproduct_order=" + product_order + "&idUnit=" + idUnit + "&productName=" + productName + "&factoryName=" + factoryName + "&difference=" + difference + "&AmountProduct=" + AmountProduct + "&DifferencePer=" + DifferencePer + "&DifferenceBath=" + DifferenceBath + "&price=" + price + "&total_price=" + total_price + "&total=" + total + "&type=" + type;
+                                        // alert(p);
+                                        $.get("action_addProduct.php?p=editProduct" + p, function (data, status) {
+                                            //alert("Data: " + data + "\nStatus: " + status);
+                                            if (data == "1") {
+                                                $("#alert").html("บันทึกแล้ว")
+                                                $("#idUnit").val("");
+                                                $("#productName").val("");
+                                                $("#factoryName").val("");
+                                                $("#difference").val("");
+                                                $("#AmountProduct").val("");
+                                                $("#DifferencePer").val("");
+                                                $("#DifferenceBath").val("");
+                                                $("#price").val("");
+                                                $("#total_price").val("");
+                                                $("#total").val("");
+                                                $("#type").val("");
+                                                showUnit();
+                                            }
+                                            else {
+                                                $("#idUnit").val("");
+                                                $("#productName").val("");
+                                                $("#factoryName").val("");
+                                                $("#difference").val("");
+                                                $("#AmountProduct").val("");
+                                                $("#DifferencePer").val("");
+                                                $("#DifferenceBath").val("");
+                                                $("#price").val("");
+                                                $("#total_price").val("");
+                                                $("#total").val("");
+                                                $("#type").val("");
+                                                showUnit();
+
+                                            }
+                                        }
+                                        );
+                                        window.location.href = 'add_order.php';
+                                    }
+
+
                                 }
                                 else {
-                                    var p = "&idproduct_order=" + product_order + "&idUnit=" + idUnit + "&productName=" + productName + "&factoryName=" + factoryName + "&difference=" + difference + "&AmountProduct=" + AmountProduct + "&DifferencePer=" + DifferencePer + "&DifferenceBath=" + DifferenceBath + "&price=" + price + "&total_price=" + total_price + "&total=" + total + "&type=" + type;
-                                    alert(p);
-                                    $.get("action_addProduct.php?p=editProduct" + p, function (data, status) {
-                                        alert("Data: " + data + "\nStatus: " + status);
-                                        if (data == "1") {
-                                            $("#alert").html("บันทึกแล้ว")
-                                            $("#idUnit").val("");
-                                            $("#productName").val("");
-                                            $("#factoryName").val("");
-                                            $("#difference").val("");
-                                            $("#AmountProduct").val("");
-                                            $("#DifferencePer").val("");
-                                            $("#DifferenceBath").val("");
-                                            $("#price").val("");
-                                            $("#total_price").val("");
-                                            $("#total").val("");
-                                            $("#type").val("");
-                                            showUnit();
-                                        }
-                                        else {
-                                            $("#idUnit").val("");
-                                            $("#productName").val("");
-                                            $("#factoryName").val("");
-                                            $("#difference").val("");
-                                            $("#AmountProduct").val("");
-                                            $("#DifferencePer").val("");
-                                            $("#DifferenceBath").val("");
-                                            $("#price").val("");
-                                            $("#total_price").val("");
-                                            $("#total").val("");
-                                            $("#type").val("");
-                                            showUnit();
-
-                                        }
-                                    }
-                                    );
-                                    window.location.href = 'add_order.php';
+                                    alert('กรุณากรอกข้อมูลให้ครบถ้วน');
                                 }
-
-
                             }
 
 

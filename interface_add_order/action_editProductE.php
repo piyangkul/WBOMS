@@ -14,12 +14,29 @@ if ($_GET['p'] == "addProduct") {
     $DifferencePer = $_GET['DifferencePer'];
     $DifferenceBath = $_GET['DifferenceBath'];
     $total_price = $_GET['total_price'];
+    $price = $_GET['price'];
     $total = $_GET['total'];
     $type = $_GET['type'];
+    $date_order = date("Y-m-d");
+    $getIdOrder = getEdit_Order($idProduct_order);
+    $idshop = $getIdOrder['idshop'];
+    
+    echo $type.$idshop;
+    
+    
     if ($type === "PERCENT") {
-        $idproductE = EditProductOrder($idProduct_order, $idUnit, $AmountProduct, $DifferencePer, $total_price);
+        $idproductE = EditProductOrder($idProduct_order, $idUnit, $AmountProduct, $DifferencePer, $price);
+        $getproduct = getIDProduct($idUnit);
+        $idproduct2 = $getproduct['idproduct'];
+        $delDiff = deleteDifference($idproduct2);
+        $addDiff = addDiff_edit($idproduct2, $idshop, $type, $DifferencePer, $date_order);
+        echo $idshop;
     } elseif ($type === "BATH") {
-        $idproductE = EditProductOrder($idProduct_order, $idUnit, $AmountProduct, $DifferenceBath, $total_price);
+        $idproductE = EditProductOrder($idProduct_order, $idUnit, $AmountProduct, $DifferenceBath, $price);
+        $getproduct = getIDProduct($idUnit);
+        $idproduct2 = $getproduct['idproduct'];
+        $delDiff = deleteDifference($idproduct2);
+        $addDiff = addDiff_edit($idproduct2, $idshop, $type, $DifferenceBath, $date_order);
     }
     /* echo "$DifferenceBATH";
       echo "$DifferencePer";

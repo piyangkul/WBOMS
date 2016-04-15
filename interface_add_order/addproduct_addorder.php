@@ -35,17 +35,8 @@ require_once '/function/func_addorder.php';
         <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
         <!-- <link rel="stylesheet" href="/resources/demos/style.css"/>-->
         <script>
-            //alert('<?//= getShop2(); ?>');
             var Shop = JSON.stringify(<?php echo getShop2(); ?>);
-
-            //alert(Product);
-            //alert(data);
             var ShopP = JSON.parse(Shop);
-
-            //alert(ProductP);
-            //data = JSON.parse(www+'');
-            /*alert(data);*/
-            //document.write(www[0].idshop+www[0].name_shop);
             var shopName = new Array();
             var shopId = new Array();
             // var idshop;
@@ -54,12 +45,6 @@ require_once '/function/func_addorder.php';
             for (var i = 0; i < ShopP.length; i++) {
                 shopName.push(ShopP[i].name_shop);
                 shopId["'" + ShopP[i].name_shop + "'"] = ShopP[i].idshop;
-                //var obj = JSON.parse(item);
-                //shopName[i++] = item["shop_name"];
-                // shopId[i++] = item["idshop"];
-                //alert(www[i].name_shop);
-                //alert(item["shop_name"]);
-
             }
 
             //alert(data);
@@ -70,12 +55,8 @@ require_once '/function/func_addorder.php';
             });
 
             function getShopId() {
-                //alert("Hello");
                 var price = document.getElementById("name_shop").value;
-                //alert(shopId["'" + price + "'"]);
                 document.getElementById("idshop").value = shopId["'" + price + "'"];
-                //idshop = shopId["'" + price + "'"];
-                //alert(idshop);
             }
             //auto complete
             var Product = JSON.stringify(<?php echo getProduct4(); ?>);
@@ -91,14 +72,12 @@ require_once '/function/func_addorder.php';
             var Name = new Array();
             for (var i = 0; i < ProductP.length; i++) {
                 productName.push("[" + ProductP[i].product_code + "] " + ProductP[i].name_product + " - " + ProductP[i].name_factory);
-                // Name.push(ProductP[i].name_product + " " + ProductP[i].name_factory);
                 productName["'" + "[" + ProductP[i].product_code + "] " + ProductP[i].name_product + " - " + ProductP[i].name_factory + "'"] = ProductP[i].name_product;
                 productId["'" + "[" + ProductP[i].product_code + "] " + ProductP[i].name_product + " - " + ProductP[i].name_factory + "'"] = ProductP[i].idproduct;
                 factoryName["'" + "[" + ProductP[i].product_code + "] " + ProductP[i].name_product + " - " + ProductP[i].name_factory + "'"] = ProductP[i].name_factory;
                 factoryId["'" + "[" + ProductP[i].product_code + "] " + ProductP[i].name_product + " - " + ProductP[i].name_factory + "'"] = ProductP[i].idfactory;
                 factoryDiff["'" + "[" + ProductP[i].product_code + "] " + ProductP[i].name_product + " - " + ProductP[i].name_factory + "'"] = ProductP[i].difference_amount_product;
                 factoryType["'" + "[" + ProductP[i].product_code + "] " + ProductP[i].name_product + " - " + ProductP[i].name_factory + "'"] = ProductP[i].type_factory;
-                //document.write(ProductP[i].name_product);
             }
             $(function () {
                 $("#name_product").autocomplete({
@@ -134,7 +113,7 @@ require_once '/function/func_addorder.php';
                     }
                 });
 
-              var iddiff = productId["'" + name_shop + "'"];
+                var iddiff = productId["'" + name_shop + "'"];
                 $.ajax({type: "GET",
                     url: "action/action_ajax_hisdiff.php",
                     async: false,
@@ -164,6 +143,10 @@ require_once '/function/func_addorder.php';
                     <div class="modal-header">
                         <h4 class="modal-title" id="myModalLabel">เพิ่มสินค้า</h4>
                     </div>
+                    <br/>
+                    <a href="add_order.php?idshop=<?= $idshop; ?>" class="btn btn-danger btn-lg">
+                        <span class="fa fa-arrow-circle-left"></span> Back
+                    </a>
                     <div class="row">
                         <div class="col-md-12 col-sm-12 ">
                             <div class="form-group col-xs-12">
@@ -185,7 +168,7 @@ require_once '/function/func_addorder.php';
                                 <div class="form-group col-xs-12" style="float:left;width:50%;">
                                     <label> หน่วย</label>  <font size="1" color ="red">*กรุณาเลือกสินค้าก่อน</font>
                                     <select class="form-control" id="idUnit" name="idUnit" onchange="LoadData(this.value)" required>
-                                        <option>กรุณาเลือกหน่วยขาย</option>
+                                        <option value="0">กรุณาเลือกหน่วยขาย</option>
                                     </select>
                                     <div id="tee"></div>
                                 </div>
@@ -252,7 +235,7 @@ require_once '/function/func_addorder.php';
 
                     <div class="form-group col-xs-12">
                         <p id="alertPass"></p>
-                        <a href="add_order.php?idshop=<?=$idshop;?>" class="btn btn-danger btn-lg text-center">
+                        <a href="add_order.php?idshop=<?= $idshop; ?>" class="btn btn-danger btn-lg text-center">
                             <span class="glyphicon glyphicon-floppy-remove"></span> ยกเลิก
                         </a>
                         <a type="button" class="btn btn-info btn-lg text-center" onclick="addProduct();" data-dismiss="modal">
@@ -443,14 +426,10 @@ require_once '/function/func_addorder.php';
                                 var total = $("#total").val().replace(",", "");
                                 var type = document.getElementById("typefactory").value;
                                 var chk = $("#name_product").val();
-                                if (chk.length < 1 || idUnit.length < 1 || AmountProduct.length < 1 || DifferenceBath.length < 1 && DifferencePer.length < 1) {
-                                    alert("กรุณากรอกข้อมูลให้ครบถ้วน");
-                                }
 
-                                else {
+                                if (chk.length > 0 && idUnit > 0 && AmountProduct.length > 0 && (DifferenceBath.length > 0 || DifferencePer.length > 0)) {
                                     if ($("#idshop").val().length > 0) {
                                         var idshop = $("#idshop").val();
-                                        window.location.href = 'add_order.php?idshop=' + idshop;
                                         var p = "&idUnit=" + idUnit + "&productName=" + productName + "&factoryName=" + factoryName + "&difference=" + difference + "&AmountProduct=" + AmountProduct + "&DifferencePer=" + DifferencePer + "&DifferenceBath=" + DifferenceBath + "&price=" + price + "&total_price=" + total_price + "&total=" + total + "&type=" + type + "&idshop=" + idshop;
                                         $.get("action_addProduct.php?p=addProduct" + p, function (data, status) {
                                             // alert("Data: " + data + "\nStatus: " + status);
@@ -485,6 +464,7 @@ require_once '/function/func_addorder.php';
 
                                             }
                                         });
+                                        window.location.href = 'add_order.php?idshop=' + idshop;
                                     }
                                     else {
                                         var p = "&idUnit=" + idUnit + "&productName=" + productName + "&factoryName=" + factoryName + "&difference=" + difference + "&AmountProduct=" + AmountProduct + "&DifferencePer=" + DifferencePer + "&DifferenceBath=" + DifferenceBath + "&price=" + price + "&total_price=" + total_price + "&total=" + total + "&type=" + type;
@@ -525,6 +505,9 @@ require_once '/function/func_addorder.php';
                                     }
 
 
+                                }
+                                else {
+                                    alert("กรุณากรอกข้อมูลให้ครบถ้วน");
                                 }
                             }
 

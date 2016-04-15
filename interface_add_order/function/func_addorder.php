@@ -261,7 +261,7 @@ function addProductOrder($idunit, $idorder_p, $amount_product_order, $difference
 
 function getOrderEdit($id) {
     $conn = dbconnect();
-    $SQLCommand = "SELECT order_p.idorder_p,code_order_p,shop.idshop,shop.name_shop,date_order_p,time_order_p,detail_order_p,COUNT(product_order.idproduct_order) AS count_product FROM order_p INNER JOIN shop ON shop.idshop = order_p.idshop INNER JOIN product_order ON order_p.idorder_p = product_order.idorder_p WHERE order_p.idorder_p = {$id} GROUP BY order_p.idorder_p ";
+    $SQLCommand = "SELECT order_p.idorder_p,code_order_p,shop.idshop,shop.name_shop,date_order_p,time_order_p,detail_order_p,COUNT(product_order.idproduct_order) AS count_product,concat(region.code_region,province.code_province,shop.idshop,code_order_p) AS code_order FROM order_p INNER JOIN shop ON shop.idshop = order_p.idshop INNER JOIN product_order ON order_p.idorder_p = product_order.idorder_p INNER JOIN province ON shop.idprovince = province.idprovince INNER JOIN region ON province.idregion = region.idregion WHERE order_p.idorder_p = {$id} GROUP BY order_p.idorder_p ";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute();
     //$resultArr = array();
@@ -309,7 +309,7 @@ function EditOrder($idorder, $code_order, $date_order, $time_order, $detail_orde
 
 function edit_product_order($id) {
     $conn = dbconnect();
-    $SQLCommand = "SELECT product_order.idproduct_order,factory.difference_amount_factory,factory.difference_amount_factory,unit.price_unit,unit.idproduct,unit.idunit,product_order.idorder_p,product.name_product,unit.name_unit,factory.name_factory,factory.difference_amount_factory,product_order.amount_product_order,product_order.difference_product_order,product_order.type_product_order,unit.price_unit,product_order.status_checktransport FROM product_order INNER JOIN unit ON unit.idunit = product_order.idunit INNER JOIN product ON product.idproduct = unit.idproduct INNER JOIN factory ON factory.idfactory = product.idfactory WHERE product_order.idproduct_order = :id";
+    $SQLCommand = "SELECT product_order.idproduct_order,factory.difference_amount_factory,factory.difference_amount_factory,unit.price_unit,unit.idproduct,unit.idunit,product_order.idorder_p,product.name_product,concat(factory.code_factory,product.idproduct) AS code_product,unit.name_unit,factory.name_factory,factory.difference_amount_factory,product_order.amount_product_order,product_order.difference_product_order,product_order.type_product_order,unit.price_unit,product_order.status_checktransport FROM product_order INNER JOIN unit ON unit.idunit = product_order.idunit INNER JOIN product ON product.idproduct = unit.idproduct INNER JOIN factory ON factory.idfactory = product.idfactory WHERE product_order.idproduct_order = :id";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
@@ -491,6 +491,32 @@ function addDiff($idproduct, $idshop, $type_money, $price_difference, $date_diff
     }
 }
 
+function addDiff_edit($idproduct, $idshop, $type_money, $price_difference, $date_difference) {
+    $conn = dbconnect();
+    //$val_date; //คือวันที่ที่จะแก้ไข
+    //$Nextdate; //คือวันที่ที่จะลงdbคือถูกแปลงแล้ว
+    $SQLCommand = "INSERT INTO difference (idproduct,idshop,type_money,price_difference,date_difference) "
+            . "VALUES (:idproduct, :idshop, :type_money, :price_difference,:date_difference )";
+
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idproduct" => $idproduct,
+                ":idshop" => $idshop,
+                ":type_money" => $type_money,
+                ":price_difference" => $price_difference,
+                ":date_difference" => $date_difference
+            )
+    );
+
+    if ($SQLPrepare->rowCount() > 0) {
+        return $conn->lastInsertId();
+    } else {
+//        echo $SQLCommand;
+        return false;
+    }
+}
+
 function getIDProduct($id) {
     $conn = dbconnect();
     $SQLCommand = "SELECT * FROM unit WHERE unit.idunit = {$id}";
@@ -506,9 +532,9 @@ function hisDiff($id) {
     $SQLCommand = "SELECT product.idproduct,MAX(difference.date_difference) AS maxdate,difference.price_difference FROM product INNER JOIN difference ON product.idproduct =difference.idproduct WHERE product.idproduct = :id";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
-             array(
+            array(
                 ":id" => $id
-            ));
+    ));
     //$resultArr = array();
     $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
     return $result;
@@ -526,6 +552,7 @@ function getShopAdd_Order($idshop) {
     $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
     return $result;
 }
+
 function deleteDifference($id) {
     $conn = dbconnect();
     $SQLCommand = "DELETE FROM difference WHERE idproduct =:id";
@@ -541,4 +568,31 @@ function deleteDifference($id) {
         return FALSE;
     }
 }
+
+function getShop_Order($idorder) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT order_p.idorder_p, order_p.idshop FROM order_p WHERE order_p.idorder_p = :idorder";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idorder" => $idorder
+            )
+    );
+    $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
+    return $result;
+}
+
+function getEdit_Order($idproduct_order) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT order_p.idshop,product_order.idproduct_order,order_p.idorder_p FROM product_order INNER JOIN order_p ON product_order.idorder_p = order_p.idorder_p WHERE product_order.idproduct_order = :idproduct_order";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idproduct_order" => $idproduct_order
+            )
+    );
+    $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
+    return $result;
+}
+
 ?>
