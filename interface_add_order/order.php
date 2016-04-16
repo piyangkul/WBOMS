@@ -64,7 +64,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                 } else if ($_GET['action'] == "delCompleted") {
                                     echo '<center><h4 class="text-success">คุณได้ทำการลบสำเร็จแล้ว</h4></center>';
                                 } else if ($_GET['action'] == "delError") {
-                                    echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถลบได้</h4></center>';
+                                    echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถลบได้ มีสินค้าที่ถูกจัดส่งหรือถูกเลื่อนไปรอบถัดไป</h4></center>';
                                 } else if ($_GET['action'] == "addErrorDuplicateCode") {
                                     echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถเพิ่มได้เนื่องจากรหัสสินค้าซ้ำ</h4></center>';
                                 } else if ($_GET['action'] == "delProductdError") {

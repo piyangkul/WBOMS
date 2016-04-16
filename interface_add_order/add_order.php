@@ -90,7 +90,6 @@ if (isset($_SESSION['idshop'])) {
                     {
                     }
                 });
-
             }
             function s_date() {
                 var date = document.getElementById("date_order").value;

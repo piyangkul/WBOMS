@@ -388,6 +388,20 @@ function deleteProductOrder($id) {
 
 //Delete Order
 
+function chkDelete($idorder) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT * FROM product_order WHERE product_order.idorder_p = :idorder AND product_order.status_checktransport = 'check'";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idorder" => $idorder
+            )
+    );
+    //$resultArr = array();
+    $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
+    return $result;
+}
+
 function deleteProduct_Order($idorder) {
     $conn = dbconnect();
     $SQLCommand = "DELETE FROM product_order WHERE idorder_p=:idorder";
