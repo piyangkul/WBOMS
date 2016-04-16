@@ -542,7 +542,7 @@ function hisDiff($id) {
 
 function getShopAdd_Order($idshop) {
     $conn = dbconnect();
-    $SQLCommand = "SELECT name_shop FROM shop WHERE idshop = :idshop ";
+    $SQLCommand = "SELECT name_shop,concat(region.code_region,province.code_province,shop.idshop) AS code_shop FROM shop INNER JOIN province ON shop.idprovince = province.idprovince INNER JOIN region ON province.idregion =region.idregion WHERE idshop = :idshop ";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(

@@ -32,8 +32,7 @@ $nameP = "[" . $code_product . "]" . $nameProduct . " - " . $nameFactory;
 if (isset($_SESSION['idshop'])) {
     $idshop = $_SESSION['idshop'];
 }
-echo $_SESSION['idshop'];
-echo $_SESSION['date'];
+
 //echo $_SESSION['detail'];
 ?>
 <!DOCTYPE html>

@@ -25,7 +25,7 @@ $nameshop = "";
 if (isset($_SESSION['idshop'])) {
     $idshop = $_SESSION['idshop'];
     $getShopAdd_Order = getShopAdd_Order($idshop);
-    $nameshop = $getShopAdd_Order['name_shop'];
+    $nameshop = $getShopAdd_Order['name_shop'].' ('.$getShopAdd_Order['code_shop'].')';
 }if (isset($_SESSION['detail'])) {
     $detail = $_SESSION['detail'];
 }
