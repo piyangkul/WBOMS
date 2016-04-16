@@ -9,7 +9,6 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
 }
 $date = date("Y-m-d");
 $var = date('H:i');
-echo $var;
 require_once '/function/func_addorder.php';
 ?>
 <!DOCTYPE html>
@@ -34,47 +33,23 @@ require_once '/function/func_addorder.php';
         <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
         <link rel="stylesheet" href="/resources/demos/style.css"/>
         <script>
-            //alert('<?//= getShop2(); ?>');
             var Shop = JSON.stringify(<?php echo getShop2(); ?>);
-
-            //alert(Product);
-            //alert(data);
             var ShopP = JSON.parse(Shop);
-
-            //alert(ProductP);
-            //data = JSON.parse(www+'');
-            /*alert(data);*/
-            //document.write(www[0].idshop+www[0].name_shop);
             var shopName = new Array();
             var shopId = new Array();
-            // var idshop;
-
-
             for (var i = 0; i < ShopP.length; i++) {
-                shopName.push(ShopP[i].name_shop);
-                shopId["'" + ShopP[i].name_shop + "'"] = ShopP[i].idshop;
-                //var obj = JSON.parse(item);
-                //shopName[i++] = item["shop_name"];
-                // shopId[i++] = item["idshop"];
-                //alert(www[i].name_shop);
-                //alert(item["shop_name"]);
-
+                shopName.push(ShopP[i].name_shop + " (" + ShopP[i].code_shop + ")");
+                shopId["'" + ShopP[i].name_shop + " (" + ShopP[i].code_shop + ")" + "'"] = ShopP[i].idshop;
             }
 
-            //alert(data);
             $(function () {
                 $("#name_shop").autocomplete({
                     source: shopName
                 });
             });
-
             function getShopId() {
-                //alert("Hello");
                 var price = document.getElementById("name_shop").value;
-                //alert(shopId["'" + price + "'"]);
                 document.getElementById("idshop").value = shopId["'" + price + "'"];
-                //idshop = shopId["'" + price + "'"];
-                //alert(idshop);
             }
 
 
@@ -109,17 +84,18 @@ require_once '/function/func_addorder.php';
                                     <div class="panel-heading ">
                                         <div class="table-responsive">
                                             <div class="form-group">                                               
-                                                <div >
-                                                    <label for="disabled_shop">วันที่สินค้าคืน</label>
-                                                    <input type="date" class="form-control" id ="date_order" name="date_order" value="<?=$date;?>">
-                                                </div>
-                                                <div>
-                                                    <label for="disabled_shop">ชื่อร้านค้า</label>
+                                                <label>ชื่อร้านค้า</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="fa fa-shopping-cart"  ></i></span>
                                                     <input type="text" class="form-control" id="name_shop" name="name_shop" placeholder="กรุณาระบุชื่อร้านค้า" autocomplete= on onblur="getShopId()"></input>
                                                     <!--<input type="text" class="form-control" id="name_product" name="name_product" placeholder="กรุณาระบุชื่อสินค้า" autocomplete= "on" >-->
                                                     <input type="hidden" id="idshop" name="idshop"></input>
                                                 </div>
-
+                                                <label>วันที่สินค้าคืน</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="fa fa-calendar-o" ></i></span>
+                                                    <input type="date" class="form-control" id ="date_order" name="date_order" value="<?= $date; ?>">
+                                                </div>
                                             </div>                                        
                                         </div>
                                     </div>
@@ -139,7 +115,7 @@ require_once '/function/func_addorder.php';
                                         </div>
                                         <div class="panel-body">
                                             <div class="table-responsive">
-                                                <a href="popup_addproduct_refunds.php" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal-lg">
+                                                <a href="popup_addproduct_refunds.php" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">
                                                     <span class="glyphicon glyphicon-plus"></span> เพิ่มสินค้า </a>
                                                 <button class="btn btn-danger btn-lg" type="button" onclick="if (confirm('คุณต้องการลบหน่วยสินค้าทั้งหมดหรือไม่')) {
                                                             resetUnit();
@@ -160,13 +136,13 @@ require_once '/function/func_addorder.php';
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-4"></div>                              
-                                        <button type="submit" class="btn btn-info btn-lg text-center">
-                                            <span class="glyphicon glyphicon-floppy-save"></span> บันทึก
-                                        </button>
+                                        <div class="col-md-4"></div>
                                         <a href="add_order.php" class="btn btn-danger btn-lg text-center">
                                             <span class="glyphicon glyphicon-floppy-remove"></span> ยกเลิก
                                         </a>
+                                        <button type="submit" class="btn btn-info btn-lg text-center">
+                                            <span class="glyphicon glyphicon-floppy-save"></span> บันทึก
+                                        </button>
                                     </div>
                             </div>
                         </div>

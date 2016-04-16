@@ -11,11 +11,11 @@ session_start();
     var factoryId = new Array();
     var factoryDiff = new Array();
     for (var i = 0; i < ProductP.length; i++) {
-        productName.push(ProductP[i].name_product);
-        productId["'" + ProductP[i].name_product + "'"] = ProductP[i].idproduct;
-        factoryName["'" + ProductP[i].name_product + "'"] = ProductP[i].name_factory;
-        factoryId["'" + ProductP[i].name_product + "'"] = ProductP[i].idfactory;
-        factoryDiff["'" + ProductP[i].name_product + "'"] = ProductP[i].difference_amount_factory;
+        productName.push("[" + ProductP[i].product_code + "] " + ProductP[i].name_product + " - " + ProductP[i].name_factory);
+        productId["'" + "[" + ProductP[i].product_code + "] " + ProductP[i].name_product + " - " + ProductP[i].name_factory + "'"] = ProductP[i].idproduct;
+        factoryName["'" + "[" + ProductP[i].product_code + "] " + ProductP[i].name_product + " - " + ProductP[i].name_factory + "'"] = ProductP[i].name_factory;
+        factoryId["'" + "[" + ProductP[i].product_code + "] " + ProductP[i].name_product + " - " + ProductP[i].name_factory + "'"] = ProductP[i].idfactory;
+        factoryDiff["'" + "[" + ProductP[i].product_code + "] " + ProductP[i].name_product + " - " + ProductP[i].name_factory + "'"] = ProductP[i].difference_amount_factory;
     }
     $(function () {
         $("#name_product").autocomplete({
@@ -45,7 +45,6 @@ session_start();
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
     <h4 class="modal-title" id="myModalLabel">เพิ่มสินค้า</h4>
-
 </div>
 <div class="row">
     <div class="col-md-12 col-sm-12 ">
@@ -53,38 +52,34 @@ session_start();
             <div class="form-group col-xs-12">
             </div>
             <div class="form-group col-xs-12">
-                <div class="form-group input-group ui-front">
-                    <label for="name_product">ชื่อสินค้า</label>
+                <label>ชื่อสินค้า</label>
+                <div class="input-group ui-front">
+                    <span class="input-group-addon"><i class="fa fa-cube" ></i></span>
                     <input type="text" class="form-control" id="name_product" name="name_product" placeholder="กรุณาระบุชื่อสินค้า" onblur="getProductID()" autocomplete= "on" ></input>
-                    <input type="hidden" id="idproduct" name="idproduct"></input>
-                    <h id="idFactory2"></h>
+                    <input type="hidden" id="idproduct" name="idproduct">
+                    <input type="hidden" class="form-control" id="name_factory" name="name_factory" placeholder="กรุณาระบุชื่อสินค้า" disabled>
+                    <input type="hidden" id="idfactory" name="idfactory">
+                    <input type="hidden" class="form-control" id="typefactory" name="typefactory">
+                    <input type="hidden" id="idFactory2">
                 </div>
             </div>
-
-            <div class="form-group col-xs-12">
-                <label for="name_factory">ชื่อโรงงาน</label> <font size="1" color ="red">*กรุณาเลือกสินค้า</font>
-                <input type="text" class="form-control" id="name_factory" name="name_factory" placeholder="กรุณาระบุชื่อสินค้า" disabled>
-                <input type="hidden" id="idfactory" name="idfactory"></input>
-                <input type="hidden" class="form-control" id="typefactory" name="typefactory">
-            </div>
-            <div class="form-group col-xs-12">
-                <label for="name_product"> หน่วย</label>  <font size="1" color ="red">*กรุณาเลือกสินค้าก่อน</font>
+            <div class="form-group col-xs-12" style="float:left;width:50%;">
+                <label> หน่วย</label>  <font size="1" color ="red">*กรุณาเลือกสินค้าก่อน</font>
                 <select class="form-control" id="idUnit" name="idUnit" onchange="LoadData(this.value)" required>
                     <option>กรุณาเลือกหน่วยขาย</option>
                 </select>
-
                 <div id="tee"></div>
             </div>
-            <div class="form-group col-xs-12">
-                <label for="amount_product">จำนวน</label>
+            <div class="form-group col-xs-12" style="float:left;width:50%;">
+                <label>จำนวน</label>
                 <input type="text" class="form-control" id="AmountProduct" placeholder="กรอกจำนวนสินค้า" onkeyup="updateAmount()">
             </div>
             <div class="form-group col-xs-12">
-                <label for="disabled_price_unit">ราคาเปิดต่อหน่วย //ระบบคิดอัตโนมัติตามหน่วยที่เลือก</label>
+                <label>ราคาเปิดต่อหน่วย //ระบบคิดอัตโนมัติตามหน่วยที่เลือก</label>
                 <input type="text" class="form-control" id="price" readonly="true" onkeyup="cal_difference()">
             </div>
             <div class="form-group col-xs-12">
-                <label for="disabled_price_unit">ราคาเปิดทั้งหมด //ระบบคิดอัตโนมัติตามหน่วยที่เลือก</label>
+                <label>ราคาเปิดทั้งหมด //ระบบคิดอัตโนมัติตามหน่วยที่เลือก</label>
                 <input type="text" class="form-control" id="total_price" readonly="true" onkeyup="updateAmount()">
             </div>
         </div>
@@ -103,11 +98,8 @@ session_start();
         var factoryName = $("#idfactory").val();
         var AmountProduct = $("#AmountProduct").val();
         var price = $("#price").val();
-        var total_price = $("#total_price").val().replace(",","");
-        //alert(idUnit);
-        //alert(AmountProduct);
-        //alert(DifferencePer);
-        //alert(DifferenceBath);
+        var total_price = $("#total_price").val().replace(",", "");
+
         var p = "&idUnit=" + idUnit + "&productName=" + productName + "&factoryName=" + factoryName + "&AmountProduct=" + AmountProduct + "&price=" + price + "&total_price=" + total_price;
         alert(p);
         $.get("action_addProduct.php?p=addProduct" + p, function (data, status) {
@@ -130,7 +122,6 @@ session_start();
                 $("#price").val("");
                 $("#total_price").val("");
                 showUnit();
-
             }
         }
         );

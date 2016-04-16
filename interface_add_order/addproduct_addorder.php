@@ -60,7 +60,6 @@ require_once '/function/func_addorder.php';
             }
             //auto complete
             var Product = JSON.stringify(<?php echo getProduct4(); ?>);
-
             var ProductP = JSON.parse(Product);
             var Arr = new Array();
             var productName = new Array();
@@ -91,6 +90,7 @@ require_once '/function/func_addorder.php';
                 document.getElementById("idfactory").value = factoryId["'" + name_shop + "'"];
                 document.getElementById("difference").value = factoryDiff["'" + name_shop + "'"];
                 document.getElementById("typefactory").value = factoryType["'" + name_shop + "'"];
+                document.getElementById("type").value = factoryType["'" + name_shop + "'"];
                 if (document.getElementById("typefactory").value == "PERCENT") {
                     document.getElementById("PERCENT").style.display = "inline";
                     document.getElementById("BATH").style.display = "none";
@@ -203,7 +203,7 @@ require_once '/function/func_addorder.php';
                                                     <label class="radio"> เปอร์เซ็นต์ส่วนลดต้นทุนราคาขายจริง</label>
                                                     <input type="text" class="form-control" placeholder="กรอก%ขายลด"  id="DifferencePer" value="" onkeyup="updateAmount()"/></input>
 
-                                                    <h id="type"></h>
+                                                    <input type="hidden" id="type" name="type" value="">
                                                 </div>
                                             </div>
                                         </div>
@@ -219,7 +219,7 @@ require_once '/function/func_addorder.php';
                                                 <div class="table-responsive ">
                                                     <label for="name_product"> ขายเพิ่มสุทธิ </label>
                                                     <input type="text" class="form-control" placeholder="กรอกราคาขายเพิ่มสุทธิ" id="DifferenceBath" value="" onkeyup="updateAmount()"> </input>
-                                                    <h id="type"></h>
+                                                    <input type="hidden" id="type" name="type" value="">
                                                 </div>
                                             </div>
                                         </div>
@@ -334,8 +334,10 @@ require_once '/function/func_addorder.php';
                             }
                             function LoadData(str) {
                                 document.getElementById("idUnit").value = str;
-                                //var amount = document.getElementById("AmountProduct").value;
-
+                                var amount = document.getElementById("AmountProduct").value;
+                                var diff = document.getElementById("DifferencePer").value;
+                                var type = document.getElementById("type").value;
+                                //var price = 0;
                                 if (str == "") {
                                     //document.getElementById("factoryName").innerHTML = "";
                                     return;
@@ -344,18 +346,38 @@ require_once '/function/func_addorder.php';
                                     document.getElementById("productName").disabled = false;
                                 }
                                 else {
-                                    $.ajax({type: "GET",
-                                        url: "action/action_ajax.php",
-                                        async: false,
-                                        data: "q=" + str,
-                                        dataType: 'html',
-                                        success: function (response)
-                                        {
-                                            $("#total_price").val(response);
-                                            $("#price").val(response);
-                                            $("#idFactory2").val(response);
-                                        }
-                                    });
+                                    if (type === "PERCENT") {
+                                        $.ajax({type: "GET",
+                                            url: "action/action_ajax.php",
+                                            async: false,
+                                            data: "q=" + str,
+                                            dataType: 'html',
+                                            success: function (response)
+                                            {
+                                                $("#total_price").val(response);
+                                                $("#price").val(response);
+                                                $("#idFactory2").val(response);
+                                                $("#total_price").val(response * amount);
+                                                $("#total").val((response * amount) - ((response * amount) * diff) / 100);
+                                            }
+                                        });
+                                    }
+                                    else {
+                                        $.ajax({type: "GET",
+                                            url: "action/action_ajax.php",
+                                            async: false,
+                                            data: "q=" + str,
+                                            dataType: 'html',
+                                            success: function (response)
+                                            {
+                                                $("#total_price").val(response);
+                                                $("#price").val(response);
+                                                $("#idFactory2").val(response);
+                                                $("#total_price").val(response * amount);
+                                                $("#total").val((response * amount) + (diff * amount));
+                                            }
+                                        });
+                                    }
                                 }
                             }
                             function LoadFactory(str) {

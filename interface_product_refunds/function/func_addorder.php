@@ -16,7 +16,7 @@ function getShop() {
 
 function getShop2() {
     $conn = dbconnect();
-    $SQLCommand = "SELECT idshop,name_shop FROM shop";
+    $SQLCommand = "SELECT shop.idshop,province.idprovince,name_shop,tel_shop,detail_shop,address_shop,concat(region.code_region,province.code_province,shop.idshop) AS code_shop FROM shop INNER JOIN province ON shop.idprovince = province.idprovince INNER JOIN region ON province.idregion = region.idregion";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute();
     $resultArr = array();
@@ -87,14 +87,14 @@ function getProduct($id) {
 function getProduct4() {
     $conn = dbconnect();
     //$SQLCommand = "SELECT idproduct,idfactory,name_product FROM `product` WHERE idfactory = {$id} ORDER BY name_product";
-    $SQLCommand = "SELECT idproduct,product.idfactory,name_product,name_factory FROM `product`  INNER JOIN factory ON factory.idfactory = product.idfactory";
+    $SQLCommand = "SELECT * FROM view_product GROUP BY name_product";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute();
     $resultArr = array();
     while ($result = $SQLPrepare->fetch(PDO::FETCH_ASSOC)) {
         array_push($resultArr, $result);
     }
-    return json_encode($resultArr); //, JSON_UNESCAPED_UNICODE);
+    return json_encode($resultArr);
 }
 
 function getProduct2($id) {

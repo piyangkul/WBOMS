@@ -114,6 +114,7 @@ $totaldiff = ($price * $amount_product_order) - ((($price * $amount_product_orde
                 document.getElementById("name_factory").value = factoryName["'" + name_shop + "'"];
                 document.getElementById("idproduct").value = productId["'" + name_shop + "'"];
                 document.getElementById("idfactory").value = factoryId["'" + name_shop + "'"];
+                document.getElementById("type").value = factoryType["'" + name_shop + "'"];
                 var id = productId["'" + name_shop + "'"];
                 $.ajax({type: "GET",
                     url: "action/action_ajax_product.php",
@@ -398,29 +399,50 @@ $totaldiff = ($price * $amount_product_order) - ((($price * $amount_product_orde
                             }
                             function LoadData(str) {
                                 document.getElementById("idUnit").value = str;
-//var amount = document.getElementById("AmountProduct").value;
-                                var x = document.getElementById('AmountProduct').value
-
+                                var amount = document.getElementById("AmountProduct").value;
+                                var diff = document.getElementById("DifferencePer").value;
+                                var type = document.getElementById("type").value;
+                                //var price = 0;
                                 if (str == "") {
-//document.getElementById("factoryName").innerHTML = "";
+                                    //document.getElementById("factoryName").innerHTML = "";
                                     return;
                                 }
                                 else if (str === "Choose") {
                                     document.getElementById("productName").disabled = false;
                                 }
                                 else {
-                                    $.ajax({type: "GET",
-                                        url: "action/action_ajax.php",
-                                        async: false,
-                                        data: "q=" + str,
-                                        dataType: 'html',
-                                        success: function (response)
-                                        {
-                                            $("#total_price").val(x * response);
-                                            $("#price").val(response);
-                                            $("#idFactory2").val(response);
-                                        }
-                                    });
+                                    if (type === "PERCENT") {
+                                        $.ajax({type: "GET",
+                                            url: "action/action_ajax.php",
+                                            async: false,
+                                            data: "q=" + str,
+                                            dataType: 'html',
+                                            success: function (response)
+                                            {
+                                                $("#total_price").val(response);
+                                                $("#price").val(response);
+                                                $("#idFactory2").val(response);
+                                                $("#total_price").val(response * amount);
+                                                $("#total").val((response * amount) - ((response * amount) * diff) / 100);
+                                            }
+                                        });
+                                    }
+                                    else {
+                                        $.ajax({type: "GET",
+                                            url: "action/action_ajax.php",
+                                            async: false,
+                                            data: "q=" + str,
+                                            dataType: 'html',
+                                            success: function (response)
+                                            {
+                                                $("#total_price").val(response);
+                                                $("#price").val(response);
+                                                $("#idFactory2").val(response);
+                                                $("#total_price").val(response * amount);
+                                                $("#total").val((response * amount) + (diff * amount));
+                                            }
+                                        });
+                                    }
                                 }
                             }
                             function LoadFactory(str) {

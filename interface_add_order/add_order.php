@@ -45,37 +45,22 @@ if (isset($_GET['idshop'])) {
         <script>
             //alert('<?//= getShop2(); ?>');
             var Shop = JSON.stringify(<?php echo getShop2(); ?>);
-
-            //alert(Product);
-            //alert(data);
             var ShopP = JSON.parse(Shop);
-
-            //alert(ProductP);
-            //data = JSON.parse(www+'');
-            /*alert(data);*/
-            //document.write(www[0].idshop+www[0].name_shop);
             var shopName = new Array();
             var shopId = new Array();
-            // var idshop;
-
-
             for (var i = 0; i < ShopP.length; i++) {
-                shopName.push(ShopP[i].name_shop);
-                shopId["'" + ShopP[i].name_shop + "'"] = ShopP[i].idshop;
-
+                shopName.push(ShopP[i].name_shop + " (" + ShopP[i].code_shop + ")");
+                shopId["'" + ShopP[i].name_shop + " (" + ShopP[i].code_shop + ")" + "'"] = ShopP[i].idshop;
             }
 
-            //alert(data);
             $(function () {
                 $("#name_shop").autocomplete({
                     source: shopName
                 });
             });
-
             function getShopId() {
                 var price = document.getElementById("name_shop").value;
                 document.getElementById("idshop").value = shopId["'" + price + "'"];
-
             }
 
         </script>

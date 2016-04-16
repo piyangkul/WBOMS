@@ -56,83 +56,84 @@ if (isset($_GET['idshop'])) {
         <link rel="stylesheet" href="/resources/demos/style.css"/>
         <script>
             //alert('<?//= getShop2(); ?>');
-                var Shop = JSON.stringify(<?php echo getShop2(); ?>);
+            var Shop = JSON.stringify(<?php echo getShop2(); ?>);
 
-                //alert(Product);
-                //alert(data);
-                var ShopP = JSON.parse(Shop);
+            //alert(Product);
+            //alert(data);
+            var ShopP = JSON.parse(Shop);
 
-                //alert(ProductP);
-                //data = JSON.parse(www+'');
-                /*alert(data);*/
-                //document.write(www[0].idshop+www[0].name_shop);
-                var shopName = new Array();
-                var shopId = new Array();
-                // var idshop;
+            //alert(ProductP);
+            //data = JSON.parse(www+'');
+            /*alert(data);*/
+            //document.write(www[0].idshop+www[0].name_shop);
+            var shopName = new Array();
+            var shopId = new Array();
+            // var idshop;
 
 
-                for (var i = 0; i < ShopP.length; i++) {
-                    shopName.push(ShopP[i].name_shop);
-                    shopId["'" + ShopP[i].name_shop + "'"] = ShopP[i].idshop;
-                    //var obj = JSON.parse(item);
-                    //shopName[i++] = item["shop_name"];
-                    // shopId[i++] = item["idshop"];
-                    //alert(www[i].name_shop);
-                    //alert(item["shop_name"]);
+            for (var i = 0; i < ShopP.length; i++) {
+                shopName.push(ShopP[i].name_shop);
+                shopId["'" + ShopP[i].name_shop + "'"] = ShopP[i].idshop;
+                //var obj = JSON.parse(item);
+                //shopName[i++] = item["shop_name"];
+                // shopId[i++] = item["idshop"];
+                //alert(www[i].name_shop);
+                //alert(item["shop_name"]);
 
-                }
+            }
 
-                //alert(data);
-                $(function () {
-                    $("#name_shop").autocomplete({
-                        source: shopName
-                    });
+            //alert(data);
+            $(function () {
+                $("#name_shop").autocomplete({
+                    source: shopName
                 });
+            });
 
-                function getShopId() {
-                    //alert("Hello");
-                    var price = document.getElementById("name_shop").value;
-                    //alert(shopId["'" + price + "'"]);
-                    document.getElementById("idshop").value = shopId["'" + price + "'"];
-                    //idshop = shopId["'" + price + "'"];
-                    //alert(idshop);
-                }
-                //auto complete
-                var Product = JSON.stringify(<?php echo getProduct4(); ?>);
-                var ProductP = JSON.parse(Product);
-                var productName = new Array();
-                var productId = new Array();
-                var factoryName = new Array;
-                var factoryId = new Array;
-                for (var i = 0; i < ProductP.length; i++) {
-                    productName.push(ProductP[i].name_product);
-                    productId["'" + ProductP[i].name_product + "'"] = ProductP[i].idproduct;
-                    factoryName["'" + ProductP[i].name_product + "'"] = ProductP[i].name_factory;
-                    factoryId["'" + ProductP[i].name_product + "'"] = ProductP[i].idfactory;
-                }
-                $(function () {
-                    $("#name_product").autocomplete({
-                        source: productName
-                    });
+            function getShopId() {
+                //alert("Hello");
+                var price = document.getElementById("name_shop").value;
+                //alert(shopId["'" + price + "'"]);
+                document.getElementById("idshop").value = shopId["'" + price + "'"];
+                //idshop = shopId["'" + price + "'"];
+                //alert(idshop);
+            }
+            //auto complete
+            var Product = JSON.stringify(<?php echo getProduct4(); ?>);
+            var ProductP = JSON.parse(Product);
+            var productName = new Array();
+            var productId = new Array();
+            var factoryName = new Array;
+            var factoryId = new Array;
+            for (var i = 0; i < ProductP.length; i++) {
+                productName.push(ProductP[i].name_product);
+                productId["'" + ProductP[i].name_product + "'"] = ProductP[i].idproduct;
+                factoryName["'" + ProductP[i].name_product + "'"] = ProductP[i].name_factory;
+                factoryId["'" + ProductP[i].name_product + "'"] = ProductP[i].idfactory;
+            }
+            $(function () {
+                $("#name_product").autocomplete({
+                    source: productName
                 });
-                function getProductID() {
-                    var name_shop = document.getElementById("name_product").value;
-                    document.getElementById("name_factory").value = factoryName["'" + name_shop + "'"];
-                    document.getElementById("idproduct").value = productId["'" + name_shop + "'"];
-                    document.getElementById("idfactory").value = factoryId["'" + name_shop + "'"];
-                    var id = productId["'" + name_shop + "'"];
-                    $.ajax({type: "GET",
-                        url: "action/action_ajax_product.php",
-                        async: false,
-                        data: "q=" + id,
-                        dataType: 'html',
-                        success: function (response)
-                        {
-                            $("#idUnit").html(response);
-                            //alert(response);
-                        }
-                    });
-                }
+            });
+            function getProductID() {
+                var name_shop = document.getElementById("name_product").value;
+                document.getElementById("name_factory").value = factoryName["'" + name_shop + "'"];
+                document.getElementById("idproduct").value = productId["'" + name_shop + "'"];
+                document.getElementById("idfactory").value = factoryId["'" + name_shop + "'"];
+                document.getElementById("type").value = factoryType["'" + name_shop + "'"];
+                var id = productId["'" + name_shop + "'"];
+                $.ajax({type: "GET",
+                    url: "action/action_ajax_product.php",
+                    async: false,
+                    data: "q=" + id,
+                    dataType: 'html',
+                    success: function (response)
+                    {
+                        $("#idUnit").html(response);
+                        //alert(response);
+                    }
+                });
+            }
         </script>
 
     </head>
@@ -171,7 +172,7 @@ if (isset($_GET['idshop'])) {
                                 <div class="form-group col-xs-12" style="float:left;width:50%;">
                                     <label for="name_product"> หน่วย</label>  <font size="1" color ="red">*กรุณาเลือกสินค้าก่อน</font>
 
-                                    <select class="form-control" id="idUnit" name="idUnit" onchange="LoadData(this.value)" required>
+                                    <select class="form-control" id="idUnit" name="idUnit" onchange="LoadData(this.value)" onkeyup="" required>
                                         <option selected value="<?= $idunit ?>"><?= $nameUnit ?></option>   
                                         <?php
                                         $getUnit = edit_unit($idProduct, $idunit);
@@ -425,8 +426,10 @@ if (isset($_GET['idshop'])) {
                             }
                             function LoadData(str) {
                                 document.getElementById("idUnit").value = str;
-                                //var amount = document.getElementById("AmountProduct").value;
-
+                                var amount = document.getElementById("AmountProduct").value;
+                                var diff = document.getElementById("DifferencePer").value;
+                                var type = document.getElementById("type").value;
+                                //var price = 0;
                                 if (str == "") {
                                     //document.getElementById("factoryName").innerHTML = "";
                                     return;
@@ -435,18 +438,38 @@ if (isset($_GET['idshop'])) {
                                     document.getElementById("productName").disabled = false;
                                 }
                                 else {
-                                    $.ajax({type: "GET",
-                                        url: "action/action_ajax.php",
-                                        async: false,
-                                        data: "q=" + str,
-                                        dataType: 'html',
-                                        success: function (response)
-                                        {
-                                            $("#total_price").val(response);
-                                            $("#price").val(response);
-                                            $("#idFactory2").val(response);
-                                        }
-                                    });
+                                    if (type === "PERCENT") {
+                                        $.ajax({type: "GET",
+                                            url: "action/action_ajax.php",
+                                            async: false,
+                                            data: "q=" + str,
+                                            dataType: 'html',
+                                            success: function (response)
+                                            {
+                                                $("#total_price").val(response);
+                                                $("#price").val(response);
+                                                $("#idFactory2").val(response);
+                                                $("#total_price").val(response * amount);
+                                                $("#total").val((response * amount) - ((response * amount) * diff) / 100);
+                                            }
+                                        });
+                                    }
+                                    else {
+                                        $.ajax({type: "GET",
+                                            url: "action/action_ajax.php",
+                                            async: false,
+                                            data: "q=" + str,
+                                            dataType: 'html',
+                                            success: function (response)
+                                            {
+                                                $("#total_price").val(response);
+                                                $("#price").val(response);
+                                                $("#idFactory2").val(response);
+                                                $("#total_price").val(response * amount);
+                                                $("#total").val((response * amount) + (diff * amount));
+                                            }
+                                        });
+                                    }
                                 }
                             }
                             function LoadFactory(str) {

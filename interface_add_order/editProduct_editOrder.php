@@ -385,8 +385,10 @@ echo $totaldiffPer;
                             }
                             function LoadData(str) {
                                 document.getElementById("idUnit").value = str;
-                                //var amount = document.getElementById("AmountProduct").value;
-
+                                var amount = document.getElementById("AmountProduct").value;
+                                var diff = document.getElementById("DifferencePer").value;
+                                var type = document.getElementById("type").value;
+                                //var price = 0;
                                 if (str == "") {
                                     //document.getElementById("factoryName").innerHTML = "";
                                     return;
@@ -395,18 +397,38 @@ echo $totaldiffPer;
                                     document.getElementById("productName").disabled = false;
                                 }
                                 else {
-                                    $.ajax({type: "GET",
-                                        url: "action/action_ajax.php",
-                                        async: false,
-                                        data: "q=" + str,
-                                        dataType: 'html',
-                                        success: function (response)
-                                        {
-                                            $("#total_price").val(response);
-                                            $("#price").val(response);
-                                            $("#idFactory2").val(response);
-                                        }
-                                    });
+                                    if (type === "PERCENT") {
+                                        $.ajax({type: "GET",
+                                            url: "action/action_ajax.php",
+                                            async: false,
+                                            data: "q=" + str,
+                                            dataType: 'html',
+                                            success: function (response)
+                                            {
+                                                $("#total_price").val(response);
+                                                $("#price").val(response);
+                                                $("#idFactory2").val(response);
+                                                $("#total_price").val(response * amount);
+                                                $("#total").val((response * amount) - ((response * amount) * diff) / 100);
+                                            }
+                                        });
+                                    }
+                                    else {
+                                        $.ajax({type: "GET",
+                                            url: "action/action_ajax.php",
+                                            async: false,
+                                            data: "q=" + str,
+                                            dataType: 'html',
+                                            success: function (response)
+                                            {
+                                                $("#total_price").val(response);
+                                                $("#price").val(response);
+                                                $("#idFactory2").val(response);
+                                                $("#total_price").val(response * amount);
+                                                $("#total").val((response * amount) + (diff * amount));
+                                            }
+                                        });
+                                    }
                                 }
                             }
                             function LoadFactory(str) {

@@ -17,7 +17,7 @@ $getProductOrder = getProductOrder($val_idorder);
 $val_code_order_p = $getOrderEdit['code_order'];
 $val_date_order_p = $getOrderEdit['date_order_p'];
 $val_time_order_p = $getOrderEdit['time_order_p'];
-$val_name_shop = $getOrderEdit['name_shop'];
+$val_name_shop = $getOrderEdit['name_shop']." (".$getOrderEdit['code_shop'].")";
 $val_detail_order_p = $getOrderEdit['detail_order_p'];
 $total_price_all = 0;
 ?>
@@ -45,7 +45,7 @@ $total_price_all = 0;
         <script>
 
             /*  $(function () {
-             var data = JSON.stringify(<?php //getShop2();                                                                  ?>);
+             var data = JSON.stringify(<?php //getShop2();                                                                   ?>);
              //var www = JSON.parse(data);
              //alert(www);
              alert(data);
@@ -123,7 +123,7 @@ $total_price_all = 0;
                                         </div>
                                         <div class="panel-body">
                                             <div class="table-responsive">
-                                                
+
                                                 <table class="table table-striped table-bordered table-hover text-center" id="dataTables-example">
                                                     <thead>
                                                         <tr>
@@ -187,6 +187,11 @@ $total_price_all = 0;
                                                                 if ($val_status_checktransport === 'check') {
                                                                     ?> <td>
                                                                         <font color="green"><b>สินค้าถูกจัดส่งแล้ว</b></font>
+                                                                    </td>
+                                                                    <?php
+                                                                } elseif ($val_status_checktransport === 'postpone') {
+                                                                    ?> <td>
+                                                                        <font color="blue"><b>สินค้าถูกเลื่อน</b></font>
                                                                     </td>
                                                                     <?php
                                                                 } else {
