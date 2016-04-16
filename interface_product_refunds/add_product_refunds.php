@@ -137,7 +137,7 @@ require_once '/function/func_addorder.php';
                                     </div>
                                     <div class="row">
                                         <div class="col-md-4"></div>
-                                        <a href="add_order.php" class="btn btn-danger btn-lg text-center">
+                                        <a href="product_refunds.php" class="btn btn-danger btn-lg text-center">
                                             <span class="glyphicon glyphicon-floppy-remove"></span> ยกเลิก
                                         </a>
                                         <button type="submit" class="btn btn-info btn-lg text-center">

@@ -211,7 +211,7 @@ if (isset($_GET['idshop'])) {
                                                         <div class="panel-body">
                                                             <div class="table-responsive ">
                                                                 <label for="name_product"> ขายเพิ่มสุทธิ </label>
-                                                                <input type="text" class="form-control" placeholder="กรอกราคาขายเพิ่มสุทธิ" id="DifferenceBath" value="<?= $diffBath; ?>" onkeyup="updateTotalBath()"> </input>
+                                                                <input type="text" class="form-control" placeholder="กรอกราคาขายเพิ่มสุทธิ" id="DifferenceBath" value="<?= $diffBath; ?>" onkeyup="updateAmount()"> </input>
                                                                 <input type="hidden" id="type" name="type" value="<?= $type ?>">
                                                             </div>
                                                         </div>
@@ -227,7 +227,7 @@ if (isset($_GET['idshop'])) {
                                                                     <input type="text" class="form-control" id="cal_difference" readonly="true" value = "<?= $totaldiff; ?>">
                                                                 </div>
                                                                 <label class="radio"> ขายลดเปอร์เซ็นต์//8% = 44.8 </label>
-                                                                <input type="text" class="form-control" placeholder="กรอก%ขายลด"  id="DifferencePer"  value="<?= $diffPer; ?>" onkeyup="updateTotalPer()"/></input>
+                                                                <input type="text" class="form-control" placeholder="กรอก%ขายลด"  id="DifferencePer"  value="<?= $diffPer; ?>" onkeyup="updateAmount()"/></input>
                                                                 <input type="hidden" id="type" name="type" value="<?= $type ?>">
                                                             </div>
                                                         </div>
@@ -239,7 +239,6 @@ if (isset($_GET['idshop'])) {
                                     </div>
                                 </div>
                                 <?php if ($type === "BATH") { ?>
-
                                     <div class="form-group col-xs-12">
                                         <label for="exampleInputName2"> ดังนั้นราคาขาย//ระบบคำนวนอัตโนมัติ(ราคาเปิด-ส่วนต่างราคาขาย=560-44.8) </label>
                                         <input  type="text" class="form-control" id="total" readonly="true" value="<?= $totaldiffBath ?>"></input>

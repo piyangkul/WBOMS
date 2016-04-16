@@ -160,7 +160,7 @@ if (isset($_GET['idshop'])) {
                                     <div class="row">
                                         <div class="col-md-4"></div>                              
 
-                                        <a href="order.php" class="btn btn-danger btn-lg text-center">
+                                        <a href="action/action_reset.php?cancel=cancel" class="btn btn-danger btn-lg text-center">
                                             <span class="glyphicon glyphicon-floppy-remove"></span> ยกเลิก
                                         </a>
                                         <button type="submit" class="btn btn-info btn-lg text-center">

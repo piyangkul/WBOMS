@@ -47,6 +47,8 @@ if (isset($_SESSION["productR"])) {//ถามว่า$_SESSION["unit"]ถู�
     unset($_SESSION["countProductR"]);   
     header("location: ../product_refunds.php?p=product&action=addErrorNotHaveProduct");
 }
+
+
 //} else {
 //    unset($_SESSION["unit"]);
 //    unset($_SESSION["countUnit"]);

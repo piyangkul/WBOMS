@@ -68,12 +68,11 @@ if (isset($_SESSION["product"])) {//ถามว่า$_SESSION["unit"]ถูก
     unset($_SESSION["countProduct"]);
     header("location: ../order.php?p=product&action=addErrorNotHaveProduct");
 }
-//} else {
-//    unset($_SESSION["unit"]);
-//    unset($_SESSION["countUnit"]);
-//    header("location: ../product.php?p=product&action=addErrorDuplicateCode");
-//}
-//สิ้นสุดกลุ่มคำสั่งทำอะไร
 
+if ($_GET['cancel'] == "cancel") {
+    unset($_SESSION["product"]);
+    unset($_SESSION["countProduct"]);
+    header("location: ../add_order.php");
+}
 
     
