@@ -49,11 +49,11 @@ else if ($_GET['p'] == "editProduct") {
     $total_price = $_GET['total_price'];
     $total = $_GET['total'];
     $type = $_GET['type'];
-    
+
     if (isset($_GET['idshop'])) {
         $_SESSION["idshop"] = $_GET['idshop'];
     }
-    
+
 
     $_SESSION["product"]["$product_order"]["idUnit"] = $idUnit;
     $_SESSION["product"]["$product_order"]["productName"] = $productName;
@@ -215,6 +215,20 @@ else if ($_GET['p'] == "editProduct") {
                 }
             });
         }
+        /*function s_detail() {
+            var detail = document.getElementById("detail_order").value;
+            $.ajax({type: "GET",
+                url: "action/action_session.php",
+                async: false,
+                data: "detail=" + detail,
+                dataType: 'html',
+                success: function ()
+                {
+                }
+            }
+            );
+        }*/
+
     </script>
     <?php
 }

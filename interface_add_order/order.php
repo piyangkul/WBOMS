@@ -47,7 +47,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                     <hr />
                     <div class="row">
                         <div class="col-md-12">
-                            <a href="../interface_add_order/add_order.php" class="btn btn-info btn-lg">
+                            <a href="action/action_reset.php?cancel=addorder" class="btn btn-info btn-lg">
                                 <span class="glyphicon glyphicon-plus"></span> เพิ่มคำสั่งซื้อ
                             </a>
                             <br/><br/>

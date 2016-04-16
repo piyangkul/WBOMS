@@ -29,9 +29,12 @@ $totaldiff = ($price * $amountProduct) - ((($price * $amountProduct) * $diffFac)
 $totaldiffPer = ($price * $amountProduct) - ((($price * $amountProduct) * $diffPer) / 100);
 $totaldiffBath = ($price - $diffBath) * $amountProduct;
 $nameP = "[" . $code_product . "]" . $nameProduct . " - " . $nameFactory;
-if (isset($_GET['idshop'])) {
-    $idshop = $_GET['idshop'];
+if (isset($_SESSION['idshop'])) {
+    $idshop = $_SESSION['idshop'];
 }
+echo $_SESSION['idshop'];
+echo $_SESSION['date'];
+//echo $_SESSION['detail'];
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">

@@ -8,8 +8,24 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
     $p = $_GET['p'];
 }
 $idshop;
+$detail;
+$date;
+$time;
 if (isset($_GET['idshop'])) {
     $idshop = $_GET['idshop'];
+    $_SESSION['idshop'] = $idshop;
+}
+if (isset($_GET['detail'])) {
+    $detail = $_GET['detail'];
+    $_SESSION['detail'] = $detail;
+}
+if (isset($_GET['date'])) {
+    $date = $_GET['date'];
+    $_SESSION['date'] = $date;
+}
+if (isset($_GET['time'])) {
+    $time = $_GET['time'];
+    $_SESSION['time'] = $time;
 }
 require_once '/function/func_addorder.php';
 ?>

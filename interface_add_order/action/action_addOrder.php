@@ -69,10 +69,6 @@ if (isset($_SESSION["product"])) {//ถามว่า$_SESSION["unit"]ถูก
     header("location: ../order.php?p=product&action=addErrorNotHaveProduct");
 }
 
-if ($_GET['cancel'] == "cancel") {
-    unset($_SESSION["product"]);
-    unset($_SESSION["countProduct"]);
-    header("location: ../add_order.php");
-}
+
 
     

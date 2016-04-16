@@ -9,15 +9,32 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
     $p = $_GET['p'];
 }
 date_default_timezone_set("Asia/Bangkok");
-$date = date("Y-m-d");
-$var = date('H:i');
+if (isset($_SESSION['date'])) {
+    $date = $_SESSION['date'];
+} else {
+    $date = date("Y-m-d");
+}
+if (isset($_SESSION['date'])) {
+    $var = $_SESSION['time'];
+} else {
+    $var = date('H:i');
+}
 $idshop = 0;
+$detail = "";
 $nameshop = "";
-if (isset($_GET['idshop'])) {
-    $idshop = $_GET['idshop'];
+if (isset($_SESSION['idshop'])) {
+    $idshop = $_SESSION['idshop'];
     $getShopAdd_Order = getShopAdd_Order($idshop);
     $nameshop = $getShopAdd_Order['name_shop'];
+}if (isset($_SESSION['detail'])) {
+    $detail = $_SESSION['detail'];
 }
+
+/* if (isset($_GET['idshop'])) {
+  $idshop = $_GET['idshop'];
+  $getShopAdd_Order = getShopAdd_Order($idshop);
+  $nameshop = $getShopAdd_Order['name_shop'];
+  } */
 //$t=time("");
 //echo $t;
 ?>
@@ -61,6 +78,58 @@ if (isset($_GET['idshop'])) {
             function getShopId() {
                 var price = document.getElementById("name_shop").value;
                 document.getElementById("idshop").value = shopId["'" + price + "'"];
+                var idshop = shopId["'" + price + "'"];
+
+
+                $.ajax({type: "GET",
+                    url: "action/action_session.php",
+                    async: false,
+                    data: "idshop=" + idshop,
+                    dataType: 'html',
+                    success: function ()
+                    {
+                    }
+                });
+
+            }
+            function s_date() {
+                var date = document.getElementById("date_order").value;
+                $.ajax({type: "GET",
+                    url: "action/action_session.php",
+                    async: false,
+                    data: "date=" + date,
+                    dataType: 'html',
+                    success: function ()
+                    {
+                    }
+                }
+                );
+            }
+            function s_time(){
+                var time = document.getElementById("time_order").value;
+                $.ajax({type: "GET",
+                    url: "action/action_session.php",
+                    async: false,
+                    data: "time=" + time,
+                    dataType: 'html',
+                    success: function ()
+                    {
+                    }
+                }
+                );
+            }
+            function s_detail(){
+                var detail = document.getElementById("detail_order").value;
+                $.ajax({type: "GET",
+                    url: "action/action_session.php",
+                    async: false,
+                    data: "detail=" + detail,
+                    dataType: 'html',
+                    success: function ()
+                    {
+                    }
+                }
+                );
             }
 
         </script>
@@ -88,7 +157,7 @@ if (isset($_GET['idshop'])) {
                         </div>
                         <!-- /. ROW  -->
                         <hr />
-                        <a href="order.php" class="btn btn-danger btn-lg">
+                        <a href="action/action_reset.php?cancel=cancel" class="btn btn-danger btn-lg">
                             <span class="fa fa-arrow-circle-left"></span> Back
                         </a>
                         <div class="row">
@@ -108,15 +177,11 @@ if (isset($_GET['idshop'])) {
                                                     </div>
                                                     <input type="hidden" id="idshop" name="idshop" value="<?= $idshop; ?>"></input>
                                                 </div>
-                                                <!--<div>
-                                                    <label for="disabled_no">No.บิล</label>
-                                                    <input type="text" class="form-control" id="code_order" name="code_order" placeholder="ID บิล">
-                                                </div>-->
                                                 <label>วันที่สั่งซื้อ </label>
                                                 <div class="input-group">                                         
                                                     <span class="input-group-addon"><i class="fa fa-calendar-o" ></i></span>
-                                                    <input type="date" class="form-control" id ="date_order" name="date_order" value="<?= $date; ?>"/>
-                                                    <input type="time" class="form-control" id ="time_order" name="time_order" value="<?= $var ?>"></input>
+                                                    <input type="date" class="form-control" id ="date_order" name="date_order" value="<?= $date; ?>" onblur="s_date()"/>
+                                                    <input type="time" class="form-control" id ="time_order" name="time_order" value="<?= $var ?>" onblur="s_time()"></input>
                                                 </div>
                                             </div>                                        
                                         </div>
@@ -154,7 +219,7 @@ if (isset($_GET['idshop'])) {
                                         <div class="col-md-2"></div>
                                         <div class="form-group col-xs-8">
                                             <label for="exampleInputName2">รายละเอียดเพิ่มเติม</label>
-                                            <textarea rows="4" cols="50" id = "detail_order" name ="detail_order" class="form-control" placeholder="กรอกรายละเอียดเพิ่มเติม" value=""></textarea>
+                                            <textarea rows="4" cols="50" id = "detail_order" name ="detail_order" class="form-control" placeholder="กรอกรายละเอียดเพิ่มเติม" onblur="s_detail()"><?= $detail; ?></textarea>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -213,83 +278,85 @@ if (isset($_GET['idshop'])) {
     </div>
 </div>
 <script>
-                                                    $(document.body).on('hidden.bs.modal', function () {
-                                                        $('#myModal').removeData('bs.modal');
+                                                $(document.body).on('hidden.bs.modal', function () {
+                                                    $('#myModal').removeData('bs.modal');
+                                                });
+                                                showUnit();
+
+                                                function showUnit() {
+                                                    $.get("action_addProduct.php?p=showUnit", function (data, status) {
+                                                        $("#showUnit").html(data);
                                                     });
-                                                    showUnit();
-
-                                                    function showUnit() {
-                                                        $.get("action_addProduct.php?p=showUnit", function (data, status) {
-                                                            $("#showUnit").html(data);
-                                                        });
+                                                }
+                                                function updateTotalPer() {
+                                                    var x = document.getElementById("DifferencePer").value;
+                                                    var price = document.getElementById("total_price").value;
+                                                    var total = price - (price * (x / 100));
+                                                    document.getElementById("total").value = total;
+                                                    document.getElementById("DifferenceBath").disabled = true;
+                                                    document.getElementById("type").value = "PERCENT";
+                                                    if (x === "") {
+                                                        document.getElementById("DifferenceBath").disabled = false;
                                                     }
-                                                    function updateTotalPer() {
-                                                        var x = document.getElementById("DifferencePer").value;
-                                                        var price = document.getElementById("total_price").value;
-                                                        var total = price - (price * (x / 100));
-                                                        document.getElementById("total").value = total;
-                                                        document.getElementById("DifferenceBath").disabled = true;
-                                                        document.getElementById("type").value = "PERCENT";
-                                                        if (x === "") {
-                                                            document.getElementById("DifferenceBath").disabled = false;
-                                                        }
+                                                }
+                                                function updateTotalBath() {
+                                                    var x = document.getElementById("DifferenceBath").value;
+                                                    var price = document.getElementById("total_price").value;
+                                                    var qwer = document.getElementById("idFactory2").value;
+                                                    var amount = document.getElementById("AmountProduct").value;
+                                                    var total = (qwer - x) * amount;
+                                                    document.getElementById("total").value = total;
+                                                    document.getElementById("type").value = "BATH";
+                                                    document.getElementById("DifferencePer").disabled = true;
+                                                    if (x === "") {
+                                                        document.getElementById("DifferencePer").disabled = false;
                                                     }
-                                                    function updateTotalBath() {
-                                                        var x = document.getElementById("DifferenceBath").value;
-                                                        var price = document.getElementById("total_price").value;
-                                                        var qwer = document.getElementById("idFactory2").value;
-                                                        var amount = document.getElementById("AmountProduct").value;
-                                                        var total = (qwer - x) * amount;
-                                                        document.getElementById("total").value = total;
-                                                        document.getElementById("type").value = "BATH";
-                                                        document.getElementById("DifferencePer").disabled = true;
-                                                        if (x === "") {
-                                                            document.getElementById("DifferencePer").disabled = false;
-                                                        }
+                                                }
+                                                function updateAmount() {
+                                                    var price = document.getElementById("idFactory2").value;
+                                                    var amount = document.getElementById("AmountProduct").value;
+                                                    var difference = document.getElementById("difference").value;
+                                                    var total = amount * price;
+                                                    var totals = total - (total * (difference / 100))
+                                                    document.getElementById("total_price").value = total;
+                                                    document.getElementById("cal_difference").value = totals;
+                                                }
+                                                function ChangeProduct() {
+                                                    var x = document.getElementById("factoryName").value;
+                                                    document.getElementById("idFactory2").innerHTML = "You selected: " + x;
+                                                    if (x === "Choose") {
+                                                        document.getElementById("productName").disabled = true;
                                                     }
-                                                    function updateAmount() {
-                                                        var price = document.getElementById("idFactory2").value;
-                                                        var amount = document.getElementById("AmountProduct").value;
-                                                        var difference = document.getElementById("difference").value;
-                                                        var total = amount * price;
-                                                        var totals = total - (total * (difference / 100))
-                                                        document.getElementById("total_price").value = total;
-                                                        document.getElementById("cal_difference").value = totals;
+                                                    else {
+                                                        document.getElementById("productName").disabled = false;
                                                     }
-                                                    function ChangeProduct() {
-                                                        var x = document.getElementById("factoryName").value;
-                                                        document.getElementById("idFactory2").innerHTML = "You selected: " + x;
-                                                        if (x === "Choose") {
-                                                            document.getElementById("productName").disabled = true;
-                                                        }
-                                                        else {
-                                                            document.getElementById("productName").disabled = false;
-                                                        }
-                                                    }
-                                                    function resetUnit() {
-                                                        $.get("action_addProduct.php?p=resetUnit", function (data, status) {
-                                                            if (data != "-1") {
-                                                                showUnit();
-                                                                getBigestUnit();
-                                                                getBigestPrice();
-                                                                alert("ลบหน่วยทั้งหมดแล้ว");
-                                                            }
-                                                            else {
-                                                                alert("ไม่สามารถลบหน่วยได้");
-
-                                                            }
-                                                        });
-                                                    }
-                                                    function addProduct_Order() {
-                                                        if (document.getElementById("name_shop").value.length > 0) {
-                                                            var idshop = document.getElementById("idshop").value;
-                                                            window.location.href = 'addproduct_addorder.php?idshop=' + idshop;
+                                                }
+                                                function resetUnit() {
+                                                    $.get("action_addProduct.php?p=resetUnit", function (data, status) {
+                                                        if (data != "-1") {
+                                                            showUnit();
+                                                            getBigestUnit();
+                                                            getBigestPrice();
+                                                            alert("ลบหน่วยทั้งหมดแล้ว");
                                                         }
                                                         else {
-                                                            alert("กรุณากรอกชื่อร้านค้า");
-                                                        }
+                                                            alert("ไม่สามารถลบหน่วยได้");
 
+                                                        }
+                                                    });
+                                                }
+                                                function addProduct_Order() {
+                                                    if (document.getElementById("name_shop").value.length > 0) {
+                                                        var idshop = document.getElementById("idshop").value;
+                                                        var detail = document.getElementById("detail_order").value;
+                                                        var date = document.getElementById("date_order").value;
+                                                        var time = document.getElementById("time_order").value
+                                                        window.location.href = 'addproduct_addorder.php?idshop=' + idshop + "&detail=" + detail + "&date=" + date + "&time=" + time;
                                                     }
+                                                    else {
+                                                        alert("กรุณากรอกชื่อร้านค้า");
+                                                    }
+                                                }
 
 
 </script>
