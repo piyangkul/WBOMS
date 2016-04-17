@@ -10,6 +10,9 @@ if ($_GET['p'] == "addProduct") {
     $AmountProduct = $_GET['AmountProduct'];
     $price = $_GET['price'];
     $total_price = $_GET['total_price'];
+    $diff = $_GET['diff'];
+    $price_factory = $_GET['price_factory'];
+    $type_factory = $_GET['type_factory'];
 
     if (isset($_SESSION["countProductR"])) {
         $_SESSION["countProductR"] ++;
@@ -21,6 +24,10 @@ if ($_GET['p'] == "addProduct") {
     $_SESSION["productR"][$_SESSION["countProductR"]]["AmountProduct"] = $AmountProduct;
     $_SESSION["productR"][$_SESSION["countProductR"]]["price"] = $price;
     $_SESSION["productR"][$_SESSION["countProductR"]]["total_price"] = $total_price;
+    $_SESSION["productR"][$_SESSION["countProductR"]]["diff"] = $diff;
+    $_SESSION["productR"][$_SESSION["countProductR"]]["price_factory"] = $price_factory;
+    $_SESSION["productR"][$_SESSION["countProductR"]]["type_factory"] = $type_factory;
+
     echo "1";
 }
 
@@ -84,8 +91,11 @@ else if ($_GET['p'] == "editProduct") {
                 <th>ชื่อโรงงาน</th>
                 <th>หน่วย</th>
                 <th>จำนวน</th>
-                <th>ราคาเปิดต่อสินค้า</th>
-                <th>ราคาเปิดทั้งหมด</th>
+                <th>ราคาเปิดต่อหน่วย</th>
+                <th>ส่วนลด</th>
+                <th>ประเภท</th>
+                <th>ราคาคืนต่อหน่วย</th>
+                <th>ราคาคืนทั้งหมด</th>
                 <th>การกระทำ</th> 
             </tr>
         </thead>
@@ -99,11 +109,7 @@ else if ($_GET['p'] == "editProduct") {
                     $idUnitS = $_SESSION["productR"][$i]["idUnit"];
                     $idFactoryS = $_SESSION["productR"][$i]["factoryName"];
                     $idProductS = $_SESSION["productR"][$i]["productName"];
-                    //echo $s;
-                    //$getUnit = getUnit2($s);
-                    //$val_name_unit = $getUnit('name_unit');
                     ?>
-
                     <tr>
                         <td><?php echo $i ?></td>
                         <td><?php
@@ -129,10 +135,18 @@ else if ($_GET['p'] == "editProduct") {
                             }
                             ?></td>
                         <td><?php echo $_SESSION["productR"][$i]["AmountProduct"]; ?></td>
-                        <td class="text-right"><?php echo number_format($_SESSION["productR"][$i]["price"],2); ?></td>
-                        <td class="text-right"><?php echo number_format($_SESSION["productR"][$i]["total_price"],2); ?></td>
+                        <td class="text-right"><?= number_format($_SESSION["productR"][$i]["price_factory"], 2); ?></td>
+                        <td><?= $_SESSION["productR"][$i]["diff"]; ?></td>
+                        <?php if ($_SESSION["productR"][$i]["type_factory"] === "PERCENT") { ?>
+                            <td>เปอร์เซนต์</td>
+                        <?php } else { ?>
+                            <td>สุทธิ</td>
+                        <?php }
+                        ?>
+                        <td class="text-right"><?php echo number_format($_SESSION["productR"][$i]["price"], 2); ?></td>
+                        <td class="text-right"><?php echo number_format($_SESSION["productR"][$i]["total_price"], 2); ?></td>
                         <td>
-                            <a href="popup_addproduct_refunds_edit.php?idproduct_refunds=<?= $i; ?>&idunit=<?php echo $idUnitS; ?>&amount=<?= $_SESSION["productR"][$i]["AmountProduct"]; ?>&price=<?= $_SESSION["productR"][$i]["price"]; ?>&total_price=<?= $_SESSION["productR"][$i]["total_price"]; ?>" class="btn btn-warning " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="แก้ไข">
+                            <a href="popup_addproduct_refunds_edit.php?idproduct_refunds=<?= $i; ?>&idunit=<?php echo $idUnitS; ?>&amount=<?= $_SESSION["productR"][$i]["AmountProduct"]; ?>&price=<?= $_SESSION["productR"][$i]["price"]; ?>&total_price=<?= $_SESSION["productR"][$i]["total_price"]; ?>&price_factory=<?= $_SESSION["productR"][$i]["price_factory"]; ?>&diff=<?= $_SESSION["productR"][$i]["diff"]; ?>" class="btn btn-warning " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="แก้ไข">
                                 <span class="glyphicon glyphicon-edit"></span>
                             </a>
                         </td>

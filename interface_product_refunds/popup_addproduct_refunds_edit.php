@@ -6,6 +6,8 @@ $idunit = $_GET['idunit'];
 $amount = $_GET['amount'];
 $price = $_GET['price'];
 $total = $_GET['total_price'];
+$diff = $_GET['diff'];
+$price_factory = $_GET['price_factory'];
 $getUnit = getUnit3($idunit);
 $idProduct = $getUnit['idproduct'];
 $nameUnit = $getUnit['name_unit'];
@@ -64,26 +66,24 @@ $idFactory = $getUnit['idfactory'];
             <div class="form-group col-xs-12">
             </div>
             <div class="form-group col-xs-12">
-                <div class="form-group input-group ui-front">
-                    <label for="name_product">ชื่อสินค้า</label>
-                    <input type="text" class="form-control" id="name_product" name="name_product" placeholder="กรุณาระบุชื่อสินค้า" onblur="getProductID()" value="<?= $nameProduct; ?>" autocomplete= "on" disabled></input>
-                    <input type="hidden" id="idproduct" name="idproduct"></input>
-                    <h id="idFactory2"></h>
+                <label>ชื่อสินค้า</label>
+                <div class="input-group ui-front">
+                    <span class="input-group-addon"><i class="fa fa-cube" ></i></span>
+                    <input type="text" class="form-control" id="name_product" name="name_product" placeholder="กรุณาระบุชื่อสินค้า" onblur="getProductID()" autocomplete= "on" value="<?= $nameProduct; ?>" disabled></input>
+                    <input type="hidden" id="idproduct" name="idproduct" value="<?= $idProduct; ?>">
+                    <input type="hidden" class="form-control" id="name_factory" name="name_factory" placeholder="กรุณาระบุชื่อสินค้า" value="<?= $nameFactory; ?>" disabled>
+                    <input type="hidden" id="idfactory" name="idfactory" value="<?= $idFactory ?>">
+                    <input type="hidden" class="form-control" id="typefactory" name="typefactory">
+                    <input type="hidden" class="form-control" id="idshop" name="idshop" value="<?= $_SESSION['idshop']; ?>">
+                    <input type="hidden" id="idFactory2">
                 </div>
             </div>
-
-            <div class="form-group col-xs-12">
-                <label for="name_factory">ชื่อโรงงาน</label> <font size="1" color ="red">*กรุณาเลือกสินค้า</font>
-                <input type="text" class="form-control" id="name_factory" name="name_factory" placeholder="กรุณาระบุชื่อสินค้า" value="<?= $nameFactory; ?>" disabled>
-                <input type="hidden" id="idfactory" name="idfactory"></input>
-                <input type="hidden" class="form-control" id="typefactory" name="typefactory">
-            </div>
-            <div class="form-group col-xs-12">
+            <div class="form-group col-xs-12" style="float:left;width:50%;"> 
                 <label> หน่วย</label>  <font size="1" color ="red">*กรุณาเลือกสินค้าก่อน</font>
                 <select class="form-control" id="idUnit" name="idUnit" onchange="LoadData(this.value)" required>
                     <option value="<?= $idunit ?>"><?= $nameUnit; ?></option>
                     <?php
-                    $getUnit = edit_unit($idProduct);
+                    $getUnit = edit_unit($idProduct,$idUnit);
                     foreach ($getUnit as $value) {
                         $val_idunit = $value['idunit'];
                         $val_name_unit = $value['name_unit'];
@@ -94,17 +94,25 @@ $idFactory = $getUnit['idfactory'];
                 </select>
                 <div id="tee"></div>
             </div>
-            <div class="form-group col-xs-12">
+            <div class="form-group col-xs-12" style="float:left;width:50%;">
                 <label for="amount_product">จำนวน</label>
                 <input type="text" class="form-control" id="AmountProduct" placeholder="กรอกจำนวนสินค้า" value ="<?= $amount; ?>" onkeyup="updateAmount()">
             </div>
             <div class="form-group col-xs-12">
-                <label for="disabled_price_unit">ราคาเปิดต่อหน่วย //ระบบคิดอัตโนมัติตามหน่วยที่เลือก</label>
-                <input type="text" class="form-control" id="price" readonly="true" onkeyup="cal_difference()" value="<?= $price; ?>">
+                <label>ส่วนลดปัจจุบัน</label>
+                <input type="text" class="form-control" id="diff" readonly="true" value="<?= $diff ?>">
             </div>
             <div class="form-group col-xs-12">
-                <label for="disabled_price_unit">ราคาเปิดทั้งหมด //ระบบคิดอัตโนมัติตามหน่วยที่เลือก</label>
-                <input type="text" class="form-control" id="total_price" readonly="true" onkeyup="updateAmount()" value ="<?= $total; ?>">
+                <label>ราคาเปิดต่อหน่วย</label>
+                <input type="text" class="form-control" id="price_factory" readonly="true" value="<?= number_format($price_factory, 2); ?>">
+            </div>
+            <div class="form-group col-xs-12">
+                <label>ราคาคืนต่อหน่วย</label>
+                <input type="text" class="form-control" id="price" readonly="true" value="<?= number_format($price, 2); ?>" onkeyup="updateAmount()">
+            </div>
+            <div class="form-group col-xs-12">
+                <label>ราคาคืนทั้งหมด</label>
+                <input type="text" class="form-control" id="total_price" readonly="true" onkeyup="updateAmount()" value ="<?= number_format($total, 2); ?>">
             </div>
         </div>
     </div>
@@ -121,8 +129,8 @@ $idFactory = $getUnit['idfactory'];
         var productName = $("#idproduct").val();
         var factoryName = $("#idfactory").val();
         var AmountProduct = $("#AmountProduct").val();
-        var price = $("#price").val();
-        var total_price = $("#total_price").val();
+        var price = $("#price").val().replace(',', '');
+        var total_price = $("#total_price").val().replace(',', '');
         var idproduct_refunds = <?= $idproduct_refunds ?>;
         //alert(idUnit);
         //alert(AmountProduct);

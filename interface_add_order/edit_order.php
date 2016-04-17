@@ -11,16 +11,17 @@ require_once '/function/func_addorder.php';
 $val_idorder = $_GET['idorder']; //ส่งค่าpara
 $getOrderEdit = getOrderEdit($val_idorder);
 $getProductOrder = getProductOrder($val_idorder);
-//echo "<pre>";
-//print_r($getProductDetail);
-//echo "</pre>";
 $val_code_order_p = $getOrderEdit['code_order'];
 $val_date_order_p = $getOrderEdit['date_order_p'];
 $val_time_order_p = $getOrderEdit['time_order_p'];
-$val_name_shop = $getOrderEdit['name_shop']." (".$getOrderEdit['code_shop'].")";
+$val_name_shop = $getOrderEdit['name_shop'] . " (" . $getOrderEdit['code_shop'] . ")";
 $val_detail_order_p = $getOrderEdit['detail_order_p'];
+$idshop = $getOrderEdit['idshop'];
 
+
+$_SESSION['idshop'] = $idshop;
 $total_price_all = 0;
+
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -46,7 +47,7 @@ $total_price_all = 0;
         <script>
 
             /*  $(function () {
-             var data = JSON.stringify(<?php //getShop2();                                                                  ?>);
+             var data = JSON.stringify(<?php //getShop2();                                                                   ?>);
              //var www = JSON.parse(data);
              //alert(www);
              alert(data);

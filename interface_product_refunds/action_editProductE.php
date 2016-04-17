@@ -17,4 +17,3 @@ if ($_GET['p'] == "editProduct") {
     $Edit = editTotal_order($idorder, $total_price_all);
     echo "1";
 }
-?>

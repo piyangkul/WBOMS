@@ -16,22 +16,24 @@ $detail_order = $_POST['detail_order'];
 $totalss = $_POST['totalss'];
 //ส่งข้อมูล หน่วยสินค้า มาหน้านี้
 $products = $_SESSION["productR"];
+$getIDShipment = getDateShipment();
+$idshipment_period = $getIDShipment['idshipment_period'];
 //สิ้นสุดกลุ่มรับค่า
 //
 //กลุ่มคำสั่งทำอะไร
 //if (!checkcode($productCode)) {
 //echo checkDuplicateProduct($productName, $factoryID);
 if (isset($_SESSION["productR"])) {//ถามว่า$_SESSION["unit"]ถูกสร้างหรือยัง
-    $idorder = addOrderProductRefunds($idshop, $date_order, $detail_order,$totalss);
+    $idorder = addOrderProductRefunds($idshop, $date_order, $detail_order, $totalss, $idshipment_period);
     echo "idorder=" . $idorder;
     if ($idorder > 0) {
         //$idUnit[1] = addUnit($idproduct, 0, $units[1]['AmountPerUnit'], $units[1]['NameUnit'], $units[1]['price'], $units[1]['type']);
         for ($i = 1; $i <= count($products); $i++) {
             //$under_unit = $units[$i]['under_unit'];
             //$underIdUnit = $idUnit[$under_unit]; 
-            $idproduct[$i] = addProductRefunds($idorder,$products[$i]['idUnit'], $products[$i]['AmountProduct'],$products[$i]['price']);
+            $idproduct[$i] = addProductRefunds($idorder, $products[$i]['idUnit'], $products[$i]['AmountProduct'], $products[$i]['price']);
             echo "555";
-            //$idUnit[$i] = addUnit($idshop, $underIdUnit, $units[$i]['AmountPerUnit'], $units[$i]['NameUnit'], $units[$i]['price'], $units[$i]['type']);
+           
         }
         echo "555";
         unset($_SESSION["productR"]);
@@ -44,7 +46,7 @@ if (isset($_SESSION["productR"])) {//ถามว่า$_SESSION["unit"]ถู�
     }
 } else {
     unset($_SESSION["productR"]);
-    unset($_SESSION["countProductR"]);   
+    unset($_SESSION["countProductR"]);
     header("location: ../product_refunds.php?p=product&action=addErrorNotHaveProduct");
 }
 

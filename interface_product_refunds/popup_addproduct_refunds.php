@@ -1,6 +1,7 @@
 <?php require_once 'function/func_addorder.php'; ?>
 <?php
 session_start();
+echo $_SESSION['idshopP'];
 ?>
 <script>
     var Product = JSON.stringify(<?php echo getProduct4(); ?>);
@@ -10,12 +11,14 @@ session_start();
     var factoryName = new Array();
     var factoryId = new Array();
     var factoryDiff = new Array();
+    var factoryType = new Array();
     for (var i = 0; i < ProductP.length; i++) {
         productName.push("[" + ProductP[i].product_code + "] " + ProductP[i].name_product + " - " + ProductP[i].name_factory);
         productId["'" + "[" + ProductP[i].product_code + "] " + ProductP[i].name_product + " - " + ProductP[i].name_factory + "'"] = ProductP[i].idproduct;
         factoryName["'" + "[" + ProductP[i].product_code + "] " + ProductP[i].name_product + " - " + ProductP[i].name_factory + "'"] = ProductP[i].name_factory;
         factoryId["'" + "[" + ProductP[i].product_code + "] " + ProductP[i].name_product + " - " + ProductP[i].name_factory + "'"] = ProductP[i].idfactory;
         factoryDiff["'" + "[" + ProductP[i].product_code + "] " + ProductP[i].name_product + " - " + ProductP[i].name_factory + "'"] = ProductP[i].difference_amount_factory;
+        factoryType["'" + "[" + ProductP[i].product_code + "] " + ProductP[i].name_product + " - " + ProductP[i].name_factory + "'"] = ProductP[i].type_factory
     }
     $(function () {
         $("#name_product").autocomplete({
@@ -27,7 +30,9 @@ session_start();
         document.getElementById("name_factory").value = factoryName["'" + name_shop + "'"];
         document.getElementById("idproduct").value = productId["'" + name_shop + "'"];
         document.getElementById("idfactory").value = factoryId["'" + name_shop + "'"];
+        document.getElementById("typefactory").value = factoryType["'" + name_shop + "'"];
         //document.getElementById("difference").value = factoryDiff["'" + name_shop + "'"];
+
         var id = productId["'" + name_shop + "'"];
         $.ajax({type: "GET",
             url: "action/action_ajax_product.php",
@@ -40,7 +45,23 @@ session_start();
                 //alert(response);
             }
         });
+
+        var iddiff = productId["'" + name_shop + "'"];
+        var idshop = document.getElementById('idshop').value;
+        $.ajax({type: "GET",
+            url: "action/action_ajax_hisdiff.php",
+            async: false,
+            data: "q=" + iddiff + "&idshop=" + idshop,
+            dataType: 'html',
+            success: function (www)
+            {
+                $("#diff").val(www);
+                //alert(response);
+            }
+        });
+
     }
+
 </script>
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -60,6 +81,7 @@ session_start();
                     <input type="hidden" class="form-control" id="name_factory" name="name_factory" placeholder="กรุณาระบุชื่อสินค้า" disabled>
                     <input type="hidden" id="idfactory" name="idfactory">
                     <input type="hidden" class="form-control" id="typefactory" name="typefactory">
+                    <input type="hidden" class="form-control" id="idshop" name="idshop" value="<?= $_SESSION['idshopP']; ?>">
                     <input type="hidden" id="idFactory2">
                 </div>
             </div>
@@ -75,11 +97,13 @@ session_start();
                 <input type="text" class="form-control" id="AmountProduct" placeholder="กรอกจำนวนสินค้า" onkeyup="updateAmount()">
             </div>
             <div class="form-group col-xs-12">
-                <label>ราคาเปิดต่อหน่วย //ระบบคิดอัตโนมัติตามหน่วยที่เลือก</label>
-                <input type="text" class="form-control" id="price" readonly="true" onkeyup="cal_difference()">
+                <label>ราคาคืนต่อหน่วย</label>
+                <input type="hidden" class="form-control" id="diff" readonly="true">
+                <input type="hidden" class="form-control" id="price_factory" readonly="true">
+                <input type="text" class="form-control" id="price" readonly="true" onkeyup="updateAmount()">
             </div>
             <div class="form-group col-xs-12">
-                <label>ราคาเปิดทั้งหมด //ระบบคิดอัตโนมัติตามหน่วยที่เลือก</label>
+                <label>ราคาคืนทั้งหมด</label>
                 <input type="text" class="form-control" id="total_price" readonly="true" onkeyup="updateAmount()">
             </div>
         </div>
@@ -91,16 +115,18 @@ session_start();
 </div>
 
 <script>
-
     function addProduct() {
         var idUnit = $("#idUnit").val();
         var productName = $("#idproduct").val();
         var factoryName = $("#idfactory").val();
         var AmountProduct = $("#AmountProduct").val();
         var price = $("#price").val();
+        var price_factory = $("#price_factory").val();
+        var type_factory = $("#typefactory").val();
+        var diff = $("#diff").val();
         var total_price = $("#total_price").val().replace(",", "");
 
-        var p = "&idUnit=" + idUnit + "&productName=" + productName + "&factoryName=" + factoryName + "&AmountProduct=" + AmountProduct + "&price=" + price + "&total_price=" + total_price;
+        var p = "&idUnit=" + idUnit + "&productName=" + productName + "&factoryName=" + factoryName + "&AmountProduct=" + AmountProduct + "&price=" + price + "&total_price=" + total_price + "&diff=" + diff + "&price_factory=" + price_factory + "&type_factory=" + type_factory;
         alert(p);
         $.get("action_addProduct.php?p=addProduct" + p, function (data, status) {
             alert("Data: " + data + "\nStatus: " + status);
@@ -125,6 +151,7 @@ session_start();
             }
         }
         );
+        document.getElementById('name_shop').disabled = true;
     }
 
 

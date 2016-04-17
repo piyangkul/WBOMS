@@ -448,21 +448,22 @@ function addProductRefunds($idorder_product_refunds, $idunit, $amount_product_re
     }
 }
 
-function addOrderProductRefunds($idshop, $date_order, $detail_order, $price_product_refunds) {
+function addOrderProductRefunds($idshop, $date_order, $detail_order, $price_product_refunds,$idshipment) {
     $conn = dbconnect();
     $date = str_replace('-', '/', $date_order);
     $Nextdate = date('Y-m-d', strtotime($date . "0 days"));
     //$val_date; //คือวันที่ที่จะแก้ไข
     //$Nextdate; //คือวันที่ที่จะลงdbคือถูกแปลงแล้ว
-    $SQLCommand = "INSERT INTO `order_product_refunds`(shop_idshop,date_product_refunds,detail_product_refunds,total_price_product_refunds) "
-            . "VALUES (:idshop, :date_order,:detail_order,:price_product_refunds )";
+    $SQLCommand = "INSERT INTO `order_product_refunds`(shop_idshop,date_product_refunds,detail_product_refunds,total_price_product_refunds,shipment_period_idshipment_period) " 
+            . "VALUES (:idshop, :date_order,:detail_order,:price_product_refunds,:idshipment )";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
                 ":idshop" => $idshop,
                 ":date_order" => $Nextdate,
                 ":detail_order" => $detail_order,
-                ":price_product_refunds" => $price_product_refunds
+                ":price_product_refunds" => $price_product_refunds,
+                ":idshipment" => $idshipment
             )
     );
 
@@ -675,6 +676,31 @@ function get_edit_product_refunds($id) {
             )
     );
 
+    $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
+    return $result;
+}
+
+function hisDiff($id, $idshop) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT difference.iddifference,difference.idproduct,difference.idshop,difference.price_difference FROM `difference` WHERE idproduct = :id AND idshop = :idshop";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":id" => $id,
+                ":idshop" => $idshop
+            )
+    );
+    //$resultArr = array();
+    $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
+    return $result;
+}
+
+function getDateShipment() {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT MAX(idshipment_period) AS idshipment_period,MAX(date_end) AS date_end FROM shipment_period";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute();
+    //$resultArr = array();
     $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
     return $result;
 }

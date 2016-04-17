@@ -128,10 +128,9 @@ foreach ($getProducts as $value) {
                                     </div>
                                     <div class="panel-body">
                                         <div class="table-responsive">
-                                            <a href="popup_edit_product_addunit.php?idproduct=<?= $val_idproduct; ?>" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal1">
+                                            <a href="popup_edit_product_addunit.php?idproduct=<?= $val_idproduct;?>" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal1">
                                                 <span class="glyphicon glyphicon-plus"></span> เพิ่มหน่วยสินค้า
                                             </a>
-                                            <br/><br/>
                                             <table class="table table-striped table-bordered table-hover text-center" id="dataTables-example">
                                                 <thead>
                                                     <tr>
@@ -166,7 +165,6 @@ foreach ($getProducts as $value) {
                                                                                                                         </a>-->
                                                         </td>
                                                     </tr> 
-                                                    ?>
                                                     <?php
                                                     $bigUnitName;
                                                     $bigPiceUnit;
