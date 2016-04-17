@@ -1,7 +1,6 @@
 <?php require_once 'function/func_addorder.php'; ?>
 <?php
 session_start();
-echo $_SESSION['idshopP'];
 ?>
 <script>
     var Product = JSON.stringify(<?php echo getProduct4(); ?>);
