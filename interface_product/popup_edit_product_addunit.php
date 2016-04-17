@@ -3,6 +3,7 @@
 <?php
 session_start();
 $val_idproduct = $_GET['idproduct'];
+echo $val_idproduct;
 $price_unit = 0;
 $val_idunit;
 $val_name_unit;
@@ -21,6 +22,7 @@ $val_price = 0;
             <div class="form-group col-xs-12">
                 <label for="NameUnit">ชื่อหน่วยสินค้ารอง</label>
                 <input type="text" class="form-control" name="NameUnit" id="NameUnit" placeholder="ใส่หน่วยสินค้า เช่น(กล่อง)" >
+                <input type="text" class="form-control" name="idProduct" id="idProduct" value=" <?= $val_idproduct ?>">
             </div>
             <div class="form-group col-xs-12">
                 <label for="AmountPerUnit">จำนวนต่อหน่วยรอง</label>
@@ -78,7 +80,8 @@ $val_price = 0;
 
 <script>
     function addUnit() {
-        var idproduct = <?= $val_idproduct; ?>;
+        var idproduct = $("#idProduct").val();
+       // alert(idproduct);
         var NameUnit = $("#NameUnit").val();
         var AmountPerUnit = $("#AmountPerUnit").val();
         var under_unit = $("#under_unit").val();

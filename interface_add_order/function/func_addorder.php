@@ -541,14 +541,16 @@ function getIDProduct($id) {
     return $result;
 }
 
-function hisDiff($id) {
+function hisDiff($id, $idshop) {
     $conn = dbconnect();
-    $SQLCommand = "SELECT product.idproduct,MAX(difference.date_difference) AS maxdate,difference.price_difference FROM product INNER JOIN difference ON product.idproduct =difference.idproduct WHERE product.idproduct = :id";
+    $SQLCommand = "SELECT difference.iddifference,difference.idproduct,difference.idshop,difference.price_difference FROM `difference` WHERE idproduct = :id AND idshop = :idshop";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
-                ":id" => $id
-    ));
+                ":id" => $id,
+                ":idshop" => $idshop
+            )
+    );
     //$resultArr = array();
     $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
     return $result;

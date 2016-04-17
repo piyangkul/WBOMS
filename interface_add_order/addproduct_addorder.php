@@ -114,7 +114,6 @@ require_once '/function/func_addorder.php';
                 if (document.getElementById("typefactory").value == "BATH") {
                     document.getElementById("BATH").style.display = "inline";
                     document.getElementById("PERCENT").style.display = "none";
-
                 }
                 var id = productId["'" + name_shop + "'"];
                 $.ajax({type: "GET",

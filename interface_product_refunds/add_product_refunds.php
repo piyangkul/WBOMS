@@ -1,5 +1,6 @@
 ﻿<?php
 session_start();
+require_once '/function/func_addorder.php';
 if (!isset($_SESSION['member']))
     header('Location: ../index.php');
 
@@ -9,7 +10,11 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
 }
 $date = date("Y-m-d");
 $var = date('H:i');
-require_once '/function/func_addorder.php';
+
+$getDateShipment = getDateShipment();
+$dateEnd = $getDateShipment['date_end'];
+
+echo $date;
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -50,6 +55,18 @@ require_once '/function/func_addorder.php';
             function getShopId() {
                 var price = document.getElementById("name_shop").value;
                 document.getElementById("idshop").value = shopId["'" + price + "'"];
+                //alert("555");
+                var idshop = shopId["'" + price + "'"];
+                $.ajax({type: "GET",
+                    url: "action/action_session.php",
+                    async: false,
+                    data: "idshop=" + idshop,
+                    dataType: 'html',
+                    success: function ()
+                    {
+                    }
+                });
+                document.getElementById("add_p").disabled = false;
             }
 
 
@@ -76,6 +93,10 @@ require_once '/function/func_addorder.php';
                         </div>
                         <!-- /. ROW  -->
                         <hr />
+
+                        <a href="product_refunds.php" class="btn btn-danger btn-lg">
+                            <span class="fa fa-arrow-circle-left"></span> Back
+                        </a>
                         <div class="row">
                             <div class="col-md-3"></div>
                             <div class="col-md-5">
@@ -84,17 +105,17 @@ require_once '/function/func_addorder.php';
                                     <div class="panel-heading ">
                                         <div class="table-responsive">
                                             <div class="form-group">                                               
-                                                <label>ชื่อร้านค้า</label>
+                                                <label>ชื่อร้านค้า</label><font size="1" color ="red">*กรุณาเลือกร้านค้าก่อน</font>
                                                 <div class="input-group">
-                                                    <span class="input-group-addon"><i class="fa fa-shopping-cart"  ></i></span>
-                                                    <input type="text" class="form-control" id="name_shop" name="name_shop" placeholder="กรุณาระบุชื่อร้านค้า" autocomplete= on onblur="getShopId()"></input>
+                                                    <span class="input-group-addon"><i class="fa fa-shopping-cart"></i></span>
+                                                    <input type="text" class="form-control" id="name_shop" name="name_shop" placeholder="กรุณาระบุชื่อร้านค้า" autocomplete= on onblur="getShopId()" ></input>
                                                     <!--<input type="text" class="form-control" id="name_product" name="name_product" placeholder="กรุณาระบุชื่อสินค้า" autocomplete= "on" >-->
                                                     <input type="hidden" id="idshop" name="idshop"></input>
                                                 </div>
                                                 <label>วันที่สินค้าคืน</label>
                                                 <div class="input-group">
                                                     <span class="input-group-addon"><i class="fa fa-calendar-o" ></i></span>
-                                                    <input type="date" class="form-control" id ="date_order" name="date_order" value="<?= $date; ?>">
+                                                    <input type="date" class="form-control" id ="date_order" name="date_order" value="<?= $date; ?>" max="<?= $dateEnd; ?>">
                                                 </div>
                                             </div>                                        
                                         </div>
@@ -115,13 +136,17 @@ require_once '/function/func_addorder.php';
                                         </div>
                                         <div class="panel-body">
                                             <div class="table-responsive">
-                                                <a href="popup_addproduct_refunds.php" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">
-                                                    <span class="glyphicon glyphicon-plus"></span> เพิ่มสินค้า </a>
+                                                <button type="button" href="popup_addproduct_refunds.php" id="add_p" name="add_p" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal"  disabled>
+                                                    <span class="glyphicon glyphicon-plus"></span> เพิ่มสินค้า 
+                                                </button>
                                                 <button class="btn btn-danger btn-lg" type="button" onclick="if (confirm('คุณต้องการลบหน่วยสินค้าทั้งหมดหรือไม่')) {
                                                             resetUnit();
                                                         }">
                                                     <span class="glyphicon glyphicon-trash"></span> ลบสินค้าทั้งหมด
                                                 </button>
+                                                <br/>
+                                                <br/>
+
                                                 <div id="showUnit"></div>
                                             </div>
 
@@ -202,9 +227,10 @@ require_once '/function/func_addorder.php';
                                                     }
 
                                                     function updateAmount() {
-                                                        var price = document.getElementById("idFactory2").value;
+                                                        var price = document.getElementById("price_factory").value.replace(',', '');
                                                         var amount = document.getElementById("AmountProduct").value;
-                                                        var total = amount * price;
+                                                        var diff = document.getElementById("diff").value
+                                                        var total = (price - ((price * diff) / 100)) * amount;
                                                         document.getElementById("total_price").value = total.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
                                                     }
 
@@ -238,11 +264,14 @@ require_once '/function/func_addorder.php';
                                                                 success: function (response)
                                                                 {
                                                                     $("#total_price").val(response);
-                                                                    $("#price").val(response);
+                                                                    $("#price_factory").val(response);
                                                                     $("#idFactory2").val(response);
                                                                 }
                                                             });
                                                         }
+                                                        var price = document.getElementById('price_factory').value
+                                                        var diff = document.getElementById('diff').value
+                                                        document.getElementById('price').value = price - ((price * diff) / 100)
                                                     }
                                                     function LoadFactory(str) {
                                                         document.getElementById("factoryName").value = str;
@@ -312,4 +341,16 @@ require_once '/function/func_addorder.php';
                                                             }
                                                         });
                                                     }
+                                                    /*
+                                                     function addProduct_Order() {
+                                                     if (document.getElementById("name_shop").value.length > 0) {
+                                                     
+                                                     window.showModalDialog('',);
+                                                     }
+                                                     else {
+                                                     alert("กรุณากรอกชื่อร้านค้า");
+                                                     }
+                                                     }
+                                                     */
+
 </script>
