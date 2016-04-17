@@ -161,25 +161,43 @@ require_once dirname(__FILE__) . '/../function/func_docket.php';
                 <?php if ($val_date_pay == "") { ?><!-- ถ้ายังไม่มีการเก็บเงิน ,ถ้ารอบข้างบนยังไม่finish -->
 
                     <?php
-                    $getPayByID_check_process = getPayByID($idshop);
-                    $i2 = 0;
-                    foreach ($getPayByID_check_process as $value) {
-                        $i2++;
-                        $val_status_process_check_process = $value['status_process'];
-                        if ($val_status_process_check_process == "add") { //status_process เป็น add จะไม่ให้แสดง
-                            break;
-                        }
-                        ?>
+                    $getPayByID_check_add_payshop = getPayByIDcheckStatus($idshop, $val_idshipment_period);
+                    $val_status_check_add_payshop = $getPayByID_check_add_payshop['status_process'];
 
-                        <?php if ($check_popup_addShop && $val_status_process_check_process != "") { ?><!-- ทำให้ปุ่มเพิ่มออกครั้งเดียว และต้องไม่เป็น NULL ด้วย-->
-                            <!-- เพิ่มการเก็บเงินร้านค้า -->
-                            <a href="popup_add_payshop.php?idshipment_period=<?php echo $val_idshipment_period; ?>&idshop=<?php echo $idshop; ?>&sum_order=<?php echo $sum_order; ?>&debt=<?php echo $val_debt; ?>&price_product_refunds=<?php echo $val_order_price_product_refunds; ?>" class="btn btn-info" data-toggle = "modal" data-target = "#myModal-lg" data-toggle="tooltip" title="เพิ่มการเก็บเงินร้านค้า">
-                                <span class = "fa fa-plus fa-fw"></span><span class = "fa fa-shopping-cart fa-lg"></span>
-                            </a>
-                            <?php
-                            $check_popup_addShop = FALSE;
-                        }
-                    }
+                    $Beforeid2 = getBeforeid($val_idshipment_period); //ได้ค่าidรอบถัดไป --> อัพเดทรอบนี้ด้วย
+                    $val_before_idshipment_period_check = $Beforeid2['idshipment_period'];
+//
+//                    $getPayByID_check_finish_payshop = getPayByIDcheckStatus($idshop, $val_before_idshipment_period_check);
+//                    $val_status_check_finish_payshop = $getPayByID_check_finish_payshop['status_process'];
+//                   echo $val_order_price_product_refunds;
+                    ?>
+
+                    <?php if ($check_popup_addShop == TRUE && ($sum_order != 0 && $val_order_price_product_refunds != 0 ) && $val_status_check_add_payshop == "" && $val_status_check_add_payshop != "finish") { //และรอบก่อนหน้าต้องเป็นfinish  ?><!-- ทำให้ปุ่มเพิ่มออกครั้งเดียว และต้องไม่เป็น NULL ด้วย-->
+                        <!-- เพิ่มการเก็บเงินร้านค้า -->
+
+                        <a href="popup_add_payshop.php?idshipment_period=<?php echo $val_idshipment_period; ?>&idshop=<?php echo $idshop; ?>&sum_order=<?php echo $sum_order; ?>&debt=<?php echo $val_debt; ?>&price_product_refunds=<?php echo $val_order_price_product_refunds; ?>" class="btn btn-info" data-toggle = "modal" data-target = "#myModal-lg" data-toggle="tooltip" title="เพิ่มการเก็บเงินร้านค้า">
+                            <span class = "fa fa-plus fa-fw"></span><span class = "fa fa-shopping-cart fa-lg"></span>
+                        </a>
+                        <?php
+                        $check_popup_addShop = FALSE;
+                    } elseif ($val_before_idshipment_period_check == "" && ($sum_order != 0 && $val_order_price_product_refunds != 0 ) && $val_status_check_add_payshop != "finish") {//กรณีมีรอบแรกแค่รอบเดียว รอบสูกว่าไม่มีเช็คfinishไม่ได้
+                        ?>
+                        <a href="popup_add_payshop.php?idshipment_period=<?php echo $val_idshipment_period; ?>&idshop=<?php echo $idshop; ?>&sum_order=<?php echo $sum_order; ?>&debt=<?php echo $val_debt; ?>&price_product_refunds=<?php echo $val_order_price_product_refunds; ?>" class="btn btn-info" data-toggle = "modal" data-target = "#myModal-lg" data-toggle="tooltip" title="เพิ่มการเก็บเงินร้านค้า">
+                            <span class = "fa fa-plus fa-fw"></span><span class = "fa fa-shopping-cart fa-lg"></span>
+                        </a>
+                        <?php
+                        //$check_popup_addShop = FALSE;
+                    } elseif ($sum_order == 0 && $val_order_price_product_refunds != 0) {
+                        ?>
+                        <a href="popup_add_payshop_refund.php?idshipment_period=<?php echo $val_idshipment_period; ?>&idshop=<?php echo $idshop; ?>&sum_order=<?php echo $sum_order; ?>&debt=<?php echo $val_debt; ?>&price_product_refunds=<?php echo $val_order_price_product_refunds; ?>" class="btn btn-warning" data-toggle = "modal" data-target = "#myModal-lg" data-toggle="tooltip" title="เลื่อนการเก็บเงินร้านค้าไปรอบถัดไป">
+                            <span class = "fa fa-repeat fa-fw"></span><span class = "fa fa-shopping-cart fa-lg"></span>
+                        </a>
+                    <?php } else { ?>
+                        <a href="popup_add_payshop.php?idshipment_period=<?php echo $val_idshipment_period; ?>&idshop=<?php echo $idshop; ?>&sum_order=<?php echo $sum_order; ?>&debt=<?php echo $val_debt; ?>&price_product_refunds=<?php echo $val_order_price_product_refunds; ?>" class="btn btn-info" data-toggle = "modal" data-target = "#myModal-lg" data-toggle="tooltip" title="เพิ่มการเก็บเงินร้านค้า">
+                            <span class = "fa fa-plus fa-fw"></span><span class = "fa fa-shopping-cart fa-lg"></span>
+                        </a>
+                      <?php  
+                     }
                     ?>
 
                 <?php } else { ?> <!-- ถ้าเพิ่มการเก็บเงินแล้ว -->
@@ -192,15 +210,15 @@ require_once dirname(__FILE__) . '/../function/func_docket.php';
                     <?php if ($val_status_process == "add") { ?>
                         <!-- ลบการเก็บเงินร้านค้า -->
                         <a href="action/action_delPayshop.php?idshipment_period=<?php echo $val_idshipment_period; ?>&idshop=<?php echo $idshop; ?>" onclick="if (!confirm('คุณต้องการลบหรือไม่')) {
-                                    return false;
-                                }" class="btn btn-danger " title="ลบการเก็บเงินร้านค้า">
+                                            return false;
+                                        }" class="btn btn-danger " title="ลบการเก็บเงินร้านค้า">
                             <span class="fa fa-trash fa-lg fa-fw"></span><span class = "fa fa-shopping-cart fa-lg"></span>
                         </a>
 
                         <!-- เปลี่ยนสถานะเก็บเงินร้านค้าเป็นเสร็จสิ้น -->
                         <a href="action/action_finishPayshop.php?idshipment_period=<?php echo $val_idshipment_period; ?>&idshop=<?php echo $idshop; ?>" onclick="if (!confirm('คุณต้องการกดเสร็จสิ้นหรือไม่')) {
-                                    return false;
-                                }" class="btn btn-outline " title="เปลี่ยนสถานะเก็บเงินร้านค้าเป็นเสร็จสิ้น">
+                                            return false;
+                                        }" class="btn btn-outline " title="เปลี่ยนสถานะเก็บเงินร้านค้าเป็นเสร็จสิ้น">
                             <span class="fa fa-check fa-lg fa-fw"></span><span class = "fa fa-shopping-cart fa-lg"></span>
                         </a>
 
