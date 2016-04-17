@@ -148,7 +148,7 @@ function getUnit2($id) {
 
 function getUnit3($id) {
     $conn = dbconnect();
-    $SQLCommand = "SELECT idunit,name_unit,price_unit,type_unit,unit.idproduct,factory.name_factory,name_product,factory.idfactory FROM `unit` INNER JOIN product ON product.idproduct=unit.idproduct INNER JOIN factory ON factory.idfactory = product.idfactory WHERE idunit = :id ";
+    $SQLCommand = "SELECT idunit,name_unit,price_unit,type_unit,unit.idproduct,factory.name_factory,name_product,factory.idfactory,factory.type_factory FROM `unit` INNER JOIN product ON product.idproduct=unit.idproduct INNER JOIN factory ON factory.idfactory = product.idfactory WHERE idunit = :id ";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
@@ -448,13 +448,13 @@ function addProductRefunds($idorder_product_refunds, $idunit, $amount_product_re
     }
 }
 
-function addOrderProductRefunds($idshop, $date_order, $detail_order, $price_product_refunds,$idshipment) {
+function addOrderProductRefunds($idshop, $date_order, $detail_order, $price_product_refunds, $idshipment) {
     $conn = dbconnect();
     $date = str_replace('-', '/', $date_order);
     $Nextdate = date('Y-m-d', strtotime($date . "0 days"));
     //$val_date; //คือวันที่ที่จะแก้ไข
     //$Nextdate; //คือวันที่ที่จะลงdbคือถูกแปลงแล้ว
-    $SQLCommand = "INSERT INTO `order_product_refunds`(shop_idshop,date_product_refunds,detail_product_refunds,total_price_product_refunds,shipment_period_idshipment_period) " 
+    $SQLCommand = "INSERT INTO `order_product_refunds`(shop_idshop,date_product_refunds,detail_product_refunds,total_price_product_refunds,shipment_period_idshipment_period) "
             . "VALUES (:idshop, :date_order,:detail_order,:price_product_refunds,:idshipment )";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
@@ -476,7 +476,7 @@ function addOrderProductRefunds($idshop, $date_order, $detail_order, $price_prod
 
 function getEditProductRefunds($id) {
     $conn = dbconnect();
-    $SQLCommand = "SELECT order_product_refunds.idorder_product_refunds,shop_idshop,shop.name_shop,detail_product_refunds,date_product_refunds,price_product_refunds,COUNT(product_refunds.idproduct_refunds) AS idproduct_refunds FROM `order_product_refunds` INNER JOIN shop ON shop.idshop=order_product_refunds.shop_idshop INNER JOIN product_refunds ON product_refunds.idorder_product_refunds = order_product_refunds.idorder_product_refunds  WHERE order_product_refunds.idorder_product_refunds = :id GROUP BY order_product_refunds.idorder_product_refunds";
+    $SQLCommand = "SELECT order_product_refunds.idorder_product_refunds,shop_idshop,shop.idshop AS idshop,shop.name_shop,detail_product_refunds,date_product_refunds,price_product_refunds,COUNT(product_refunds.idproduct_refunds) AS idproduct_refunds FROM `order_product_refunds` INNER JOIN shop ON shop.idshop=order_product_refunds.shop_idshop INNER JOIN product_refunds ON product_refunds.idorder_product_refunds = order_product_refunds.idorder_product_refunds  WHERE order_product_refunds.idorder_product_refunds = :id GROUP BY order_product_refunds.idorder_product_refunds";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
@@ -704,5 +704,7 @@ function getDateShipment() {
     $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
     return $result;
 }
+
+
 
 ?>

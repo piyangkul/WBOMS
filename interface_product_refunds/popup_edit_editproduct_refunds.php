@@ -16,13 +16,15 @@ $nameFactory = $getUnit['name_factory'];
 $nameProduct = $getUnit['name_product'];
 $idFactory = $getUnit['idfactory'];
 $total_price_all = 0;
+$idshop = $_GET['idshop'];
 $getProductRefunds = getProductRefunds_total($idorder_product_refunds, $idproduct_refunds);
 foreach ($getProductRefunds as $value) {
     $val_price = $value['price_product_refunds'];
     $val_amount = $value['amount_product_refunds'];
     $total_price_all += $val_price * $val_amount;
 }
-echo $total_price_all;
+$getHisdiff = hisDiff($idProduct, $idshop);
+$diff = $getHisdiff['price_difference'];
 //$getTotal =
 ?>
 <script>
@@ -45,29 +47,43 @@ echo $total_price_all;
             source: productName
         });
     });
-    /* function getProductID() {
-     var name_shop = document.getElementById("name_product").value;
-     document.getElementById("name_factory").value = factoryName["'" + name_shop + "'"];
-     document.getElementById("idproduct").value = productId["'" + name_shop + "'"];
-     //  document.getElementById("idfactory").value = factoryId["'" + name_shop + "'"];
-     //document.getElementById("difference").value = factoryDiff["'" + name_shop + "'"];
-     var id = productId["'" + name_shop + "'"];
-     $.ajax({type: "GET",
-     url: "action/action_ajax_product.php",
-     async: false,
-     data: "q=" + id,
-     dataType: 'html',
-     success: function (response)
-     {
-     $("#idUnit").html(response);
-     //alert(response);
-     }
-     });
-     }*/
+    function getProductID() {
+        var name_shop = document.getElementById("name_product").value;
+        document.getElementById("name_factory").value = factoryName["'" + name_shop + "'"];
+        document.getElementById("idproduct").value = productId["'" + name_shop + "'"];
+        document.getElementById("idfactory").value = factoryId["'" + name_shop + "'"];
+        //document.getElementById("difference").value = factoryDiff["'" + name_shop + "'"];
+        var id = productId["'" + name_shop + "'"];
+        $.ajax({type: "GET",
+            url: "action/action_ajax_product.php",
+            async: false,
+            data: "q=" + id,
+            dataType: 'html',
+            success: function (response)
+            {
+                $("#idUnit").html(response);
+                //alert(response);
+            }
+        });
+
+        var iddiff = productId["'" + name_shop + "'"];
+        var idshop = document.getElementById('idshop').value;
+        $.ajax({type: "GET",
+            url: "action/action_ajax_hisdiff.php",
+            async: false,
+            data: "q=" + iddiff + "&idshop=" + idshop,
+            dataType: 'html',
+            success: function (www)
+            {
+                $("#diff").val(www);
+                //alert(response);
+            }
+        });
+    }
 </script>
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="myModalLabel">เพิ่มสินค้า</h4>
+    <h4 class="modal-title" id="myModalLabel">แก้ไขสินค้า</h4>
 </div>
 <div class="row">
     <div class="col-md-12 col-sm-12 ">
@@ -77,18 +93,15 @@ echo $total_price_all;
             <div class="form-group col-xs-12">
                 <label for="name_product">ชื่อสินค้า</label>
                 <input type="text" class="form-control" id="productName" name="productName" placeholder="กรุณาระบุชื่อสินค้า" value ="<?= $nameProduct ?>" disabled=""></input>
-                <input type="hidden" id="idproduct" name="idproduct" value="<?= $idProduct; ?>"></input>
+                <input type="hidden" id="idproduct" name="idproduct" value="<?= $idProduct; ?>">
                 <h id="idFactory2"></h>
+                <input type="hidden" class="form-control" id="factoryName" name="factoryName" placeholder="กรุณาระบุชื่อสินค้า" value ="<?= $nameFactory ?>" disabled></input>
+                <input type="hidden" id="idfactory" name="idfactory" value ="<?= $idFactory; ?>">
+                <input type="hidden" class="form-control" id="typefactory" name="typefactory">
+                <input type="hidden" class="form-control" id="idshop" name="idshop" value="<?= $idshop; ?>">
             </div>
-
-            <div class="form-group col-xs-12">
-                <label for="name_factory">ชื่อโรงงาน</label> <font size="1" color ="red">*กรุณาเลือกสินค้า</font>
-                <input type="text" class="form-control" id="factoryName" name="factoryName" placeholder="กรุณาระบุชื่อสินค้า" value ="<?= $nameFactory ?>" disabled></input>
-                <input type="hidden" id="idfactory" name="idfactory" value ="<?= $idFactory; ?>"></input>
-            </div>
-            <div class="form-group col-xs-12">
+            <div class="form-group col-xs-12" style="float:left;width:50%;">
                 <label for="name_product"> หน่วย</label>  <font size="1" color ="red">*กรุณาเลือกสินค้าก่อน</font>
-
                 <select class="form-control" id="idUnit" name="idUnit" onchange="LoadData(this.value)" required>
                     <option selected value="<?= $idunit ?>"><?= $nameUnit ?></option>   
                     <?php
@@ -103,17 +116,20 @@ echo $total_price_all;
                 </select>                
                 <div id="tee"></div>
             </div>
-            <div class="form-group col-xs-12">
+            <div class="form-group col-xs-12" style="float:left;width:50%;">
                 <label for="amount_product">จำนวน</label>
+                <input type="text" class="form-control" id="diff" readonly="true" value="<?= $diff; ?>">
+                <input type="hidden" class="form-control" id="price_factory" readonly="true">
                 <input type="text" class="form-control" id="AmountProduct" placeholder="กรอกจำนวนสินค้า" value ="<?= $amount; ?>" onkeyup="updateAmount()">
             </div>
             <div class="form-group col-xs-12">
                 <label for="disabled_price_unit">ราคาเปิดต่อหน่วย //ระบบคิดอัตโนมัติตามหน่วยที่เลือก</label>
-                <input type="text" class="form-control" id="price" readonly="true" onkeyup="cal_difference()" value="<?= number_format($price, 2); ?>">
+
+                <input type="text" class="form-control" id="price" readonly="true" value="<?= number_format($price, 2); ?>">
             </div>
             <div class="form-group col-xs-12">
                 <label for="disabled_price_unit">ราคาเปิดทั้งหมด //ระบบคิดอัตโนมัติตามหน่วยที่เลือก</label>
-                <input type="text" class="form-control" id="total_price" readonly="true" onkeyup="updateAmount()" value ="<?= number_format($total, 2); ?>">
+                <input type="text" class="form-control" id="total_price" readonly="true" value ="<?= number_format($total, 2); ?>">
             </div>
         </div>
     </div>

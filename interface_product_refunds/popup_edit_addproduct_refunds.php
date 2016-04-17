@@ -2,6 +2,7 @@
 <?php
 session_start();
 $idorder = $_GET['idorder'];
+$idshop = $_GET['idshop'];
 ?>
 <script>
     var Product = JSON.stringify(<?php echo getProduct4(); ?>);
@@ -41,6 +42,20 @@ $idorder = $_GET['idorder'];
                 //alert(response);
             }
         });
+
+        var iddiff = productId["'" + name_shop + "'"];
+        var idshop = document.getElementById('idshop').value;
+        $.ajax({type: "GET",
+            url: "action/action_ajax_hisdiff.php",
+            async: false,
+            data: "q=" + iddiff + "&idshop=" + idshop,
+            dataType: 'html',
+            success: function (www)
+            {
+                $("#diff").val(www);
+                //alert(response);
+            }
+        });
     }
 </script>
 <div class="modal-header">
@@ -54,39 +69,39 @@ $idorder = $_GET['idorder'];
             <div class="form-group col-xs-12">
             </div>
             <div class="form-group col-xs-12">
-                <div class="form-group input-group ui-front">
-                    <label for="name_product">ชื่อสินค้า</label>
+                <label for="name_product">ชื่อสินค้า</label>
+                <div class="input-group ui-front">
+                    <span class="input-group-addon"><i class="fa fa-cube" ></i></span>
                     <input type="text" class="form-control" id="name_product" name="name_product" placeholder="กรุณาระบุชื่อสินค้า" onblur="getProductID()" autocomplete= "on" ></input>
                     <input type="hidden" id="idproduct" name="idproduct"></input>
-                    <h id="idFactory2"></h>
+                    <input type="hidden" class="form-control" id="name_factory" name="name_factory" disabled>
+                    <input type="hidden" class="form-control" id="idfactory" name="idfactory">
+                    <input type="hidden" class="form-control" id="typefactory" name="typefactory">
+                    <input type="hidden" class="form-control" id="idshop" name="idshop" value="<?= $idshop; ?>">
+                    <input type="hidden" id="idFactory2">
+
                 </div>
             </div>
-
-            <div class="form-group col-xs-12">
-                <label for="name_factory">ชื่อโรงงาน</label> <font size="1" color ="red">*กรุณาเลือกสินค้า</font>
-                <input type="text" class="form-control" id="name_factory" name="name_factory" placeholder="กรุณาระบุชื่อสินค้า" disabled>
-                <input type="hidden" id="idfactory" name="idfactory"></input>
-                <input type="hidden" class="form-control" id="typefactory" name="typefactory">
-            </div>
-            <div class="form-group col-xs-12">
+            <div class="form-group col-xs-12" style="float:left;width:50%;">
                 <label for="name_product"> หน่วย</label>  <font size="1" color ="red">*กรุณาเลือกสินค้าก่อน</font>
                 <select class="form-control" id="idUnit" name="idUnit" onchange="LoadData(this.value)" required>
                     <option>กรุณาเลือกหน่วยขาย</option>
                 </select>
-
                 <div id="tee"></div>
             </div>
-            <div class="form-group col-xs-12">
+            <div class="form-group col-xs-12" style="float:left;width:50%;">
                 <label for="amount_product">จำนวน</label>
+                <input type="hidden" class="form-control" id="diff" readonly="true">
+                <input type="hidden" class="form-control" id="price_factory" readonly="true">
                 <input type="text" class="form-control" id="AmountProduct" placeholder="กรอกจำนวนสินค้า" onkeyup="updateAmount()">
             </div>
             <div class="form-group col-xs-12">
                 <label for="disabled_price_unit">ราคาเปิดต่อหน่วย //ระบบคิดอัตโนมัติตามหน่วยที่เลือก</label>
-                <input type="text" class="form-control" id="price" readonly="true" onkeyup="cal_difference()">
+                <input type="text" class="form-control" id="price" readonly="true">
             </div>
             <div class="form-group col-xs-12">
                 <label for="disabled_price_unit">ราคาเปิดทั้งหมด //ระบบคิดอัตโนมัติตามหน่วยที่เลือก</label>
-                <input type="text" class="form-control" id="total_price" readonly="true" onkeyup="updateAmount()">
+                <input type="text" class="form-control" id="total_price" readonly="true">
             </div>
         </div>
     </div>

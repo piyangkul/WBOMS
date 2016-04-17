@@ -116,9 +116,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                         <td class="text-center"><?php echo $val_date_product_refunds; ?></td>
                                                         <td class="text-center"><?php echo $val_idproduct_refunds; ?></td>
                                                         <td class="text-right"><?php echo number_format($val_price_product_refunds,2); ?></td>
-
-                                                        <td> 
-
+                                                        <td class="text-center"> 
                                                             <a href="detail_order.php?idorder=<?php echo $val_idorder_product_refunds; ?>" class="btn btn-success" data-toggle="tooltip" title="รายละเอียด">
                                                                 <span class="glyphicon glyphicon-list-alt"></span>
                                                             </a>

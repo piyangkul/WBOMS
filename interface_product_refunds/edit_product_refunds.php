@@ -1,5 +1,6 @@
 ﻿<?php
 session_start();
+require_once '/function/func_addorder.php';
 if (!isset($_SESSION['member']))
     header('Location: ../index.php');
 
@@ -7,18 +8,18 @@ $p = 'product_refunds';
 if (isset($_GET['p']) && !empty($_GET['p'])) {
     $p = $_GET['p'];
 }
-require_once '/function/func_addorder.php';
+
 $val_idorder = $_GET['idorder']; //ส่งค่าpara
 $getEditProductRefunds = getEditProductRefunds($val_idorder);
 $getProductRefunds = getProductRefunds($val_idorder);
-//echo "<pre>";
-//print_r($getProductDetail);
-//echo "</pre>";
 $total_price_all = 0;
 $val_date_product_refunds = $getEditProductRefunds['date_product_refunds'];
+$idshop = $getEditProductRefunds['idshop'];
 $val_name_shop = $getEditProductRefunds['name_shop'];
 $val_detail_order_p = $getEditProductRefunds['detail_product_refunds'];
-echo $val_date_product_refunds;
+
+$getDateShipment = getDateShipment();
+$dateEnd = $getDateShipment['date_end'];
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -42,17 +43,6 @@ echo $val_date_product_refunds;
         <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
         <link rel="stylesheet" href="/resources/demos/style.css"/>
         <script>
-
-            /*  $(function () {
-             var data = JSON.stringify(<?php //getShop2();                                                                      ?>);
-             //var www = JSON.parse(data);
-             //alert(www);
-             alert(data);
-             $("#code_order").autocomplete({
-             source: data
-             });
-             });
-             */
         </script>
     </head>
     <body>
@@ -68,8 +58,8 @@ echo $val_date_product_refunds;
                     <form action="action/action_editOrder.php?idorder=<?php echo $val_idorder; ?>" method="post"> 
                         <div class="row">
                             <div class="col-md-12">
-                                <h2> Add Order </h2>   
-                                <h5> เพิ่มคำสั่งซื้อ </h5>
+                                <h2> Edit Product Refunds </h2>   
+                                <h5> แก้ไขสินค้าคืน </h5>
 
                             </div>
                         </div>
@@ -82,13 +72,16 @@ echo $val_date_product_refunds;
                                 <div class="panel panel-default">
                                     <div class="panel-heading ">
                                         <div class="table-responsive">
-                                            <div class="form-group">            
-                                                <div>
-                                                    <p>วันที่สั่งซื้อ <input type="date" class="form-control" id ="date_order" name="date_order" value="<?= $val_date_product_refunds; ?>"></p>
-                                                </div>
-                                                <div>
-                                                    <label for="disabled_shop">ชื่อร้านค้า</label>
+                                            <div class="form-group">   
+                                                <label>ชื่อร้านค้า</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="fa fa-shopping-cart"></i></span>
                                                     <input type="text" class="form-control" id="name_order" name="name_shop" placeholder="ชื่อร้านค้า" value="<?= $val_name_shop ?>" disabled>
+                                                </div>
+                                                <label>วันที่สั่งซื้อ</label> 
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="fa fa-calendar-o" ></i></span>
+                                                    <input type="date" class="form-control" id ="date_order" name="date_order" value="<?= $val_date_product_refunds; ?>" max="<?= $dateEnd; ?>">
                                                 </div>
                                             </div>                                        
 
@@ -110,7 +103,7 @@ echo $val_date_product_refunds;
                                         </div>
                                         <div class="panel-body">
                                             <div class="table-responsive">
-                                                <a href="popup_edit_addproduct_refunds.php?idorder=<?= $val_idorder; ?>" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">
+                                                <a href="popup_edit_addproduct_refunds.php?idorder=<?= $val_idorder; ?>&idshop=<?= $idshop; ?>" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">
                                                     <span class="glyphicon glyphicon-plus"></span> เพิ่มสินค้า </a>
                                                 <table class="table table-striped table-bordered table-hover text-center" id="dataTables-example">
                                                     <thead>
@@ -160,7 +153,7 @@ echo $val_date_product_refunds;
                                                                     <td>
                                                                         <!--Button trigger modal -->
 
-                                                                        <a href = "popup_edit_editproduct_refunds.php?idproduct_refunds=<?php echo $val_idproduct_refunds; ?>&idorder_product_refunds=<?= $val_idorder; ?>" id="editProduct<?= $val_idproduct_refunds; ?>" name="editProduct<?= $val_idproduct_refunds; ?>" class="btn btn-warning " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="แก้ไข">
+                                                                        <a href = "popup_edit_editproduct_refunds.php?idproduct_refunds=<?= $val_idproduct_refunds; ?>&idorder_product_refunds=<?= $val_idorder; ?>&idshop=<?= $idshop; ?>" id="editProduct<?= $val_idproduct_refunds; ?>" name="editProduct<?= $val_idproduct_refunds; ?>" class="btn btn-warning " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="แก้ไข">
                                                                             <span class = "glyphicon glyphicon-edit"></span>
                                                                         </a>
                                                                         <a class = "btn btn-danger" data-toggle = "modal" data-target = "#myModal3" data-toggle = "tooltip" title = "ลบ" id="deleteProduct<?= $val_idproduct_refunds; ?>" name="deleteProduct<?= $val_idproduct_refunds; ?>" onclick="delProduct(<?= $val_idproduct_refunds; ?>,<?= $val_price_product_refunds * $val_amount_product_refunds; ?>);">
@@ -184,7 +177,7 @@ echo $val_date_product_refunds;
                                             <div class="col-md-6"></div>
                                             <div class="col-md-4">
                                                 <label for="disabled_no">ราคาขายรวมต่อบิล</label>
-                                                <input type="text" class="form-control" id="total_price_all" name="total_price_all" value="<?= $total_price_all; ?>"  readonly>
+                                                <input type="text" class="form-control" id="total_price_all" name="total_price_all" value="<?= number_format($total_price_all, 2); ?>"  readonly>
                                             </div>   
                                         </div>
                                     </div>
@@ -332,11 +325,14 @@ echo $val_date_product_refunds;
                 success: function (response)
                 {
                     $("#total_price").val(response);
-                    $("#price").val(response);
+                    $("#price_factory").val(response);
                     $("#idFactory2").val(response);
                 }
             });
         }
+        var price = document.getElementById('price_factory').value;
+        var diff = document.getElementById('diff').value;
+        document.getElementById('price').value = price - ((price * diff) / 100);
     }
     function LoadFactory(str) {
         document.getElementById("factoryName").value = str;

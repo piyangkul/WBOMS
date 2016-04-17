@@ -13,8 +13,6 @@ $var = date('H:i');
 
 $getDateShipment = getDateShipment();
 $dateEnd = $getDateShipment['date_end'];
-
-echo $date;
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -227,10 +225,10 @@ echo $date;
                                                     }
 
                                                     function updateAmount() {
-                                                        var price = document.getElementById("price_factory").value.replace(',', '');
+                                                        var price = document.getElementById("price").value.replace(',', '');
                                                         var amount = document.getElementById("AmountProduct").value;
-                                                        var diff = document.getElementById("diff").value
-                                                        var total = (price - ((price * diff) / 100)) * amount;
+                                                        //var diff = document.getElementById("diff").value
+                                                        var total = price * amount;
                                                         document.getElementById("total_price").value = total.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
                                                     }
 
@@ -263,16 +261,24 @@ echo $date;
                                                                 dataType: 'html',
                                                                 success: function (response)
                                                                 {
-                                                                    $("#total_price").val(response);
                                                                     $("#price_factory").val(response);
                                                                     $("#idFactory2").val(response);
                                                                 }
                                                             });
                                                         }
-                                                        var price = document.getElementById('price_factory').value
-                                                        var diff = document.getElementById('diff').value
-                                                        document.getElementById('price').value = price - ((price * diff) / 100)
+                                                        var type = document.getElementById('typefactory').value;
+                                                        var price = document.getElementById('price_factory').value;
+                                                        var diff = document.getElementById('diff').value;
+                                                        var total_bath = (price * 1) + (diff * 1);
+                                                        var total_percent = price - ((price * diff) / 100)
+                                                        if (type === 'PERCENT') {
+                                                            document.getElementById('price').value = total_percent.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+                                                        }
+                                                        else {
+                                                            document.getElementById('price').value = total_bath.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+                                                        }
                                                     }
+
                                                     function LoadFactory(str) {
                                                         document.getElementById("factoryName").value = str;
                                                         if (str == "") {

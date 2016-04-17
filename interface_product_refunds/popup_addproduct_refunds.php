@@ -78,8 +78,8 @@ echo $_SESSION['idshopP'];
                     <span class="input-group-addon"><i class="fa fa-cube" ></i></span>
                     <input type="text" class="form-control" id="name_product" name="name_product" placeholder="กรุณาระบุชื่อสินค้า" onblur="getProductID()" autocomplete= "on" ></input>
                     <input type="hidden" id="idproduct" name="idproduct">
-                    <input type="hidden" class="form-control" id="name_factory" name="name_factory" placeholder="กรุณาระบุชื่อสินค้า" disabled>
-                    <input type="hidden" id="idfactory" name="idfactory">
+                    <input type="hidden" class="form-control" id="name_factory" name="name_factory" disabled>
+                    <input type="hidden" class="form-control" id="idfactory" name="idfactory">
                     <input type="hidden" class="form-control" id="typefactory" name="typefactory">
                     <input type="hidden" class="form-control" id="idshop" name="idshop" value="<?= $_SESSION['idshopP']; ?>">
                     <input type="hidden" id="idFactory2">
@@ -111,6 +111,7 @@ echo $_SESSION['idshopP'];
 </div>
 <div class="modal-footer">
     <p id="alertPass"></p>
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
     <button type="button" class="btn btn-default" onclick="addProduct();" data-dismiss="modal">Save</button>
 </div>
 
@@ -120,8 +121,8 @@ echo $_SESSION['idshopP'];
         var productName = $("#idproduct").val();
         var factoryName = $("#idfactory").val();
         var AmountProduct = $("#AmountProduct").val();
-        var price = $("#price").val();
-        var price_factory = $("#price_factory").val();
+        var price = $("#price").val().replace(",", "");
+        var price_factory = $("#price_factory").val().replace(",", "");
         var type_factory = $("#typefactory").val();
         var diff = $("#diff").val();
         var total_price = $("#total_price").val().replace(",", "");

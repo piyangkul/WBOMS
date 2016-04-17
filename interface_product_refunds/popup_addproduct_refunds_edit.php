@@ -14,6 +14,7 @@ $nameUnit = $getUnit['name_unit'];
 $nameFactory = $getUnit['name_factory'];
 $nameProduct = $getUnit['name_product'];
 $idFactory = $getUnit['idfactory'];
+$type_factory = $getUnit['type_factory'];
 ?>
 <script>
     var Product = JSON.stringify(<?php echo getProduct4(); ?>);
@@ -53,6 +54,19 @@ $idFactory = $getUnit['idfactory'];
                 //alert(response);
             }
         });
+        var iddiff = productId["'" + name_shop + "'"];
+        var idshop = document.getElementById('idshop').value;
+        $.ajax({type: "GET",
+            url: "action/action_ajax_hisdiff.php",
+            async: false,
+            data: "q=" + iddiff + "&idshop=" + idshop,
+            dataType: 'html',
+            success: function (www)
+            {
+                $("#diff").val(www);
+                //alert(response);
+            }
+        });
     }
 </script>
 <div class="modal-header">
@@ -73,7 +87,7 @@ $idFactory = $getUnit['idfactory'];
                     <input type="hidden" id="idproduct" name="idproduct" value="<?= $idProduct; ?>">
                     <input type="hidden" class="form-control" id="name_factory" name="name_factory" placeholder="กรุณาระบุชื่อสินค้า" value="<?= $nameFactory; ?>" disabled>
                     <input type="hidden" id="idfactory" name="idfactory" value="<?= $idFactory ?>">
-                    <input type="hidden" class="form-control" id="typefactory" name="typefactory">
+                    <input type="hidden" class="form-control" id="typefactory" name="typefactory" value="<?= $type_factory; ?>">
                     <input type="hidden" class="form-control" id="idshop" name="idshop" value="<?= $_SESSION['idshop']; ?>">
                     <input type="hidden" id="idFactory2">
                 </div>
@@ -83,7 +97,7 @@ $idFactory = $getUnit['idfactory'];
                 <select class="form-control" id="idUnit" name="idUnit" onchange="LoadData(this.value)" required>
                     <option value="<?= $idunit ?>"><?= $nameUnit; ?></option>
                     <?php
-                    $getUnit = edit_unit($idProduct,$idUnit);
+                    $getUnit = edit_unit($idProduct, $idUnit);
                     foreach ($getUnit as $value) {
                         $val_idunit = $value['idunit'];
                         $val_name_unit = $value['name_unit'];
@@ -119,6 +133,7 @@ $idFactory = $getUnit['idfactory'];
 </div>
 <div class="modal-footer">
     <p id="alertPass"></p>
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
     <button type="button" class="btn btn-default" onclick="editProduct();" data-dismiss="modal">Save</button>
 </div>
 
@@ -137,9 +152,9 @@ $idFactory = $getUnit['idfactory'];
         //alert(DifferencePer);
         //alert(DifferenceBath);
         var p = "&idproduct_refunds=" + idproduct_refunds + "&idUnit=" + idUnit + "&productName=" + productName + "&factoryName=" + factoryName + "&AmountProduct=" + AmountProduct + "&price=" + price + "&total_price=" + total_price;
-        alert(p);
+        //alert(p);
         $.get("action_addProduct.php?p=editProduct" + p, function (data, status) {
-            alert("Data: " + data + "\nStatus: " + status);
+            //alert("Data: " + data + "\nStatus: " + status);
             if (data == "1") {
                 $("#alert").html("บันทึกแล้ว");
                 $("#idUnit").val("");
