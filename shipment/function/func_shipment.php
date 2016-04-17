@@ -300,6 +300,26 @@ RIGHT JOIN ((SELECT idfactory,name_factory FROM `view_getfactorybyidshipment_per
 }
 
 //หน้าshipment2 แสดงโรงงานที่มีการสั่งซื้อ
+function getFactoryByIDshipment_period5($idshipment_period) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT * FROM
+(SELECT A.status_shipment,A.idshipment_period,B.idfactory,B.name_factory,A.CountCheck,A.price,A.amount_product_order,A.difference_amount_product,A.date_start,A.date_end FROM (SELECT * FROM `view_getfactorybyidshipment_period` WHERE `idshipment_period` = :idshipment_period )AS A RIGHT JOIN ((SELECT idfactory,name_factory FROM `view_getfactorybyidshipment_period` WHERE `idshipment_period` = :idshipment_period ) UNION (SELECT factory.idfactory,factory.name_factory FROM factory JOIN product ON factory.idfactory=product.idfactory JOIN unit ON unit.idproduct=product.idproduct JOIN product_order ON product_order.idunit=unit.idunit WHERE status_checktransport = 'uncheck' )) AS B ON A.idfactory = B.idfactory ORDER BY A.idfactory )AS yes LEFT JOIN 
+(SELECT S1.idfactory, S1.CountSumProduct_order-S2.CountSendProduct_order AS count_left FROM(SELECT factory.idfactory,factory.name_factory,CountSumProduct_order FROM(SELECT COUNT(`idproduct_order`) AS `CountSumProduct_order`,factory.idfactory,factory.name_factory FROM product_order JOIN unit ON product_order.idunit=unit.idunit JOIN product ON unit.idproduct=product.idproduct JOIN factory ON product.idfactory=factory.idfactory GROUP BY factory.idfactory) AS A RIGHT JOIN factory ON A.idfactory = factory.idfactory) AS S1 INNER JOIN(SELECT factory.idfactory,factory.name_factory,CountSendProduct_order FROM(SELECT COUNT(`idproduct_order`) AS `CountSendProduct_order` ,factory.idfactory,factory.name_factory FROM product_order JOIN unit ON product_order.idunit=unit.idunit JOIN product ON unit.idproduct=product.idproduct JOIN factory ON product.idfactory=factory.idfactory WHERE product_order.status_checktransport LIKE 'check' OR product_order.status_checktransport LIKE 'postpone' GROUP BY factory.idfactory) AS A RIGHT JOIN factory ON A.idfactory = factory.idfactory )AS S2 ON S1.idfactory = S2.idfactory)AS Alll 
+ON yes.idfactory = Alll.idfactory ";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idshipment_period" => $idshipment_period
+            )
+    );
+    $resultArr = array();
+    while ($result = $SQLPrepare->fetch(PDO::FETCH_ASSOC)) {
+        array_push($resultArr, $result);
+    }
+    return $resultArr;
+}
+
+//หน้าshipment2 แสดงโรงงานที่มีการสั่งซื้อ
 function getFactoryByIDshipment_period3($idshipment_period) {
     $conn = dbconnect();
     $SQLCommand = "SELECT * FROM `view_getfactorybyidshipment_period` WHERE `idshipment_period` = :idshipment_period ";

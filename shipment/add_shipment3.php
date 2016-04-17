@@ -208,7 +208,7 @@ if (isset($_GET['idshipment_period'])and isset($_GET['idfactory'])) {
                             <!-- ตารางรายการสินค้าที่รอเพิ่มการส่ง -->
                             <div class="panel panel-primary">
                                 <div class="panel-heading">
-                                    <h4>ตารางรายการสินค้าที่รอเพิ่มการส่ง</h4>
+                                    <h4>ตารางรายการสินค้าที่รอเพิ่มการส่งสินค้า</h4>
                                 </div>
                                 <div class="panel-body">
                                     <div class="table-responsive" id="show_not_send_table">
@@ -221,7 +221,7 @@ if (isset($_GET['idshipment_period'])and isset($_GET['idfactory'])) {
                             <!-- ตารางรายการสินค้า -->
                             <div class="panel panel-primary">
                                 <div class="panel-heading">
-                                    <h4>ตารางรายการสินค้าที่เพิ่มการส่งแล้ว</h4>
+                                    <h4>ตารางรายการสินค้าที่เพิ่มการส่งสินค้าแล้ว</h4>
                                 </div>
                                 <div class="panel-body">
                                     <div class="table-responsive" id="show_send_table">
