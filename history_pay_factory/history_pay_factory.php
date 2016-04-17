@@ -125,8 +125,8 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                         </div>
                     </div>
                     <!--End ค้นหา -->
-                    <br/>
-                    <br/>
+                    
+                    
                     <!-- ข้อมูลการจ่ายเงินโรงงานรายเดือน-ปี -->
                     <div class="row">
                         <div class="col-md-1"></div>                        
