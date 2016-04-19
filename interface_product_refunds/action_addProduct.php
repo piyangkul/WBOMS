@@ -149,6 +149,11 @@ else if ($_GET['p'] == "editProduct") {
                             <a href="popup_addproduct_refunds_edit.php?idproduct_refunds=<?= $i; ?>&idunit=<?php echo $idUnitS; ?>&amount=<?= $_SESSION["productR"][$i]["AmountProduct"]; ?>&price=<?= $_SESSION["productR"][$i]["price"]; ?>&total_price=<?= $_SESSION["productR"][$i]["total_price"]; ?>&price_factory=<?= $_SESSION["productR"][$i]["price_factory"]; ?>&diff=<?= $_SESSION["productR"][$i]["diff"]; ?>" class="btn btn-warning " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="แก้ไข">
                                 <span class="glyphicon glyphicon-edit"></span>
                             </a>
+                            <a class = "btn btn-danger" data-toggle = "modal" data-toggle = "tooltip" title = "ลบ" id="deleteProduct<?= $i; ?>" name="deleteProduct<?= $i; ?>" onclick="if (confirm('คุณต้องการลบหน่วยสินค้าหรือไม่')) {
+                                                    delProduct(<?= $i; ?>);
+                                                }">
+                                <span class = "glyphicon glyphicon-trash"></span>
+                            </a>     
                         </td>
                     </tr>
                     <?php
@@ -165,3 +170,21 @@ else if ($_GET['p'] == "editProduct") {
     <?php
 }
 ?>
+<script>
+    function delProduct(str) {
+        var idunit = str;
+        var p = "&idproduct_order=" + idunit;
+//alert(p);
+        $.get("action_addProductD.php?p=delProduct" + p, function (data, status) {
+//alert("Data: " + data + "\nStatus: " + status);
+            if (data != "-1") {
+                alert("ลบสินค้าตัวนี้แล้ว");
+                showUnit();
+            }
+            else {
+                alert("ไม่สามารถลบหน่วยได้");
+
+            }
+        });
+    }
+</script>

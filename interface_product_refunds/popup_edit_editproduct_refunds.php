@@ -3,7 +3,7 @@
 session_start();
 $idproduct_refunds = $_GET['idproduct_refunds'];
 $idorder_product_refunds = $_GET['idorder_product_refunds'];
-echo $idorder_product_refunds;
+//echo $idorder_product_refunds;
 $getEdit = get_edit_product_refunds($idproduct_refunds);
 $idunit = $getEdit['idunit'];
 $amount = $getEdit['amount_product_refunds'];
@@ -118,7 +118,7 @@ $diff = $getHisdiff['price_difference'];
             </div>
             <div class="form-group col-xs-12" style="float:left;width:50%;">
                 <label for="amount_product">จำนวน</label>
-                <input type="text" class="form-control" id="diff" readonly="true" value="<?= $diff; ?>">
+                <input type="hidden" class="form-control" id="diff" readonly="true" value="<?= $diff; ?>">
                 <input type="hidden" class="form-control" id="price_factory" readonly="true">
                 <input type="text" class="form-control" id="AmountProduct" placeholder="กรอกจำนวนสินค้า" value ="<?= $amount; ?>" onkeyup="updateAmount()">
             </div>
@@ -137,7 +137,8 @@ $diff = $getHisdiff['price_difference'];
 </div>
 <div class="modal-footer">
     <p id="alertPass"></p>
-    <button type="button" class="btn btn-default" onclick="editProduct();" data-dismiss="modal">Save</button>
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    <button type="button" class="btn btn-primary" onclick="editProduct();" data-dismiss="modal">Save changes</button>
 </div>
 
 <script>
@@ -148,17 +149,17 @@ $diff = $getHisdiff['price_difference'];
         var productName = $("#idproduct").val();
         var factoryName = $("#idfactory").val();
         var AmountProduct = $("#AmountProduct").val();
-        var price = $("#price").val();
-        var total_price = $("#total_price").val();
+        var price = $("#price").val().replace(",", "");
+        var total_price = $("#total_price").val().replace(",", "");
         var idproduct_refunds = <?= $idproduct_refunds ?>;
         var x = parseFloat(<?= $total_price_all; ?>);
         var total_price_all = x + (AmountProduct * price);
         document.getElementById("total_price_all").value = total_price_all;
         //alert(total_price_all);
         var p = "&idproduct_refunds=" + idproduct_refunds + "&idUnit=" + idUnit + "&productName=" + productName + "&factoryName=" + factoryName + "&AmountProduct=" + AmountProduct + "&price=" + price + "&total_price=" + total_price + "&total_price_all=" + total_price_all + "&idorder=" + idorder;
-        alert(p);
+        //alert(p);
         $.get("action_editProductE.php?p=editProduct" + p, function (data, status) {
-            alert("Data: " + data + "\nStatus: " + status);
+            //alert("Data: " + data + "\nStatus: " + status);
             if (data == "1") {
                 $("#alert").html("บันทึกแล้ว");
                 $("#idUnit").val("");
@@ -183,6 +184,7 @@ $diff = $getHisdiff['price_difference'];
         document.getElementById("amount<?= $idproduct_refunds; ?>").innerHTML = AmountProduct;
         document.getElementById("price_table<?= $idproduct_refunds; ?>").innerHTML = price;
         document.getElementById("total_table<?= $idproduct_refunds; ?>").innerHTML = total_price;
+        window.location.href = 'edit_product_refunds.php?idorder=' + idorder;
     }
 
 </script>

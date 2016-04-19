@@ -17,6 +17,8 @@ $val_date_product_refunds = $getEditProductRefunds['date_product_refunds'];
 $idshop = $getEditProductRefunds['idshop'];
 $val_name_shop = $getEditProductRefunds['name_shop'];
 $val_detail_order_p = $getEditProductRefunds['detail_product_refunds'];
+$val_code_shop = $getEditProductRefunds['code_shop'];
+$name_shop = $val_name_shop . " (" . $val_code_shop . ")";
 
 $getDateShipment = getDateShipment();
 $dateEnd = $getDateShipment['date_end'];
@@ -76,12 +78,12 @@ $dateEnd = $getDateShipment['date_end'];
                                                 <label>ชื่อร้านค้า</label>
                                                 <div class="input-group">
                                                     <span class="input-group-addon"><i class="fa fa-shopping-cart"></i></span>
-                                                    <input type="text" class="form-control" id="name_order" name="name_shop" placeholder="ชื่อร้านค้า" value="<?= $val_name_shop ?>" disabled>
+                                                    <input type="text" class="form-control" id="name_order" name="name_shop" placeholder="ชื่อร้านค้า" value="<?= $name_shop ?>" disabled>
                                                 </div>
                                                 <label>วันที่สั่งซื้อ</label> 
                                                 <div class="input-group">
                                                     <span class="input-group-addon"><i class="fa fa-calendar-o" ></i></span>
-                                                    <input type="date" class="form-control" id ="date_order" name="date_order" value="<?= $val_date_product_refunds; ?>" max="<?= $dateEnd; ?>">
+                                                    <input type="date" class="form-control" id ="date_order" name="date_order" value="<?= $val_date_product_refunds; ?>" max="<?= $dateEnd; ?>" disabled>
                                                 </div>
                                             </div>                                        
 
@@ -133,6 +135,7 @@ $dateEnd = $getDateShipment['date_end'];
                                                             $val_price_product_refunds = $value['price_product_refunds'];
                                                             $total = $val_price_product_refunds * $val_amount_product_refunds;
                                                             $total_price_all += $total;
+                                                            $type_factory = $value['type_factory'];
                                                             ?>
                                                             <tr>
                                                                 <td><?= $i; ?></td>
@@ -153,7 +156,7 @@ $dateEnd = $getDateShipment['date_end'];
                                                                     <td>
                                                                         <!--Button trigger modal -->
 
-                                                                        <a href = "popup_edit_editproduct_refunds.php?idproduct_refunds=<?= $val_idproduct_refunds; ?>&idorder_product_refunds=<?= $val_idorder; ?>&idshop=<?= $idshop; ?>" id="editProduct<?= $val_idproduct_refunds; ?>" name="editProduct<?= $val_idproduct_refunds; ?>" class="btn btn-warning " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="แก้ไข">
+                                                                        <a href = "popup_edit_editproduct_refunds.php?idproduct_refunds=<?= $val_idproduct_refunds; ?>&idorder_product_refunds=<?= $val_idorder; ?>&idshop=<?= $idshop; ?>&type_factory=<?= $type_factory; ?>" id="editProduct<?= $val_idproduct_refunds; ?>" name="editProduct<?= $val_idproduct_refunds; ?>" class="btn btn-warning " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="แก้ไข">
                                                                             <span class = "glyphicon glyphicon-edit"></span>
                                                                         </a>
                                                                         <a class = "btn btn-danger" data-toggle = "modal" data-target = "#myModal3" data-toggle = "tooltip" title = "ลบ" id="deleteProduct<?= $val_idproduct_refunds; ?>" name="deleteProduct<?= $val_idproduct_refunds; ?>" onclick="delProduct(<?= $val_idproduct_refunds; ?>,<?= $val_price_product_refunds * $val_amount_product_refunds; ?>);">
@@ -258,9 +261,9 @@ $dateEnd = $getDateShipment['date_end'];
         if (confirm("คุณต้องการลบสินค้าตัวนี้ใช่ไหม" + price_p + idorder) == true) {
             x = "You pressed OK!";
             var p = "&idproduct_refunds=" + idproduct_refunds + "&price_product_refunds=" + price_p + "&idorder=" + idorder;
-            alert(p);
+            //alert(p);
             $.get("action_editProductD.php?p=addProduct" + p, function (data, status) {
-                alert("Data: " + data + "\nStatus: " + status);
+                //alert("Data: " + data + "\nStatus: " + status);
                 if (data == "1") {
                     $("#alert").html("บันทึกแล้ว")
                     showUnitD();
@@ -278,6 +281,7 @@ $dateEnd = $getDateShipment['date_end'];
             var x = document.getElementById('total_price_all').value;
             var total_price_all = x - price;
             document.getElementById('total_price_all').value = total_price_all;
+            window.location.href = 'edit_product_refunds.php?idorder=' + idorder;
         }
 
     }
@@ -330,9 +334,17 @@ $dateEnd = $getDateShipment['date_end'];
                 }
             });
         }
+        var type = document.getElementById('typefactory').value;
         var price = document.getElementById('price_factory').value;
         var diff = document.getElementById('diff').value;
-        document.getElementById('price').value = price - ((price * diff) / 100);
+        var total_bath = (price * 1) + (diff * 1);
+        var total_percent = price - ((price * diff) / 100)
+        if (type === 'PERCENT') {
+            document.getElementById('price').value = total_percent.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+        }
+        else {
+            document.getElementById('price').value = total_bath.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+        }
     }
     function LoadFactory(str) {
         document.getElementById("factoryName").value = str;

@@ -111,7 +111,7 @@ session_start();
 <div class="modal-footer">
     <p id="alertPass"></p>
     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-    <button type="button" class="btn btn-default" onclick="addProduct();" data-dismiss="modal">Save</button>
+    <button type="button" class="btn btn-primary" onclick="addProduct();" data-dismiss="modal">Save changes</button>
 </div>
 
 <script>
@@ -129,7 +129,7 @@ session_start();
         var p = "&idUnit=" + idUnit + "&productName=" + productName + "&factoryName=" + factoryName + "&AmountProduct=" + AmountProduct + "&price=" + price + "&total_price=" + total_price + "&diff=" + diff + "&price_factory=" + price_factory + "&type_factory=" + type_factory;
         alert(p);
         $.get("action_addProduct.php?p=addProduct" + p, function (data, status) {
-            alert("Data: " + data + "\nStatus: " + status);
+              alert("Data: " + data + "\nStatus: " + status);
             if (data == "1") {
                 $("#alert").html("บันทึกแล้ว");
                 $("#idUnit").val("");

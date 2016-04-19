@@ -134,7 +134,7 @@ $type_factory = $getUnit['type_factory'];
 <div class="modal-footer">
     <p id="alertPass"></p>
     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-    <button type="button" class="btn btn-default" onclick="editProduct();" data-dismiss="modal">Save</button>
+    <button type="button" class="btn btn-primary" onclick="editProduct();" data-dismiss="modal">Save changes</button>
 </div>
 
 <script>

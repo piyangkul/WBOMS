@@ -12,12 +12,14 @@ $idshop = $_GET['idshop'];
     var factoryName = new Array();
     var factoryId = new Array();
     var factoryDiff = new Array();
+    var factoryType = new Array();
     for (var i = 0; i < ProductP.length; i++) {
-        productName.push(ProductP[i].name_product);
-        productId["'" + ProductP[i].name_product + "'"] = ProductP[i].idproduct;
-        factoryName["'" + ProductP[i].name_product + "'"] = ProductP[i].name_factory;
-        factoryId["'" + ProductP[i].name_product + "'"] = ProductP[i].idfactory;
-        factoryDiff["'" + ProductP[i].name_product + "'"] = ProductP[i].difference_amount_factory;
+        productName.push("[" + ProductP[i].product_code + "] " + ProductP[i].name_product + " - " + ProductP[i].name_factory);
+        productId["'" + "[" + ProductP[i].product_code + "] " + ProductP[i].name_product + " - " + ProductP[i].name_factory + "'"] = ProductP[i].idproduct;
+        factoryName["'" + "[" + ProductP[i].product_code + "] " + ProductP[i].name_product + " - " + ProductP[i].name_factory + "'"] = ProductP[i].name_factory;
+        factoryId["'" + "[" + ProductP[i].product_code + "] " + ProductP[i].name_product + " - " + ProductP[i].name_factory + "'"] = ProductP[i].idfactory;
+        factoryDiff["'" + "[" + ProductP[i].product_code + "] " + ProductP[i].name_product + " - " + ProductP[i].name_factory + "'"] = ProductP[i].difference_amount_factory;
+        factoryType["'" + "[" + ProductP[i].product_code + "] " + ProductP[i].name_product + " - " + ProductP[i].name_factory + "'"] = ProductP[i].type_factory
     }
     $(function () {
         $("#name_product").autocomplete({
@@ -29,7 +31,9 @@ $idshop = $_GET['idshop'];
         document.getElementById("name_factory").value = factoryName["'" + name_shop + "'"];
         document.getElementById("idproduct").value = productId["'" + name_shop + "'"];
         document.getElementById("idfactory").value = factoryId["'" + name_shop + "'"];
+        document.getElementById("typefactory").value = factoryType["'" + name_shop + "'"];
         //document.getElementById("difference").value = factoryDiff["'" + name_shop + "'"];
+
         var id = productId["'" + name_shop + "'"];
         $.ajax({type: "GET",
             url: "action/action_ajax_product.php",
@@ -46,7 +50,7 @@ $idshop = $_GET['idshop'];
         var iddiff = productId["'" + name_shop + "'"];
         var idshop = document.getElementById('idshop').value;
         $.ajax({type: "GET",
-            url: "action/action_ajax_hisdiff.php",
+            url: "action/action_ajax_hisdiffE.php",
             async: false,
             data: "q=" + iddiff + "&idshop=" + idshop,
             dataType: 'html',
@@ -56,6 +60,9 @@ $idshop = $_GET['idshop'];
                 //alert(response);
             }
         });
+        
+        
+        alert(idshop);
     }
 </script>
 <div class="modal-header">
@@ -109,7 +116,7 @@ $idshop = $_GET['idshop'];
 <div class="modal-footer">
     <p id="alertPass"></p>
     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-    <button type="button" class="btn btn-default" onclick="addProduct();" data-dismiss="modal">Save</button>
+    <button type="button" class="btn btn-primary" onclick="addProduct();" data-dismiss="modal">Save changes</button>
 </div>
 
 <script>
@@ -120,19 +127,19 @@ $idshop = $_GET['idshop'];
         var productName = $("#idproduct").val();
         var factoryName = $("#idfactory").val();
         var AmountProduct = $("#AmountProduct").val();
-        var price = $("#price").val();
-        var total_price = $("#total_price").val();
-        var x = parseFloat(document.getElementById('total_price_all').value);
-        var total_price_all = x + (AmountProduct * price);
-        document.getElementById("total_price_all").value = total_price_all;
+        var price = $("#price").val().replace(",", "");
+        var total_price = $("#total_price").val().replace(",", "");
+        /*  var x = parseFloat(document.getElementById('total_price_all').value);
+         var total_price_all = x + (AmountProduct * price);
+         document.getElementById("total_price_all").value = total_price_all;*/
         //alert(idUnit);
         //alert(AmountProduct);
         //alert(DifferencePer);
         //alert(DifferenceBath);
-        var p = "&idUnit=" + idUnit + "&productName=" + productName + "&factoryName=" + factoryName + "&AmountProduct=" + AmountProduct + "&price=" + price + "&total_price=" + total_price + "&total_price_all=" + total_price_all + "&idorder=" + idorder;
-        alert(p);
+        var p = "&idUnit=" + idUnit + "&productName=" + productName + "&factoryName=" + factoryName + "&AmountProduct=" + AmountProduct + "&price=" + price + "&total_price=" + total_price + "&idorder=" + idorder;
+       // alert(p);
         $.get("action_editProduct.php?p=addProduct" + p, function (data, status) {
-            alert("Data: " + data + "\nStatus: " + status);
+            //alert("Data: " + data + "\nStatus: " + status);
             if (data == "1") {
                 $("#alert").html("บันทึกแล้ว");
                 $("#idUnit").val("");
