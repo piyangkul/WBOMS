@@ -27,13 +27,9 @@ require_once '/function/func_product.php';
         <link href="../assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
         <!-- CUSTOM STYLES-->
         <link href="../assets/css/custom.css" rel="stylesheet" />
-        <!-- GOOGLE FONTS-->
-        <link href='../http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
-        <!-- Date Picker -->
-        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"/>
-        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-        <link rel="stylesheet" href="/resources/demos/style.css"/>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<!--        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>-->
         <script>
             var Factory = JSON.stringify(<?php echo getFactory2(); ?>);
             var FactoryP = JSON.parse(Factory);
@@ -151,11 +147,11 @@ require_once '/function/func_product.php';
                                                 <input type="text" class="form-control" id="bigestPrice" readonly>
                                             </div>
                                             <div class="form-group col-xs-12">
-                                                <label for="difference_amount">ต้นทุนลดเป็น% //ดีงdifference_amount_factory</label><label class="text-danger">*</label>
+                                                <label for="difference_amount">ต้นทุนลดเป็น% </label><label class="text-danger">*</label>
                                                 <input type="text" class="form-control" id="difference_amount" name="difference_amount" value="" onchange="calBigestPrice();" required>
                                             </div>
                                             <div class="form-group col-xs-12">
-                                                <label for="bigestPriceResult"> ดังนั้นราคาต้นทุนต่อหน่วยใหญ่สุด//ระบบคำนวณอัตโนมัติ </label>
+                                                <label for="bigestPriceResult"> ดังนั้นราคาต้นทุนต่อหน่วยใหญ่สุด </label>
                                                 <input type="text" class="form-control" id="bigestPriceResult" name="bigestPriceResult" readonly>
                                             </div>
                                         </div>
@@ -185,7 +181,7 @@ require_once '/function/func_product.php';
         <!-- /. PAGE WRAPPER  -->
         <!-- /. WRAPPER  -->
         <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
-        <!-- JQUERY SCRIPTS -->
+         <!-- JQUERY SCRIPTS -->
         <script src="../assets/js/jquery-1.10.2.js"></script>
         <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
         <!-- BOOTSTRAP SCRIPTS -->

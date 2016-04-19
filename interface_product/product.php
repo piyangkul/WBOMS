@@ -123,9 +123,9 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                         <td><?php echo $val_name_product; ?></td>
                                                         <td><?php echo $val_name_factory; ?></td>
                                                         <td><?php echo $val_name; ?></td>
-                                                        <td class="text-right"><?php echo number_format($val_price_unit, 2, '.', ''); ?></td>
-                                                        <td><?php echo $val_difference_amount . "%"; ?></td>
-                                                        <td class="text-right"><?php echo number_format($cost, 2, '.', '') ?></td>
+                                                        <td class="text-right"><?php echo number_format($val_price_unit, 2); ?></td>
+                                                        <td><?php echo number_format($val_difference_amount, 2) . "%"; ?></td>
+                                                        <td class="text-right"><?php echo number_format($cost, 2) ?></td>
                                                         <td> 
                                                             <a href="popup_product_detail.php?idproduct=<?php echo $val_idproduct; ?>" class="btn btn-success" data-toggle="modal" data-target="#myModal">
                                                                 <span class="glyphicon glyphicon-list-alt"></span>
