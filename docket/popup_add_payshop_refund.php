@@ -49,7 +49,9 @@ if (isset($_GET['idshipment_period'])and isset($_GET['idshop'])) {
 
     $getPayDetailByID_before_idshipment_period = getPayDetailByID($idshop, $val_before_idshipment_period);
     $val_debt_before_shipment = $getPayDetailByID_before_idshipment_period['debt']; //ยอดค้างชำระ(รอบที่แล้ว)
-    $price_pay = ($sum_order + $val_debt_before_shipment) - $price_product_refunds;
+    $price_pay_repeat = ($sum_order + $val_debt_before_shipment) - $price_product_refunds;
+    $price_pay = ($price_pay_repeat * -2) + $price_pay_repeat;
+    echo $price_pay;
 }
 ?>
 <script>
@@ -91,7 +93,7 @@ if (isset($_GET['idshipment_period'])and isset($_GET['idshop'])) {
     <div class="row">
         <div class="col-md-12 col-sm-12 ">
             <?php if ($val_next_date_end == "") { ?>
-            <input type="hidden" id="next_date_end" value="<?php echo $val_next_date_end; ?>">
+                <input type="hidden" id="next_date_end" value="<?php echo $val_next_date_end; ?>">
                 <h4 class="alert alert-danger text-center" role="alert"> แจ้งเตือน!! ระบบไม่สามารถวิเคราะห์การเก็บเงินร้านค้านี้ได้ กรุณาเพิ่มรอบถัดไปก่อน </h4>
             <?php }
             ?>
@@ -99,7 +101,7 @@ if (isset($_GET['idshipment_period'])and isset($_GET['idshop'])) {
                 <div class="form-group col-xs-12">
                     <center><h4 class="text text-info"><b>รอบการส่งที่</b> <?php echo date_format($date_start, 'd-m-Y'); ?> ถึง <?php echo date_format($date_end, 'd-m-Y'); ?></h4></center>
                     <center><h4 class="text text-info"><b>ร้าน : </b><?php echo $val_name_shop; ?> &nbsp; <b>ที่อยู่ : </b> <?php echo $val_name_region; ?>  จ. <?php echo $val_name_province; ?></h4></center>
-                    <center><h4 class="text text-info"><b>ยอดเงินเรียกเก็บสุทธิ</b> <?php echo number_format($val_debt_before_shipment + $sum_order - $price_product_refunds, 2); ?> บาท</h4></center>
+                    <center><h4 class="text text-info"><b>ยอดเงินเรียกเก็บสุทธิ</b> <?php echo number_format($price_pay, 2); ?> บาท</h4></center>
                 </div>
                 <div class = "row">
                     <!--<div class = "col-md-1 col-sm-1 "></div>-->
@@ -184,7 +186,7 @@ if (isset($_GET['idshipment_period'])and isset($_GET['idshop'])) {
                     <center><h4>ยอดค้างชำระ(จากรอบที่แล้ว) <input type="text" class="form-control" value="<?php echo number_format($val_debt_before_shipment, 2); ?>" readonly> </h4></center>
                     <center><h4>ยอดเงินสินค้าคืนรวม <input type="text" class="form-control" value="<?php echo number_format($sum_refund, 2); ?>" readonly> </h4></center>
                     <center><h4 class="text text-danger">ยอดเงินเรียกเก็บสุทธิ <input type="text" class="form-control"  value="<?php echo number_format($price_pay, 2); ?>" readonly></h4></center>
-                    <center><h4>วันที่จ่ายเงินร้านค้า <input type="date" class="form-control" id="date_pay" name="date_pay" min="<?php echo $val_date_end; ?>" max="<?php echo $endNextdate; ?>" required></h4></center><!-- value="<?php //echo $date->format('Y-m-d');     ?>" -->
+                    <center><h4>วันที่จ่ายเงินร้านค้า <input type="date" class="form-control" id="date_pay" name="date_pay" min="<?php echo $val_date_end; ?>" max="<?php echo $endNextdate; ?>" required></h4></center><!-- value="<?php //echo $date->format('Y-m-d');         ?>" -->
                     <label class="text-danger"> * วันที่จ่ายเงินร้านค้า เริ่มจ่ายได้ตั้งแต่วันที่สิ้นสุดของรอบปัจจุบัน จนถึงวันที่สิ้นสุดของรอบถัดไป</label>
                 </div>
 
@@ -197,15 +199,15 @@ if (isset($_GET['idshipment_period'])and isset($_GET['idshop'])) {
                         <div class="panel-body">
                             <div class="table-responsive ">
                                 <div class="form-group alert alert-success text-center">
-                                    <label class="text-primary">เลือก &nbsp; : &nbsp;&nbsp; </label>
+                                    <!--<label class="text-primary">เลือก &nbsp; : &nbsp;&nbsp; </label>-->
+                                    <!--                                    <label class="radio-inline">
+                                                                            <input type="radio"  name="status_pay" id="select_get" value="get" required> <label>เก็บครบ</label>
+                                                                        </label>
+                                                                        <label class="radio-inline">
+                                                                            <input type="radio" name="status_pay" id="select_lack" value="lack"> <label>เก็บไม่ครบ</label>
+                                                                        </label>-->
                                     <label class="radio-inline">
-                                        <input type="radio"  name="status_pay" id="select_get" value="get" required> <label>เก็บครบ</label>
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio" name="status_pay" id="select_lack" value="lack"> <label>เก็บไม่ครบ</label>
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio" name="status_pay" id="select_unget" value="unget"> <label>เก็บไม่ได้</label>
+                                        <input type="radio" name="status_pay" id="select_unget" value="unget" checked> <label>เก็บไม่ได้</label>
                                     </label>
                                 </div>
                             </div>
@@ -494,6 +496,11 @@ if (isset($_GET['idshipment_period'])and isset($_GET['idshop'])) {
     }
 
 </script>
+<script>
+    $(document).ready(function () {
+        $("#select_unget").click();
+    });
+</script>
 
 <script type="text/javascript">
     function validateMyForm()
@@ -513,9 +520,9 @@ if (isset($_GET['idshipment_period'])and isset($_GET['idshop'])) {
             alert("คุณใส่ จำนวนเงินที่เก็บได้ " + getMoney + " มากกว่า ยอดเงินเรียกเก็บสุทธิ " + price_pay);
             return false;
         }
-        
+
         var next_date_end = Number(document.getElementById("next_date_end").value);
-        if(next_date_end==""){
+        if (next_date_end == "") {
             alert("แจ้งเตือน!! ระบบไม่สามารถวิเคราะห์การเก็บเงินร้านค้านี้ได้ กรุณาเพิ่มรอบถัดไปก่อน");
             return false;
         }

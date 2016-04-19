@@ -42,14 +42,15 @@ if ($debt_lack != NULL) {
 
 $status_process = "add";
 
-$date_start = date_create($val_date_start);
-$month_start = date_format($date_start, 'm');
+//$date_start = date_create($val_date_start);
+//$month_start = date_format($date_start, 'm');
+//
+//$date_end = date_create($val_date_end);
+//$month_end = date_format($date_end, 'm');
+//
+//$date_cheque = date_create($date_pay_credit);
+//$month_cheque = date_format($date_cheque, 'm');
 
-$date_end = date_create($val_date_end);
-$month_end = date_format($date_end, 'm');
-
-$date_cheque = date_create($date_pay_credit);
-$month_cheque = date_format($date_cheque, 'm');
 //echo $month_end;
 //if ($month_cheque > $month_end) {
 // $status_due = "over";
@@ -68,7 +69,7 @@ if ($status_pay == "get") {
             header("location: ../docket.php?idshop=$idshop&action=addPayshopError");
         }
     } elseif ($type_pay == "credit") {
-        if ($month_cheque > $month_end) {//3=2
+        if ($date_pay_credit > $val_date_end) {//3=2
             $status_due = "over";
             $Payshop = addPayshop($idshop, $idshipment_period, $price_order_total, $debt, $price_order_refund, $price_pay, $date_pay, $type_pay, $date_pay_credit, $status_pay, $cheque_number, $cheque_name_bank, $cheque_branch_bank, $status_process, $status_due);
             if ($Payshop > 0) {
@@ -95,7 +96,7 @@ if ($status_pay == "get") {
             header("location: ../docket.php?idshop=$idshop&action=addPayshopError");
         }
     } elseif ($type_pay == "credit") {
-        if ($month_cheque > $month_end) {//และไม่จ่ายสด 
+        if ($date_pay_credit > $val_date_end) {//และไม่จ่ายสด 
             $status_due = "over";
             $Payshop = addPayshop($idshop, $idshipment_period, $price_order_total, $debt, $price_order_refund, $price_pay, $date_pay, $type_pay, $date_pay_credit, $status_pay, $cheque_number, $cheque_name_bank, $cheque_branch_bank, $status_process, $status_due);
             if ($Payshop > 0) {

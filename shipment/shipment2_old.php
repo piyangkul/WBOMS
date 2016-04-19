@@ -110,7 +110,7 @@ $val_name_factory = $getFactoryByID['name_factory'];
                                                 <tr>
                                                     <th><div align="center">ลำดับ</div></th>
                                                     <th><div align="center">โรงงาน</div></th>
-                                                    <th><div align="center">จำนวนรายการที่ส่ง</div></th><!-- จำนวนรายการที่สั่งคงค้าง/ส่ง -->
+                                                    <th><div align="center">จำนวนรายการที่สั่งคงค้าง/ส่ง</div></th>
                                                     <th><div align="center">ยอดเงินที่สั่งซื้อ</div></th>
                                                     <th><div align="center">ค่าขนส่งรวม</div></th>
                                                     <th><div align="center">ยอดเงินรวม</div></th>
@@ -121,7 +121,7 @@ $val_name_factory = $getFactoryByID['name_factory'];
                                             <tbody>
                                                 <?php
                                                 //มีเงื่อนไข การกำหนดช่วงเวลาที่สั่ง
-                                                $getFactoryByIDshipment_period = getFactoryByIDshipment_period5($idshipment_period);
+                                                $getFactoryByIDshipment_period = getFactoryByIDshipment_period4($idshipment_period);
                                                 $leftArr = getCountLeftProduct_order(); //คงค้าง
 //                                                            echo "<pre>";
 //                                                            print_r($leftArr);
@@ -139,9 +139,9 @@ $val_name_factory = $getFactoryByID['name_factory'];
                                                         $val_CountCheck = "-";
                                                     }
                                                     $val_price = $value['price'];
-//                                                    if ($leftArr["$val_idfactory"]['count_left'] == NULL) {
-//                                                        continue;
-//                                                    }
+                                                    if ($leftArr["$val_idfactory"]['count_left'] == NULL) {
+                                                        continue;
+                                                    }
                                                     $getPrice_transportByshipment_period = getPrice_transportByshipment_period($idshipment_period, $val_idfactory2);
                                                     $total_price = $val_price + $getPrice_transportByshipment_period['sum_price_transport'];
                                                     ?>
@@ -150,12 +150,11 @@ $val_name_factory = $getFactoryByID['name_factory'];
                                                         <td><?php echo $val_name_factory; ?></td>
                                                         <td><?php
                                                             $text = ($leftArr["$val_idfactory"]['count_left'] == NULL ? '-' : $leftArr["$val_idfactory"]['count_left']) . "/" . $val_CountCheck;
-//                                                            if ($val_status_shipment == "finish") {
-//                                                                echo "เสร็จสิ้น" . "/" . $val_CountCheck;
-//                                                            } else {
-//                                                                echo $text;
-//                                                            }
-                                                            echo $val_CountCheck;
+                                                            if ($val_status_shipment == "finish") {
+                                                                echo "เสร็จสิ้น" . "/" . $val_CountCheck;
+                                                            } else {
+                                                                echo $text;
+                                                            }
                                                             ?></td>
                                                         <?php
                                                         if ($val_price == NULL) {

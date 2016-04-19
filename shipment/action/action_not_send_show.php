@@ -7,7 +7,7 @@ $idshipment_period = $_GET['idshipment_period'];
 $status_shipment_factory = $_GET['status_shipment_factory'];
 $total_price = $_GET['total_price'];
 ?>
-<table class="table table-striped table-bordered table-hover text-center " >
+<table class="table table-striped table-bordered table-hover text-center" id="dataTables-example">
     <thead>
         <tr>
             <th rowspan="2" valign="middle"><div align="center">ลำดับ</div></th>
@@ -236,3 +236,8 @@ $total_price = $_GET['total_price'];
     ?> 
 </tbody>
 </table>
+<script>
+    $(document).ready(function () {
+        $('#dataTables-example').dataTable();
+    });
+</script>

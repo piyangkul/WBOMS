@@ -114,8 +114,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                     <!--End ค้นหา -->
 
                     <div class="row">
-                        <div class="col-md-12">                          
-                            <br/><br/>
+                        <div class="col-md-12">                                                     
                             <!-- ตารางข้อมูลการเก็บเงินร้านค้ารายปี -->
                             <div class="panel panel-primary">
                                 <div class="panel-heading">

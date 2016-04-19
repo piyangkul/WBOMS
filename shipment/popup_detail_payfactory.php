@@ -5,12 +5,12 @@ require_once 'function/func_shipment.php';
 if (isset($_GET['idshipment_period'])and isset($_GET['idfactory'])) {
     $idshipment_period = $_GET['idshipment_period'];
     $getShipment_period = getShipment_periodByID($idshipment_period);
-$val_date_start = $getShipment_period['date_start'];
-$date_start = date_create($val_date_start);
-$date_start->add(new DateInterval('P543Y0M0DT0H0M0S'));
-$val_date_end = $getShipment_period['date_end'];
-$date_end = date_create($val_date_end);
-$date_end->add(new DateInterval('P543Y0M0DT0H0M0S'));
+    $val_date_start = $getShipment_period['date_start'];
+    $date_start = date_create($val_date_start);
+    $date_start->add(new DateInterval('P543Y0M0DT0H0M0S'));
+    $val_date_end = $getShipment_period['date_end'];
+    $date_end = date_create($val_date_end);
+    $date_end->add(new DateInterval('P543Y0M0DT0H0M0S'));
 
     $idfactory = $_GET['idfactory'];
     $getFactory = getFactoryByID($idfactory);
@@ -39,8 +39,10 @@ $date_pay_factory = date_create($val_date_pay_factory);
 $date_pay_factory->add(new DateInterval('P543Y0M0DT0H0M0S'));
 $val_type_pay_factory = $getPayFactory['type_pay_factory'];
 $val_date_pay_factory_credit = $getPayFactory['date_pay_factory_credit'];
-$date_pay_factory_credit = date_create($val_date_pay_factory_credit);
-$date_pay_factory_credit->add(new DateInterval('P543Y0M0DT0H0M0S'));
+if ($val_date_pay_factory_credit != "") {
+    $date_pay_factory_credit = date_create($val_date_pay_factory_credit);
+    $date_pay_factory_credit->add(new DateInterval('P543Y0M0DT0H0M0S'));
+}
 $val_cheque_number = $getPayFactory['cheque_number'];
 $val_cheque_name_bank = $getPayFactory['cheque_name_bank'];
 $val_cheque_branch_bank = $getPayFactory['cheque_branch_bank'];
