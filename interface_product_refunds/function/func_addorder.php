@@ -124,7 +124,7 @@ function getProduct3() {
 
 function getUnit($id) {
     $conn = dbconnect();
-    $SQLCommand = "SELECT idunit,idunit,name_unit,price_unit,type_unit,idproduct FROM `unit` WHERE type_unit = 'PRIMARY' AND idproduct = {$id}";
+    $SQLCommand = "SELECT idunit,idunit,name_unit,price_unit,type_unit,idproduct FROM `unit` WHERE idproduct = {$id}";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute();
     $resultArr = array();
@@ -136,7 +136,7 @@ function getUnit($id) {
 
 function getUnit2($id) {
     $conn = dbconnect();
-    $SQLCommand = "SELECT idunit,idunit,name_unit,price_unit,type_unit,idproduct FROM `unit` WHERE type_unit = 'PRIMARY' AND idunit = {$id}";
+    $SQLCommand = "SELECT idunit,idunit,name_unit,price_unit,type_unit,idproduct FROM `unit` WHERE idunit = {$id}";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute();
     $resultArr = array();

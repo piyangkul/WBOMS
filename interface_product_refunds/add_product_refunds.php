@@ -13,7 +13,7 @@ $var = date('H:i');
 $idshop = "";
 $name_shop = "";
 if (isset($_SESSION['idshopP'])) {
-    $idshop = $_SESSION['idshop'];
+    $idshop = $_SESSION['idshopP'];
     $getShopAdd = getShopAdd($idshop);
     $name_shop = $getShopAdd['name_shop']." (".$getShopAdd['code_shop'].")";
 }

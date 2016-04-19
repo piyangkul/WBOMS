@@ -34,22 +34,22 @@ if (isset($_SESSION["productR"])) {//ถามว่า$_SESSION["unit"]ถู�
             $idproduct[$i] = addProductRefunds($idorder, $products[$i]['idUnit'], $products[$i]['AmountProduct'], $products[$i]['price']);
             echo "555";
         }
-        echo "555";
+       /* echo "555";
         unset($_SESSION["idshopP"]);
         unset($_SESSION["productR"]);
         unset($_SESSION["countProductR"]);
-        header("location: ../product_refunds.php?p=product&action=addCompleted");
+        header("location: ../product_refunds.php?p=product&action=addCompleted");*/
     } else {
-        unset($_SESSION["idshopP"]);
+       /* unset($_SESSION["idshopP"]);
         unset($_SESSION["productR"]);
         unset($_SESSION["countProductR"]);
-        header("location: ../product_refunds.php?p=product&action=addError");
+        header("location: ../product_refunds.php?p=product&action=addError");*/
     }
 } else {
-    unset($_SESSION["idshopP"]);
+    /*unset($_SESSION["idshopP"]);
     unset($_SESSION["productR"]);
     unset($_SESSION["countProductR"]);
-    header("location: ../product_refunds.php?p=product&action=addErrorNotHaveProduct");
+    header("location: ../product_refunds.php?p=product&action=addErrorNotHaveProduct");*/
 }
 
 
