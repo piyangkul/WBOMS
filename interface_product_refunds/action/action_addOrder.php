@@ -13,11 +13,11 @@ echo "</pre>";
 $idshop = $_POST['idshop'];
 $date_order = $_POST['date_order'];
 $detail_order = $_POST['detail_order'];
+$idshipment_period = $_POST['idShipment'];
 $totalss = $_POST['totalss'];
 //ส่งข้อมูล หน่วยสินค้า มาหน้านี้
 $products = $_SESSION["productR"];
-$getIDShipment = getDateShipment();
-$idshipment_period = $_GET['idShipment'];
+//$getIDShipment = getDateShipment();
 //สิ้นสุดกลุ่มรับค่า
 //
 //กลุ่มคำสั่งทำอะไร
@@ -33,18 +33,20 @@ if (isset($_SESSION["productR"])) {//ถามว่า$_SESSION["unit"]ถู�
             //$underIdUnit = $idUnit[$under_unit]; 
             $idproduct[$i] = addProductRefunds($idorder, $products[$i]['idUnit'], $products[$i]['AmountProduct'], $products[$i]['price']);
             echo "555";
-           
         }
         echo "555";
+        unset($_SESSION["idshopP"]);
         unset($_SESSION["productR"]);
         unset($_SESSION["countProductR"]);
         header("location: ../product_refunds.php?p=product&action=addCompleted");
     } else {
+        unset($_SESSION["idshopP"]);
         unset($_SESSION["productR"]);
         unset($_SESSION["countProductR"]);
         header("location: ../product_refunds.php?p=product&action=addError");
     }
 } else {
+    unset($_SESSION["idshopP"]);
     unset($_SESSION["productR"]);
     unset($_SESSION["countProductR"]);
     header("location: ../product_refunds.php?p=product&action=addErrorNotHaveProduct");

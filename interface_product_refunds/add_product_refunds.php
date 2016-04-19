@@ -10,6 +10,13 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
 }
 $date = date("Y-m-d");
 $var = date('H:i');
+$idshop = "";
+$name_shop = "";
+if (isset($_SESSION['idshopP'])) {
+    $idshop = $_SESSION['idshop'];
+    $getShopAdd = getShopAdd($idshop);
+    $name_shop = $getShopAdd['name_shop']." (".$getShopAdd['code_shop'].")";
+}
 
 $getDateShipment = getDateShipment();
 $dateEnd = $getDateShipment['date_end'];
@@ -163,14 +170,14 @@ $dateEnd = $getDateShipment['date_end'];
                                                 <label>ชื่อร้านค้า</label><font size="1" color ="red">*กรุณาเลือกร้านค้าก่อน</font>
                                                 <div class="input-group">
                                                     <span class="input-group-addon"><i class="fa fa-shopping-cart"></i></span>
-                                                    <input type="text" class="form-control" id="name_shop" name="name_shop" placeholder="กรุณาระบุชื่อร้านค้า" autocomplete= on onblur="getShopId()" ></input>
-                                                    <!--<input type="text" class="form-control" id="name_product" name="name_product" placeholder="กรุณาระบุชื่อสินค้า" autocomplete= "on" >-->
-                                                    <input type="hidden" id="idshop" name="idshop"></input>
+                                                    <input type="text" class="form-control" id="name_shop" name="name_shop" placeholder="กรุณาระบุชื่อร้านค้า" autocomplete= on onblur="getShopId()" value="<?= $name_shop; ?>"></input>
+                                                    <!--<input type="text" class="form-control" id="name_product" name="name_product" placeholder="กรุณาระบุชื่อสินค้า" autocomplete = "on" > -->
+                                                    <input type = "hidden" id = "idshop" name = "idshop" value = "<?= $idshop; ?>"></input>
                                                 </div>
                                                 <label>รอบ</label>
-                                                <div class="input-group">
+                                                <div class = "input-group">
                                                     <span class = "input-group-addon"><i class = "fa fa-calendar-o" ></i></span>
-                                                    <select class="form-control" id="idShipment" name="idShipment" onchange="LoadShipment(this.value)" required>
+                                                    <select class = "form-control" id = "idShipment" name = "idShipment" onchange = "LoadShipment(this.value)" readonly = "true" required>
                                                         <?php
                                                         $getShipment = getShipment();
                                                         $count = 1;
@@ -191,7 +198,7 @@ $dateEnd = $getDateShipment['date_end'];
                                                                 }
                                                                 $count++;
                                                                 ?>
-                                                                <option value="<?= $idshipment ?>"><?= $date_start . " ถึง " . $date_end ?>    </option>>
+                                                                <option value="<?= $idshipment ?>"><?= $date_start . " ถึง " . $date_end ?>    </option>
                                                                 <?php
                                                             }
                                                         }

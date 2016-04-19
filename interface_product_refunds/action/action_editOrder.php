@@ -17,7 +17,7 @@ $date_product_refunds = $_POST['date_order'];
 $detail_product_refunds = $_POST['detail_order'];
 $total_price_all = 0;
 
-$total = $_POST['total_price_all'];
+$total = str_replace(",","",$_POST['total_price_all']);
 $total_price_all += $total;
 
 //ส่งข้อมูล หน่วยสินค้า มาหน้านี้
