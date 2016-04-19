@@ -1,24 +1,27 @@
 ﻿<?php
 session_start();
+require_once '/function/func_addorder.php';
 if (!isset($_SESSION['member']))
     header('Location: ../index.php');
 
-$p = 'history_order';
+$p = 'product_refunds';
 if (isset($_GET['p']) && !empty($_GET['p'])) {
     $p = $_GET['p'];
 }
-require_once '/function/func_addorder.php';
+
 $val_idorder = $_GET['idorder']; //ส่งค่าpara
-$getOrderEdit = getOrderEdit($val_idorder);
-$getProductOrder = getProductOrder($val_idorder);
-//echo "<pre>";
-//print_r($getProductDetail);
-//echo "</pre>";
-$val_code_order_p = $getOrderEdit['code_order_p'];
-$val_date_order_p = $getOrderEdit['date_order_p'];
-$val_time_order_p = $getOrderEdit['time_order_p'];
-$val_name_shop = $getOrderEdit['name_shop'];
-$val_detail_order_p = $getOrderEdit['detail_order_p'];
+$getEditProductRefunds = getEditProductRefunds($val_idorder);
+$getProductRefunds = getProductRefunds($val_idorder);
+$total_price_all = 0;
+$val_date_product_refunds = $getEditProductRefunds['date_product_refunds'];
+$idshop = $getEditProductRefunds['idshop'];
+$val_name_shop = $getEditProductRefunds['name_shop'];
+$val_detail_order_p = $getEditProductRefunds['detail_product_refunds'];
+$val_code_shop = $getEditProductRefunds['code_shop'];
+$name_shop = $val_name_shop . " (" . $val_code_shop . ")";
+
+$getDateShipment = getDateShipment();
+$dateEnd = $getDateShipment['date_end'];
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -42,18 +45,6 @@ $val_detail_order_p = $getOrderEdit['detail_order_p'];
         <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
         <link rel="stylesheet" href="/resources/demos/style.css"/>
         <script>
-
-
-            /*  $(function () {
-             var data = JSON.stringify(<?php //getShop2();              ?>);
-             //var www = JSON.parse(data);
-             //alert(www);
-             alert(data);
-             $("#code_order").autocomplete({
-             source: data
-             });
-             });
-             */
         </script>
     </head>
     <body>
@@ -69,8 +60,8 @@ $val_detail_order_p = $getOrderEdit['detail_order_p'];
                     <form action="action/action_editOrder.php?idorder=<?php echo $val_idorder; ?>" method="post"> 
                         <div class="row">
                             <div class="col-md-12">
-                                <h2> Add Order </h2>   
-                                <h5> เพิ่มคำสั่งซื้อ </h5>
+                                <h2> Edit Product Refunds </h2>   
+                                <h5> แก้ไขสินค้าคืน </h5>
 
                             </div>
                         </div>
@@ -81,23 +72,18 @@ $val_detail_order_p = $getOrderEdit['detail_order_p'];
                             <div class="col-md-5">
                                 <!-- บิล -->
                                 <div class="panel panel-default">
-
                                     <div class="panel-heading ">
                                         <div class="table-responsive">
-
-                                            <div class="form-group">
-                                                <div>
-                                                    <label for="disabled_no">No.บิล</label>
-                                                    <input type="text" class="form-control" id="code_order" name="code_order" placeholder="ID บิล" value="<?= $val_code_order_p ?>"disabled>                    
+                                            <div class="form-group">   
+                                                <label>ชื่อร้านค้า</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="fa fa-shopping-cart"></i></span>
+                                                    <input type="text" class="form-control" id="name_order" name="name_shop" placeholder="ชื่อร้านค้า" value="<?= $name_shop ?>" disabled>
                                                 </div>
-                                                <p id="www"></p>
-                                                <div >
-                                                    <p>วันที่สั่งซื้อ <input type="date" class="form-control" id ="date_order" name="date_order"disabled></p>
-                                                    <input type="time" class="form-control" id ="time_order" name="time_order" value="<?= $val_time_order_p ?>" disabled>
-                                                </div>
-                                                <div>
-                                                    <label for="disabled_shop">ชื่อร้านค้า</label>
-                                                    <input type="text" class="form-control" id="name_order" name="name_shop" placeholder="ชื่อร้านค้า" value="<?= $val_name_shop ?>" disabled>
+                                                <label>วันที่สั่งซื้อ</label> 
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="fa fa-calendar-o" ></i></span>
+                                                    <input type="date" class="form-control" id ="date_order" name="date_order" value="<?= $val_date_product_refunds; ?>" max="<?= $dateEnd; ?>" disabled>
                                                 </div>
                                             </div>                                        
 
@@ -119,9 +105,6 @@ $val_detail_order_p = $getOrderEdit['detail_order_p'];
                                         </div>
                                         <div class="panel-body">
                                             <div class="table-responsive">
-
-                                                <a href="popup_edit_addproduct_order.php" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">
-                                                    <span class="glyphicon glyphicon-plus"></span> เพิ่มสินค้า </a>
                                                 <table class="table table-striped table-bordered table-hover text-center" id="dataTables-example">
                                                     <thead>
                                                         <tr>
@@ -130,65 +113,65 @@ $val_detail_order_p = $getOrderEdit['detail_order_p'];
                                                             <th>ชื่อโรงงาน</th>
                                                             <th>หน่วย</th>
                                                             <th>จำนวน</th>
-                                                            <th>ราคาเปิด</th>
-                                                            <th>ต้นทุนลด%</th>
-                                                            <th>ขายลด%</th>
-                                                            <th>ขายเพิ่มสุทธิ</th>
-                                                            <th>ราคาขาย</th>
-                                                           
+                                                            <th>ราคาเปิดต่อสินค้า</th>
+                                                            <th>ราคาเปิดทั้งหมด</th>
+                                                            <th>การกระทำ</th> 
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         <?php
                                                         $i = 0;
-                                                        foreach ($getProductOrder as $value) {
+
+                                                        foreach ($getProductRefunds as $value) {
                                                             $i++;
+                                                            $val_idproduct_refunds = $value['idproduct_refunds'];
                                                             $val_name_product = $value['name_product'];
                                                             $val_name_unit = $value['name_unit'];
                                                             $val_name_factory = $value['name_factory'];
-                                                            $val_amount_product_order = $value['amount_product_order'];
-                                                            $val_difference_product_order = $value['difference_product_order'];
-                                                            $val_type_product_order = $value['type_product_order'];
-                                                            $val_difference_amount_factory = $value['difference_amount_factory'];
-                                                            $val_price_unit = $value['price_unit'];
-                                                            $total_open = $val_price_unit * $val_amount_product_order;
-                                                            $total_percent = $total_open - ($total_open * ($val_difference_product_order / 100));
-                                                            $total_bath = $total_open - ($val_difference_product_order * $val_amount_product_order);
+                                                            $val_amount_product_refunds = $value['amount_product_refunds'];
+                                                            $val_status_product_refunds = $value['status_product_refund'];
+                                                            $val_price_product_refunds = $value['price_product_refunds'];
+                                                            $total = $val_price_product_refunds * $val_amount_product_refunds;
+                                                            $total_price_all += $total;
+                                                            $type_factory = $value['type_factory'];
                                                             ?>
                                                             <tr>
                                                                 <td><?= $i; ?></td>
                                                                 <td><?= $val_name_product; ?></td>
                                                                 <td><?= $val_name_factory; ?></td>
                                                                 <td><?= $val_name_unit; ?></td> 
-                                                                <td><?= $val_amount_product_order; ?></td>
-                                                                <td><?= $total_open; ?> </td>
-                                                                <td><?= $val_difference_amount_factory; ?></td>
-                                                                <?php if ($val_type_product_order === 'PERCENT') { ?>
-                                                                    <td><?= $val_difference_product_order; ?></td>
-                                                                    <td>-</td>
-                                                                    <td><?= $total_percent; ?></td>
-                                                                <?php }
-                                                                ?>
-                                                                <?php if ($val_type_product_order === 'BATH') {
+                                                                <td id="amount<?= $val_idproduct_refunds; ?>"><?= $val_amount_product_refunds; ?></td>
+                                                                <td id="price_table<?= $val_idproduct_refunds; ?>" class ="text-right"><?= number_format($val_price_product_refunds, 2); ?></td>
+                                                                <td id="total_table<?= $val_idproduct_refunds; ?>" class ="text-right"><?= number_format($total, 2); ?></td>
+                                                                <?php
+                                                                if ($val_status_product_refunds === 'return') {
+                                                                    ?> <td>
+                                                                        <font color="green"><b>สินค้าถูกจัดส่งแล้ว</b></font>
+                                                                    </td>
+                                                                    <?php
+                                                                } else {
                                                                     ?>
-                                                                    <td>-</td>
-                                                                    <td><?= $val_difference_product_order; ?></td>                                                                  
-                                                                    <td><?= $total_bath; ?></td>
-                                                                <?php }
+                                                                    <td>
+                                                                         <font color="red"><b>สินค้ายังไม่ถูกจัดส่ง</b></font>
+                                                                    </td>
+                                                                    <?php
+                                                                }
                                                                 ?>    
-
-
                                                             </tr>
-                                                        <?php } ?>
+
+                                                            <?php
+                                                        }
+                                                        ?>
+                                                        <tr id="showUnit">
+                                                        </tr>
                                                 </table>
-
-                                                <div class="col-md-6"></div>
-                                                <div class="col-md-4">
-                                                    <label for="disabled_no">ราคาขายรวมต่อบิล</label>
-                                                    <input type="text" class="form-control" id="disabled_no" placeholder=" " disabled>
-                                                </div>
                                             </div>
-
+                                            <div id="showUnit"></div>
+                                            <div class="col-md-6"></div>
+                                            <div class="col-md-4">
+                                                <label for="disabled_no">ราคาขายรวมต่อบิล</label>
+                                                <input type="text" class="form-control" id="total_price_all" name="total_price_all" value="<?= number_format($total_price_all, 2); ?>"  readonly>
+                                            </div>   
                                         </div>
                                     </div>
                                     <!--End  ตารางสินค้าที่สั่งซื้อ --> 
@@ -196,16 +179,10 @@ $val_detail_order_p = $getOrderEdit['detail_order_p'];
                                         <div class="col-md-2"></div>
                                         <div class="form-group col-xs-8">
                                             <label for="exampleInputName2">รายละเอียดเพิ่มเติม</label>
-                                            <textarea rows="4" cols="50" id = "detail_order" name ="detail_order" class="form-control" placeholder="กรอกรายละเอียดเพิ่มเติม" value="" disabled><?= $val_detail_order_p?></textarea>
+                                            <textarea rows="4" cols="50" id = "detail_order" name ="detail_order" class="form-control" placeholder="กรอกรายละเอียดเพิ่มเติม" value="" disabled><?= $val_detail_order_p ?></textarea>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-md-4"></div>                              
-                                        
-                                        <a href="order.php" class="btn btn-danger btn-lg text-center">
-                                            <span class="glyphicon glyphicon-floppy-remove"></span> ยกเลิก
-                                        </a>
-                                    </div>
+
                             </div>
                         </div>
                     </form>
@@ -225,7 +202,6 @@ $val_detail_order_p = $getOrderEdit['detail_order_p'];
         <!-- METISMENU SCRIPTS -->
         <script src="../assets/js/jquery.metisMenu.js"></script>
         <!-- CUSTOM SCRIPTS -->
-        <script src="../assets/js/custom.js"></script>
 
     </body>
 </html>
@@ -252,48 +228,57 @@ $val_detail_order_p = $getOrderEdit['detail_order_p'];
     </div>
 </div>
 <script>
-            $(document.body).on('hidden.bs.modal', function () {
-                $('#myModal').removeData('bs.modal');
-            });</script>
+</script>
 <script>
+    $(document.body).on('hidden.bs.modal', function () {
+        $('#myModal').removeData('bs.modal');
+    });
     showUnit();
+    function delProduct(str, price) {
+        var x;
+        var idproduct_refunds = str;
+        var price_p = price;
+        var idorder = <?= $val_idorder; ?>;
+
+        if (confirm("คุณต้องการลบสินค้าตัวนี้ใช่ไหม" + price_p + idorder) == true) {
+            x = "You pressed OK!";
+            var p = "&idproduct_refunds=" + idproduct_refunds + "&price_product_refunds=" + price_p + "&idorder=" + idorder;
+            //alert(p);
+            $.get("action_editProductD.php?p=addProduct" + p, function (data, status) {
+                //alert("Data: " + data + "\nStatus: " + status);
+                if (data == "1") {
+                    $("#alert").html("บันทึกแล้ว")
+                    showUnitD();
+                }
+                else {
+                    showUnitD();
+
+                }
+            });
+
+            document.getElementById('editProduct' + idproduct_refunds).style.display = 'none';
+            document.getElementById('deleteProduct' + idproduct_refunds).style.display = 'none';
+            document.getElementById('del' + idproduct_refunds).innerHTML = 'สินค้าตัวนี้ถูกลบ';
+            document.getElementById('del' + idproduct_refunds).style.color = "red";
+            var x = document.getElementById('total_price_all').value;
+            var total_price_all = x - price;
+            document.getElementById('total_price_all').value = total_price_all;
+            window.location.href = 'edit_product_refunds.php?idorder=' + idorder;
+        }
+
+    }
     function showUnit() {
         $.get("action_editProduct.php?p=showUnit", function (data, status) {
             $("#showUnit").html(data);
         });
     }
-    function updateTotalPer() {
-        var x = document.getElementById("DifferencePer").value;
-        var price = document.getElementById("total_price").value;
-        var total = price - (price * (x / 100));
-        document.getElementById("total").value = total;
-        document.getElementById("DifferenceBath").disabled = true;
-        document.getElementById("type").value = "PERCENT";
-        if (x === "") {
-            document.getElementById("DifferenceBath").disabled = false;
-        }
-    }
-    function updateTotalBath() {
-        var x = document.getElementById("DifferenceBath").value;
-        var price = document.getElementById("total_price").value;
-        var qwer = document.getElementById("idFactory2").value;
-        var amount = document.getElementById("AmountProduct").value;
-        var total = (qwer - x) * amount;
-        document.getElementById("total").value = total;
-        document.getElementById("type").value = "BATH";
-        document.getElementById("DifferencePer").disabled = true;
-        if (x === "") {
-            document.getElementById("DifferencePer").disabled = false;
-        }
-    }
+
     function updateAmount() {
-        var price = document.getElementById("idFactory2").value;
+        var price = document.getElementById("price").value;
         var amount = document.getElementById("AmountProduct").value;
-        var difference = document.getElementById("difference").value;
-        var total = amount * price;
-        var totals = total - (total * (difference / 100))
-        document.getElementById("total_price").value = total;
-        document.getElementById("cal_difference").value = totals;
+        var x = price.replace(",", "");
+        var total = amount * x;
+        document.getElementById("total_price").value = total.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
     }
 
     function ChangeProduct() {
@@ -326,10 +311,21 @@ $val_detail_order_p = $getOrderEdit['detail_order_p'];
                 success: function (response)
                 {
                     $("#total_price").val(response);
-                    // alert(response);
+                    $("#price_factory").val(response);
                     $("#idFactory2").val(response);
                 }
             });
+        }
+        var type = document.getElementById('typefactory').value;
+        var price = document.getElementById('price_factory').value;
+        var diff = document.getElementById('diff').value;
+        var total_bath = (price * 1) + (diff * 1);
+        var total_percent = price - ((price * diff) / 100)
+        if (type === 'PERCENT') {
+            document.getElementById('price').value = total_percent.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+        }
+        else {
+            document.getElementById('price').value = total_bath.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
         }
     }
     function LoadFactory(str) {

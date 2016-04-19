@@ -17,7 +17,7 @@ $totalss = $_POST['totalss'];
 //ส่งข้อมูล หน่วยสินค้า มาหน้านี้
 $products = $_SESSION["productR"];
 $getIDShipment = getDateShipment();
-$idshipment_period = $getIDShipment['idshipment_period'];
+$idshipment_period = $_GET['idShipment'];
 //สิ้นสุดกลุ่มรับค่า
 //
 //กลุ่มคำสั่งทำอะไร

@@ -66,7 +66,64 @@ $dateEnd = $getDateShipment['date_end'];
                 });
                 document.getElementById("add_p").disabled = false;
             }
+            function LoadShipment(str) {
+                //var idshipment = document.getElementById("idShipment").value;
+                //var amount = document.getElementById("AmountProduct").value;
+                alert(str);
+                if (str === "") {
+                    //document.getElementById("factoryName").innerHTML = "";
+                    return;
+                }
+                else {
+                    $.ajax({type: "GET",
+                        url: "action/action_ajaxDateShip.php",
+                        async: false,
+                        data: "q=chk&idshipment=" + str,
+                        dataType: 'html',
+                        success: function (response)
+                        {
+                            //alert(response)
+                            if (response === '1') {
+                                //alert("สามารถเลือกได้");
 
+                            }
+                            else {
+                                alert("ไม่สามารถเลือกได้");
+                            }
+
+                        }
+                    });
+
+                    $.ajax({type: "GET",
+                        url: "action/action_ajaxDateShip.php",
+                        async: false,
+                        data: "q=max&idshipment=" + str,
+                        dataType: 'html',
+                        success: function (response)
+                        {
+
+                            $("#maxDate").val(response);
+                        }
+                    });
+                    $.ajax({type: "GET",
+                        url: "action/action_ajaxDateShip.php",
+                        async: false,
+                        data: "q=min&idshipment=" + str,
+                        dataType: 'html',
+                        success: function (response)
+                        {
+
+                            $("#minDate").val(response);
+                        }
+                    });
+                }
+
+                var max = document.getElementById("maxDate").value;
+                var min = document.getElementById("minDate").value;
+
+                document.getElementById("date_order").max = max;
+                document.getElementById("date_order").min = min;
+            }
 
         </script>
 
@@ -110,12 +167,45 @@ $dateEnd = $getDateShipment['date_end'];
                                                     <!--<input type="text" class="form-control" id="name_product" name="name_product" placeholder="กรุณาระบุชื่อสินค้า" autocomplete= "on" >-->
                                                     <input type="hidden" id="idshop" name="idshop"></input>
                                                 </div>
-                                                <label>วันที่สินค้าคืน</label>
+                                                <label>รอบ</label>
                                                 <div class="input-group">
-                                                    <span class="input-group-addon"><i class="fa fa-calendar-o" ></i></span>
-                                                    <input type="date" class="form-control" id ="date_order" name="date_order" value="<?= $date; ?>" max="<?= $dateEnd; ?>">
+                                                    <span class = "input-group-addon"><i class = "fa fa-calendar-o" ></i></span>
+                                                    <select class="form-control" id="idShipment" name="idShipment" onchange="LoadShipment(this.value)" required>
+                                                        <?php
+                                                        $getShipment = getShipment();
+                                                        $count = 1;
+                                                        $date_end_f;
+                                                        $date_start_f;
+                                                        foreach ($getShipment as $value) {
+                                                            $idshipment = $value['idshipment_period'];
+                                                            $date_start = $value['date_start'];
+                                                            $date_end = $value['date_end'];
+                                                            $getCount = chkOrder($date_start, $date_end);
+                                                            $countId = $getCount['countOrder'];
+
+                                                            if ($countId > 0) {
+
+                                                                if ($count == 1) {
+                                                                    $date_end_f = $date_end;
+                                                                    $date_start_f = $date_start;
+                                                                }
+                                                                $count++;
+                                                                ?>
+                                                                <option value="<?= $idshipment ?>"><?= $date_start . " ถึง " . $date_end ?>    </option>>
+                                                                <?php
+                                                            }
+                                                        }
+                                                        ?>
+                                                    </select>
+                                                    <input type = "hidden" class = "form-control" id = "maxDate" name = "maxDate"/>
+                                                    <input type = "hidden" class = "form-control" id = "minDate" name = "minDate"/>
                                                 </div>
-                                            </div>                                        
+                                                <label>วันที่สินค้าคืน</label>
+                                                <div class = "input-group">
+                                                    <span class = "input-group-addon"><i class = "fa fa-calendar-o" ></i></span>
+                                                    <input type = "date" class = "form-control" id = "date_order" name = "date_order" value = "<?= $date; ?>" max = "<?= $date_end_f; ?>" min="<?= $date_start_f ?>">
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -123,48 +213,48 @@ $dateEnd = $getDateShipment['date_end'];
 
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-12">
+                        <div class = "row">
+                            <div class = "col-md-12">
 
                                 <br>
-                                    <!-- ตารางสินค้าที่สั่งซื้  อ -->
-                                    <div class="panel panel-primary">
-                                        <div class="panel-heading">
+                                    <!--ตารางสินค้าที่สั่งซื้ อ -->
+                                    <div class = "panel panel-primary">
+                                        <div class = "panel-heading">
                                             ตารางสินค้าที่สั่งซื้อ
                                         </div>
-                                        <div class="panel-body">
-                                            <div class="table-responsive">
-                                                <button type="button" href="popup_addproduct_refunds.php" id="add_p" name="add_p" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal"  disabled>
-                                                    <span class="glyphicon glyphicon-plus"></span> เพิ่มสินค้า 
+                                        <div class = "panel-body">
+                                            <div class = "table-responsive">
+                                                <button type = "button" href = "popup_addproduct_refunds.php" id = "add_p" name = "add_p" class = "btn btn-info btn-lg" data-toggle = "modal" data-target = "#myModal" disabled>
+                                                    <span class = "glyphicon glyphicon-plus"></span> เพิ่มสินค้า
                                                 </button>
-                                                <button class="btn btn-danger btn-lg" type="button" onclick="if (confirm('คุณต้องการลบหน่วยสินค้าทั้งหมดหรือไม่')) {
+                                                <button class = "btn btn-danger btn-lg" type = "button" onclick = "if (confirm('คุณต้องการลบหน่วยสินค้าทั้งหมดหรือไม่')) {
                                                             resetUnit();
                                                         }">
-                                                    <span class="glyphicon glyphicon-trash"></span> ลบสินค้าทั้งหมด
+                                                    <span class = "glyphicon glyphicon-trash"></span> ลบสินค้าทั้งหมด
                                                 </button>
                                                 <br/>
                                                 <br/>
 
-                                                <div id="showUnit"></div>
+                                                <div id = "showUnit"></div>
                                             </div>
 
                                         </div>
                                     </div>
-                                    <!--End  ตารางสินค้าที่สั่งซื้อ --> 
-                                    <div class="row">
-                                        <div class="col-md-2"></div>
-                                        <div class="form-group col-xs-8">
-                                            <label for="exampleInputName2">รายละเอียดเพิ่มเติม</label>
-                                            <textarea rows="4" cols="50" id = "detail_order" name ="detail_order" class="form-control" placeholder="กรอกรายละเอียดเพิ่มเติม" value=""></textarea>
+                                    <!--End ตารางสินค้าที่สั่งซื้อ -->
+                                    <div class = "row">
+                                        <div class = "col-md-2"></div>
+                                        <div class = "form-group col-xs-8">
+                                            <label for = "exampleInputName2">รายละเอียดเพิ่มเติม</label>
+                                            <textarea rows = "4" cols = "50" id = "detail_order" name = "detail_order" class = "form-control" placeholder = "กรอกรายละเอียดเพิ่มเติม" value = ""></textarea>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-md-4"></div>
-                                        <a href="product_refunds.php" class="btn btn-danger btn-lg text-center">
-                                            <span class="glyphicon glyphicon-floppy-remove"></span> ยกเลิก
+                                    <div class = "row">
+                                        <div class = "col-md-4"></div>
+                                        <a href = "product_refunds.php" class = "btn btn-danger btn-lg text-center">
+                                            <span class = "glyphicon glyphicon-floppy-remove"></span> ยกเลิก
                                         </a>
-                                        <button type="submit" class="btn btn-info btn-lg text-center">
-                                            <span class="glyphicon glyphicon-floppy-save"></span> บันทึก
+                                        <button type = "submit" class = "btn btn-info btn-lg text-center">
+                                            <span class = "glyphicon glyphicon-floppy-save"></span> บันทึก
                                         </button>
                                     </div>
                             </div>
@@ -172,14 +262,14 @@ $dateEnd = $getDateShipment['date_end'];
                     </form>
                 </div>
 
-                <!-- /. PAGE INNER  -->
+                <!--/. PAGE INNER -->
             </div>
-            <!-- /. PAGE WRAPPER  -->
+            <!--/. PAGE WRAPPER -->
         </div>
-        <!-- /. WRAPPER  -->
-        <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
-        <!-- JQUERY SCRIPTS -->
-        <script src="../assets/js/jquery-1.10.2.js"></script>
+        <!--/. WRAPPER -->
+        <!--SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
+        <!--JQUERY SCRIPTS -->
+        <script src = "../assets/js/jquery-1.10.2.js"></script>
         <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
         <!-- BOOTSTRAP SCRIPTS -->
         <script src="../assets/js/bootstrap.min.js"></script>
@@ -278,6 +368,7 @@ $dateEnd = $getDateShipment['date_end'];
                                                             document.getElementById('price').value = total_bath.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
                                                         }
                                                     }
+
 
                                                     function LoadFactory(str) {
                                                         document.getElementById("factoryName").value = str;

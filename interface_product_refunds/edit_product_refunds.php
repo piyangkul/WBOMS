@@ -18,7 +18,9 @@ $idshop = $getEditProductRefunds['idshop'];
 $val_name_shop = $getEditProductRefunds['name_shop'];
 $val_detail_order_p = $getEditProductRefunds['detail_product_refunds'];
 $val_code_shop = $getEditProductRefunds['code_shop'];
-$name_shop = $val_name_shop . " (" . $val_code_shop . ")";  
+$name_shop = $val_name_shop . " (" . $val_code_shop . ")";
+
+$val_idshipment_period = $getEditProductRefunds['shipment_period_idshipment_period'];
 
 $getDateShipment = getDateShipment();
 $dateEnd = $getDateShipment['date_end'];
@@ -79,6 +81,37 @@ $dateEnd = $getDateShipment['date_end'];
                                                 <div class="input-group">
                                                     <span class="input-group-addon"><i class="fa fa-shopping-cart"></i></span>
                                                     <input type="text" class="form-control" id="name_order" name="name_shop" placeholder="ชื่อร้านค้า" value="<?= $name_shop ?>" disabled>
+                                                </div>
+                                                <label>รอบ</label>
+                                                <div class="input-group">
+                                                    <span class = "input-group-addon"><i class = "fa fa-calendar-o" ></i></span>
+                                                    <select class="form-control" id="idShipment" name="idShipment" onchange="LoadShipment(this.value)" disabled required>
+                                                        <?php
+                                                        $getShipment = getEditShipment($val_idshipment_period);
+                                                        $idShipment = $getShipment['idshipment_period'];
+                                                        $date_end = $getShipment['date_end'];
+                                                        $date_start = $getShipment['date_start'];
+                                                        ?>
+
+                                                        <option value="<?= $idShipment ?>"><?= $date_start . " ถึง " . $date_end ?>    </option>>
+                                                        <?php
+                                                        /* foreach ($getShipment as $value) {
+                                                          $idshipment = $value['idshipment_period'];
+                                                          $date_start = $value['date_start'];
+
+                                                          $date_end = $value['date_end'];
+                                                          $getCount = chkOrder($date_start, $date_end);
+                                                          $countId = $getCount['countOrder'];
+                                                          if ($countId > 0) {
+                                                          ?>
+                                                          <option value="<?= $idshipment ?>"><?= $date_start . " ถึง " . $date_end ?>    </option>>
+                                                          <?php
+                                                          }
+                                                          } */
+                                                        ?>
+                                                    </select>
+                                                    <input type = "hidden" class = "form-control" id = "maxDate" name = "maxDate"/>
+                                                    <input type = "hidden" class = "form-control" id = "minDate" name = "minDate"/>
                                                 </div>
                                                 <label>วันที่สั่งซื้อ</label> 
                                                 <div class="input-group">

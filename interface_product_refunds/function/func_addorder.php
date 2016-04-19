@@ -476,7 +476,7 @@ function addOrderProductRefunds($idshop, $date_order, $detail_order, $price_prod
 
 function getEditProductRefunds($id) {
     $conn = dbconnect();
-    $SQLCommand = "SELECT order_product_refunds.idorder_product_refunds,shop_idshop,shop.idshop AS idshop,shop.name_shop,detail_product_refunds,date_product_refunds,price_product_refunds,COUNT(product_refunds.idproduct_refunds) AS idproduct_refunds,concat(region.code_region,province.code_province,shop.idshop) AS code_shop FROM `order_product_refunds` INNER JOIN shop ON shop.idshop=order_product_refunds.shop_idshop INNER JOIN product_refunds ON product_refunds.idorder_product_refunds = order_product_refunds.idorder_product_refunds INNER JOIN province ON shop.idprovince = province.idprovince INNER JOIN region ON province.idregion = region.idregion WHERE order_product_refunds.idorder_product_refunds = :id GROUP BY order_product_refunds.idorder_product_refunds ";
+    $SQLCommand = "SELECT order_product_refunds.idorder_product_refunds,order_product_refunds.shipment_period_idshipment_period,shop_idshop,shop.idshop AS idshop,shop.name_shop,detail_product_refunds,date_product_refunds,price_product_refunds,COUNT(product_refunds.idproduct_refunds) AS idproduct_refunds,concat(region.code_region,province.code_province,shop.idshop) AS code_shop FROM `order_product_refunds` INNER JOIN shop ON shop.idshop=order_product_refunds.shop_idshop INNER JOIN product_refunds ON product_refunds.idorder_product_refunds = order_product_refunds.idorder_product_refunds INNER JOIN province ON shop.idprovince = province.idprovince INNER JOIN region ON province.idregion = region.idregion WHERE order_product_refunds.idorder_product_refunds = :id GROUP BY order_product_refunds.idorder_product_refunds ";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
@@ -700,6 +700,59 @@ function getDateShipment() {
     $SQLCommand = "SELECT MAX(idshipment_period) AS idshipment_period,MAX(date_end) AS date_end FROM shipment_period";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute();
+    //$resultArr = array();
+    $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
+    return $result;
+}
+
+function getShipment() {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT * FROM `shipment_period` ORDER BY date_start DESC";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute();
+    $resultArr = array();
+    while ($result = $SQLPrepare->fetch(PDO::FETCH_ASSOC)) {
+        array_push($resultArr, $result);
+    }
+    return $resultArr;
+}
+
+function getEditShipment($idshipment_period) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT * FROM `shipment_period` WHERE idshipment_period = :idshipment_period";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idshipment_period" => $idshipment_period
+            )
+    );
+    $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
+    return $result;
+}
+
+function chkDateShipment($idshipment_period) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT date_start,date_end FROM shipment_period WHERE idshipment_period = :idshipment_period";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idshipment_period" => $idshipment_period
+            )
+    );
+    //$resultArr = array();
+    $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
+    return $result;
+}
+
+function chkOrder($date_start, $date_end) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT COUNT(idorder_p) AS countOrder FROM `order_p` WHERE order_p.date_order_p BETWEEN :date_start AND :date_end";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":date_start" => $date_start,
+                ":date_end" => $date_end
+    ));
     //$resultArr = array();
     $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
     return $result;
