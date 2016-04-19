@@ -25,6 +25,7 @@ session_start();
             </div>
             <div class="form-group col-xs-12">
                 <select class="form-control" name="under_unit" id="under_unit" onchange="calPrice();" >
+                    <option value="">Choose</option>> 
                     <?php
                     for ($i = 1; $i <= $_SESSION["countUnit"]; $i++) {
                         ?> 

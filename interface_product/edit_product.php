@@ -281,54 +281,6 @@ foreach ($getProducts as $value) {
 
     </body>
 </html>
-<script>
-                                                    $(document.body).on('hidden.bs.modal', function () {
-                                                        $('#myModal').removeData('bs.modal');
-                                                    });
-                                                    function delUnit(str) {
-
-                                                        var idunit = str;
-                                                        var idproduct = document.getElementById('idproduct').value;
-                                                        if (confirm("คุณต้องการลบหน่วยสินค้าตัวนี้ใช่ไหม") == true) {
-                                                            var p = "&idunit=" + idunit;
-
-                                                            // alert(p);
-                                                            $.get("action_editUnitD.php?p=addProduct" + p, function (data, status) {
-                                                                // alert("Data: " + data + "\nStatus: " + status);
-                                                                if (data === "1") {
-                                                                    alert("หน่วยสินค้านี้ถูกลบแล้ว");
-                                                                    window.location.href = "edit_product.php?idproduct=" + idproduct;
-                                                                }
-                                                                else {
-                                                                    alert("หน่วยสินค้าตัวนี้ไม่สามารถลบได้เพราะมีในรายการสินค้า");
-                                                                }
-                                                            });
-                                                        }
-
-                                                    }
-                                                    function resetUnit() {
-                                                        $.get("action_addUnit.php?p=resetUnit", function (data, status) {
-                                                            if (data != "-1") {
-                                                                showUnit();
-                                                                getBigestUnit();
-                                                                getBigestPrice();
-                                                                alert("ลบหน่วยทั้งหมดแล้ว");
-                                                            }
-                                                            else {
-                                                                alert("ไม่สามารถลบหน่วยได้");
-                                                            }
-                                                        });
-                                                    }
-
-                                                    calBigestPrice();
-                                                    function calBigestPrice() {
-                                                        var difference_amount = $("#difference_amount").val();
-                                                        var bigestPrice = $("#bigestPrice").val();
-                                                        var total = bigestPrice - (bigestPrice * (difference_amount / 100.0));
-                                                        $("#bigestPriceResult").val(total);
-                                                    }
-
-</script>
 <!-- Modalเพิ่มหน่วย -->
 <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -383,3 +335,52 @@ foreach ($getProducts as $value) {
         </div>
     </div>
 </div>
+
+<script>
+                                                    $(document.body).on('hidden.bs.modal', function () {
+                                                        $('#myModal2').removeData('bs.modal');
+                                                    });
+                                                    function delUnit(str) {
+
+                                                        var idunit = str;
+                                                        var idproduct = document.getElementById('idproduct').value;
+                                                        if (confirm("คุณต้องการลบหน่วยสินค้าตัวนี้ใช่ไหม") == true) {
+                                                            var p = "&idunit=" + idunit;
+
+                                                            // alert(p);
+                                                            $.get("action_editUnitD.php?p=addProduct" + p, function (data, status) {
+                                                                // alert("Data: " + data + "\nStatus: " + status);
+                                                                if (data === "1") {
+                                                                    alert("หน่วยสินค้านี้ถูกลบแล้ว");
+                                                                    window.location.href = "edit_product.php?idproduct=" + idproduct;
+                                                                }
+                                                                else {
+                                                                    alert("หน่วยสินค้าตัวนี้ไม่สามารถลบได้เพราะมีในรายการสินค้า");
+                                                                }
+                                                            });
+                                                        }
+
+                                                    }
+                                                    function resetUnit() {
+                                                        $.get("action_addUnit.php?p=resetUnit", function (data, status) {
+                                                            if (data != "-1") {
+                                                                showUnit();
+                                                                getBigestUnit();
+                                                                getBigestPrice();
+                                                                alert("ลบหน่วยทั้งหมดแล้ว");
+                                                            }
+                                                            else {
+                                                                alert("ไม่สามารถลบหน่วยได้");
+                                                            }
+                                                        });
+                                                    }
+
+                                                    calBigestPrice();
+                                                    function calBigestPrice() {
+                                                        var difference_amount = $("#difference_amount").val();
+                                                        var bigestPrice = $("#bigestPrice").val();
+                                                        var total = bigestPrice - (bigestPrice * (difference_amount / 100.0));
+                                                        $("#bigestPriceResult").val(total);
+                                                    }
+
+</script>
