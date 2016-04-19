@@ -148,7 +148,7 @@ function getUnit2($id) {
 
 function getUnit3($id) {
     $conn = dbconnect();
-    $SQLCommand = "SELECT idunit,name_unit,price_unit,factory.difference_amount_factory,unit.price_unit,type_unit,unit.idproduct,factory.name_factory,name_product,product.idfactory,concat(factory.code_factory,product.idproduct) AS code_product FROM `unit` INNER JOIN product ON product.idproduct=unit.idproduct INNER JOIN factory ON factory.idfactory = product.idfactory WHERE type_unit = 'PRIMARY' AND idunit = :id";
+    $SQLCommand = "SELECT idunit,name_unit,price_unit,product.difference_amount_product,unit.price_unit,type_unit,unit.idproduct,factory.name_factory,name_product,product.idfactory,concat(factory.code_factory,product.idproduct) AS code_product FROM `unit` INNER JOIN product ON product.idproduct=unit.idproduct INNER JOIN factory ON factory.idfactory = product.idfactory WHERE type_unit = 'PRIMARY' AND idunit = :id";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
@@ -309,7 +309,7 @@ function EditOrder($idorder, $code_order, $date_order, $time_order, $detail_orde
 
 function edit_product_order($id) {
     $conn = dbconnect();
-    $SQLCommand = "SELECT product_order.idproduct_order,factory.difference_amount_factory,factory.difference_amount_factory,unit.price_unit,unit.idproduct,unit.idunit,product_order.idorder_p,product.name_product,concat(factory.code_factory,product.idproduct) AS code_product,unit.name_unit,factory.name_factory,factory.difference_amount_factory,product_order.amount_product_order,product_order.difference_product_order,product_order.type_product_order,unit.price_unit,product_order.status_checktransport FROM product_order INNER JOIN unit ON unit.idunit = product_order.idunit INNER JOIN product ON product.idproduct = unit.idproduct INNER JOIN factory ON factory.idfactory = product.idfactory WHERE product_order.idproduct_order = :id";
+    $SQLCommand = "SELECT product_order.idproduct_order,product.difference_amount_product,factory.difference_amount_factory,unit.price_unit,unit.idproduct,unit.idunit,product_order.idorder_p,product.name_product,concat(factory.code_factory,product.idproduct) AS code_product,unit.name_unit,factory.name_factory,factory.difference_amount_factory,product_order.amount_product_order,product_order.difference_product_order,product_order.type_product_order,unit.price_unit,product_order.status_checktransport FROM product_order INNER JOIN unit ON unit.idunit = product_order.idunit INNER JOIN product ON product.idproduct = unit.idproduct INNER JOIN factory ON factory.idfactory = product.idfactory WHERE product_order.idproduct_order = :id";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
