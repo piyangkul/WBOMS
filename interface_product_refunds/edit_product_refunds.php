@@ -18,7 +18,7 @@ $idshop = $getEditProductRefunds['idshop'];
 $val_name_shop = $getEditProductRefunds['name_shop'];
 $val_detail_order_p = $getEditProductRefunds['detail_product_refunds'];
 $val_code_shop = $getEditProductRefunds['code_shop'];
-$name_shop = $val_name_shop . " (" . $val_code_shop . ")";
+$name_shop = $val_name_shop . " (" . $val_code_shop . ")";  
 
 $getDateShipment = getDateShipment();
 $dateEnd = $getDateShipment['date_end'];

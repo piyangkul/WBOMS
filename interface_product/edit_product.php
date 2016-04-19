@@ -14,6 +14,7 @@ $getProductDetail = getProductDetail($val_idproduct);
 $getProductUnit = getProductUnit($val_idproduct);
 $countUnitS = countUnit($val_idproduct);
 $countUnit = $countUnitS['numunit'];
+
 $val_name_product = $getProductDetail['name_product']; //ชื่อสินค้า
 $val_detail_product = $getProductDetail['detail_product']; //รายละเอียดสินค้า
 $val_name_factoryID = $getProductDetail['idfactory']; //ไอดีโรงงาน
@@ -91,7 +92,10 @@ foreach ($getProducts as $value) {
                                             <div class="form-group col-xs-12">
                                                 <label for="productName"> ชื่อสินค้า </label>
                                                 <input type="text" class="form-control" id="productName" name="productName" value="<?php echo $val_name_product; ?>">
+
+
                                             </div>
+                                            <input type="hidden" class="form-control" id="idproduct" name="idproduct" value="<?= $val_idproduct; ?>"/>
                                             <div class="form-group col-xs-12">
                                                 <label for="factoryid"> ชื่อโรงงาน </label>
                                                 <select class="form-control" id="factoryid" name="factoryid" >
@@ -128,15 +132,15 @@ foreach ($getProducts as $value) {
                                     </div>
                                     <div class="panel-body">
                                         <div class="table-responsive">
-                                            <a href="popup_edit_product_addunit.php?idproduct=<?= $val_idproduct;?>" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal1">
+                                            <a href="popup_edit_product_addunit.php?idproduct=<?= $val_idproduct; ?>" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal1">
                                                 <span class="glyphicon glyphicon-plus"></span> เพิ่มหน่วยสินค้า
                                             </a>
                                             <table class="table table-striped table-bordered table-hover text-center" id="dataTables-example">
                                                 <thead>
                                                     <tr>
-                                                        <th>หน่วย</th>
-                                                        <th>จำนวนต่อหน่วยใหญ่</th>
                                                         <th>หน่วยใหญ่</th>
+                                                        <th>จำนวนต่อหน่วยใหญ่</th>
+                                                        <th>หน่วย</th>
                                                         <th>ราคาหน่วย</th>
                                                         <th>การกระทำ</th>
                                                     </tr>
@@ -151,18 +155,21 @@ foreach ($getProducts as $value) {
                                                     $val_price_bigunit = $getUnitBig['price_unit'];
                                                     ?>
                                                     <tr>
-                                                        <td><?php echo $valNameBigUnit; ?></td>
-                                                        <td><?php echo $valAmountBig; ?></td>
                                                         <td>-</td>
+                                                        <td><?php echo $valAmountBig; ?></td>
+
+                                                        <td><?php echo $valNameBigUnit; ?></td>
                                                         <td><?php echo $val_price_bigunit; ?></td>
                                                         <td>
                                                             <!-- Button trigger modal -->
                                                             <a href="popup_edit_product_editunitBig.php?unitid=<?php echo $valIdUnitBig; ?>&countUnit=<?= $countUnit; ?>&idproduct=<?= $val_idproduct; ?>" class="btn btn-warning" data-toggle="modal" data-target="#myModal2" data-toggle="tooltip" title="แก้ไข">
                                                                 <span class="glyphicon glyphicon-edit"></span> 
                                                             </a>
-                                                            <!--                                                            <a href="popup_delete_product_unit.php" class="btn btn-danger" data-toggle="modal" data-target="#myModal3" data-toggle="tooltip" title="ลบ">
-                                                                                                                            <span class="glyphicon glyphicon-trash"></span>
-                                                                                                                        </a>-->
+                                                            <?php if ($numUnit == $countUnit) { ?>
+                                                                                              <!--  <a class = "btn btn-danger" data-toggle = "tooltip" title = "ลบ" id="deleteProduct<?= $val_idproduct_refunds; ?>" name="deleteProduct<?= $val_idproduct_refunds; ?>" onclick="delUnit(<?= $valIdUnitBig; ?>)">
+                                                                                                    <span class = "glyphicon glyphicon-trash"></span>
+                                                                                                </a>    -->   
+                                                            <?php } ?>
                                                         </td>
                                                     </tr> 
                                                     <?php
@@ -182,18 +189,20 @@ foreach ($getProducts as $value) {
                                                         $val_price_smallunit = $value['price_unit'];
                                                         ?>
                                                         <tr>
-                                                            <td id="nameUnitSmall<?= $valIdunit; ?>"><?php echo $valUnit; ?></td>
-                                                            <td id="AmountPerUnitSmall<?= $valIdunit; ?>"><?php echo $valAmount; ?></td>
                                                             <td><?php echo $valBigUnit; ?></td>
+                                                            <td id="AmountPerUnitSmall<?= $valIdunit; ?>"><?php echo $valAmount; ?></td>
+                                                            <td id="nameUnitSmall<?= $valIdunit; ?>"><?php echo $valUnit; ?></td>
                                                             <td id="PriceSmall<?= $valIdunit; ?>"><?php echo $val_price_smallunit; ?></td>
                                                             <td>
                                                                 <!-- Button trigger modal -->
                                                                 <a href="popup_edit_product_editunit.php?unitid=<?php echo $valIdunit; ?>&idUnitBig=<?= $valIdUnitBig; ?>&countUnit=<?= $countUnit; ?>" class="btn btn-warning" data-toggle="modal" data-target="#myModal2" data-toggle="tooltip" title="แก้ไข">
                                                                     <span class="glyphicon glyphicon-edit"></span> 
                                                                 </a>
-                                                                <!--                                                            <a href="popup_delete_product_unit.php" class="btn btn-danger" data-toggle="modal" data-target="#myModal3" data-toggle="tooltip" title="ลบ">
-                                                                                                                                <span class="glyphicon glyphicon-trash"></span>
-                                                                                                                            </a>-->
+                                                                <?php if ($numUnit == $countUnit) { ?>
+                                                                    <a class = "btn btn-danger" data-toggle = "tooltip" title = "ลบ" id="deleteProduct<?= $val_idproduct_refunds; ?>" name="deleteProduct<?= $val_idproduct_refunds; ?>" onclick="delUnit(<?= $valIdunit; ?>)">
+                                                                        <span class = "glyphicon glyphicon-trash"></span>
+                                                                    </a>       
+                                                                <?php } ?>
                                                             </td>
                                                         </tr>
                                                     <?php } ?>
@@ -276,7 +285,27 @@ foreach ($getProducts as $value) {
                                                     $(document.body).on('hidden.bs.modal', function () {
                                                         $('#myModal').removeData('bs.modal');
                                                     });
+                                                    function delUnit(str) {
 
+                                                        var idunit = str;
+                                                        var idproduct = document.getElementById('idproduct').value;
+                                                        if (confirm("คุณต้องการลบหน่วยสินค้าตัวนี้ใช่ไหม") == true) {
+                                                            var p = "&idunit=" + idunit;
+
+                                                            // alert(p);
+                                                            $.get("action_editUnitD.php?p=addProduct" + p, function (data, status) {
+                                                                // alert("Data: " + data + "\nStatus: " + status);
+                                                                if (data === "1") {
+                                                                    alert("หน่วยสินค้านี้ถูกลบแล้ว");
+                                                                    window.location.href = "edit_product.php?idproduct=" + idproduct;
+                                                                }
+                                                                else {
+                                                                    alert("หน่วยสินค้าตัวนี้ไม่สามารถลบได้เพราะมีในรายการสินค้า");
+                                                                }
+                                                            });
+                                                        }
+
+                                                    }
                                                     function resetUnit() {
                                                         $.get("action_addUnit.php?p=resetUnit", function (data, status) {
                                                             if (data != "-1") {
@@ -287,7 +316,6 @@ foreach ($getProducts as $value) {
                                                             }
                                                             else {
                                                                 alert("ไม่สามารถลบหน่วยได้");
-
                                                             }
                                                         });
                                                     }

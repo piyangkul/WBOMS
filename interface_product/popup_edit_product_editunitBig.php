@@ -11,8 +11,6 @@ $type = $getUnit['type_unit'];
 $idProduct = $getUnit['idproduct'];
 $numUnit = $_GET['countUnit'];
 $validproduct = $_GET['idproduct'];
-echo $validproduct;
-echo $numUnit;
 /* $getBigUnit = getProductUnitBYID($under_unitid);
   $priceBig = $getBigUnit['price_unit'];
  */

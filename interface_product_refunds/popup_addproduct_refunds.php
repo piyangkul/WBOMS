@@ -127,9 +127,9 @@ session_start();
         var total_price = $("#total_price").val().replace(",", "");
 
         var p = "&idUnit=" + idUnit + "&productName=" + productName + "&factoryName=" + factoryName + "&AmountProduct=" + AmountProduct + "&price=" + price + "&total_price=" + total_price + "&diff=" + diff + "&price_factory=" + price_factory + "&type_factory=" + type_factory;
-        alert(p);
+        //alert(p);
         $.get("action_addProduct.php?p=addProduct" + p, function (data, status) {
-              alert("Data: " + data + "\nStatus: " + status);
+            //  alert("Data: " + data + "\nStatus: " + status);
             if (data == "1") {
                 $("#alert").html("บันทึกแล้ว");
                 $("#idUnit").val("");

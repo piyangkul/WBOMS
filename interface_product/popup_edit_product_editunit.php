@@ -14,8 +14,6 @@ $idUnitBig = $_GET['idUnitBig'];
 
 $getBigUnit = getProductUnitBYID($under_unitid);
 $priceBig = $getBigUnit['price_unit'];
-echo $priceBig;
-
 $getAllUnit = getProductUnit($idProduct);
 ?>
 <div class="modal-header">

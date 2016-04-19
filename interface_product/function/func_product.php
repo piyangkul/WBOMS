@@ -432,6 +432,7 @@ function EditUnitAdd($idproduct, $idunit_big, $name_unit, $price_unit, $type, $a
         return false;
     }
 }
+
 function getCalUnitBig($idunit) {
     $conn = dbconnect();
     $SQLCommand = "SELECT idunit,idunit_big,amount_unit,price_unit FROM `unit` WHERE idunit = :idunit";
@@ -444,4 +445,36 @@ function getCalUnitBig($idunit) {
 
     $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
     return $result;
+}
+
+function GetcountProductOrder($idUnit) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT product_order.idunit,COUNT(product_order.idunit) AS countUnit FROM product_order WHERE product_order.idunit = :idunit";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idunit" => $idUnit
+            )
+    );
+
+    $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
+    return $result;
+}
+
+function deleteUnit($idUnit) {
+    $conn = dbconnect();
+    $SQLCommand = "DELETE FROM `unit` WHERE `idunit`=:idunit";
+
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idunit" => $idUnit
+            )
+    );
+
+    if ($SQLPrepare->rowCount() > 0) {
+        return TRUE;
+    } else {
+        return FALSE;
+    }
 }
