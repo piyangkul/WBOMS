@@ -159,16 +159,16 @@ foreach ($getProducts as $value) {
                                                         <td><?php echo $valAmountBig; ?></td>
 
                                                         <td><?php echo $valNameBigUnit; ?></td>
-                                                        <td><?php echo $val_price_bigunit; ?></td>
+                                                        <td><?php echo number_format($val_price_bigunit, 2); ?></td>
                                                         <td>
                                                             <!-- Button trigger modal -->
                                                             <a href="popup_edit_product_editunitBig.php?unitid=<?php echo $valIdUnitBig; ?>&countUnit=<?= $countUnit; ?>&idproduct=<?= $val_idproduct; ?>" class="btn btn-warning" data-toggle="modal" data-target="#myModal2" data-toggle="tooltip" title="แก้ไข">
                                                                 <span class="glyphicon glyphicon-edit"></span> 
                                                             </a>
                                                             <?php if ($numUnit == $countUnit) { ?>
-                                                                                              <!--  <a class = "btn btn-danger" data-toggle = "tooltip" title = "ลบ" id="deleteProduct<?= $val_idproduct_refunds; ?>" name="deleteProduct<?= $val_idproduct_refunds; ?>" onclick="delUnit(<?= $valIdUnitBig; ?>)">
-                                                                                                    <span class = "glyphicon glyphicon-trash"></span>
-                                                                                                </a>    -->   
+                                                                                                  <!--  <a class = "btn btn-danger" data-toggle = "tooltip" title = "ลบ" id="deleteProduct<?= $val_idproduct_refunds; ?>" name="deleteProduct<?= $val_idproduct_refunds; ?>" onclick="delUnit(<?= $valIdUnitBig; ?>)">
+                                                                                                        <span class = "glyphicon glyphicon-trash"></span>
+                                                                                                    </a>    -->   
                                                             <?php } ?>
                                                         </td>
                                                     </tr> 
@@ -192,7 +192,7 @@ foreach ($getProducts as $value) {
                                                             <td><?php echo $valBigUnit; ?></td>
                                                             <td id="AmountPerUnitSmall<?= $valIdunit; ?>"><?php echo $valAmount; ?></td>
                                                             <td id="nameUnitSmall<?= $valIdunit; ?>"><?php echo $valUnit; ?></td>
-                                                            <td id="PriceSmall<?= $valIdunit; ?>"><?php echo $val_price_smallunit; ?></td>
+                                                            <td id="PriceSmall<?= $valIdunit; ?>"><?php echo number_format($val_price_smallunit, 2); ?></td>
                                                             <td>
                                                                 <!-- Button trigger modal -->
                                                                 <a href="popup_edit_product_editunit.php?unitid=<?php echo $valIdunit; ?>&idUnitBig=<?= $valIdUnitBig; ?>&countUnit=<?= $countUnit; ?>" class="btn btn-warning" data-toggle="modal" data-target="#myModal2" data-toggle="tooltip" title="แก้ไข">

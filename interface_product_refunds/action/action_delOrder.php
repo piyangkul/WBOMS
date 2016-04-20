@@ -14,11 +14,11 @@ if ($status === 'returned') {
 
     $delOrder = deleteOrderProduct_Refunds($idorder_product_refunds);
     if ($delOrder) {
-        header("location: ../product_refunds.php?p=product&action=delCompleted");
+        header("location: ../product_refunds.php?p=product_refunds&action=delCompleted");
     } else {
-        header("location: ../product_refunds.php?p=product&action=delCompleted");
+        header("location: ../product_refunds.php?p=product_refunds&action=delCompleted");
         echo"Error1";
-        header("location: ../product_refunds.php?p=product&action=delError");
+        header("location: ../product_refunds.php?p=product_refunds&action=delError");
     }
 } 
 
