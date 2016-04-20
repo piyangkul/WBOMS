@@ -90,22 +90,22 @@ else if ($_GET['p'] == "getPriceUnit") {
                             <td>-</td>
                             <td>1</td>
                             <td><?php echo $_SESSION["unit"][$i]["NameUnit"]; ?></td>
-                            <td><?= $_SESSION["unit"][$i]["price"]; ?></td>
-                            <td>
-                <!--                                <a href="popup_add_product_edit_unit.php?idUnit=<?php echo $i; ?>" class="btn btn-warning " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="แก้ไข">
+                            <td class="text-right"><?= number_format($_SESSION["unit"][$i]["price"], 2) . " ฿"; ?></td>
+                            <!--<td>
+                                <a href="popup_add_product_edit_unit.php?idUnit=<?php echo $i; ?>" class="btn btn-warning " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="แก้ไข">
                                     <span class="glyphicon glyphicon-edit"></span>
-                                </a>-->
-                            </td>
+                                </a>
+                            </td>-->
                         </tr>
                         <?php
                         continue;
                     }
                     ?>
                     <tr>
-                        <td><?php echo $_SESSION["unit"][$i-1]["NameUnit"]; ?></td>
+                        <td><?php echo $_SESSION["unit"][$i - 1]["NameUnit"]; ?></td>
                         <td><?php echo $_SESSION["unit"][$i]["AmountPerUnit"]; ?></td>
                         <td><?php echo $_SESSION["unit"][$i]["NameUnit"]; ?></td>
-                        <td><?= number_format($_SESSION["unit"][$i]["price"],2); ?></td>
+                        <td class="text-right"><?= number_format($_SESSION["unit"][$i]["price"], 2) . " ฿"; ?></td>
                         <td>
                             <a href="popup_add_product_edit_unit.php?idUnit=<?php echo $i; ?>" class="btn btn-warning " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="แก้ไข">
                                 <span class="glyphicon glyphicon-edit"></span>

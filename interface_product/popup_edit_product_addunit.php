@@ -19,12 +19,12 @@ $val_price = 0;
                 <!--<p id="alert"></p>-->
             </div>
             <div class="form-group col-xs-12">
-                <label for="NameUnit">ชื่อหน่วยสินค้ารอง</label>
+                <label for="NameUnit">ชื่อหน่วยสินค้า</label>
                 <input type="text" class="form-control" name="NameUnit" id="NameUnit" placeholder="ใส่หน่วยสินค้า เช่น(กล่อง)" >
                 <input type="hidden" class="form-control" name="idProduct" id="idProduct" value="<?= $val_idproduct ?>">
             </div>
             <div class="form-group col-xs-12">
-                <label for="AmountPerUnit">จำนวนต่อหน่วยรอง</label>
+                <label for="AmountPerUnit">จำนวนต่อหน่วยใหญ่</label>
                 <input type="text" class="form-control" name="AmountPerUnit" onkeyup="calPrice();" id="AmountPerUnit" placeholder="ใส่จำนวนต่อหน่วยรอง เช่น(2)" >
             </div>
             <div class="form-group col-xs-12">
@@ -88,7 +88,7 @@ $val_price = 0;
         var type = $("input:radio[name=type]:checked").val();
 
         var p = "&NameUnit=" + NameUnit + "&AmountPerUnit=" + AmountPerUnit + "&idUnitBig=" + under_unit + "&price=" + price + "&type=" + type + "&idproduct=" + idproduct;
-        alert(p);
+        //alert(p);
         $.get("action_editUnitA.php?p=addUnit" + p, function (data, status) {
             //alert("Data: " + data + "\nStatus: " + status);
             if (data == "1") {

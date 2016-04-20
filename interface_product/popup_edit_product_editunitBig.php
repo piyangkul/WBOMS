@@ -18,7 +18,7 @@ $getAllUnit = getProductUnit($idProduct);
 ?>
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="myModalLabel">เพิ่มหน่วยสินค้า</h4>
+    <h4 class="modal-title" id="myModalLabel">แก้ไขหน่วยสินค้า</h4>
 </div>
 <div class="row">
     <div class="col-md-12 col-sm-12 ">
@@ -27,11 +27,11 @@ $getAllUnit = getProductUnit($idProduct);
                 <!--<p id="alert"></p>-->
             </div>
             <div class="form-group col-xs-12">
-                <label for="NameUnit">ชื่อหน่วยสินค้ารอง</label>
+                <label for="NameUnit">ชื่อหน่วยสินค้า</label>
                 <input type="text" class="form-control" name="NameUnit" id="NameUnit" placeholder="ใส่หน่วยสินค้า เช่น(กล่อง)" value="<?php echo $nameUnit; ?>">
             </div>
             <div class="form-group col-xs-12">
-                <label for="AmountPerUnit">จำนวนต่อหน่วยรอง</label>
+                <label for="AmountPerUnit">จำนวนต่อหน่วยใหญ่</label>
                 <input type="text" class="form-control" name="AmountPerUnit" onkeyup="calPrice();" id="AmountPerUnit" placeholder="ใส่จำนวนต่อหน่วยรอง เช่น(2)"  value="<?php echo $AmountPerUnit; ?>" disabled>
             </div>
             <div class="form-group col-xs-12">
