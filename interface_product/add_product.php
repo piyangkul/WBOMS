@@ -75,6 +75,9 @@ require_once '/function/func_product.php';
                         </div>
                         <!-- /. ROW  -->
                         <hr />
+                        <a href="action/action_reset.php?cancel=cancel" class="btn btn-danger btn-lg">
+                            <span class="fa fa-arrow-circle-left"></span> Back
+                        </a>
                         <div class="row">
                             <div class="col-md-3"></div>
                             <div class="col-md-6 ">
@@ -166,7 +169,7 @@ require_once '/function/func_product.php';
                                 <button type="submit" class="btn btn-info btn-lg text-center">
                                     <span class="glyphicon glyphicon-floppy-save"></span> บันทึก
                                 </button>
-                                <a href="product.php" class="btn btn-danger btn-lg text-center">
+                                <a href="action/action_reset.php?cancel=cancel" class="btn btn-danger btn-lg text-center">
                                     <span class="glyphicon glyphicon-floppy-remove"></span> ยกเลิก
                                 </a>
                             </div>

@@ -44,7 +44,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
 
                     <div class="row">
                         <div class="col-md-12">
-                            <a href="add_product.php" class="btn btn-info btn-lg">
+                            <a href="action/action_reset.php?cancel=addorder" class="btn btn-info btn-lg">
                                 <span class="glyphicon glyphicon-plus"></span> เพิ่มสินค้า
                             </a>
                             <br/><br/>

@@ -78,6 +78,9 @@ foreach ($getProducts as $value) {
                         </div>
                         <!-- /. ROW  -->
                         <hr />
+                        <a href="product.php" class="btn btn-danger btn-lg">
+                            <span class="fa fa-arrow-circle-left"></span> Back
+                        </a>
                         <div class="row">
                             <div class="col-md-3"></div>
                             <div class="col-md-6 ">
