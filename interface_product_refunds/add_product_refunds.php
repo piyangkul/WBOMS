@@ -15,7 +15,7 @@ $name_shop = "";
 if (isset($_SESSION['idshopP'])) {
     $idshop = $_SESSION['idshopP'];
     $getShopAdd = getShopAdd($idshop);
-    $name_shop = $getShopAdd['name_shop']." (".$getShopAdd['code_shop'].")";
+    $name_shop = $getShopAdd['name_shop'] . " (" . $getShopAdd['code_shop'] . ")";
 }
 
 $getDateShipment = getDateShipment();
@@ -177,40 +177,39 @@ $dateEnd = $getDateShipment['date_end'];
                                                 <label>รอบ</label>
                                                 <div class = "input-group">
                                                     <span class = "input-group-addon"><i class = "fa fa-calendar-o" ></i></span>
-                                                    <select class = "form-control" id = "idShipment" name = "idShipment" onchange = "LoadShipment(this.value)" readonly = "true" required>
-                                                        <?php
-                                                        $getShipment = getShipment();
-                                                        $count = 1;
-                                                        $date_end_f;
-                                                        $date_start_f;
-                                                        foreach ($getShipment as $value) {
-                                                            $idshipment = $value['idshipment_period'];
-                                                            $date_start = $value['date_start'];
-                                                            $date_end = $value['date_end'];
-                                                            $getCount = chkOrder($date_start, $date_end);
-                                                            $countId = $getCount['countOrder'];
-
-                                                            if ($countId > 0) {
-
-                                                                if ($count == 1) {
-                                                                    $date_end_f = $date_end;
-                                                                    $date_start_f = $date_start;
-                                                                }
-                                                                $count++;
+                                                    <?php
+                                                    $getShipment = getShipment();
+                                                    $count = 1;
+                                                    $date_end_f;
+                                                    $date_start_f;
+                                                    foreach ($getShipment as $value) {
+                                                        $idshipment = $value['idshipment_period'];
+                                                        $date_start = $value['date_start'];
+                                                        $date_end = $value['date_end'];
+                                                        $getCount = chkOrder($date_start, $date_end);
+                                                        $countId = $getCount['countOrder'];
+                                                        if ($countId > 0) {
+                                                            if ($count == 1) {
+                                                                $date_end_f = $date_end;
+                                                                $date_start_f = $date_start;
                                                                 ?>
-                                                                <option value="<?= $idshipment ?>"><?= $date_start . " ถึง " . $date_end ?>    </option>
+                                                                <input type = "text" class = "form-control" id = "name_shipment" name = "name_shipment" value = "<?= $date_start . " ถึง " . $date_end; ?>" disabled/>
+                                                                <input type = "hidden" class = "form-control" id = "idShipment" name = "idShipment" value = "<?= $date_start . " ถึง " . $date_end; ?>"/>
                                                                 <?php
                                                             }
+                                                            $count++;
+                                                            ?>
+                                                            <?php
                                                         }
-                                                        ?>
-                                                    </select>
+                                                    }
+                                                    ?>
                                                     <input type = "hidden" class = "form-control" id = "maxDate" name = "maxDate"/>
                                                     <input type = "hidden" class = "form-control" id = "minDate" name = "minDate"/>
                                                 </div>
                                                 <label>วันที่สินค้าคืน</label>
                                                 <div class = "input-group">
                                                     <span class = "input-group-addon"><i class = "fa fa-calendar-o" ></i></span>
-                                                    <input type = "date" class = "form-control" id = "date_order" name = "date_order" value = "<?= $date; ?>" max = "<?= $date_end_f; ?>" min="<?= $date_start_f ?>">
+                                                    <input type = "date" class = "form-control" id = "date_order" name = "date_order" value = "<?= $date_end_f; ?>" max = "<?= $date_end_f; ?>" min="<?= $date_start_f ?>">
                                                 </div>
                                             </div>
                                         </div>
@@ -231,9 +230,15 @@ $dateEnd = $getDateShipment['date_end'];
                                         </div>
                                         <div class = "panel-body">
                                             <div class = "table-responsive">
-                                                <button type = "button" href = "popup_addproduct_refunds.php" id = "add_p" name = "add_p" class = "btn btn-info btn-lg" data-toggle = "modal" data-target = "#myModal" disabled>
-                                                    <span class = "glyphicon glyphicon-plus"></span> เพิ่มสินค้า
-                                                </button>
+                                                <?php if (isset($_SESSION['idshopP'])) { ?>
+                                                    <button type = "button" href = "popup_addproduct_refunds.php" id = "add_p" name = "add_p" class = "btn btn-info btn-lg" data-toggle = "modal" data-target = "#myModal">
+                                                        <span class = "glyphicon glyphicon-plus"></span> เพิ่มสินค้า
+                                                    </button>
+                                                <?php } else { ?>
+                                                    <button type = "button" href = "popup_addproduct_refunds.php" id = "add_p" name = "add_p" class = "btn btn-info btn-lg" data-toggle = "modal" data-target = "#myModal" disabled>
+                                                        <span class = "glyphicon glyphicon-plus"></span> เพิ่มสินค้า
+                                                    </button>
+                                                    <?php } ?>
                                                 <button class = "btn btn-danger btn-lg" type = "button" onclick = "if (confirm('คุณต้องการลบหน่วยสินค้าทั้งหมดหรือไม่')) {
                                                             resetUnit();
                                                         }">

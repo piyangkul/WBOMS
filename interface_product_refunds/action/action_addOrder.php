@@ -14,7 +14,7 @@ $idshop = $_POST['idshop'];
 $date_order = $_POST['date_order'];
 $detail_order = $_POST['detail_order'];
 $idshipment_period = $_POST['idShipment'];
-$totalss = $_POST['totalss'];
+$totalss = str_replace(",","",$_POST['totalss']);
 //ส่งข้อมูล หน่วยสินค้า มาหน้านี้
 $products = $_SESSION["productR"];
 //$getIDShipment = getDateShipment();

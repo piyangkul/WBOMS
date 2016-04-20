@@ -773,7 +773,7 @@ function chkOrder($date_start, $date_end) {
 
 function getShopAdd($idshop) {
     $conn = dbconnect();
-    $SQLCommand = "SELECT shop.name_shop,concat(province.code_province,region.code_region,shop.idshop) AS code_shop FROM `shop` INNER JOIN province ON shop.idprovince = province.idprovince INNER JOIN region ON province.idregion = region.idregion WHERE shop.idshop = :idshop";
+    $SQLCommand = "SELECT shop.name_shop,concat(region.code_region,province.code_province,shop.idshop) AS code_shop FROM `shop` INNER JOIN province ON shop.idprovince = province.idprovince INNER JOIN region ON province.idregion = region.idregion WHERE shop.idshop = :idshop";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(

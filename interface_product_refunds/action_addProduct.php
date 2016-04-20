@@ -89,11 +89,11 @@ else if ($_GET['p'] == "editProduct") {
                 <th>ลำดับ</th>
                 <th>ชื่อสินค้า</th>
                 <th>ชื่อโรงงาน</th>
-                <th>หน่วย</th>
+
                 <th>จำนวน</th>
                 <th>ราคาเปิดต่อหน่วย</th>
                 <th>ส่วนลด</th>
-                <th>ประเภท</th>
+
                 <th>ราคาคืนต่อหน่วย</th>
                 <th>ราคาคืนทั้งหมด</th>
                 <th>การกระทำ</th> 
@@ -126,7 +126,9 @@ else if ($_GET['p'] == "editProduct") {
                                 echo $val_name_factory;
                             }
                             ?></td>
-                        <td><?php
+
+                        <td><?php echo $_SESSION["productR"][$i]["AmountProduct"] . " "; ?>
+                            <?php
                             $getUnit = getUnit2($idUnitS);
                             //print_r($getUnit);;
                             foreach ($getUnit as $value) {
@@ -134,13 +136,12 @@ else if ($_GET['p'] == "editProduct") {
                                 echo $val_name_unit;
                             }
                             ?></td>
-                        <td><?php echo $_SESSION["productR"][$i]["AmountProduct"]; ?></td>
                         <td class="text-right"><?= number_format($_SESSION["productR"][$i]["price_factory"], 2); ?></td>
-                        <td><?= $_SESSION["productR"][$i]["diff"]; ?></td>
+
                         <?php if ($_SESSION["productR"][$i]["type_factory"] === "PERCENT") { ?>
-                            <td>เปอร์เซนต์</td>
+                            <td><?= $_SESSION["productR"][$i]["diff"] . " " . "%" ?></td>
                         <?php } else { ?>
-                            <td>สุทธิ</td>
+                            <td><?= $_SESSION["productR"][$i]["diff"] . " " . "฿" ?></td>
                         <?php }
                         ?>
                         <td class="text-right"><?php echo number_format($_SESSION["productR"][$i]["price"], 2); ?></td>
@@ -165,7 +166,7 @@ else if ($_GET['p'] == "editProduct") {
     <div class="col-md-6"></div>
     <div class="col-md-4">
         <label for="disabled_no">ราคาขายรวมต่อบิล</label>
-        <input type="text" class="form-control" id="totalss" name="totalss" placeholder=" " value="<?= $sum ?>" readonly="true">
+        <input type="text" class="form-control" id="totalss" name="totalss" placeholder=" " value="<?= number_format($sum, 2); ?>" readonly="true">
     </div>
     <?php
 }
