@@ -476,7 +476,7 @@ function addOrderProductRefunds($idshop, $date_order, $detail_order, $price_prod
 
 function getEditProductRefunds($id) {
     $conn = dbconnect();
-    $SQLCommand = "SELECT order_product_refunds.idorder_product_refunds,order_product_refunds.shipment_period_idshipment_period,shop_idshop,shop.idshop AS idshop,shop.name_shop,detail_product_refunds,date_product_refunds,price_product_refunds,COUNT(product_refunds.idproduct_refunds) AS idproduct_refunds,concat(region.code_region,province.code_province,shop.idshop) AS code_shop FROM `order_product_refunds` INNER JOIN shop ON shop.idshop=order_product_refunds.shop_idshop INNER JOIN product_refunds ON product_refunds.idorder_product_refunds = order_product_refunds.idorder_product_refunds INNER JOIN province ON shop.idprovince = province.idprovince INNER JOIN region ON province.idregion = region.idregion WHERE order_product_refunds.idorder_product_refunds = :id GROUP BY order_product_refunds.idorder_product_refunds ";
+    $SQLCommand = "SELECT order_product_refunds.idorder_product_refunds,order_product_refunds.shipment_period_idshipment_period,shop_idshop,shop.idshop AS idshop,shop.name_shop,detail_product_refunds,date_product_refunds,price_product_refunds,COUNT(product_refunds.idproduct_refunds) AS idproduct_refunds,concat(region.code_region,province.code_province,shop.idshop) AS code_shop FROM `order_product_refunds` INNER JOIN shop ON shop.idshop=order_product_refunds.shop_idshop INNER JOIN product_refunds ON product_refunds.order_product_refunds_idorder_product_refunds = order_product_refunds.idorder_product_refunds INNER JOIN province ON shop.idprovince = province.idprovince INNER JOIN region ON province.idregion = region.idregion WHERE order_product_refunds.idorder_product_refunds = :id GROUP BY order_product_refunds.idorder_product_refunds ";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
@@ -489,7 +489,7 @@ function getEditProductRefunds($id) {
 
 function getProductRefunds($id) {
     $conn = dbconnect();
-    $SQLCommand = "SELECT product_refunds.idproduct_refunds,product_refunds.amount_product_refunds,product_refunds.idunit,unit.name_unit,price_product_refunds,product_refunds.amount_product_refunds,factory.name_factory,product.name_product,product_refunds.status_product_refund,factory.type_factory FROM product_refunds INNER JOIN unit ON unit.idunit = product_refunds.idunit INNER JOIN product ON product.idproduct = unit.idproduct INNER JOIN factory ON factory.idfactory = product.idfactory WHERE idorder_product_refunds = :id ";
+    $SQLCommand = "SELECT product_refunds.idproduct_refunds,product_refunds.amount_product_refunds,product_refunds.idunit,unit.name_unit,price_product_refunds,product_refunds.amount_product_refunds,factory.name_factory,product.name_product,product_refunds.status_product_refund,factory.type_factory FROM product_refunds INNER JOIN unit ON unit.idunit = product_refunds.idunit INNER JOIN product ON product.idproduct = unit.idproduct INNER JOIN factory ON factory.idfactory = product.idfactory WHERE order_product_refunds_idorder_product_refunds = :id ";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
@@ -773,11 +773,25 @@ function chkOrder($date_start, $date_end) {
 
 function getShopAdd($idshop) {
     $conn = dbconnect();
-    $SQLCommand = "SELECT shop.name_shop,concat(region.code_region,province.code_province,shop.idshop) AS code_shop FROM `shop` INNER JOIN province ON shop.idprovince = province.idprovince INNER JOIN region ON province.idregion = region.idregion WHERE shop.idshop = :idshop";
+    $SQLCommand = "SELECT shop.name_shop,concat(region.code_region, province.code_province,shop.idshop) AS code_shop FROM `shop` INNER JOIN province ON shop.idprovince = province.idprovince INNER JOIN region ON province.idregion = region.idregion WHERE shop.idshop = :idshop";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
                 ":idshop" => $idshop
+            )
+    );
+    //$resultArr = array();
+    $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
+    return $result;
+}
+
+function getDiffProduct($idprodcut) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT * FROM product WHERE idproduct = :idproduct ";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idproduct" => $idprodcut
             )
     );
     //$resultArr = array();

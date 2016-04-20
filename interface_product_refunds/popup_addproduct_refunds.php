@@ -54,6 +54,7 @@ session_start();
             dataType: 'html',
             success: function (www)
             {
+                //alert(www);
                 $("#diff").val(www);
                 //alert(response);
             }

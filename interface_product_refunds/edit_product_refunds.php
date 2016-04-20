@@ -146,7 +146,6 @@ $dateEnd = $getDateShipment['date_end'];
                                                             <th>ลำดับ</th>
                                                             <th>ชื่อสินค้า</th>
                                                             <th>ชื่อโรงงาน</th>
-                                                            <th>หน่วย</th>
                                                             <th>จำนวน</th>
                                                             <th>ราคาเปิดต่อสินค้า</th>
                                                             <th>ราคาเปิดทั้งหมด</th>
@@ -174,8 +173,8 @@ $dateEnd = $getDateShipment['date_end'];
                                                                 <td><?= $i; ?></td>
                                                                 <td><?= $val_name_product; ?></td>
                                                                 <td><?= $val_name_factory; ?></td>
-                                                                <td><?= $val_name_unit; ?></td> 
-                                                                <td id="amount<?= $val_idproduct_refunds; ?>"><?= $val_amount_product_refunds; ?></td>
+                                                            
+                                                                <td id="amount<?= $val_idproduct_refunds; ?>"><?= $val_amount_product_refunds." ".$val_name_unit; ?></td>
                                                                 <td id="price_table<?= $val_idproduct_refunds; ?>" class ="text-right"><?= number_format($val_price_product_refunds, 2); ?></td>
                                                                 <td id="total_table<?= $val_idproduct_refunds; ?>" class ="text-right"><?= number_format($total, 2); ?></td>
                                                                 <?php

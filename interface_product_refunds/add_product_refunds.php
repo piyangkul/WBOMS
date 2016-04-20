@@ -194,7 +194,7 @@ $dateEnd = $getDateShipment['date_end'];
                                                                 $date_start_f = $date_start;
                                                                 ?>
                                                                 <input type = "text" class = "form-control" id = "name_shipment" name = "name_shipment" value = "<?= $date_start . " ถึง " . $date_end; ?>" disabled/>
-                                                                <input type = "hidden" class = "form-control" id = "idShipment" name = "idShipment" value = "<?= $date_start . " ถึง " . $date_end; ?>"/>
+                                                                <input type = "hidden" class = "form-control" id = "idShipment" name = "idShipment" value = "<?= $idshipment; ?>"/>
                                                                 <?php
                                                             }
                                                             $count++;
@@ -226,7 +226,7 @@ $dateEnd = $getDateShipment['date_end'];
                                     <!--ตารางสินค้าที่สั่งซื้ อ -->
                                     <div class = "panel panel-primary">
                                         <div class = "panel-heading">
-                                            ตารางสินค้าที่สั่งซื้อ
+                                            ตารางสินค้าคืน
                                         </div>
                                         <div class = "panel-body">
                                             <div class = "table-responsive">
@@ -238,7 +238,7 @@ $dateEnd = $getDateShipment['date_end'];
                                                     <button type = "button" href = "popup_addproduct_refunds.php" id = "add_p" name = "add_p" class = "btn btn-info btn-lg" data-toggle = "modal" data-target = "#myModal" disabled>
                                                         <span class = "glyphicon glyphicon-plus"></span> เพิ่มสินค้า
                                                     </button>
-                                                    <?php } ?>
+                                                <?php } ?>
                                                 <button class = "btn btn-danger btn-lg" type = "button" onclick = "if (confirm('คุณต้องการลบหน่วยสินค้าทั้งหมดหรือไม่')) {
                                                             resetUnit();
                                                         }">
