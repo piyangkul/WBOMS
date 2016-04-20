@@ -170,7 +170,7 @@ $val_price_transport = $getShipmentDetailByID['price_transport'];
                         </table>
                     </div>
                     <div class="col-md-6 col-md-offset-6">ยอดเงินสินค้าที่สั่งซื้อของบิล &nbsp;&nbsp; <b><?php echo number_format($sum_sale_transport, 2); ?></b> &nbsp;&nbsp; บาท </div>
-                    <div class="col-md-6 col-md-offset-6">ยอดเงินที่ต้องจ่ายโรงงานของบิล &nbsp;&nbsp; <b><?php echo number_format($sum_sale_transport + $val_price_transport, 2); ?></b> &nbsp;&nbsp; บาท </div>
+                    <div class="col-md-6 col-md-offset-6">ยอดเงินจ่ายโรงงาน(สินค้าที่สั่งซื้อ+ค่าขนส่ง) &nbsp;&nbsp; <b><?php echo number_format($sum_sale_transport + $val_price_transport, 2); ?></b> &nbsp;&nbsp; บาท </div>
                 </div>
 
             </div>

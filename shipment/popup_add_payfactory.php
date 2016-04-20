@@ -42,8 +42,8 @@ $price_product_refund_factory = 0;
     var Arr2 = new Array();
     //pushข้อมูลลงArray
     for (var i = 0; i < Obj.length; i++) {
-        Arr.push(Obj[i].cheque_name_bank+"");
-        Arr2.push(Obj[i].cheque_branch_bank+"");
+        Arr.push(Obj[i].cheque_name_bank + "");
+        Arr2.push(Obj[i].cheque_branch_bank + "");
         console.log(Arr);
     }
     $(function () {
@@ -68,7 +68,7 @@ $price_product_refund_factory = 0;
                 <div class="form-group col-xs-12">
                     <center><h4 class="text text-info"><b>รอบการส่งที่</b> <?php echo date_format($date_start, 'd-m-Y'); ?> ถึง <?php echo date_format($date_end, 'd-m-Y'); ?></h4></center>
                     <center><h4 class="text text-info"><b>โรงงาน</b> <?php echo $val_name_factory; ?></h4></center>
-                    <center><h4 class="text text-info"><b>ยอดเงินที่โรงงานเรียกเก็บ</b> <?php echo number_format($price, 2); ?> บาท</h4></center>
+                    <center><h4 class="text text-info"><b>ยอดเงินสั่งซื้อรวม</b> <?php echo number_format($price, 2); ?> บาท</h4></center>
                 </div>
                 <div class = "row">
                     <!--<div class = "col-md-1 col-sm-1 "></div>-->
@@ -86,18 +86,17 @@ $price_product_refund_factory = 0;
                                         <th rowspan="2"><div align="center">ชื่อร้านค้า</div></th>
                                         <th rowspan="2"><div align="center">ชื่อสินค้า</div></th>
                                         <th rowspan="2"><div align="center">จำนวน</div></th>
-                                        <th colspan="5"><div align="center">ราคา/หน่วย</div></th>
-                                        <th colspan="3"><div align="center">ราคาทั้งหมด</div></th>
+                                        <th colspan="3"><div align="center">ราคา/หน่วย</div></th>
+                                        <th colspan="2"><div align="center">ราคาทั้งหมด</div></th>
                                         </tr>
 
                                         <tr>
                                             <th><div align="center">ราคาเปิด</div></th>
-                                        <th><div align="center">ต้นทุนลด</div></th>
-                                        <th><div align="center">ราคาต้นทุน</div></th>
                                         <th><div align="center">คืนลด</div></th>
                                         <th><div align="center">ราคาคืน</div></th>
+<!--                                        <th><div align="center">คืนลด</div></th>
+                                        <th><div align="center">ราคาคืน</div></th>-->
                                         <th><div align="center">ราคาเปิดรวม</div></th>
-                                        <th><div align="center">ราคาต้นทุนรวม</div></th>
                                         <th><div align="center">ราคาคืนรวม</div></th>
                                         </tr>
                                         </thead>
@@ -121,7 +120,7 @@ $price_product_refund_factory = 0;
                                                 $cost = $val_price_unit - (($val_difference_amount / 100.0) * $val_price_unit); //ราคาต้นทุน
                                                 $val_price_difference = $value['price_difference']; //ขายลด,คืนลด
                                                 $type_money = $value['type_money']; //% หรือ BATH
-                                                $val_price_product_refunds = $value['price_product_refunds']; //ราคาคืนที่คูณจำนวนแล้ว
+                                                $val_price_product_refunds = $value['price_product_refunds']; //ราคาคืน/หน่วย
                                                 ?>
                                                 <tr>
                                                     <td><?php echo $i; ?></td>
@@ -129,14 +128,13 @@ $price_product_refund_factory = 0;
                                                     <td><?php echo $val_name_product; ?></td>
                                                     <td><?php echo $val_amount_product_refunds . " " . $val_name_unit; ?></td><!-- จำนวน-->
                                                     <td class="text-right"><?php echo number_format($val_price_unit, 2); ?></td><!-- ราคาเปิด-->
-                                                    <td><?php echo $val_difference_amount . "%"; ?></td><!-- ต้นทุนลด-->                                      
-                                                    <td class="text-right"><?php echo number_format($cost, 2); ?></td><!-- ราคาต้นทุน-->
-                                                    <td><?php echo $val_price_difference; ?><?php echo ($type_money == "PERCENT") ? "%" : "฿"; ?></td><!-- คืนลด -->
-                                                    <td class="text-right"><?php echo number_format($val_price_product_refunds / $val_amount_product_refunds, 2); ?></td><!-- ราคาคืนต่อหน่วย-->
-                                                    <td class="text-right"><?php echo number_format($val_price_unit * $val_amount_product_refunds, 2); ?></td><!-- ราคาเปิดที่คูณจำนวนแล้ว-->
-                                                    <td class="text-right"><?php echo number_format($cost * $val_amount_product_refunds, 2); ?></td><!-- ราคาต้นทุนที่คูณจำนวนแล้ว-->
-                                                    <td class="text-right"><?php echo number_format($val_price_product_refunds, 2); ?></td><!-- ราคาคืนที่คูณจำนวนแล้ว-->
-                                                    <?php $price_product_refund_factory = $price_product_refund_factory + $val_price_product_refunds; ?>
+                                                    <td><?php echo number_format($val_difference_amount, 2) . "%"; ?></td><!-- คืนนลด-->                                      
+                                                    <td class="text-right"><?php echo number_format($cost, 2); ?></td><!-- ราคาคืน-->
+    <!--                                                    <td><?php //echo number_format($val_price_difference, 2);  ?><?php //echo ($type_money == "PERCENT") ? "%" : "฿";  ?></td> คืนลด 
+                                                    <td class="text-right"><?php //echo number_format($val_price_product_refunds, 2);  ?></td> ราคาคืนต่อหน่วย-->
+                                                    <td class="text-right"><?php echo number_format($val_price_unit * $val_amount_product_refunds, 2); ?></td><!-- ราคาเปิดรวม-->
+                                                    <td class="text-right"><?php echo number_format($val_amount_product_refunds * $cost, 2); ?></td><!-- ราคาคืนรวม-->
+                                                    <?php $price_product_refund_factory = $price_product_refund_factory + ($val_amount_product_refunds * $cost); ?>
                                                 </tr>
                                             <?php } ?>
                                         </tbody>
@@ -160,7 +158,7 @@ $price_product_refund_factory = 0;
                     <input type="hidden" name="price_product_refund_factory" value="<?= $price_product_refund_factory ?>">
                     <input type="hidden" name="real_price_pay_factory" value="<?= $real_price_pay_factory ?>">
 
-                    <center><h4>ยอดเงินที่โรงงานเรียกเก็บ <input type="text" class="form-control" value="<?php echo number_format($price, 2); ?>" readonly> </h4></center>
+                    <center><h4>ยอดเงินสั่งซื้อรวม <input type="text" class="form-control" value="<?php echo number_format($price, 2); ?>" readonly> </h4></center>
                     <center><h4>ยอดเงินสินค้าคืนรวม <input type="text" class="form-control" value="<?php echo number_format($price_product_refund_factory, 2); ?>" readonly> </h4></center>
                     <center><h4 class="text text-danger">สรุปยอดเงินที่จ่ายโรงงาน <input type="text" class="form-control" value="<?php echo number_format($real_price_pay_factory, 2); ?>" readonly></h4></center>
                     <center><h4>วันที่จ่ายเงินโรงงาน <input type="date" class="form-control" id="date_pay_factory" name="date_pay_factory" value="<?php echo $date->format('Y-m-d'); ?>" required></h4></center>
