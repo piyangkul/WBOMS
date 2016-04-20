@@ -152,7 +152,6 @@ session_start();
             }
         }
         );
-        document.getElementById('name_shop').disabled = true;
     }
 
 

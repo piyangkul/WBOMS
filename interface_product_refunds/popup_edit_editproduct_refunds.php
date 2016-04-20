@@ -24,7 +24,7 @@ foreach ($getProductRefunds as $value) {
     $total_price_all += $val_price * $val_amount;
 }
 $getHisdiff = hisDiff($idProduct, $idshop);
-$diff = $getHisdiff['price_difference'];
+$diff = $_GET['diff'];
 //$getTotal =
 ?>
 <script>

@@ -9,7 +9,7 @@ if ($_GET['p'] == "addProduct") {
     $idorder_ww = $_GET['idorder'];
     echo $idorder_ww;
     $getOrder = Gettotal_Order_Del($idorder_ww);
-    $total_price_product_refunds = $getOrder['total_price_product_refunds'] - $price_product_refunds;
+    $total_price_product_refunds = $getOrder['order_price_product_refunds'] - $price_product_refunds;
     echo $total_price_product_refunds;
     $idproductD = deleteProduct_Refunds($idproduct_refunds);
     $Edit = editTotal_order($idorder_ww, $total_price_product_refunds);

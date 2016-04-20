@@ -31,7 +31,7 @@ if (isset($_SESSION["productR"])) {//ถามว่า$_SESSION["unit"]ถู�
         for ($i = 1; $i <= count($products); $i++) {
             //$under_unit = $units[$i]['under_unit'];
             //$underIdUnit = $idUnit[$under_unit]; 
-            $idproduct[$i] = addProductRefunds($idorder, $products[$i]['idUnit'], $products[$i]['AmountProduct'], $products[$i]['price']);
+            $idproduct[$i] = addProductRefunds($idorder, $products[$i]['idUnit'], $products[$i]['AmountProduct'], $products[$i]['price'],$products[$i]['type_factory'],$products[$i]['diff']);
             echo "555";
         }
         echo "555";

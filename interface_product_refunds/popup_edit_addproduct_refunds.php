@@ -32,7 +32,6 @@ $idshop = $_GET['idshop'];
         document.getElementById("idproduct").value = productId["'" + name_shop + "'"];
         document.getElementById("idfactory").value = factoryId["'" + name_shop + "'"];
         document.getElementById("typefactory").value = factoryType["'" + name_shop + "'"];
-        //document.getElementById("difference").value = factoryDiff["'" + name_shop + "'"];
 
         var id = productId["'" + name_shop + "'"];
         $.ajax({type: "GET",
@@ -60,9 +59,9 @@ $idshop = $_GET['idshop'];
                 //alert(response);
             }
         });
-        
-        
-        alert(idshop);
+
+
+        //alert(idshop);
     }
 </script>
 <div class="modal-header">
@@ -129,17 +128,14 @@ $idshop = $_GET['idshop'];
         var AmountProduct = $("#AmountProduct").val();
         var price = $("#price").val().replace(",", "");
         var total_price = $("#total_price").val().replace(",", "");
-        /*  var x = parseFloat(document.getElementById('total_price_all').value);
-         var total_price_all = x + (AmountProduct * price);
-         document.getElementById("total_price_all").value = total_price_all;*/
-        //alert(idUnit);
-        //alert(AmountProduct);
-        //alert(DifferencePer);
-        //alert(DifferenceBath);
-        var p = "&idUnit=" + idUnit + "&productName=" + productName + "&factoryName=" + factoryName + "&AmountProduct=" + AmountProduct + "&price=" + price + "&total_price=" + total_price + "&idorder=" + idorder;
-       // alert(p);
+        var diff = $("#diff").val()
+        var type_factoty = $("#typefactory").val();
+        var total_price_all = $("#total_price_all").val().replace(",", "");
+
+        var p = "&idUnit=" + idUnit + "&productName=" + productName + "&factoryName=" + factoryName + "&AmountProduct=" + AmountProduct + "&price=" + price + "&total_price=" + total_price + "&idorder=" + idorder + "&type_factory=" + type_factoty + "&diff=" + diff + "&total_price_all=" + total_price_all;
+        alert(p);
         $.get("action_editProduct.php?p=addProduct" + p, function (data, status) {
-            //alert("Data: " + data + "\nStatus: " + status);
+            alert("Data: " + data + "\nStatus: " + status);
             if (data == "1") {
                 $("#alert").html("บันทึกแล้ว");
                 $("#idUnit").val("");

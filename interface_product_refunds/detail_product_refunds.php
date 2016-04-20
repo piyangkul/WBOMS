@@ -60,13 +60,16 @@ $dateEnd = $getDateShipment['date_end'];
                     <form action="action/action_editOrder.php?idorder=<?php echo $val_idorder; ?>" method="post"> 
                         <div class="row">
                             <div class="col-md-12">
-                                <h2> Edit Product Refunds </h2>   
-                                <h5> แก้ไขสินค้าคืน </h5>
+                                <h2> Detail Product Refunds </h2>   
+                                <h5> รายละเอียดสินค้าคืน </h5>
 
                             </div>
                         </div>
                         <!-- /. ROW  -->
                         <hr />
+                        <a href="product_refunds.php?cancel=cancel" class="btn btn-danger btn-lg">
+                            <span class="fa fa-arrow-circle-left"></span> Back
+                        </a>
                         <div class="row">
                             <div class="col-md-3"></div>
                             <div class="col-md-5">
@@ -101,7 +104,7 @@ $dateEnd = $getDateShipment['date_end'];
                                     <!-- ตารางสินค้าที่สั่งซื้อ -->
                                     <div class="panel panel-primary">
                                         <div class="panel-heading">
-                                            ตารางสินค้าที่สั่งซื้อ
+                                            ตารางสินค้าคืน
                                         </div>
                                         <div class="panel-body">
                                             <div class="table-responsive">
@@ -152,7 +155,7 @@ $dateEnd = $getDateShipment['date_end'];
                                                                 } else {
                                                                     ?>
                                                                     <td>
-                                                                         <font color="red"><b>สินค้ายังไม่ถูกจัดส่ง</b></font>
+                                                                        <font color="red"><b>สินค้ายังไม่ถูกจัดส่ง</b></font>
                                                                     </td>
                                                                     <?php
                                                                 }

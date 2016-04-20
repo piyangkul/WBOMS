@@ -15,6 +15,7 @@ $nameFactory = $getUnit['name_factory'];
 $nameProduct = $getUnit['name_product'];
 $idFactory = $getUnit['idfactory'];
 $type_factory = $getUnit['type_factory'];
+echo $type_factory;
 ?>
 <script>
     var Product = JSON.stringify(<?php echo getProduct4(); ?>);
@@ -97,7 +98,7 @@ $type_factory = $getUnit['type_factory'];
                 <select class="form-control" id="idUnit" name="idUnit" onchange="LoadData(this.value)" required>
                     <option value="<?= $idunit ?>"><?= $nameUnit; ?></option>
                     <?php
-                    $getUnit = edit_unit($idProduct, $idUnit);
+                    $getUnit = edit_unit($idProduct, $idunit);
                     foreach ($getUnit as $value) {
                         $val_idunit = $value['idunit'];
                         $val_name_unit = $value['name_unit'];
@@ -112,16 +113,19 @@ $type_factory = $getUnit['type_factory'];
                 <label for="amount_product">จำนวน</label>
                 <input type="text" class="form-control" id="AmountProduct" placeholder="กรอกจำนวนสินค้า" value ="<?= $amount; ?>" onkeyup="updateAmount()">
             </div>
-            <div class="form-group col-xs-12">
+            <!--<div class="form-group col-xs-12">
                 <label>ส่วนลดปัจจุบัน</label>
-                <input type="text" class="form-control" id="diff" readonly="true" value="<?= $diff ?>">
+                
             </div>
             <div class="form-group col-xs-12">
                 <label>ราคาเปิดต่อหน่วย</label>
-                <input type="text" class="form-control" id="price_factory" readonly="true" value="<?= number_format($price_factory, 2); ?>">
-            </div>
+
+            </div>-->
             <div class="form-group col-xs-12">
                 <label>ราคาคืนต่อหน่วย</label>
+                <input type="hidden" class="form-control" id="price_factory" readonly="true" value="<?= number_format($price_factory, 2); ?>">
+                <input type="hidden" class="form-control" id="diff" readonly="true" value="<?= $diff ?>">
+
                 <input type="text" class="form-control" id="price" readonly="true" value="<?= number_format($price, 2); ?>" onkeyup="updateAmount()">
             </div>
             <div class="form-group col-xs-12">
@@ -146,12 +150,15 @@ $type_factory = $getUnit['type_factory'];
         var AmountProduct = $("#AmountProduct").val();
         var price = $("#price").val().replace(',', '');
         var total_price = $("#total_price").val().replace(',', '');
+        var diff = $("#diff").val()
+        var price_factory = $("#price_factory").val().replace(',', '');
+        var type_factoty = $("#typefactory").val();
         var idproduct_refunds = <?= $idproduct_refunds ?>;
         //alert(idUnit);
         //alert(AmountProduct);
         //alert(DifferencePer);
         //alert(DifferenceBath);
-        var p = "&idproduct_refunds=" + idproduct_refunds + "&idUnit=" + idUnit + "&productName=" + productName + "&factoryName=" + factoryName + "&AmountProduct=" + AmountProduct + "&price=" + price + "&total_price=" + total_price;
+        var p = "&idproduct_refunds=" + idproduct_refunds + "&idUnit=" + idUnit + "&productName=" + productName + "&factoryName=" + factoryName + "&AmountProduct=" + AmountProduct + "&price=" + price + "&total_price=" + total_price + "&typefactory=" + type_factoty + "&price_factory=" + price_factory + "&diff=" + diff;
         //alert(p);
         $.get("action_addProduct.php?p=editProduct" + p, function (data, status) {
             //alert("Data: " + data + "\nStatus: " + status);

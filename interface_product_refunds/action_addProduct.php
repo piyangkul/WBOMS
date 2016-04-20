@@ -39,6 +39,10 @@ else if ($_GET['p'] == "editProduct") {
     $AmountProduct = $_GET['AmountProduct'];
     $price = $_GET['price'];
     $total_price = $_GET['total_price'];
+    $price_factory = $_GET['price_factory'];
+    $diff = $_GET['diff'];
+    $type_factory = $_GET['typefactory'];
+   
 
     $_SESSION["productR"][$product_refunds]['idUnit'] = $idUnit;
     $_SESSION["productR"][$product_refunds]["productName"] = $productName;
@@ -46,6 +50,9 @@ else if ($_GET['p'] == "editProduct") {
     $_SESSION["productR"][$product_refunds]["AmountProduct"] = $AmountProduct;
     $_SESSION["productR"][$product_refunds]["price"] = $price;
     $_SESSION["productR"][$product_refunds]["total_price"] = $total_price;
+    $_SESSION["productR"][$product_refunds]["diff"] = $diff;
+    $_SESSION["productR"][$product_refunds]["price_factory"] = $price_factory;
+    $_SESSION["productR"][$product_refunds]["type_factory"] = $type_factory;
 
     echo "1";
 } /* else if ($_GET['p'] == "chkUnitAdd") {
@@ -89,11 +96,9 @@ else if ($_GET['p'] == "editProduct") {
                 <th>ลำดับ</th>
                 <th>ชื่อสินค้า</th>
                 <th>ชื่อโรงงาน</th>
-
                 <th>จำนวน</th>
                 <th>ราคาเปิดต่อหน่วย</th>
                 <th>ส่วนลด</th>
-
                 <th>ราคาคืนต่อหน่วย</th>
                 <th>ราคาคืนทั้งหมด</th>
                 <th>การกระทำ</th> 
@@ -139,9 +144,9 @@ else if ($_GET['p'] == "editProduct") {
                         <td class="text-right"><?= number_format($_SESSION["productR"][$i]["price_factory"], 2); ?></td>
 
                         <?php if ($_SESSION["productR"][$i]["type_factory"] === "PERCENT") { ?>
-                            <td><?= $_SESSION["productR"][$i]["diff"] . " " . "%" ?></td>
+                            <td><?= $_SESSION["productR"][$i]["diff"] . " " . "%"?></td>
                         <?php } else { ?>
-                            <td><?= $_SESSION["productR"][$i]["diff"] . " " . "฿" ?></td>
+                            <td><?= $_SESSION["productR"][$i]["diff"] . " " . "฿".$_SESSION["productR"][$i]["type_factory"] ?></td>
                         <?php }
                         ?>
                         <td class="text-right"><?php echo number_format($_SESSION["productR"][$i]["price"], 2); ?></td>

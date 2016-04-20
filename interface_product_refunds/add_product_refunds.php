@@ -72,6 +72,8 @@ $dateEnd = $getDateShipment['date_end'];
                     }
                 });
                 document.getElementById("add_p").disabled = false;
+                
+                showUnit();
             }
             function LoadShipment(str) {
                 //var idshipment = document.getElementById("idShipment").value;
@@ -156,7 +158,7 @@ $dateEnd = $getDateShipment['date_end'];
                         <!-- /. ROW  -->
                         <hr />
 
-                        <a href="product_refunds.php" class="btn btn-danger btn-lg">
+                        <a href="action/action_reset.php?cancel=cancel" class="btn btn-danger btn-lg">
                             <span class="fa fa-arrow-circle-left"></span> Back
                         </a>
                         <div class="row">
@@ -262,7 +264,7 @@ $dateEnd = $getDateShipment['date_end'];
                                     </div>
                                     <div class = "row">
                                         <div class = "col-md-4"></div>
-                                        <a href = "product_refunds.php" class = "btn btn-danger btn-lg text-center">
+                                        <a href="action/action_reset.php?cancel=cancel" class = "btn btn-danger btn-lg text-center">
                                             <span class = "glyphicon glyphicon-floppy-remove"></span> ยกเลิก
                                         </a>
                                         <button type = "submit" class = "btn btn-info btn-lg text-center">

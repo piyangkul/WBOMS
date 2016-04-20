@@ -69,6 +69,9 @@ $dateEnd = $getDateShipment['date_end'];
                         </div>
                         <!-- /. ROW  -->
                         <hr />
+                        <a href="product_refunds.php?cancel=cancel" class="btn btn-danger btn-lg">
+                            <span class="fa fa-arrow-circle-left"></span> Back
+                        </a>
                         <div class="row">
                             <div class="col-md-3"></div>
                             <div class="col-md-5">
@@ -85,38 +88,22 @@ $dateEnd = $getDateShipment['date_end'];
                                                 <label>รอบ</label>
                                                 <div class="input-group">
                                                     <span class = "input-group-addon"><i class = "fa fa-calendar-o" ></i></span>
-                                                    <select class="form-control" id="idShipment" name="idShipment" onchange="LoadShipment(this.value)" disabled required>
-                                                        <?php
-                                                        $getShipment = getEditShipment($val_idshipment_period);
-                                                        $idShipment = $getShipment['idshipment_period'];
-                                                        $date_end = $getShipment['date_end'];
-                                                        $date_start = $getShipment['date_start'];
-                                                        ?>
 
-                                                        <option value="<?= $idShipment ?>"><?= $date_start . " ถึง " . $date_end ?>    </option>>
-                                                        <?php
-                                                        /* foreach ($getShipment as $value) {
-                                                          $idshipment = $value['idshipment_period'];
-                                                          $date_start = $value['date_start'];
-
-                                                          $date_end = $value['date_end'];
-                                                          $getCount = chkOrder($date_start, $date_end);
-                                                          $countId = $getCount['countOrder'];
-                                                          if ($countId > 0) {
-                                                          ?>
-                                                          <option value="<?= $idshipment ?>"><?= $date_start . " ถึง " . $date_end ?>    </option>>
-                                                          <?php
-                                                          }
-                                                          } */
-                                                        ?>
-                                                    </select>
-                                                    <input type = "hidden" class = "form-control" id = "maxDate" name = "maxDate"/>
-                                                    <input type = "hidden" class = "form-control" id = "minDate" name = "minDate"/>
+                                                    <?php
+                                                    $getShipment = getEditShipment($val_idshipment_period);
+                                                    $idShipment = $getShipment['idshipment_period'];
+                                                    $date_end = $getShipment['date_end'];
+                                                    $date_start = $getShipment['date_start'];
+                                                    ?>
+                                                    <input type = "text" class = "form-control" id = "name_shipment" name = "name_shipment" value="<?= $date_start . " ถึง " . $date_end ?>" disabled>
+                                                        <input type = "hidden" class = "form-control" id = "idShipment" name = "idShipment" value = "<?= $idShipment; ?>"/>
+                                                        <input type = "hidden" class = "form-control" id = "maxDate" name = "maxDate" value="<?= $date_end; ?>"/>
+                                                        <input type = "hidden" class = "form-control" id = "minDate" name = "minDate" value="<?= $date_start; ?>"/>
                                                 </div>
                                                 <label>วันที่สั่งซื้อ</label> 
                                                 <div class="input-group">
                                                     <span class="input-group-addon"><i class="fa fa-calendar-o" ></i></span>
-                                                    <input type="date" class="form-control" id ="date_order" name="date_order" value="<?= $val_date_product_refunds; ?>" max="<?= $dateEnd; ?>" disabled>
+                                                    <input type="date" class="form-control" id ="date_order" name="date_order" value="<?= $val_date_product_refunds; ?>" max="<?= $dateEnd; ?>">
                                                 </div>
                                             </div>                                        
 
@@ -134,12 +121,15 @@ $dateEnd = $getDateShipment['date_end'];
                                     <!-- ตารางสินค้าที่สั่งซื้อ -->
                                     <div class="panel panel-primary">
                                         <div class="panel-heading">
-                                            ตารางสินค้าที่สั่งซื้อ
+                                            ตารางสินค้าคืน
                                         </div>
+
                                         <div class="panel-body">
                                             <div class="table-responsive">
                                                 <a href="popup_edit_addproduct_refunds.php?idorder=<?= $val_idorder; ?>&idshop=<?= $idshop; ?>" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">
                                                     <span class="glyphicon glyphicon-plus"></span> เพิ่มสินค้า </a>
+                                                <br/>
+                                                <br/>
                                                 <table class="table table-striped table-bordered table-hover text-center" id="dataTables-example">
                                                     <thead>
                                                         <tr>
@@ -147,8 +137,10 @@ $dateEnd = $getDateShipment['date_end'];
                                                             <th>ชื่อสินค้า</th>
                                                             <th>ชื่อโรงงาน</th>
                                                             <th>จำนวน</th>
-                                                            <th>ราคาเปิดต่อสินค้า</th>
-                                                            <th>ราคาเปิดทั้งหมด</th>
+                                                            <th>ราคาเปิดต่อหน่วย</th>
+                                                            <th>ส่วนลด</th>
+                                                            <th>ราคาคืนต่อหน่วย</th>
+                                                            <th>ราคาคืนทั้งหมด</th>
                                                             <th>การกระทำ</th> 
                                                         </tr>
                                                     </thead>
@@ -167,14 +159,25 @@ $dateEnd = $getDateShipment['date_end'];
                                                             $val_price_product_refunds = $value['price_product_refunds'];
                                                             $total = $val_price_product_refunds * $val_amount_product_refunds;
                                                             $total_price_all += $total;
-                                                            $type_factory = $value['type_factory'];
+                                                            $type_factory = $value['type_product_refunds'];
+                                                            $difference_product_refunds = $value['difference_product_refunds'];
                                                             ?>
                                                             <tr>
                                                                 <td><?= $i; ?></td>
                                                                 <td><?= $val_name_product; ?></td>
                                                                 <td><?= $val_name_factory; ?></td>
-                                                            
-                                                                <td id="amount<?= $val_idproduct_refunds; ?>"><?= $val_amount_product_refunds." ".$val_name_unit; ?></td>
+
+                                                                <td id="amount<?= $val_idproduct_refunds; ?>"><?= $val_amount_product_refunds . " " . $val_name_unit; ?></td>
+                                                                <?php if ($type_factory === "PERCENT") { ?>
+                                                                    <td id="price<?= $val_idproduct_refunds; ?>"><?= number_format(($val_price_product_refunds * 100) / (100 - $difference_product_refunds), 2); ?></td>
+                                                                <?php } else { ?>
+                                                                    <td id="price<?= $val_idproduct_refunds; ?>"><?= number_format(($val_price_product_refunds * 1) - ($difference_product_refunds * 1), 2); ?></td>
+                                                                <?php } ?>
+                                                                <?php if ($type_factory === "PERCENT") { ?>
+                                                                    <td id="diff<?= $val_idproduct_refunds; ?>"><?= $difference_product_refunds . " %"; ?></td>
+                                                                <?php } else { ?>
+                                                                    <td id="diff<?= $val_idproduct_refunds; ?>"><?= $difference_product_refunds . " ฿"; ?></td>
+                                                                <?php } ?>
                                                                 <td id="price_table<?= $val_idproduct_refunds; ?>" class ="text-right"><?= number_format($val_price_product_refunds, 2); ?></td>
                                                                 <td id="total_table<?= $val_idproduct_refunds; ?>" class ="text-right"><?= number_format($total, 2); ?></td>
                                                                 <?php
@@ -188,7 +191,7 @@ $dateEnd = $getDateShipment['date_end'];
                                                                     <td>
                                                                         <!--Button trigger modal -->
 
-                                                                        <a href = "popup_edit_editproduct_refunds.php?idproduct_refunds=<?= $val_idproduct_refunds; ?>&idorder_product_refunds=<?= $val_idorder; ?>&idshop=<?= $idshop; ?>&type_factory=<?= $type_factory; ?>" id="editProduct<?= $val_idproduct_refunds; ?>" name="editProduct<?= $val_idproduct_refunds; ?>" class="btn btn-warning " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="แก้ไข">
+                                                                        <a href = "popup_edit_editproduct_refunds.php?idproduct_refunds=<?= $val_idproduct_refunds; ?>&idorder_product_refunds=<?= $val_idorder; ?>&idshop=<?= $idshop; ?>&type_factory=<?= $type_factory; ?>&diff=<?= $difference_product_refunds; ?>" id="editProduct<?= $val_idproduct_refunds; ?>" name="editProduct<?= $val_idproduct_refunds; ?>" class="btn btn-warning " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="แก้ไข">
                                                                             <span class = "glyphicon glyphicon-edit"></span>
                                                                         </a>
                                                                         <a class = "btn btn-danger" data-toggle = "modal" data-target = "#myModal3" data-toggle = "tooltip" title = "ลบ" id="deleteProduct<?= $val_idproduct_refunds; ?>" name="deleteProduct<?= $val_idproduct_refunds; ?>" onclick="delProduct(<?= $val_idproduct_refunds; ?>,<?= $val_price_product_refunds * $val_amount_product_refunds; ?>);">
@@ -225,13 +228,13 @@ $dateEnd = $getDateShipment['date_end'];
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-4"></div>                              
-                                        <button type="submit" class="btn btn-info btn-lg text-center">
-                                            <span class="glyphicon glyphicon-floppy-save"></span> บันทึก
-                                        </button>
+                                        <div class="col-md-4"></div>
                                         <a href="product_refunds.php" class="btn btn-danger btn-lg text-center">
                                             <span class="glyphicon glyphicon-floppy-remove"></span> ยกเลิก
                                         </a>
+                                        <button type="submit" class="btn btn-info btn-lg text-center">
+                                            <span class="glyphicon glyphicon-floppy-save"></span> บันทึก
+                                        </button>
                                     </div>
                             </div>
                         </div>

@@ -426,10 +426,10 @@ function deleteOrder($idorder) {
 }
 
 //เพิ่มสินค้าคืน
-function addProductRefunds($idorder_product_refunds, $idunit, $amount_product_refunds, $price_product_refunds) {
+function addProductRefunds($idorder_product_refunds, $idunit, $amount_product_refunds, $price_product_refunds, $type_product_refunds, $difference_product_refunds) {
     $conn = dbconnect();
-    $SQLCommand = "INSERT INTO `product_refunds`(order_product_refunds_idorder_product_refunds,idunit,amount_product_refunds,price_product_refunds) "
-            . "VALUES (:idorder_product_refunds,:idunit,:amount_product_refunds,:price_product_refunds)";
+    $SQLCommand = "INSERT INTO `product_refunds`(order_product_refunds_idorder_product_refunds,idunit,amount_product_refunds,price_product_refunds,type_product_refunds,difference_product_refunds) "
+            . "VALUES (:idorder_product_refunds,:idunit,:amount_product_refunds,:price_product_refunds,:type_product_refunds,:difference_product_refunds)";
 
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
@@ -437,7 +437,9 @@ function addProductRefunds($idorder_product_refunds, $idunit, $amount_product_re
                 ":idorder_product_refunds" => $idorder_product_refunds,
                 ":idunit" => $idunit,
                 ":amount_product_refunds" => $amount_product_refunds,
-                ":price_product_refunds" => $price_product_refunds
+                ":price_product_refunds" => $price_product_refunds,
+                ":type_product_refunds" => $type_product_refunds,
+                ":difference_product_refunds" => $difference_product_refunds
             )
     );
 
@@ -489,7 +491,7 @@ function getEditProductRefunds($id) {
 
 function getProductRefunds($id) {
     $conn = dbconnect();
-    $SQLCommand = "SELECT product_refunds.idproduct_refunds,product_refunds.amount_product_refunds,product_refunds.idunit,unit.name_unit,price_product_refunds,product_refunds.amount_product_refunds,factory.name_factory,product.name_product,product_refunds.status_product_refund,factory.type_factory FROM product_refunds INNER JOIN unit ON unit.idunit = product_refunds.idunit INNER JOIN product ON product.idproduct = unit.idproduct INNER JOIN factory ON factory.idfactory = product.idfactory WHERE order_product_refunds_idorder_product_refunds = :id ";
+    $SQLCommand = "SELECT product_refunds.idproduct_refunds,product_refunds.amount_product_refunds,product_refunds.idunit,unit.name_unit,price_product_refunds,product_refunds.amount_product_refunds,factory.name_factory,product.name_product,product_refunds.status_product_refund,factory.type_factory,product_refunds.type_product_refunds,product_refunds.difference_product_refunds FROM product_refunds INNER JOIN unit ON unit.idunit = product_refunds.idunit INNER JOIN product ON product.idproduct = unit.idproduct INNER JOIN factory ON factory.idfactory = product.idfactory WHERE order_product_refunds_idorder_product_refunds = :id ";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
@@ -538,7 +540,7 @@ function EditProductRefunds($id) {
 
 function Gettotal_Order_Del($id) {
     $conn = dbconnect();
-    $SQLCommand = "SELECT idorder_product_refunds,total_price_product_refunds FROM order_product_refunds WHERE idorder_product_refunds = :id";
+    $SQLCommand = "SELECT idorder_product_refunds,order_price_product_refunds FROM order_product_refunds WHERE idorder_product_refunds = :id";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
@@ -642,7 +644,7 @@ function editOrderRefunds($idorder_product_refunds, $date_product_refunds, $deta
     $conn = dbconnect();
     $date = str_replace('-', '/', $date_product_refunds);
     $Nextdate = date('Y-m-d', strtotime($date . "0 days"));
-    $SQLCommand = "UPDATE `order_product_refunds` SET date_product_refunds = :date_product_refunds,detail_product_refunds = :detail_product_refunds ,total_price_product_refunds = :total_price_all "
+    $SQLCommand = "UPDATE `order_product_refunds` SET date_product_refunds = :date_product_refunds,detail_product_refunds = :detail_product_refunds ,order_price_product_refunds = :total_price_all "
             . "WHERE idorder_product_refunds = :idorder_product_refunds";
 
     $SQLPrepare = $conn->prepare($SQLCommand);
@@ -664,7 +666,7 @@ function editOrderRefunds($idorder_product_refunds, $date_product_refunds, $deta
 
 function editTotal_order($idorder_product_refunds, $total_price_product_refunds) {
     $conn = dbconnect();
-    $SQLCommand = "UPDATE order_product_refunds SET total_price_product_refunds = :total_price_product_refunds WHERE idorder_product_refunds = :idorder_product_refunds";
+    $SQLCommand = "UPDATE order_product_refunds SET order_price_product_refunds = :total_price_product_refunds WHERE idorder_product_refunds = :idorder_product_refunds";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(

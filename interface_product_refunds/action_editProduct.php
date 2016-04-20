@@ -11,10 +11,13 @@ if ($_GET['p'] == "addProduct") {
     $AmountProduct = $_GET['AmountProduct'];
     $price = $_GET['price'];
     $total_price = $_GET['total_price'];
-    $total_price_all = $_GET['total_price_all'];
-    $idproduct = addProductRefunds($idorder, $idUnit, $AmountProduct, $price);
+    $total_price_all = $_GET['total_price_all'] + ($price * $AmountProduct);
+    $diff = $_GET['diff'];
+    $type_factory = $_GET['type_factory'];
+    $idproduct = addProductRefunds($idorder, $idUnit, $AmountProduct, $price, $type_factory, $diff);
+
     $Edit = editTotal_order($idorder, $total_price_all);
-    header("location: ../edit_product_refunds.php");
+    //header("location: ../edit_product_refunds.php");*/
     echo "1";
 }
 ?>
