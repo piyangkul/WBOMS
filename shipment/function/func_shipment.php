@@ -816,6 +816,25 @@ function getProductDetail_shipment($idshipment_period, $idfactory, $idtransport,
     return $resultArr;
 }
 
+//shipment2,3 แสดงราคาที่สั่ซื้อ
+function getPrice_orderProductshipment($idshipment_period, $idfactory) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT order_transport.idorder_transport,order_transport.idtransport,order_transport.volume,order_transport.number,order_transport.price_transport,order_transport.status_shipment,product.name_product,product_order.amount_product_order,unit.name_unit,unit.price_unit,product.difference_amount_product,product_order.difference_product_order,product_order.type_product_order FROM transport JOIN order_transport ON transport.idtransport=order_transport.idtransport JOIN shipment_period ON order_transport.shipment_period_idshipment_period=shipment_period.idshipment_period JOIN product_order ON order_transport.product_order_idproduct_order=product_order.idproduct_order JOIN unit ON product_order.idunit=unit.idunit JOIN product ON unit.idproduct=product.idproduct JOIN factory ON product.idfactory=factory.idfactory WHERE shipment_period.idshipment_period=:idshipment_period AND factory.idfactory=:idfactory ";
+    //echo $SQLCommand;
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idshipment_period" => $idshipment_period,
+                ":idfactory" => $idfactory
+            )
+    );
+    $resultArr = array();
+    while ($result = $SQLPrepare->fetch(PDO::FETCH_ASSOC)) {
+        array_push($resultArr, $result);
+    }
+    return $resultArr;
+}
+
 //popup_detail_shipment Confirmเปลี่ยนสถานะ และ action_delPayfactory อัพเดทสถานะสินค้าว่ายังไม่จ่าย
 function editStatus_check_price($idorder_transport) {
     $conn = dbconnect();
@@ -874,7 +893,7 @@ function getProduct_refunds($idfactory, $idshipment_period) {
 //    $SQLCommand = "SELECT shipment_period.idshipment_period, shop.idshop,shop.name_shop,factory.idfactory,factory.name_factory,product.idproduct,product.name_product,unit.price_unit,unit.name_unit,product_refunds.amount_product_refunds,product.difference_amount_product,factory.difference_amount_factory,difference.price_difference,difference.type_money,order_product_refunds.total_price_product_refunds,(product_refunds.amount_product_refunds*order_product_refunds.total_price_product_refunds) AS total_product_refund "
 //            . "FROM order_product_refunds JOIN product_refunds ON order_product_refunds.idorder_product_refunds=product_refunds.order_product_refunds_idorder_product_refunds JOIN product ON product_refunds.product_idproduct=product.idproduct JOIN factory ON factory.idfactory=product.idfactory JOIN unit ON product.idproduct=unit.idproduct JOIN difference ON product.idproduct=difference.idproduct JOIN shop ON order_product_refunds.shop_idshop=shop.idshop JOIN shipment_period ON order_product_refunds.shipment_period_idshipment_period=shipment_period.idshipment_period "
 //            . "WHERE product_refunds.idunit_product_refund=unit.idunit AND difference.idshop=shop.idshop AND factory.idfactory=:idfactory AND shipment_period.idshipment_period=:idshipment_period";
-    $SQLCommand = "SELECT shipment_period.idshipment_period, shop.idshop,shop.name_shop,factory.idfactory,factory.name_factory,product.idproduct,product.name_product,unit.price_unit,unit.name_unit,product_refunds.amount_product_refunds,product.difference_amount_product,factory.difference_amount_factory,difference.price_difference,difference.type_money,product_refunds.price_product_refunds FROM order_product_refunds JOIN product_refunds ON order_product_refunds.idorder_product_refunds=product_refunds.order_product_refunds_idorder_product_refunds JOIN product ON product_refunds.product_idproduct=product.idproduct JOIN factory ON factory.idfactory=product.idfactory JOIN unit ON product.idproduct=unit.idproduct JOIN difference ON product.idproduct=difference.idproduct JOIN shop ON order_product_refunds.shop_idshop=shop.idshop JOIN shipment_period ON order_product_refunds.shipment_period_idshipment_period=shipment_period.idshipment_period WHERE product_refunds.idunit_product_refund=unit.idunit AND difference.idshop=shop.idshop AND factory.idfactory=:idfactory AND shipment_period.idshipment_period=:idshipment_period ";
+    $SQLCommand = "SELECT shipment_period.idshipment_period, shop.idshop,shop.name_shop,factory.idfactory,factory.name_factory,product.idproduct,product.name_product,unit.price_unit,unit.name_unit,product_refunds.amount_product_refunds,product.difference_amount_product,factory.difference_amount_factory,difference.price_difference,difference.type_money,product_refunds.price_product_refunds FROM order_product_refunds JOIN product_refunds ON order_product_refunds.idorder_product_refunds=product_refunds.order_product_refunds_idorder_product_refunds JOIN unit ON product_refunds.idunit=unit.idunit JOIN product ON product.idproduct=unit.idproduct JOIN factory ON product.idfactory=factory.idfactory JOIN difference ON product.idproduct=difference.idproduct JOIN shop ON order_product_refunds.shop_idshop=shop.idshop JOIN shipment_period ON order_product_refunds.shipment_period_idshipment_period=shipment_period.idshipment_period WHERE product_refunds.idunit=unit.idunit AND difference.idshop=shop.idshop AND factory.idfactory=:idfactory AND shipment_period.idshipment_period=:idshipment_period ";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(

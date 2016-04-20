@@ -113,6 +113,7 @@ $val_name_factory = $getFactoryByID['name_factory'];
                                                     <th><div align="center">จำนวนรายการที่ส่ง</div></th><!-- จำนวนรายการที่สั่งคงค้าง/ส่ง -->
                                                     <th><div align="center">ยอดเงินที่สั่งซื้อ</div></th>
                                                     <th><div align="center">ค่าขนส่งรวม</div></th>
+                                                    <th><div align="center">สินค้าคืนรวม</div></th>
                                                     <th><div align="center">ยอดเงินรวม</div></th>
                                                     <th><div align="center">สถานะคำสั่งซื้อ</div></th>
                                                     <th><div align="center">การกระทำ</div></th>
@@ -142,9 +143,51 @@ $val_name_factory = $getFactoryByID['name_factory'];
 //                                                    if ($leftArr["$val_idfactory"]['count_left'] == NULL) {
 //                                                        continue;
 //                                                    }
+                                                    $sum_sale = 0;
+                                                    $sum_refund = 0;
                                                     $getPrice_transportByshipment_period = getPrice_transportByshipment_period($idshipment_period, $val_idfactory2);
-                                                    $total_price = $val_price + $getPrice_transportByshipment_period['sum_price_transport'];
-                                                    ?>
+                                                    $getProduct_refunds = getProduct_refunds($val_idfactory2, $idshipment_period);
+                                                    foreach ($getProduct_refunds as $value) {
+                                                        $val_amount_product_refunds = $value['amount_product_refunds']; //จำนวนที่คืน
+                                                        $val_price_unit = $value['price_unit'];
+                                                        //ต้นทุนลด
+                                                        if ($value['difference_amount_product'] == null) {
+                                                            $val_difference_amount = $value['difference_amount_factory'];
+                                                        } else {
+                                                            $val_difference_amount = $value['difference_amount_product'];
+                                                        }
+                                                        $cost = $val_price_unit - (($val_difference_amount / 100.0) * $val_price_unit); //ราคาคืน
+                                                        $sum_refund = $sum_refund + ($val_amount_product_refunds * $cost); //สินค้าคืนรวม
+                                                    }
+
+                                                    //คำนวณยอดเงินที่สั่งซื้อ
+                                                    $getPrice_orderProductshipment = getPrice_orderProductshipment($idshipment_period, $val_idfactory2);
+                                                    foreach ($getPrice_orderProductshipment as $value) {
+                                                        $val_amount_product_order = $value['amount_product_order'];
+                                                        $val_price_unit = $value['price_unit']; //ราคาเปิด
+
+                                                        if ($value['difference_amount_product'] == null) {
+                                                            $val_difference_amount = $value['difference_amount_factory'];
+                                                        } else {
+                                                            $val_difference_amount = $value['difference_amount_product'];
+                                                        }
+                                                        $cost = $val_price_unit - (($val_difference_amount / 100.0) * $val_price_unit);
+
+                                                        $val_difference_product_order = $value['difference_product_order']; //ขายลด
+                                                        $val_type_product_order = $value['type_product_order'];
+                                                        if ($value['type_product_order'] == "PERCENT") {
+                                                            $cost2 = $val_price_unit - (($val_difference_product_order / 100.0) * $val_price_unit);
+                                                        } else {
+                                                            $cost2 = $val_price_unit - $val_difference_product_order;
+                                                        }
+                                                        ?>
+                                                        <?php
+                                                        $sum_sale = $sum_sale + $cost * $val_amount_product_order;
+                                                        $total_price = $sum_sale + $getPrice_transportByshipment_period['sum_price_transport'];
+                                                        $total_price_refunds = $sum_sale + $getPrice_transportByshipment_period['sum_price_transport'] - $sum_refund;
+                                                        ?>
+                                                    <?php } ?>
+
                                                     <tr>
                                                         <td><?php echo $i; ?></td>
                                                         <td><?php echo $val_name_factory; ?></td>
@@ -163,10 +206,11 @@ $val_name_factory = $getFactoryByID['name_factory'];
                                                             ?>
                                                             <td><?php echo $val_price; ?></td>
                                                         <?php } else { ?>
-                                                            <td class="text-right"><?php echo number_format($val_price, 2); ?></td>
+                                                            <td class="text-right"><?php echo number_format($sum_sale, 2); ?></td>
                                                         <?php } ?>
                                                         <td class="text-right"><?php echo number_format($getPrice_transportByshipment_period['sum_price_transport'], 2); ?></td>
-                                                        <td class="text-right"><?php echo number_format($total_price, 2); ?></td>
+                                                        <td class="text-right"><?php echo number_format($sum_refund, 2); ?></td>
+                                                        <td class="text-right"><?php echo number_format($total_price_refunds, 2); ?></td>
                                                         <td>
                                                             <?php if ($val_status_shipment == NULL) { ?>
                                                                 <img src = "../images/level0.png" title="รอเพิ่มข้อมูลการส่ง">
@@ -209,13 +253,13 @@ $val_name_factory = $getFactoryByID['name_factory'];
                                                                                                 <span class = "glyphicon glyphicon-list-alt"></span> <span class = "fa fa-building-o fa-lg"></span>
                                                                                             </a>
                                                                                             <a href="action/action_delPayfactory.php?page=shipment2&idshipment_period=<?php echo $idshipment_period; ?>&idfactory=<?php echo $val_idfactory2; ?>&price=<?php echo $total_price; ?>&status_shipment=<?php echo $val_status_shipment; ?>" onclick="if (!confirm('คุณต้องการลบหรือไม่')) {
-                                                                                                        return false;
-                                                                                                    }" class="btn btn-danger " title="ลบการจ่ายเงินโรงงาน">
+                                                                                                                return false;
+                                                                                                            }" class="btn btn-danger " title="ลบการจ่ายเงินโรงงาน">
                                                                                                 <span class="fa fa-trash fa-lg fa-fw"></span><span class = "fa fa-building-o fa-lg"></span>
                                                                                             </a>
                                                                                             <a href="action/action_finish.php?idshipment_period=<?php echo $idshipment_period; ?>&idfactory=<?php echo $val_idfactory2; ?>&price=<?php echo $total_price; ?>&status_shipment=<?php echo $val_status_shipment; ?>" onclick="if (!confirm('คุณต้องการกดเสร็จสิ้นหรือไม่')) {
-                                                                                                        return false;
-                                                                                                    }" class="btn btn-outline" title="เปลี่ยนสถานะเป็นเสร็จสิ้น">
+                                                                                                                return false;
+                                                                                                            }" class="btn btn-outline" title="เปลี่ยนสถานะเป็นเสร็จสิ้น">
                                                                                                 <span class="glyphicon glyphicon-ok"></span>
                                                                                             </a>
                                                                                         <?php } elseif ($val_status_shipment == 'finish') { ?>
@@ -257,9 +301,9 @@ $val_name_factory = $getFactoryByID['name_factory'];
                                                                                 <!-- METISMENU SCRIPTS -->
                                                                                 <script src="../assets/js/jquery.metisMenu.js"></script>
                                                                                 <script>
-                                                                                        $(document.body).on('hidden.bs.modal', function () {
-                                                                                            $('#myModal').removeData('bs.modal');
-                                                                                        });
+                                                                                                $(document.body).on('hidden.bs.modal', function () {
+                                                                                                    $('#myModal').removeData('bs.modal');
+                                                                                                });
                                                                                 </script>
                                                                                 <script>
                                                                                     $(document.body).on('hidden.bs.modal', function () {
