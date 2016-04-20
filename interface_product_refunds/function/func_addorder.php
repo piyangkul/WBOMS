@@ -428,7 +428,7 @@ function deleteOrder($idorder) {
 //เพิ่มสินค้าคืน
 function addProductRefunds($idorder_product_refunds, $idunit, $amount_product_refunds, $price_product_refunds) {
     $conn = dbconnect();
-    $SQLCommand = "INSERT INTO `product_refunds`(idorder_product_refunds,idunit,amount_product_refunds,price_product_refunds) "
+    $SQLCommand = "INSERT INTO `product_refunds`(order_product_refunds_idorder_product_refunds,idunit,amount_product_refunds,price_product_refunds) "
             . "VALUES (:idorder_product_refunds,:idunit,:amount_product_refunds,:price_product_refunds)";
 
     $SQLPrepare = $conn->prepare($SQLCommand);
@@ -454,7 +454,7 @@ function addOrderProductRefunds($idshop, $date_order, $detail_order, $price_prod
     $Nextdate = date('Y-m-d', strtotime($date . "0 days"));
     //$val_date; //คือวันที่ที่จะแก้ไข
     //$Nextdate; //คือวันที่ที่จะลงdbคือถูกแปลงแล้ว
-    $SQLCommand = "INSERT INTO `order_product_refunds`(shop_idshop,date_product_refunds,detail_product_refunds,total_price_product_refunds,shipment_period_idshipment_period) "
+    $SQLCommand = "INSERT INTO `order_product_refunds`(shop_idshop,date_product_refunds,detail_product_refunds,order_price_product_refunds,shipment_period_idshipment_period) "
             . "VALUES (:idshop, :date_order,:detail_order,:price_product_refunds,:idshipment )";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(

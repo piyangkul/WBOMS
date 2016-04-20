@@ -17,7 +17,7 @@ function getOrder() {
 
 function getProductOrderRefunds() {
     $conn = dbconnect();
-    $SQLCommand = "SELECT order_product_refunds.idorder_product_refunds,shop_idshop,shop.name_shop,date_product_refunds,total_price_product_refunds,COUNT(product_refunds.idproduct_refunds) AS idproduct_refunds FROM `order_product_refunds` INNER JOIN shop ON shop.idshop=order_product_refunds.shop_idshop INNER JOIN product_refunds ON product_refunds.idorder_product_refunds = order_product_refunds.idorder_product_refunds GROUP BY order_product_refunds.idorder_product_refunds ";
+    $SQLCommand = "SELECT order_product_refunds.idorder_product_refunds,shop_idshop,shop.name_shop,date_product_refunds,order_product_refunds.order_price_product_refunds,COUNT(product_refunds.idproduct_refunds) AS idproduct_refunds FROM `order_product_refunds` INNER JOIN shop ON shop.idshop=order_product_refunds.shop_idshop INNER JOIN product_refunds ON product_refunds.order_product_refunds_idorder_product_refunds = order_product_refunds.idorder_product_refunds GROUP BY order_product_refunds.idorder_product_refunds ";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
     );

@@ -105,7 +105,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                     $val_idorder_product_refunds = $value['idorder_product_refunds'];
                                                     $val_name_shop = $value['name_shop'];
                                                     $val_date_product_refunds = $value['date_product_refunds'];
-                                                    $val_price_product_refunds = $value['total_price_product_refunds'];
+                                                    $val_price_product_refunds = $value['order_price_product_refunds'];
                                                     $val_idproduct_refunds = $value['idproduct_refunds'];
 
                                                     //$val_count_idproduct_order = $value['count_idproduct_order'];
