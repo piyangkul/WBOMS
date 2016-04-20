@@ -2,25 +2,24 @@
 
 require_once dirname(__FILE__) . '/../function/func_addorder.php';
 
-$idorder = $_GET['idorder'];
+$idorder_product_refunds = $_GET['idorder'];
 //echo $idproduct;
+$chkDel = chkDelete($idorder_product_refunds);
+$status = $chkDel['status_product_refund'];
+echo $status;
+if ($status === 'returned') {
+    header("location: ../product_refunds.php?p=product&action=delErrorStatus");
+} else {
+    $delProduct_refunds = deleteProduct_Refunds_Order($idorder_product_refunds);
 
-$delProduct_Order = deleteOrderProduct_Refunds($idorder);
-echo $delProduct_Order;
-if ($delProduct_Order) {
-    $delOrder = deleteOrder($idorder);
-    //echo "55";
+    $delOrder = deleteOrderProduct_Refunds($idorder_product_refunds);
     if ($delOrder) {
         header("location: ../product_refunds.php?p=product&action=delCompleted");
     } else {
         header("location: ../product_refunds.php?p=product&action=delCompleted");
-        //echo"Error1";
-        // header("location: ../order.php?p=product&action=delError");
+        echo"Error1";
+        header("location: ../product_refunds.php?p=product&action=delError");
     }
-} else {
-    header("location: ../product_refunds.php?p=product&action=delCompleted");
-    //echo "Error2";
-    // header("location: ../order.php?p=product&action=delError");
-}
+} 
 
 

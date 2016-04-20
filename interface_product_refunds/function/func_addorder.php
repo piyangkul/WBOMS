@@ -589,10 +589,27 @@ function deleteProduct_Refunds($idproduct_refunds) {
     }
 }
 
+function deleteProduct_Refunds_Order($idorder_product_refunds) {
+    $conn = dbconnect();
+    $SQLCommand = "DELETE FROM product_refunds WHERE order_product_refunds_idorder_product_refunds =:idorder_product_refunds";
+
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idorder_product_refunds" => $idorder_product_refunds
+            )
+    );
+
+    if ($SQLPrepare->rowCount() > 0) {
+        return TRUE;
+    } else {
+        return FALSE;
+    }
+}
+
 function deleteOrderProduct_Refunds($idproduct_refunds) {
     $conn = dbconnect();
     $SQLCommand = "DELETE FROM order_product_refunds WHERE idorder_product_refunds=:idproduct_refunds ";
-
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
@@ -607,23 +624,19 @@ function deleteOrderProduct_Refunds($idproduct_refunds) {
     }
 }
 
-/* function getPrice_DelPriceProduct($idproduct_refunds) {
-  $conn = dbconnect();
-  $SQLCommand = "DELETE FROM order_product_refunds WHERE idorder_product_refunds=:idproduct_refunds ";
-
-  $SQLPrepare = $conn->prepare($SQLCommand);
-  $SQLPrepare->execute(
-  array(
-  ":idproduct_refunds" => $idproduct_refunds
-  )
-  );
-
-  if ($SQLPrepare->rowCount() > 0) {
-  return TRUE;
-  } else {
-  return FALSE;
-  }
-  } */
+function chkDelete($idorder_product_refunds) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT * FROM product_refunds WHERE product_refunds.order_product_refunds_idorder_product_refunds = :idorder_product_refunds AND product_refunds.status_product_refund = 'returned'";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idorder_product_refunds" => $idorder_product_refunds
+            )
+    );
+    //$resultArr = array();
+    $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
+    return $result;
+}
 
 function editOrderRefunds($idorder_product_refunds, $date_product_refunds, $detail_product_refunds, $total_price_all) {
     $conn = dbconnect();

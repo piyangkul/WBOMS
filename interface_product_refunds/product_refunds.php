@@ -80,6 +80,8 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                 echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถเพิ่มได้เนื่องจากคุณได้เพิ่มชื่อสินค้าสินค้าไปแล้ว</h4></center>';
                                             } else if ($_GET['action'] == "addErrorNotHaveProduct") {
                                                 echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถเพิ่มได้เนื่องจากคุณไม่ได้กรอกสินค้า</h4></center>';
+                                            } else if ($_GET['action'] == "delErrorStatus") {
+                                                echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถลบได้เพราะมีสินค้าที่ถูกคืนไปแล้ว</h4></center>';
                                             }
                                         }
                                         ?>
