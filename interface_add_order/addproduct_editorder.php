@@ -1,8 +1,7 @@
-    ﻿<?php
+<?php
 session_start();
 if (!isset($_SESSION['member']))
     header('Location: ../index.php');
-
 $p = 'history_order';
 if (isset($_GET['p']) && !empty($_GET['p'])) {
     $p = $_GET['p'];
@@ -141,9 +140,7 @@ $idorder = $_GET['idorder'];
                     }
                 });
             }
-
         </script>
-
     </head>
     <body>
         <div id="wrapper">
@@ -192,18 +189,18 @@ $idorder = $_GET['idorder'];
                                     <input type="text" class="form-control" id="AmountProduct" placeholder="กรอกจำนวนสินค้า" onkeyup="updateAmount()"></input>
                                 </div>
                                 <div class="form-group col-xs-12">
-                                    <label for="disabled_price_unit">ราคาเปิดต่อหน่วย //ระบบคิดอัตโนมัติตามหน่วยที่เลือก</label>
+                                    <label for="disabled_price_unit">ราคาเปิดต่อหน่วย</label>
                                     <input type="text" class="form-control" id="price" readonly="true"></input>
                                 </div>
                                 <div class="form-group col-xs-12">
-                                    <label for="disabled_price_unit">ราคาเปิดทั้งหมด //ระบบคิดอัตโนมัติตามหน่วยที่เลือก</label>
+                                    <label for="disabled_price_unit">ราคาเปิดทั้งหมด</label>
                                     <input type="text" class="form-control" id="total_price" readonly="true"></input>
                                 </div>
                                 <div class="form-group col-xs-12 diff" id="PERCENT">
                                     <div class="col-md-12 col-sm-12 ">
                                         <div class="panel panel-info">
                                             <div class="panel-heading">
-                                                <label>ส่วนต่างราคาขาย//ระบบจะดึงส่วนต่างราคาขายที่ให้แต่ละร้านค้า(สินค้าเชื่อมร้านค้า) </label>
+                                                <label>ส่วนต่างราคาขาย</label>
                                             </div>
                                             <div class="panel-body">
                                                 <div class="table-responsive">
@@ -241,7 +238,7 @@ $idorder = $_GET['idorder'];
                                     </div>
                                 </div>
                                 <div class="form-group col-xs-12">
-                                    <label for="exampleInputName2"> ดังนั้นราคาขาย//ระบบคำนวนอัตโนมัติ(ราคาเปิด-ส่วนต่างราคาขาย=560-44.8) </label>
+                                    <label for="exampleInputName2">ราคาขายจริง</label>
                                     <input  type="text" class="form-control" id="total" readonly="true" value=""></input>
                                 </div>
                             </div>

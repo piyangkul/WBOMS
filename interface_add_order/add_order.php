@@ -25,7 +25,7 @@ $nameshop = "";
 if (isset($_SESSION['idshop'])) {
     $idshop = $_SESSION['idshop'];
     $getShopAdd_Order = getShopAdd_Order($idshop);
-    $nameshop = $getShopAdd_Order['name_shop'].' ('.$getShopAdd_Order['code_shop'].')';
+    $nameshop = $getShopAdd_Order['name_shop'] . ' (' . $getShopAdd_Order['code_shop'] . ')';
 }if (isset($_SESSION['detail'])) {
     $detail = $_SESSION['detail'];
 }
@@ -90,6 +90,12 @@ if (isset($_SESSION['idshop'])) {
                     {
                     }
                 });
+                if (document.getElementById("idshop").value > 0) {
+                    document.getElementById('add_p').disabled = false;
+                } else {
+                    document.getElementById('add_p').disabled = true;
+                }
+
             }
             function s_date() {
                 var date = document.getElementById("date_order").value;
@@ -104,7 +110,7 @@ if (isset($_SESSION['idshop'])) {
                 }
                 );
             }
-            function s_time(){
+            function s_time() {
                 var time = document.getElementById("time_order").value;
                 $.ajax({type: "GET",
                     url: "action/action_session.php",
@@ -117,7 +123,7 @@ if (isset($_SESSION['idshop'])) {
                 }
                 );
             }
-            function s_detail(){
+            function s_detail() {
                 var detail = document.getElementById("detail_order").value;
                 $.ajax({type: "GET",
                     url: "action/action_session.php",
@@ -172,7 +178,17 @@ if (isset($_SESSION['idshop'])) {
                                                     <label for="disabled_shop">ชื่อร้านค้า</label>
                                                     <div class="input-group">
                                                         <span class="input-group-addon"><i class="fa fa-shopping-cart"  ></i></span>
-                                                        <input type="text" class="form-control" id="name_shop" name="name_shop" placeholder="กรุณาระบุชื่อร้านค้า" autocomplete= on onblur="getShopId()" value="<?= $nameshop; ?>"></input>        
+                                                        <?php if (isset($_SESSION['idshop'])) { ?>
+                                                            <?php if ($_SESSION['idshop'] > 0) { ?>
+                                                                <input type="text" class="form-control" id="name_shop" name="name_shop" placeholder="กรุณาระบุชื่อร้านค้า" autocomplete= on onblur="getShopId()" value="<?= $nameshop; ?>" disabled></input>  
+                                                            <?php } else { ?>
+                                                                <input type="text" class="form-control" id="name_shop" name="name_shop" placeholder="กรุณาระบุชื่อร้านค้า" autocomplete= on onblur="getShopId()" value=""></input> 
+                                                                <?php
+                                                            }
+                                                        } else {
+                                                            ?>
+                                                            <input type="text" class="form-control" id="name_shop" name="name_shop" placeholder="กรุณาระบุชื่อร้านค้า" autocomplete= on onblur="getShopId()" value=""></input> 
+                                                        <?php } ?>
                                                     </div>
                                                     <input type="hidden" id="idshop" name="idshop" value="<?= $idshop; ?>"></input>
                                                 </div>
@@ -200,13 +216,24 @@ if (isset($_SESSION['idshop'])) {
                                         </div>
                                         <div class="panel-body">
                                             <div class="table-responsive">
-                                                <a class="btn btn-info btn-lg" onclick="addProduct_Order()">
-                                                    <span class="glyphicon glyphicon-plus"></span> เพิ่มสินค้า
-                                                </a>
+                                                <?php if (isset($_SESSION['idshop'])) { ?>
+                                                    <button type="button" class="btn btn-info btn-lg" onclick="addProduct_Order()" id="add_p">
+                                                        <span class="glyphicon glyphicon-plus"></span> เพิ่มสินค้า
+                                                    </button>
+                                                <?php } else { ?>
+                                                    <button type="button" class="btn btn-info btn-lg" onclick="addProduct_Order()" id="add_p" disabled>
+                                                        <span class="glyphicon glyphicon-plus"></span> เพิ่มสินค้า
+                                                    </button>
+                                                <?php } ?>
                                                 <button class="btn btn-danger btn-lg" type="button" onclick="if (confirm('คุณต้องการลบหน่วยสินค้าทั้งหมดหรือไม่')) {
                                                             resetUnit();
                                                         }">
                                                     <span class="glyphicon glyphicon-trash"></span> ลบสินค้าทั้งหมด
+                                                </button>
+                                                <button class="btn btn-danger btn-lg" type="button" onclick="if (confirm('คุณต้องการลบหน่วยสินค้าทั้งหมดหรือไม่')) {
+                                                            resetInfo();
+                                                        }">
+                                                    <span class="glyphicon glyphicon-trash"></span> ลบข้อมูลทั้งหมด
                                                 </button>
                                                 <br></br>
                                                 <div id="showUnit"></div>
@@ -344,6 +371,22 @@ if (isset($_SESSION['idshop'])) {
                                                         }
                                                     });
                                                 }
+                                                function resetInfo() {
+                                                    $.get("action_addProduct.php?p=resetInfo", function (data, status) {
+                                                        if (data != "-1") {
+                                                            showUnit();
+                                                            getBigestUnit();
+                                                            getBigestPrice();
+                                                            alert("ลบหน่วยข้อมูลทั้งหมดแล้ว");
+                                                        }
+                                                        else {
+                                                            alert("ไม่สามารถลบหน่วยได้");
+
+                                                        }
+                                                    });
+                                                    document.getElementById('name_shop').value = "";
+                                                    document.getElementById('name_shop').disabled = false;
+                                                 }
                                                 function addProduct_Order() {
                                                     if (document.getElementById("name_shop").value.length > 0) {
                                                         var idshop = document.getElementById("idshop").value;

@@ -193,19 +193,18 @@ if (isset($_SESSION['idshop'])) {
                                     <input type="text" class="form-control" id="AmountProduct" placeholder="กรอกจำนวนสินค้า" onkeyup="updateAmount()" value="<?= $amountProduct ?>">
                                 </div>
                                 <div class="form-group col-xs-12">
-                                    <label for="disabled_price_unit">ราคาเปิดต่อหน่วย //ระบบคิดอัตโนมัติตามหน่วยที่เลือก</label>
-                                    <input type="text" class="form-control" id="price" readonly="true" onkeyup="cal_difference()" value="<?= $price; ?>">
+                                    <label for="disabled_price_unit">ราคาเปิดต่อหน่วย</label>
+                                    <input type="text" class="form-control" id="price" readonly="true" onkeyup="cal_difference()" value="<?= number_format($price, 2); ?>">
                                 </div>
                                 <div class="form-group col-xs-12">
-                                    <label for="disabled_price_unit">ราคาเปิดทั้งหมด //ระบบคิดอัตโนมัติตามหน่วยที่เลือก</label>
-                                    <input type="text" class="form-control" id="total_price" readonly="true" onkeyup="cal_difference()" value="<?= $price * $amountProduct; ?>">
+                                    <label for="disabled_price_unit">ราคาเปิดทั้งหมด</label>
+                                    <input type="text" class="form-control" id="total_price" readonly="true" onkeyup="cal_difference()" value="<?= number_format($price * $amountProduct, 2); ?>">
                                 </div>
-
                                 <div class="form-group col-xs-12">
                                     <div class="col-md-12 col-sm-12 ">
                                         <div class="panel panel-info">
                                             <div class="panel-heading">
-                                                <label>ส่วนต่างราคาขาย//ระบบจะดึงส่วนต่างราคาขายที่ให้แต่ละร้านค้า(สินค้าเชื่อมร้านค้า) </label>
+                                                <label>ส่วนต่างราคาขาย</label>
                                             </div>
                                             <div class="panel-body">
                                                 <div class="table-responsive ">
@@ -221,14 +220,14 @@ if (isset($_SESSION['idshop'])) {
                                                         <div class="panel-body">
                                                             <div class="table-responsive">
                                                                 <div class="form-group">
-                                                                    <label for="disabled_cost_discounts_percent"> ต้นทุนลดเป็น% (%ที่โรงงานลดให้เรา) </label>
+                                                                    <label for="disabled_cost_discounts_percent"> เปอร์เซ็นต์ส่วนลดราคาต้นทุน </label>
                                                                     <input type="text" class="form-control" id="difference" readonly="true" value ="<?= $diffFac; ?>" onkeyup="cal_difference()" >
                                                                 </div>
                                                                 <div class ="form-group">
-                                                                    <label for="exampleInputName2"> ดังนั้นราคาต้นทุน //ระบบคิดอัตโนมัติตามหน่วยที่เลือก</label>
-                                                                    <input type="text" class="form-control" id="cal_difference" readonly="true" value = "<?= $totaldiff; ?>">
+                                                                    <label for="exampleInputName2"> ราคาต้นทุน</label>
+                                                                    <input type="text" class="form-control" id="cal_difference" readonly="true" value = "<?= number_format($totaldiff, 2); ?>">
                                                                 </div>
-                                                                <label class="radio"> ขายลดเปอร์เซ็นต์//8% = 44.8 </label>
+                                                                <label class="radio"> เปอร์เซ็นต์ส่วนลดต้นทุนราคาขายจริง </label>
                                                                 <input type="text" class="form-control" placeholder="กรอก%ขายลด"  id="DifferencePer"  value="<?= $diffPer; ?>" onkeyup="updateAmount()"/></input>
                                                                 <input type="hidden" id="type" name="type" value="<?= $type ?>">
                                                             </div>
@@ -242,14 +241,14 @@ if (isset($_SESSION['idshop'])) {
                                 </div>
                                 <?php if ($type === "BATH") { ?>
                                     <div class="form-group col-xs-12">
-                                        <label for="exampleInputName2"> ดังนั้นราคาขาย//ระบบคำนวนอัตโนมัติ(ราคาเปิด-ส่วนต่างราคาขาย=560-44.8) </label>
-                                        <input  type="text" class="form-control" id="total" readonly="true" value="<?= $totaldiffBath ?>"></input>
+                                        <label for="exampleInputName2"> ราคาขายจริง</label>
+                                        <input  type="text" class="form-control" id="total" readonly="true" value="<?= number_format($totaldiffBath, 2) ?>"></input>
                                     </div>
                                 <?php } ?>
                                 <?php if ($type === "PERCENT") { ?>
                                     <div class="form-group col-xs-12">
-                                        <label for="exampleInputName2"> ดังนั้นราคาขาย//ระบบคำนวนอัตโนมัติ(ราคาเปิด-ส่วนต่างราคาขาย=560-44.8) </label>
-                                        <input  type="text" class="form-control" id="total" readonly="true" value="<?= $totaldiffPer ?>"></input>
+                                        <label for="exampleInputName2"> ราคาขายจริง</label>
+                                        <input  type="text" class="form-control" id="total" readonly="true" value="<?= number_format($totaldiffPer, 2) ?>"></input>
                                     </div>
                                 <?php } ?>
                             </div>
@@ -395,7 +394,7 @@ if (isset($_SESSION['idshop'])) {
                                 });
                             }
                             function updateAmount() {
-                                var price = document.getElementById("price").value;
+                                var price = document.getElementById("price").value.replace(",", "");
                                 var amount = document.getElementById("AmountProduct").value;
                                 var total = amount * price;
                                 var total_all;
@@ -428,7 +427,6 @@ if (isset($_SESSION['idshop'])) {
                             function LoadData(str) {
                                 document.getElementById("idUnit").value = str;
                                 var amount = document.getElementById("AmountProduct").value;
-                                var diff = document.getElementById("DifferencePer").value;
                                 var type = document.getElementById("type").value;
                                 //var price = 0;
                                 if (str == "") {
@@ -439,7 +437,9 @@ if (isset($_SESSION['idshop'])) {
                                     document.getElementById("productName").disabled = false;
                                 }
                                 else {
+
                                     if (type === "PERCENT") {
+                                        var diff = document.getElementById("DifferencePer").value;
                                         $.ajax({type: "GET",
                                             url: "action/action_ajax.php",
                                             async: false,
@@ -456,6 +456,7 @@ if (isset($_SESSION['idshop'])) {
                                         });
                                     }
                                     else {
+                                        var diffB = document.getElementById("DifferenceBath").value;
                                         $.ajax({type: "GET",
                                             url: "action/action_ajax.php",
                                             async: false,
@@ -467,7 +468,7 @@ if (isset($_SESSION['idshop'])) {
                                                 $("#price").val(response);
                                                 $("#idFactory2").val(response);
                                                 $("#total_price").val(response * amount);
-                                                $("#total").val((response * amount) + (diff * amount));
+                                                $("#total").val((response * amount) + (diffB * amount));
                                             }
                                         });
                                     }

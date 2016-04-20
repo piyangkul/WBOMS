@@ -160,9 +160,9 @@ function getUnit3($id) {
     return $result;
 }
 
-function getUnit_cal() {
+function getUnit_cal($id) {
     $conn = dbconnect();
-    $SQLCommand = "SELECT idunit,name_unit,price_unit,type_unit FROM unit WHERE idunit = 2";
+    $SQLCommand = "SELECT idunit,name_unit,price_unit,type_unit FROM unit WHERE idunit = {$id}";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute();
     //return $SQLCommand;

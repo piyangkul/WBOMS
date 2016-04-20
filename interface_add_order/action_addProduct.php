@@ -99,6 +99,15 @@ else if ($_GET['p'] == "editProduct") {
     } else {
         echo -1;
     }
+} else if ($_GET['p'] == "resetInfo") {
+    if (isset($_SESSION["countProduct"])) {
+        unset($_SESSION["countProduct"]);
+        unset($_SESSION["product"]);
+        unset($_SESSION["idshop"]);
+        echo 1;
+    } else {
+        echo -1;
+    }
 } else if ($_GET['p'] == "showUnit") {
     $sum = 0;
     ?>
@@ -108,12 +117,10 @@ else if ($_GET['p'] == "editProduct") {
                 <th>ลำดับ</th>
                 <th>ชื่อสินค้า</th>
                 <th>ชื่อโรงงาน</th>
-                <th>หน่วย</th>
                 <th>จำนวน</th>
                 <th>ราคาต่อหน่วย</th>
                 <th>ต้นทุนลด%</th>
-                <th>ขายลด%</th>
-                <th>ขายเพิ่มสุทธิ</th>
+                <th>ส่วนลด</th>
                 <th>ราคาขาย</th>
                 <th>การกระทำ</th> 
             </tr>
@@ -148,8 +155,9 @@ else if ($_GET['p'] == "editProduct") {
                                 $val_name_factory = $value['name_factory'];
                                 echo $val_name_factory;
                             }
-                            ?></td>
+                            ?>
                         <td><?php
+                            echo $_SESSION["product"][$i]["AmountProduct"] . " ";
                             $getUnit = getUnit2($idUnitS);
                             //print_r($getUnit);;
                             foreach ($getUnit as $value) {
@@ -157,17 +165,14 @@ else if ($_GET['p'] == "editProduct") {
                                 echo $val_name_unit;
                             }
                             ?></td>
-                        <td><?php echo $_SESSION["product"][$i]["AmountProduct"]; ?></td>
                         <td  class ="text-right"><?php echo number_format($_SESSION["product"][$i]["total_price"] / $_SESSION["product"][$i]["AmountProduct"], 2); ?></td>
                         <?php if ($_SESSION["product"][$i]["type"] === "PERCENT") { ?>
                             <td><?php echo $_SESSION["product"][$i]["difference"]; ?></td>                        
-                            <td><?php echo $_SESSION["product"][$i]["DifferencePer"]; ?></td>
-                            <td>-</td>
+                            <td><?php echo $_SESSION["product"][$i]["DifferencePer"] . " %"; ?></td>
                         <?php } ?>
                         <?php if ($_SESSION["product"][$i]["type"] === "BATH") { ?>
-                            <td>-</td>                        
                             <td>-</td>
-                            <td><?php echo $_SESSION["product"][$i]["DifferenceBath"]; ?></td>
+                            <td><?php echo $_SESSION["product"][$i]["DifferenceBath"] . " ฿"; ?></td>
                         <?php } ?>
                         <td class ="text-right"><?php echo number_format($_SESSION["product"][$i]["total"], 2); ?></td>
                         <td>
@@ -181,8 +186,8 @@ else if ($_GET['p'] == "editProduct") {
                                 </a>
                             <?php } ?>
                             <a class = "btn btn-danger" data-toggle = "modal" data-toggle = "tooltip" title = "ลบ" id="deleteProduct<?= $i; ?>" name="deleteProduct<?= $i; ?>" onclick="if (confirm('คุณต้องการลบหน่วยสินค้าหรือไม่')) {
-                                                    delProduct(<?= $i; ?>);
-                                                }">
+                                                        delProduct(<?= $i; ?>);
+                                                    }">
                                 <span class = "glyphicon glyphicon-trash"></span>
                             </a>     
                         </td>
@@ -216,18 +221,18 @@ else if ($_GET['p'] == "editProduct") {
             });
         }
         /*function s_detail() {
-            var detail = document.getElementById("detail_order").value;
-            $.ajax({type: "GET",
-                url: "action/action_session.php",
-                async: false,
-                data: "detail=" + detail,
-                dataType: 'html',
-                success: function ()
-                {
-                }
-            }
-            );
-        }*/
+         var detail = document.getElementById("detail_order").value;
+         $.ajax({type: "GET",
+         url: "action/action_session.php",
+         async: false,
+         data: "detail=" + detail,
+         dataType: 'html',
+         success: function ()
+         {
+         }
+         }
+         );
+         }*/
 
     </script>
     <?php

@@ -21,7 +21,6 @@ $idshop = $getOrderEdit['idshop'];
 
 $_SESSION['idshop'] = $idshop;
 $total_price_all = 0;
-
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -47,7 +46,7 @@ $total_price_all = 0;
         <script>
 
             /*  $(function () {
-             var data = JSON.stringify(<?php //getShop2();                                                                   ?>);
+             var data = JSON.stringify(<?php //getShop2();                                                                     ?>);
              //var www = JSON.parse(data);
              //alert(www);
              alert(data);
@@ -133,12 +132,10 @@ $total_price_all = 0;
                                                             <th>ลำดับ</th>
                                                             <th>ชื่อสินค้า</th>
                                                             <th>ชื่อโรงงาน</th>
-                                                            <th>หน่วย</th>
                                                             <th>จำนวน</th>
                                                             <th>ราคาต่อหน่วย</th>
                                                             <th>ต้นทุนลด%</th>
-                                                            <th>ขายลด%</th>
-                                                            <th>ขายเพิ่มสุทธิ</th>
+                                                            <th>ส่วนลด</th>
                                                             <th>ราคาขาย</th>
                                                             <th>การกระทำ</th> 
                                                         </tr>
@@ -166,22 +163,20 @@ $total_price_all = 0;
                                                                 <td><?= $i; ?></td>
                                                                 <td><?= $val_name_product; ?></td>
                                                                 <td><?= $val_name_factory; ?></td>
-                                                                <td><?= $val_name_unit; ?></td> 
-                                                                <td><?= $val_amount_product_order; ?></td>
+                                                                <td><?= $val_amount_product_order . " " . $val_name_unit; ?></td>
                                                                 <td class ="text-right"><?= number_format($val_price_unit, 2); ?> </td>
-                                                                <td><?= $val_difference_amount_factory; ?></td>
+
                                                                 <?php if ($val_type_product_order === 'PERCENT') { ?>
-                                                                    <td><?= $val_difference_product_order; ?></td>
-                                                                    <td>-</td>
+                                                                    <td><?= $val_difference_amount_factory; ?></td>
+                                                                    <td><?= $val_difference_product_order . " %"; ?></td>
                                                                     <td class ="text-right"><?= number_format($total_percent, 2); ?></td>
                                                                     <?php
                                                                     $total_price_all += $total_percent;
                                                                 }
                                                                 ?>
-                                                                <?php if ($val_type_product_order === 'BATH') {
-                                                                    ?>
+                                                                <?php if ($val_type_product_order === 'BATH') { ?>
                                                                     <td>-</td>
-                                                                    <td><?= $val_difference_product_order; ?></td>                                                                  
+                                                                    <td><?= $val_difference_product_order . " ฿"; ?></td>                                                                  
                                                                     <td class ="text-right"><?= number_format($total_bath, 2); ?></td> 
                                                                     <?php
                                                                     $total_price_all += $total_bath;

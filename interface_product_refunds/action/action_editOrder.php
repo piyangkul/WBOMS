@@ -29,7 +29,7 @@ $editOrder = editOrderRefunds($idorder, $date_product_refunds, $detail_product_r
 //กลุ่มคำสั่งทำอะไร
 //if (!checkcode($productCode)) {
 //echo checkDuplicateProduct($productName, $factoryID);
-if (isset($_SESSION["editproductR"])) {//ถามว่า$_SESSION["unit"]ถูกสร้างหรือยัง
+/*if (isset($_SESSION["editproductR"])) {//ถามว่า$_SESSION["unit"]ถูกสร้างหรือยัง
     echo "idorder=" . $idorder;
     if ($idorder > 0) {
         //$idUnit[1] = addUnit($idproduct, 0, $units[1]['AmountPerUnit'], $units[1]['NameUnit'], $units[1]['price'], $units[1]['type']);

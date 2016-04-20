@@ -187,11 +187,11 @@ $totaldiff = ($price * $amount_product_order) - ((($price * $amount_product_orde
                                     <input type="text" class="form-control" id="AmountProduct" placeholder="กรอกจำนวนสินค้า" onkeyup="updateAmount()" value="<?= $amount_product_order; ?>" required="">
                                 </div>
                                 <div class="form-group col-xs-12">
-                                    <label for="disabled_price_unit">ราคาเปิดต่อหน่วย //ระบบคิดอัตโนมัติตามหน่วยที่เลือก</label>
+                                    <label for="disabled_price_unit">ราคาเปิดต่อหน่วย</label>
                                     <input type="text" class="form-control" id="price" readonly="true" onkeyup="cal_difference()" value="<?= $price; ?>">
                                 </div>
                                 <div class="form-group col-xs-12">
-                                    <label for="disabled_price_unit">ราคาเปิดทั้งหมด //ระบบคิดอัตโนมัติตามหน่วยที่เลือก</label>
+                                    <label for="disabled_price_unit">ราคาเปิดทั้งหมด</label>
                                     <input type="text" class="form-control" id="total_price" readonly="true" value="<?= number_format($price * $amount_product_order, 2); ?>">
                                 </div>
 
@@ -199,7 +199,7 @@ $totaldiff = ($price * $amount_product_order) - ((($price * $amount_product_orde
                                     <div class="col-md-12 col-sm-12 ">
                                         <div class="panel panel-info">
                                             <div class="panel-heading">
-                                                <label>ส่วนต่างราคาขาย//ระบบจะดึงส่วนต่างราคาขายที่ให้แต่ละร้านค้า(สินค้าเชื่อมร้านค้า) </label>
+                                                <label>ส่วนต่างราคาขาย</label>
                                             </div>
                                             <div class="panel-body">
                                                 <div class="table-responsive ">
@@ -215,14 +215,14 @@ $totaldiff = ($price * $amount_product_order) - ((($price * $amount_product_orde
                                                         <div class="panel-body">
                                                             <div class="table-responsive">
                                                                 <div class="form-group">
-                                                                    <label for="disabled_cost_discounts_percent"> ต้นทุนลดเป็น% (%ที่โรงงานลดให้เรา) </label>
+                                                                    <label for="disabled_cost_discounts_percent"> เปอร์เซ็นต์ส่วนลดราคาต้นทุน </label>
                                                                     <input type="text" class="form-control" id="difference" readonly="true" value ="<?= $difference_amount_factory; ?>" onkeyup="cal_difference()" >
                                                                 </div>
                                                                 <div class ="form-group">
-                                                                    <label for="exampleInputName2"> ดังนั้นราคาต้นทุน //ระบบคิดอัตโนมัติตามหน่วยที่เลือก</label>
+                                                                    <label for="exampleInputName2"> ราคาต้นทุน</label>
                                                                     <input type="text" class="form-control" id="cal_difference" readonly="true" value = "<?= number_format($totaldiff, 2); ?>">
                                                                 </div>
-                                                                <label class="radio"> ขายลดเปอร์เซ็นต์//8% = 44.8 </label>
+                                                                <label class="radio"> เปอร์เซ็นต์ส่วนลดต้นทุนราคาขายจริง </label>
                                                                 <input type="text" class="form-control" placeholder="กรอก%ขายลด"  id="DifferencePer"  value="<?= $difference; ?>" onkeyup="updateAmount()"/></input>
                                                                 <input type="hidden" id="type" name="type" value="<?= $type ?>">
                                                             </div>
@@ -236,13 +236,13 @@ $totaldiff = ($price * $amount_product_order) - ((($price * $amount_product_orde
                                 </div>
                                 <?php if ($type === "BATH") { ?>
                                     <div class="form-group col-xs-12">
-                                        <label for="exampleInputName2"> ดังนั้นราคาขาย//ระบบคำนวนอัตโนมัติ(ราคาเปิด-ส่วนต่างราคาขาย=560-44.8) </label>
+                                        <label for="exampleInputName2"> ราคาขายจริง</label>
                                         <input  type="text" class="form-control" id="total" readonly="true" value="<?= number_format($totaldiffBath, 2) ?>"></input>
                                     </div>
                                 <?php } ?>
                                 <?php if ($type === "PERCENT") { ?>
                                     <div class="form-group col-xs-12">
-                                        <label for="exampleInputName2"> ดังนั้นราคาขาย//ระบบคำนวนอัตโนมัติ(ราคาเปิด-ส่วนต่างราคาขาย=560-44.8) </label>
+                                        <label for="exampleInputName2"> ราคาขายจริง</label>
                                         <input  type="text" class="form-control" id="total" readonly="true" value="<?= number_format($totaldiffPer, 2) ?>"></input>
                                     </div>
                                 <?php } ?>

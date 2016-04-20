@@ -192,18 +192,18 @@ require_once '/function/func_addorder.php';
                                     <input type="text" class="form-control" id="AmountProduct" placeholder="กรอกจำนวนสินค้า" onkeyup="updateAmount()"></input>
                                 </div>
                                 <div class="form-group col-xs-12">
-                                    <label for="disabled_price_unit">ราคาเปิดต่อหน่วย //ระบบคิดอัตโนมัติตามหน่วยที่เลือก</label>
+                                    <label for="disabled_price_unit">ราคาเปิดต่อหน่วย</label>
                                     <input type="text" class="form-control" id="price" readonly="true" onkeyup="cal_difference()"></input>
                                 </div>
                                 <div class="form-group col-xs-12">
-                                    <label for="disabled_price_unit">ราคาเปิดทั้งหมด //ระบบคิดอัตโนมัติตามหน่วยที่เลือก</label>
+                                    <label for="disabled_price_unit">ราคาเปิดทั้งหมด</label>
                                     <input type="text" class="form-control" id="total_price" readonly="true" onkeyup="cal_difference()"></input>
                                 </div>
                                 <div class="form-group col-xs-12 diff" id="PERCENT">
                                     <div class="col-md-12 col-sm-12 ">
                                         <div class="panel panel-info">
                                             <div class="panel-heading">
-                                                <label>ส่วนต่างราคาขาย//ระบบจะดึงส่วนต่างราคาขายที่ให้แต่ละร้านค้า(สินค้าเชื่อมร้านค้า) </label>
+                                                <label>ส่วนต่างราคาขาย</label>
                                             </div>
                                             <div class="panel-body">
                                                 <div class="table-responsive">

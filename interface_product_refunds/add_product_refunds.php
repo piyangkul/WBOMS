@@ -176,8 +176,20 @@ $dateEnd = $getDateShipment['date_end'];
                                                 <label>ชื่อร้านค้า</label><font size="1" color ="red">*กรุณาเลือกร้านค้าก่อน</font>
                                                 <div class="input-group">
                                                     <span class="input-group-addon"><i class="fa fa-shopping-cart"></i></span>
-                                                    <input type="text" class="form-control" id="name_shop" name="name_shop" placeholder="กรุณาระบุชื่อร้านค้า" autocomplete= on onblur="getShopId()" value="<?= $name_shop; ?>"></input>
-                                                    <!--<input type="text" class="form-control" id="name_product" name="name_product" placeholder="กรุณาระบุชื่อสินค้า" autocomplete = "on" > -->
+                                                    <?php
+                                                    if (isset($_SESSION['idshopP'])) {
+                                                        if ($_SESSION['idshopP'] > 0) {
+                                                            ?>
+                                                            <input type="text" class="form-control" id="name_shop" name="name_shop" placeholder="กรุณาระบุชื่อร้านค้า" autocomplete= on onblur="getShopId()" value="<?= $name_shop; ?>"></input>
+                                                        <?php } else { ?>
+                                                            <input type="text" class="form-control" id="name_shop" name="name_shop" placeholder="กรุณาระบุชื่อร้านค้า" autocomplete= on onblur="getShopId()" value=""></input>
+                                                            <?php
+                                                        }
+                                                    } else {
+                                                        ?>
+                                                        <input type="text" class="form-control" id="name_shop" name="name_shop" placeholder="กรุณาระบุชื่อร้านค้า" autocomplete= on onblur="getShopId()" value=""></input>
+                                                    <?php } ?>
+<!--<input type="text" class="form-control" id="name_product" name="name_product" placeholder="กรุณาระบุชื่อสินค้า" autocomplete = "on" > -->
                                                     <input type = "hidden" id = "idshop" name = "idshop" value = "<?= $idshop; ?>"></input>
                                                 </div>
                                                 <label>รอบ</label>
