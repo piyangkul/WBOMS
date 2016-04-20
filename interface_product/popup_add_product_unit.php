@@ -18,27 +18,36 @@ session_start();
             </div>
             <div class="form-group col-xs-12">
                 <label for="AmountPerUnit">จำนวนต่อหน่วยใหญ่</label>
-                <input type="text" class="form-control" name="AmountPerUnit" onchange="calPrice();" id="AmountPerUnit" placeholder="ใส่จำนวนต่อหน่วยรอง เช่น(2)" >
+                <input type="text" class="form-control" name="AmountPerUnit" onkeyup="calPrice();" id="AmountPerUnit" placeholder="ใส่จำนวนต่อหน่วยรอง เช่น(2)" >
             </div>
             <div class="form-group col-xs-12">
                 <label for="under_unit">หน่วยใหญ่ที่จะเปรียบเทียบ</label>
             </div>
-            <div class="form-group col-xs-12">
-                <select class="form-control" name="under_unit" id="under_unit" onchange="calPrice();" >
-                    <option value="">Choose</option>> 
-                    <?php
-                    for ($i = 1; $i <= $_SESSION["countUnit"]; $i++) {
-                        ?> 
-                        <option value="<?php echo $i; ?>"><?php echo $_SESSION["unit"][$i]["NameUnit"]; ?></option>
-                    <?php } ?>
-                </select>
-            </div>
+            <?php if (isset($_SESSION['countUnit'])) { ?>
+                <div class="form-group col-xs-12">
+                    <select class="form-control" name="under_unit" id="under_unit" onchange="calPrice();" >
+                        <option value="<?php echo $_SESSION["unit"][$_SESSION["countUnit"]]["idUnit"]; ?>"><?php echo $_SESSION["unit"][$_SESSION["countUnit"]]["NameUnit"]; ?></option>
+                    </select>
+                </div>
+                <div class="form-group col-xs-12">
+                    <label for="price">ราคาต่อหน่วยสินค้า</label>
+                    <input type="hidden" class="form-control" id="priceS" name="priceS" value="<?= $_SESSION["unit"][$_SESSION["countUnit"]]["price"] ?>" readonly>
+                    <input type="text" class="form-control" id="price" name="price" placeholder="0" value="<?= $_SESSION["unit"][$_SESSION["countUnit"]]["price"] ?>" readonly>
 
-            <div class="form-group col-xs-12">
-                <label for="price">ราคาต่อหน่วยสินค้า</label>
-                <input type="text" class="form-control" id="price" name="price" placeholder="0" value="" readonly>
+                </div>
+            <?php } else { ?>
+                <div class="form-group col-xs-12">
+                    <select class="form-control" name="under_unit" id="under_unit" onchange="calPrice();" >
+                        <option value="">ไม่มีหน่วยสินค้า</option>
+                    </select>
+                </div>
+                <div class="form-group col-xs-12">
+                    <label for="price">ราคาต่อหน่วยสินค้า</label>
+                    <input type="hidden" class="form-control" id="priceS" name="priceS" value="" readonly>
+                    <input type="text" class="form-control" id="price" name="price" placeholder="0" value="" readonly>
 
-            </div>
+                </div>
+            <?php } ?>
             <div class="form-group col-xs-12">
                 <div class="col-md-12 col-sm-12 ">
                     <div class="panel panel-info">
@@ -97,8 +106,6 @@ session_start();
                 getBigestPrice();
             }
         });
-
-
     }
     chkUnitAdd();
     function chkUnitAdd() { // Check to add the first time 
@@ -119,9 +126,8 @@ session_start();
 
     function calPrice() {
         var subUnitAmount = $("#AmountPerUnit").val();
-        var under_unitID = $("#under_unit").val();
-        $.get("action_addUnit.php?p=getPriceUnit&id=" + under_unitID, function (data, status) {
-            $("#price").val(data / subUnitAmount);
-        });
+        var priceS = $("#priceS").val();
+        document.getElementById('price').value = priceS / subUnitAmount;
+
     }
 </script>

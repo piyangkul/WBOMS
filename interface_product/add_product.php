@@ -28,33 +28,33 @@ require_once '/function/func_product.php';
         <!-- CUSTOM STYLES-->
         <link href="../assets/css/custom.css" rel="stylesheet" />
         <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-<!--        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>-->
-        <script>
-            var Factory = JSON.stringify(<?php echo getFactory2(); ?>);
-            var FactoryP = JSON.parse(Factory);
-            var factoryName = new Array();
-            var factoryId = new Array();
-            for (var i = 0; i < FactoryP.length; i++) {
-                factoryName.push(FactoryP[i].name_factory);
-                factoryId["'" + FactoryP[i].name_factory + "'"] = FactoryP[i].idfactory;
-            }
-            $(function () {
-                $("#name_factory").autocomplete({
-                    source: factoryName
+            <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+            <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+            <script>
+                var Factory = JSON.stringify(<?php echo getFactory2(); ?>);
+                var FactoryP = JSON.parse(Factory);
+                var factoryName = new Array();
+                var factoryId = new Array();
+                for (var i = 0; i < FactoryP.length; i++) {
+                    factoryName.push(FactoryP[i].name_factory);
+                    factoryId["'" + FactoryP[i].name_factory + "'"] = FactoryP[i].idfactory;
+                }
+                $(function () {
+                    $("#name_factory").autocomplete({
+                        source: factoryName
+                    });
                 });
-            });
 
-            function getFactoryId() {
-                var price = document.getElementById("name_factory").value;
-                document.getElementById("idfactory").value = factoryId["'" + price + "'"];
-                var idfactory = $("#idfactory").val();
-                $.get("action/action_getDiff_factory.php?idfactory=" + idfactory, function (data, status) {
-                    $("#difference_amount").val(data);
-                    calBigestPrice();
-                });
-            }
-        </script>
+                function getFactoryId() {
+                    var price = document.getElementById("name_factory").value;
+                    document.getElementById("idfactory").value = factoryId["'" + price + "'"];
+                    var idfactory = $("#idfactory").val();
+                    $.get("action/action_getDiff_factory.php?idfactory=" + idfactory, function (data, status) {
+                        $("#difference_amount").val(data);
+                        calBigestPrice();
+                    });
+                }
+            </script>
     </head>
     <body>
         <div id="wrapper">
@@ -148,7 +148,7 @@ require_once '/function/func_product.php';
                                             </div>
                                             <div class="form-group col-xs-12">
                                                 <label for="difference_amount">ต้นทุนลดเป็น% </label><label class="text-danger">*</label>
-                                                <input type="text" class="form-control" id="difference_amount" name="difference_amount" value="" onchange="calBigestPrice();" required>
+                                                <input type="text" class="form-control" id="difference_amount" name="difference_amount" value="" onkeyup="calBigestPrice();" required>
                                             </div>
                                             <div class="form-group col-xs-12">
                                                 <label for="bigestPriceResult"> ดังนั้นราคาต้นทุนต่อหน่วยใหญ่สุด </label>
@@ -181,7 +181,7 @@ require_once '/function/func_product.php';
         <!-- /. PAGE WRAPPER  -->
         <!-- /. WRAPPER  -->
         <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
-         <!-- JQUERY SCRIPTS -->
+        <!-- JQUERY SCRIPTS -->
         <script src="../assets/js/jquery-1.10.2.js"></script>
         <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
         <!-- BOOTSTRAP SCRIPTS -->

@@ -282,7 +282,7 @@ function editUnit($idunit, $idunit_big, $idproduct, $name_unit, $price_unit, $ty
 
 function getFactory2() {
     $conn = dbconnect();
-    $SQLCommand = "SELECT idfactory,name_factory FROM factory";
+    $SQLCommand = "SELECT * FROM factory";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute();
     $resultArr = array();
@@ -421,7 +421,7 @@ function EditUnitAdd($idproduct, $idunit_big, $name_unit, $price_unit, $type, $a
                 ":idunit_big" => $idunit_big,
                 ":name_unit" => $name_unit,
                 ":price_unit" => $price_unit,
-                ":type_unit" => $type_unit,
+                ":type_unit" => $type,
                 ":amount_unit" => $amount_unit
             )
     );
