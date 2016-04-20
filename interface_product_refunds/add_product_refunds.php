@@ -71,8 +71,12 @@ $dateEnd = $getDateShipment['date_end'];
                     {
                     }
                 });
-                document.getElementById("add_p").disabled = false;
-                
+                if (document.getElementById("idshop").value > 0) {
+                    document.getElementById('add_p').disabled = false;
+                } else {
+                    document.getElementById('add_p').disabled = true;
+                }
+
                 showUnit();
             }
             function LoadShipment(str) {
