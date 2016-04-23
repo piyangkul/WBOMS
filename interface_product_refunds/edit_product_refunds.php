@@ -174,9 +174,9 @@ $dateEnd = $getDateShipment['date_end'];
                                                                     <td id="price<?= $val_idproduct_refunds; ?>"><?= number_format(($val_price_product_refunds * 1) - ($difference_product_refunds * 1), 2); ?></td>
                                                                 <?php } ?>
                                                                 <?php if ($type_factory === "PERCENT") { ?>
-                                                                    <td id="diff<?= $val_idproduct_refunds; ?>"><?= $difference_product_refunds . " %"; ?></td>
+                                                                    <td id="diff<?= $val_idproduct_refunds; ?>"><?= number_format($difference_product_refunds, 2) . " %"; ?></td>
                                                                 <?php } else { ?>
-                                                                    <td id="diff<?= $val_idproduct_refunds; ?>"><?= $difference_product_refunds . " ฿"; ?></td>
+                                                                    <td id="diff<?= $val_idproduct_refunds; ?>"><?= number_format($difference_product_refunds, 2) . "฿"; ?></td>
                                                                 <?php } ?>
                                                                 <td id="price_table<?= $val_idproduct_refunds; ?>" class ="text-right"><?= number_format($val_price_product_refunds, 2); ?></td>
                                                                 <td id="total_table<?= $val_idproduct_refunds; ?>" class ="text-right"><?= number_format($total, 2); ?></td>

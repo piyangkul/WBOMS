@@ -206,6 +206,13 @@ if (isset($_SESSION['idshop'])) {
 
                             </div>
                         </div>
+                        <div align="right">
+                            <button class="btn btn-danger btn-lg" type="button" onclick="if (confirm('คุณต้องการลบหน่วยสินค้าทั้งหมดหรือไม่')) {
+                                                            resetInfo();
+                                                        }">
+                                <span class="glyphicon glyphicon-trash"></span> ลบข้อมูลทั้งหมด
+                            </button>
+                        </div>
                         <div class="row">
                             <div class="col-md-12">
                                 <br>
@@ -230,11 +237,7 @@ if (isset($_SESSION['idshop'])) {
                                                         }">
                                                     <span class="glyphicon glyphicon-trash"></span> ลบสินค้าทั้งหมด
                                                 </button>
-                                                <button class="btn btn-danger btn-lg" type="button" onclick="if (confirm('คุณต้องการลบหน่วยสินค้าทั้งหมดหรือไม่')) {
-                                                            resetInfo();
-                                                        }">
-                                                    <span class="glyphicon glyphicon-trash"></span> ลบข้อมูลทั้งหมด
-                                                </button>
+
                                                 <br></br>
                                                 <div id="showUnit"></div>
                                             </div>
@@ -386,7 +389,7 @@ if (isset($_SESSION['idshop'])) {
                                                     });
                                                     document.getElementById('name_shop').value = "";
                                                     document.getElementById('name_shop').disabled = false;
-                                                 }
+                                                }
                                                 function addProduct_Order() {
                                                     if (document.getElementById("name_shop").value.length > 0) {
                                                         var idshop = document.getElementById("idshop").value;

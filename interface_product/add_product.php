@@ -36,8 +36,8 @@ require_once '/function/func_product.php';
                 var factoryName = new Array();
                 var factoryId = new Array();
                 for (var i = 0; i < FactoryP.length; i++) {
-                    factoryName.push(FactoryP[i].name_factory);
-                    factoryId["'" + FactoryP[i].name_factory + "'"] = FactoryP[i].idfactory;
+                    factoryName.push(FactoryP[i].name_factory + " (" + FactoryP[i].code_factory + ")");
+                    factoryId["'" + FactoryP[i].name_factory + " (" + FactoryP[i].code_factory + ")" + "'"] = FactoryP[i].idfactory;
                 }
                 $(function () {
                     $("#name_factory").autocomplete({
@@ -166,12 +166,12 @@ require_once '/function/func_product.php';
                         <div class="container">
                             <div class="row">
                                 <div class="col-md-3"></div>
-                                <button type="submit" class="btn btn-info btn-lg text-center">
-                                    <span class="glyphicon glyphicon-floppy-save"></span> บันทึก
-                                </button>
                                 <a href="action/action_reset.php?cancel=cancel" class="btn btn-danger btn-lg text-center">
                                     <span class="glyphicon glyphicon-floppy-remove"></span> ยกเลิก
                                 </a>
+                                <button type="submit" class="btn btn-info btn-lg text-center">
+                                    <span class="glyphicon glyphicon-floppy-save"></span> บันทึก
+                                </button>
                             </div>
                         </div>
                     </form>
@@ -253,9 +253,9 @@ require_once '/function/func_product.php';
 
             function calBigestPrice() {
                 var difference_amount = $("#difference_amount").val();
-                var bigestPrice = $("#bigestPrice").val();
+                var bigestPrice = $("#bigestPrice").val().replace(",","");
                 var total = bigestPrice - (bigestPrice * (difference_amount / 100.0));
-                $("#bigestPriceResult").val(total);
+                document.getElementById("bigestPriceResult").value = total.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
             }
         </script>
     </body>

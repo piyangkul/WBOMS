@@ -227,7 +227,7 @@ if (isset($_SESSION['idshop'])) {
                                                                     <label for="exampleInputName2"> ราคาต้นทุน</label>
                                                                     <input type="text" class="form-control" id="cal_difference" readonly="true" value = "<?= number_format($totaldiff, 2); ?>">
                                                                 </div>
-                                                                <label class="radio"> เปอร์เซ็นต์ส่วนลดต้นทุนราคาขายจริง </label>
+                                                                <label class="radio"> เปอร์เซ็นต์ส่วนลดราคาขายจริง </label>
                                                                 <input type="text" class="form-control" placeholder="กรอก%ขายลด"  id="DifferencePer"  value="<?= $diffPer; ?>" onkeyup="updateAmount()"/></input>
                                                                 <input type="hidden" id="type" name="type" value="<?= $type ?>">
                                                             </div>

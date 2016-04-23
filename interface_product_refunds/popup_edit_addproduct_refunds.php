@@ -102,11 +102,11 @@ $idshop = $_GET['idshop'];
                 <input type="text" class="form-control" id="AmountProduct" placeholder="กรอกจำนวนสินค้า" onkeyup="updateAmount()">
             </div>
             <div class="form-group col-xs-12">
-                <label for="disabled_price_unit">ราคาเปิดต่อหน่วย //ระบบคิดอัตโนมัติตามหน่วยที่เลือก</label>
+                <label for="disabled_price_unit">ราคาคืนต่อหน่วย</label>
                 <input type="text" class="form-control" id="price" readonly="true">
             </div>
             <div class="form-group col-xs-12">
-                <label for="disabled_price_unit">ราคาเปิดทั้งหมด //ระบบคิดอัตโนมัติตามหน่วยที่เลือก</label>
+                <label for="disabled_price_unit">ราคาคืนทั้งหมด</label>
                 <input type="text" class="form-control" id="total_price" readonly="true">
             </div>
         </div>
@@ -133,9 +133,9 @@ $idshop = $_GET['idshop'];
         var total_price_all = $("#total_price_all").val().replace(",", "");
 
         var p = "&idUnit=" + idUnit + "&productName=" + productName + "&factoryName=" + factoryName + "&AmountProduct=" + AmountProduct + "&price=" + price + "&total_price=" + total_price + "&idorder=" + idorder + "&type_factory=" + type_factoty + "&diff=" + diff + "&total_price_all=" + total_price_all;
-        alert(p);
+       // alert(p);
         $.get("action_editProduct.php?p=addProduct" + p, function (data, status) {
-            alert("Data: " + data + "\nStatus: " + status);
+            //alert("Data: " + data + "\nStatus: " + status);
             if (data == "1") {
                 $("#alert").html("บันทึกแล้ว");
                 $("#idUnit").val("");

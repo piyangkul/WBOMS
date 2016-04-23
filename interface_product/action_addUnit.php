@@ -24,20 +24,19 @@ else if ($_GET['p'] == "editUnit") {
     $idUnit = $_GET['idUnit'];
     $NameUnit = $_GET['NameUnit'];
     $AmountPerUnit = $_GET['AmountPerUnit'];
-    $under_unit = $_GET['under_unit'];
     $price = $_GET['price'];
     $type = $_GET['type'];
 
     $_SESSION["unit"][$idUnit]["NameUnit"] = $NameUnit;
     $_SESSION["unit"][$idUnit]["AmountPerUnit"] = $AmountPerUnit;
-    $_SESSION["unit"][$idUnit]["under_unit"] = $under_unit;
     $_SESSION["unit"][$idUnit]["price"] = $price;
     $_SESSION["unit"][$idUnit]["type"] = $type;
 
+    for ($i = $idUnit; $i < $_SESSION["countUnit"]; $i++) {
+        $_SESSION["unit"][$i + 1]["price"] = $_SESSION["unit"][$i]["price"] / $_SESSION["unit"][$i + 1]["AmountPerUnit"];
+    }
     echo "1";
 } else if ($_GET['p'] == "chkUnitAdd") {
-
-//    echo $_SESSION["countUnit"];
     if (isset($_SESSION["countUnit"])) {
         echo 1;
     } else
@@ -55,7 +54,7 @@ else if ($_GET['p'] == "getPriceUnit") {
     }
 } else if ($_GET['p'] == "getBigestPrice") {
     if (isset($_SESSION["countUnit"])) {
-        echo $_SESSION["unit"][1]["price"];
+        echo number_format($_SESSION["unit"][1]["price"],2);
     } else {
         echo "-1";
     }
@@ -72,11 +71,11 @@ else if ($_GET['p'] == "getPriceUnit") {
     <table class="table table-striped table-bordered table-hover text-center" id="dataTables-example">
         <thead>
             <tr>
-                <th>หน่วยใหญ่</th>
-                <th>จำนวนต่อหน่วยใหญ่</th>
-                <th>หน่วย</th>
-                <th>ราคาหน่วย</th>
-                <th>การกระทำ</th>
+                <th class="text-center">หน่วยใหญ่</th>
+                <th class="text-center">จำนวนต่อหน่วยใหญ่</th>
+                <th class="text-center">หน่วย</th>
+                <th class="text-center">ราคาหน่วย</th>
+                <th class="text-center">การกระทำ</th>
             </tr>
         </thead>
         <tbody>
@@ -90,12 +89,20 @@ else if ($_GET['p'] == "getPriceUnit") {
                             <td>-</td>
                             <td>1</td>
                             <td><?php echo $_SESSION["unit"][$i]["NameUnit"]; ?></td>
-                            <td class="text-right"><?= number_format($_SESSION["unit"][$i]["price"], 2) . " ฿"; ?></td>
-                            <!--<td>
-                                <a href="popup_add_product_edit_unit.php?idUnit=<?php echo $i; ?>" class="btn btn-warning " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="แก้ไข">
+                            <td class="text-right"><?= number_format($_SESSION["unit"][$i]["price"], 2); ?></td>
+                            <td>
+                                <a href="popup_add_product_edit_Bigunit.php?idUnit=<?php echo $i; ?>" class="btn btn-warning " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="แก้ไข">
                                     <span class="glyphicon glyphicon-edit"></span>
                                 </a>
-                            </td>-->
+                                <?php if ($i == $_SESSION["countUnit"]) { ?>
+                                    <a class = "btn btn-danger" data-toggle = "modal" data-toggle = "tooltip" title = "ลบ" id="deleteProduct" name="deleteProduct" onclick="if (confirm('คุณต้องการลบหน่วยสินค้าหรือไม่')) {
+                                                            delProduct(<?= $i; ?>);
+                                                        }">
+                                        <span class = "glyphicon glyphicon-trash"></span>
+                                    </a>     
+                                <?php } ?>
+                            </td>
+
                         </tr>
                         <?php
                         continue;
@@ -103,13 +110,20 @@ else if ($_GET['p'] == "getPriceUnit") {
                     ?>
                     <tr>
                         <td><?php echo $_SESSION["unit"][$i - 1]["NameUnit"]; ?></td>
-                        <td><?php echo $_SESSION["unit"][$i]["AmountPerUnit"]; ?></td>
+                        <td><?php echo $_SESSION["unit"][$i]["AmountPerUnit"].$_SESSION["unit"][$i]["under_unit"]; ?></td>
                         <td><?php echo $_SESSION["unit"][$i]["NameUnit"]; ?></td>
-                        <td class="text-right"><?= number_format($_SESSION["unit"][$i]["price"], 2) . " ฿"; ?></td>
+                        <td class="text-right"><?= number_format($_SESSION["unit"][$i]["price"], 2); ?></td>
                         <td>
                             <a href="popup_add_product_edit_unit.php?idUnit=<?php echo $i; ?>" class="btn btn-warning " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="แก้ไข">
                                 <span class="glyphicon glyphicon-edit"></span>
                             </a>
+                            <?php if ($i == $_SESSION["countUnit"]) { ?>
+                                <a class = "btn btn-danger" data-toggle = "modal" data-toggle = "tooltip" title = "ลบ" id="deleteProduct" name="deleteProduct" onclick="if (confirm('คุณต้องการลบหน่วยสินค้าหรือไม่')) {
+                                                        delProduct(<?= $i; ?>);
+                                                    }">
+                                    <span class = "glyphicon glyphicon-trash"></span>
+                                </a>     
+                            <?php } ?>
                         </td>
                     </tr>
                     <?php
@@ -117,6 +131,23 @@ else if ($_GET['p'] == "getPriceUnit") {
             }
             ?>
     </table>
+    <script>
+        function delProduct(str) {
+            var idunit = str;
+            var p = "&idunit=" + idunit;
+            $.get("action_addUnitD.php?p=delUnit" + p, function (data, status) {
+                //alert("Data: " + data + "\nStatus: " + status);
+                if (data !== "-1") {
+                    alert("ลบหน่วยสินค้าตัวนี้แล้ว");
+                    showUnit();
+                }
+                else {
+                    alert("ไม่สามารถลบหน่วยได้");
+
+                }
+            });
+        }
+    </script>
     <?php
 }
 ?>

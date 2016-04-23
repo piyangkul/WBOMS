@@ -46,7 +46,7 @@ $total_price_all = 0;
         <script>
 
             /*  $(function () {
-             var data = JSON.stringify(<?php //getShop2();                                                                     ?>);
+             var data = JSON.stringify(<?php //getShop2();                                                                       ?>);
              //var www = JSON.parse(data);
              //alert(www);
              alert(data);
@@ -167,8 +167,8 @@ $total_price_all = 0;
                                                                 <td class ="text-right"><?= number_format($val_price_unit, 2); ?> </td>
 
                                                                 <?php if ($val_type_product_order === 'PERCENT') { ?>
-                                                                    <td><?= $val_difference_amount_factory; ?></td>
-                                                                    <td><?= $val_difference_product_order . " %"; ?></td>
+                                                                    <td><?= number_format($val_difference_amount_factory, 2); ?></td>
+                                                                    <td><?= number_format($val_difference_product_order, 2) . "%"; ?></td>
                                                                     <td class ="text-right"><?= number_format($total_percent, 2); ?></td>
                                                                     <?php
                                                                     $total_price_all += $total_percent;
@@ -176,7 +176,7 @@ $total_price_all = 0;
                                                                 ?>
                                                                 <?php if ($val_type_product_order === 'BATH') { ?>
                                                                     <td>-</td>
-                                                                    <td><?= $val_difference_product_order . " ฿"; ?></td>                                                                  
+                                                                    <td><?= number_format($val_difference_product_order, 2) . "฿"; ?></td>                                                                  
                                                                     <td class ="text-right"><?= number_format($total_bath, 2); ?></td> 
                                                                     <?php
                                                                     $total_price_all += $total_bath;

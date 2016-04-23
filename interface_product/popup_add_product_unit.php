@@ -4,7 +4,7 @@ session_start();
 ?>
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="myModalLabel">เพิ่มหน่วยสินค้า</h4>
+    <h4 class="modal-title" id="myModalLabel">หน่วยสินค้า</h4>
 </div>
 <div class="row">
     <div class="col-md-12 col-sm-12 ">
@@ -12,23 +12,31 @@ session_start();
             <div class="form-group col-xs-12">
                 <!--<p id="alert"></p>-->
             </div>
-            <div class="form-group col-xs-12">
-                <label for="NameUnit">ชื่อหน่วยสินค้า</label>
-                <input type="text" class="form-control" name="NameUnit" id="NameUnit" placeholder="ใส่หน่วยสินค้า เช่น(กล่อง)" >
-            </div>
+            <?php if (isset($_SESSION['countUnit'])) { ?>
+                <div class="form-group col-xs-12">
+                    <label for="under_unit">หน่วยใหญ่ที่จะเปรียบเทียบ</label>
+                    <select class="form-control" name="under_unit" id="under_unit" onchange="calPrice();" >
+                        <option value="<?php echo $_SESSION["countUnit"]; ?>"><?php echo $_SESSION["unit"][$_SESSION["countUnit"]]["NameUnit"]; ?></option>
+                    </select>
+                </div>
+            <?php } else { ?>
+                <div class="form-group col-xs-12">
+                    <label for="under_unit">หน่วยใหญ่ที่จะเปรียบเทียบ</label>
+                    <select class="form-control" name="under_unit" id="under_unit" onchange="calPrice();" >
+                        <option value="">ไม่มีหน่วยสินค้าเปรียบเทียบ</option>
+                    </select>
+                </div>
+            <?php } ?>
+            
             <div class="form-group col-xs-12">
                 <label for="AmountPerUnit">จำนวนต่อหน่วยใหญ่</label>
                 <input type="text" class="form-control" name="AmountPerUnit" onkeyup="calPrice();" id="AmountPerUnit" placeholder="ใส่จำนวนต่อหน่วยรอง เช่น(2)" >
             </div>
             <div class="form-group col-xs-12">
-                <label for="under_unit">หน่วยใหญ่ที่จะเปรียบเทียบ</label>
+                <label for="NameUnit">ชื่อหน่วยสินค้า</label>
+                <input type="text" class="form-control" name="NameUnit" id="NameUnit" placeholder="ใส่หน่วยสินค้า เช่น(กล่อง)" >
             </div>
             <?php if (isset($_SESSION['countUnit'])) { ?>
-                <div class="form-group col-xs-12">
-                    <select class="form-control" name="under_unit" id="under_unit" onchange="calPrice();" >
-                        <option value="<?php echo $_SESSION["unit"][$_SESSION["countUnit"]]["idUnit"]; ?>"><?php echo $_SESSION["unit"][$_SESSION["countUnit"]]["NameUnit"]; ?></option>
-                    </select>
-                </div>
                 <div class="form-group col-xs-12">
                     <label for="price">ราคาต่อหน่วยสินค้า</label>
                     <input type="hidden" class="form-control" id="priceS" name="priceS" value="<?= $_SESSION["unit"][$_SESSION["countUnit"]]["price"] ?>" readonly>
@@ -37,11 +45,6 @@ session_start();
                 </div>
             <?php } else { ?>
                 <div class="form-group col-xs-12">
-                    <select class="form-control" name="under_unit" id="under_unit" onchange="calPrice();" >
-                        <option value="">ไม่มีหน่วยสินค้า</option>
-                    </select>
-                </div>
-                <div class="form-group col-xs-12">
                     <label for="price">ราคาต่อหน่วยสินค้า</label>
                     <input type="hidden" class="form-control" id="priceS" name="priceS" value="" readonly>
                     <input type="text" class="form-control" id="price" name="price" placeholder="0" value="" readonly>
@@ -49,20 +52,18 @@ session_start();
                 </div>
             <?php } ?>
             <div class="form-group col-xs-12">
-                <div class="col-md-12 col-sm-12 ">
-                    <div class="panel panel-info">
-                        <div class="panel-heading">
-                            <label>ประเภทหน่วยสินค้า</label>
-                        </div>
-                        <div class="panel-body">
-                            <div class="table-responsive ">
-                                <label class="radio-inline">
-                                    <input type="radio" name="type" id="type" value="primary"> ขาย
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="radio" name="type" id="type" value="second"> ไม่ขาย
-                                </label>
-                            </div>
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <label>ประเภทหน่วยสินค้า</label>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive ">
+                            <label class="radio-inline">
+                                <input type="radio" name="type" id="type" value="primary" checked required> ขาย
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="type" id="type" value="second"> ไม่ขาย
+                            </label>
                         </div>
                     </div>
                 </div>
@@ -71,7 +72,8 @@ session_start();
     </div>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-default" onclick="addUnit();" data-dismiss="modal">Save</button>
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    <button type="button" class="btn btn-primary" onclick="addUnit();" data-dismiss="modal">Save changes</button>
     <!--<button type="button" onclick="addUnit();" class="btn btn-primary">Save changes</button>-->
 </div>
 <!--</form>-->

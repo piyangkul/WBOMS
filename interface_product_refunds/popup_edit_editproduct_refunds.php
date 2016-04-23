@@ -123,12 +123,12 @@ $diff = $_GET['diff'];
                 <input type="text" class="form-control" id="AmountProduct" placeholder="กรอกจำนวนสินค้า" value ="<?= $amount; ?>" onkeyup="updateAmount()">
             </div>
             <div class="form-group col-xs-12">
-                <label for="disabled_price_unit">ราคาเปิดต่อหน่วย //ระบบคิดอัตโนมัติตามหน่วยที่เลือก</label>
+                <label for="disabled_price_unit">ราคาคืนต่อหน่วย</label>
 
                 <input type="text" class="form-control" id="price" readonly="true" value="<?= number_format($price, 2); ?>">
             </div>
             <div class="form-group col-xs-12">
-                <label for="disabled_price_unit">ราคาเปิดทั้งหมด //ระบบคิดอัตโนมัติตามหน่วยที่เลือก</label>
+                <label for="disabled_price_unit">ราคาคืนทั้งหมด</label>
                 <input type="text" class="form-control" id="total_price" readonly="true" value ="<?= number_format($total, 2); ?>">
             </div>
         </div>

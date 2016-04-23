@@ -19,6 +19,7 @@ $val_name_product = $getProductDetail['name_product']; //ชื่อสิน�
 $val_detail_product = $getProductDetail['detail_product']; //รายละเอียดสินค้า
 $val_name_factoryID = $getProductDetail['idfactory']; //ไอดีโรงงาน
 $val_name_factory = $getProductDetail['name_factory']; //ชื่อโรงงาน
+$val_code_factory = $getProductDetail['code_factory'];
 $val_difference_amount_product = $getProductDetail['difference_amount_product']; // % ส่วนลด
 $numUnit = 0;
 ?>
@@ -57,6 +58,31 @@ foreach ($getProducts as $value) {
         <script src="//code.jquery.com/jquery-1.10.2.js"></script>
         <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
         <link rel="stylesheet" href="/resources/demos/style.css"/>
+        <script>
+            var Factory = JSON.stringify(<?php echo getFactory2(); ?>);
+            var FactoryP = JSON.parse(Factory);
+            var factoryName = new Array();
+            var factoryId = new Array();
+            for (var i = 0; i < FactoryP.length; i++) {
+                factoryName.push(FactoryP[i].name_factory + " (" + FactoryP[i].code_factory + ")");
+                factoryId["'" + FactoryP[i].name_factory + " (" + FactoryP[i].code_factory + ")" + "'"] = FactoryP[i].idfactory;
+            }
+            $(function () {
+                $("#name_factory").autocomplete({
+                    source: factoryName
+                });
+            });
+
+            function getFactoryId() {
+                var price = document.getElementById("name_factory").value;
+                document.getElementById("idfactory").value = factoryId["'" + price + "'"];
+                var idfactory = $("#idfactory").val();
+                $.get("action/action_getDiff_factory.php?idfactory=" + idfactory, function (data, status) {
+                    $("#difference_amount").val(data);
+                    calBigestPrice();
+                });
+            }
+        </script>
     </head>
     <body>
         <div id="wrapper">
@@ -100,20 +126,10 @@ foreach ($getProducts as $value) {
                                             </div>
                                             <input type="hidden" class="form-control" id="idproduct" name="idproduct" value="<?= $val_idproduct; ?>"/>
                                             <div class="form-group col-xs-12">
-                                                <label for="factoryid"> ชื่อโรงงาน </label>
-                                                <select class="form-control" id="factoryid" name="factoryid" >
-                                                    <option selected>Choose</option>
-                                                    <?php
-                                                    require_once '../interface_factory/function/func_factory.php';
-                                                    $getFactorys = getFactorys();
-                                                    foreach ($getFactorys as $value) {
+                                                <label for="factoryName"> ชื่อโรงงาน </label><label class="text-danger">*</label>
+                                                <input type="text" class="form-control" id="name_factory" name="name_factory" placeholder="กรุณาระบุชื่อโรงงาน" autocomplete= on onblur="getFactoryId()" value="<?= $val_name_factory . " (" . $val_code_factory . ")"; ?>"></input>                    
+                                                <input type="hidden" id="idfactory" name="idfactory" onchange="getDiff_factory()" value="<?= $val_name_factoryID ?>"></input>
 
-                                                        $val_idfactory = $value['idfactory'];
-                                                        $val_name_factory = $value['name_factory'];
-                                                        ?>
-                                                        <option <?php echo $val_idfactory == $val_name_factoryID ? "selected" : "" ?> value="<?php echo $val_idfactory; ?>"><?php echo $val_name_factory; ?></option>
-                                                    <?php } ?>
-                                                </select>
                                             </div>
                                             <div class="form-group col-xs-12">
                                                 <label for="porductDetail">รายละเอียด</label>
@@ -169,9 +185,9 @@ foreach ($getProducts as $value) {
                                                                 <span class="glyphicon glyphicon-edit"></span> 
                                                             </a>
                                                             <?php if ($numUnit == $countUnit) { ?>
-                                                                                                  <!--  <a class = "btn btn-danger" data-toggle = "tooltip" title = "ลบ" id="deleteProduct<?= $val_idproduct_refunds; ?>" name="deleteProduct<?= $val_idproduct_refunds; ?>" onclick="delUnit(<?= $valIdUnitBig; ?>)">
-                                                                                                        <span class = "glyphicon glyphicon-trash"></span>
-                                                                                                    </a>    -->   
+                                                                                                                      <!--  <a class = "btn btn-danger" data-toggle = "tooltip" title = "ลบ" id="deleteProduct<?= $val_idproduct_refunds; ?>" name="deleteProduct<?= $val_idproduct_refunds; ?>" onclick="delUnit(<?= $valIdUnitBig; ?>)">
+                                                                                                                            <span class = "glyphicon glyphicon-trash"></span>
+                                                                                                                        </a>    -->   
                                                             <?php } ?>
                                                         </td>
                                                     </tr> 
@@ -256,12 +272,13 @@ foreach ($getProducts as $value) {
                         <div class="container">
                             <div class="row">
                                 <div class="col-md-3"></div>
-                                <button type="submit" class="btn btn-info btn-lg text-center">
-                                    <span class="glyphicon glyphicon-floppy-save"></span> บันทึก
-                                </button>
+
                                 <a href="product.php" class="btn btn-danger btn-lg text-center">
                                     <span class="glyphicon glyphicon-floppy-remove"></span> ยกเลิก
                                 </a>
+                                <button type="submit" class="btn btn-info btn-lg text-center">
+                                    <span class="glyphicon glyphicon-floppy-save"></span> บันทึก
+                                </button>
                             </div>
                         </div>
                     </form>
@@ -342,6 +359,9 @@ foreach ($getProducts as $value) {
 <script>
                                                     $(document.body).on('hidden.bs.modal', function () {
                                                         $('#myModal2').removeData('bs.modal');
+                                                    });
+                                                    $(document.body).on('hidden.bs.modal', function () {
+                                                        $('#myModal').removeData('bs.modal');
                                                     });
                                                     function delUnit(str) {
 

@@ -212,7 +212,7 @@ $idorder = $_GET['idorder'];
                                                         <label for="exampleInputName2"> ราคาต้นทุน</label>
                                                         <input type="text" class="form-control" id="cal_difference" readonly="true" ></input>
                                                     </div>
-                                                    <label class="radio"> เปอร์เซ็นต์ส่วนลดต้นทุนราคาขายจริง</label>
+                                                    <label class="radio"> เปอร์เซ็นต์ส่วนลดราคาขายจริง</label>
                                                     <input type="text" class="form-control" placeholder="กรอก%ขายลด"  id="DifferencePer" value="" onkeyup="updateAmount()"/></input>
 
                                                     <h id="type"></h>

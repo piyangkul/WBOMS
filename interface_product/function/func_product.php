@@ -102,7 +102,7 @@ function getProductDetail($idproduct) {//รับค่าpara
             . "`idproduct`, "
             . "concat(`project`.`factory`.`code_factory`,`project`.`product`.`idproduct`) AS `product_code`,"
             . "`product`.`idfactory`, "
-            . "`factory`.`name_factory`, "
+            . "`factory`.`name_factory`,code_factory, "
             . "`name_product`, "
             . "`detail_product`, "
             . "`difference_amount_product` "

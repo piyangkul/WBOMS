@@ -12,7 +12,7 @@ $idproduct = $_GET['idproduct']; //รับพารามิเตอร์
 //กลุ่มรับค่า
 //ส่งข้อมูล หน้า add product มาหน้านี้ 
 $name_product = $_POST['productName'];
-$idfactory = $_POST['factoryid'];
+$idfactory = $_POST['idfactory'];
 $detail_product = $_POST['porductDetail'];
 $difference_amount_product = $_POST['difference_amount'];
 $bigestPriceResult = $_POST['bigestPriceResult'];

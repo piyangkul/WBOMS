@@ -42,7 +42,7 @@ else if ($_GET['p'] == "editProduct") {
     $price_factory = $_GET['price_factory'];
     $diff = $_GET['diff'];
     $type_factory = $_GET['typefactory'];
-   
+
 
     $_SESSION["productR"][$product_refunds]['idUnit'] = $idUnit;
     $_SESSION["productR"][$product_refunds]["productName"] = $productName;
@@ -144,9 +144,9 @@ else if ($_GET['p'] == "editProduct") {
                         <td class="text-right"><?= number_format($_SESSION["productR"][$i]["price_factory"], 2); ?></td>
 
                         <?php if ($_SESSION["productR"][$i]["type_factory"] === "PERCENT") { ?>
-                            <td><?= $_SESSION["productR"][$i]["diff"] . " " . "%"?></td>
+                            <td><?= number_format($_SESSION["productR"][$i]["diff"], 2) . " " . "%" ?></td>
                         <?php } else { ?>
-                            <td><?= $_SESSION["productR"][$i]["diff"] . " " . "฿".$_SESSION["productR"][$i]["type_factory"] ?></td>
+                            <td><?= number_format($_SESSION["productR"][$i]["diff"], 2) . "฿" ?></td>
                         <?php }
                         ?>
                         <td class="text-right"><?php echo number_format($_SESSION["productR"][$i]["price"], 2); ?></td>

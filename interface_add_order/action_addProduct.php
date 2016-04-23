@@ -167,12 +167,12 @@ else if ($_GET['p'] == "editProduct") {
                             ?></td>
                         <td  class ="text-right"><?php echo number_format($_SESSION["product"][$i]["total_price"] / $_SESSION["product"][$i]["AmountProduct"], 2); ?></td>
                         <?php if ($_SESSION["product"][$i]["type"] === "PERCENT") { ?>
-                            <td><?php echo $_SESSION["product"][$i]["difference"]; ?></td>                        
-                            <td><?php echo $_SESSION["product"][$i]["DifferencePer"] . " %"; ?></td>
+                        <td><?php echo number_format($_SESSION["product"][$i]["difference"],2); ?></td>                        
+                        <td><?php echo number_format($_SESSION["product"][$i]["DifferencePer"],2) . "%"; ?></td>
                         <?php } ?>
                         <?php if ($_SESSION["product"][$i]["type"] === "BATH") { ?>
                             <td>-</td>
-                            <td><?php echo $_SESSION["product"][$i]["DifferenceBath"] . " ฿"; ?></td>
+                            <td><?php echo number_format($_SESSION["product"][$i]["DifferenceBath"],2) . " ฿"; ?></td>
                         <?php } ?>
                         <td class ="text-right"><?php echo number_format($_SESSION["product"][$i]["total"], 2); ?></td>
                         <td>

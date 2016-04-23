@@ -27,17 +27,7 @@ $getAllUnit = getProductUnit($idProduct);
                 <!--<p id="alert"></p>-->
             </div>
             <div class="form-group col-xs-12">
-                <label for="NameUnit">ชื่อหน่วยสินค้า</label>
-                <input type="text" class="form-control" name="NameUnit" id="NameUnit" placeholder="ใส่หน่วยสินค้า เช่น(กล่อง)" value="<?php echo $nameUnit; ?>">
-            </div>
-            <div class="form-group col-xs-12">
-                <label for="AmountPerUnit">จำนวนต่อหน่วยใหญ่</label>
-                <input type="text" class="form-control" name="AmountPerUnit" onkeyup="calPrice();" id="AmountPerUnit" placeholder="ใส่จำนวนต่อหน่วยรอง เช่น(2)"  value="<?php echo $AmountPerUnit; ?>" disabled>
-            </div>
-            <div class="form-group col-xs-12">
                 <label for="under_unit">หน่วยใหญ่ที่จะเปรียบเทียบ</label>
-            </div>
-            <div class="form-group col-xs-12">
                 <select class="form-control" name="under_unit" id="under_unit" onchange="" disabled>
                     <option selected value="">Choose</option>
                     <?php
@@ -51,25 +41,32 @@ $getAllUnit = getProductUnit($idProduct);
             </div>
 
             <div class="form-group col-xs-12">
+                <label for="AmountPerUnit">จำนวนต่อหน่วยใหญ่</label>
+                <input type="text" class="form-control" name="AmountPerUnit" onkeyup="calPrice();" id="AmountPerUnit" placeholder="ใส่จำนวนต่อหน่วยรอง เช่น(2)"  value="<?php echo $AmountPerUnit; ?>" disabled>
+            </div>
+            <div class="form-group col-xs-12">
+                <label for="NameUnit">ชื่อหน่วยสินค้า</label>
+                <input type="text" class="form-control" name="NameUnit" id="NameUnit" placeholder="ใส่หน่วยสินค้า เช่น(กล่อง)" value="<?php echo $nameUnit; ?>">
+            </div>
+
+            <div class="form-group col-xs-12">
                 <label for="price">ราคาต่อหน่วยสินค้า</label>
                 <input type="text" class="form-control" id="price" name="price" placeholder="0" value="<?php echo $price; ?>">
 
             </div>
             <div class="form-group col-xs-12">
-                <div class="col-md-12 col-sm-12 ">
-                    <div class="panel panel-info">
-                        <div class="panel-heading">
-                            <label>ประเภทหน่วยสินค้า</label>
-                        </div>
-                        <div class="panel-body">
-                            <div class="table-responsive ">
-                                <label class="radio-inline">
-                                    <input <?php echo $type == "PRIMARY" ? "checked" : ""; ?> type="radio" name="type" id="type" value="PRIMARY"> ขาย
-                                </label>
-                                <label class="radio-inline">
-                                    <input <?php echo $type == "SECOND" ? "checked" : ""; ?> type="radio" name="type" id="type" value="SECOND"> ไม่ขาย
-                                </label>
-                            </div>
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <label>ประเภทหน่วยสินค้า</label>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive ">
+                            <label class="radio-inline">
+                                <input <?php echo $type == "PRIMARY" ? "checked" : ""; ?> type="radio" name="type" id="type" value="PRIMARY"> ขาย
+                            </label>
+                            <label class="radio-inline">
+                                <input <?php echo $type == "SECOND" ? "checked" : ""; ?> type="radio" name="type" id="type" value="SECOND"> ไม่ขาย
+                            </label>
                         </div>
                     </div>
                 </div>
@@ -78,7 +75,8 @@ $getAllUnit = getProductUnit($idProduct);
     </div>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-default" onclick="editUnit();" data-dismiss="modal">Save</button>
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    <button type="button" class="btn btn-primary" onclick="editUnit();" data-dismiss="modal">Save changes</button>
     <!--<button type="button" onclick="addUnit();" class="btn btn-primary">Save changes</button>-->
 </div>
 

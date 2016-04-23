@@ -12,9 +12,9 @@ echo "</pre>";
 //$productCode = $_POST['productCode'];
 $productName = $_POST['productName'];
 $factoryID = $_POST['idfactory'];
-$productDetail = $_POST['porductDetail'];
+$productDetail = $_POST['detail_order'];
 $difference_amount = $_POST['difference_amount'];
-$bigestPriceResult = $_POST['bigestPriceResult'];
+$bigestPriceResult = $_POST['bigestPriceResult'].  str_replace(",","");
 //ส่งข้อมูล หน่วยสินค้า มาหน้านี้
 $units = $_SESSION["unit"];
 //สิ้นสุดกลุ่มรับค่า
