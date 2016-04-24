@@ -65,7 +65,7 @@ if (isset($_GET['idmember'])) {
     <div class="modal-footer">
         <p id="alertPass"></p>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="submit" id="submit" name="sumbit" value="updateMem" class="btn btn-primary">Save changes</button>
+        <button type="submit" id="submit" name="submit" class="btn btn-primary">Save changes</button>
     </div>
 </form>
 <script>

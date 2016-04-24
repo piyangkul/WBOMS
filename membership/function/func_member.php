@@ -14,7 +14,6 @@ function checkDuplicateMember($name,$lastname) {
                 ":lastname" => $lastname
             )
     );
-
     if ($SQLPrepare->rowCount() > 0) {
         return 1;
     } else {
@@ -22,10 +21,10 @@ function checkDuplicateMember($name,$lastname) {
     }
 }
 
-function addMember($name, $lastname, $username, $password, $status_member) {
+function addMember($name, $lastname, $username, $password) {
     $conn = dbconnect();
-    $SQLCommand = "INSERT INTO `member`(`name`, `lastname`, `username`, `password`, `status_member`) "
-            . "VALUES (:name, :lastname, :username, :password, :status_member)";
+    $SQLCommand = "INSERT INTO `member`(`name`, `lastname`, `username`, `password`) "
+            . "VALUES (:name, :lastname, :username, :password)";
 
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
@@ -33,8 +32,7 @@ function addMember($name, $lastname, $username, $password, $status_member) {
                 ":name" => $name,
                 ":lastname" => $lastname,
                 ":username" => $username,
-                ":password" => $password,
-                ":status_member" => $status_member
+                ":password" => $password
             )
     );
 
@@ -45,24 +43,16 @@ function addMember($name, $lastname, $username, $password, $status_member) {
     }
 }
 
-function editMember($name, $lastname, $password, $status_member, $idmember) {
+function editMember($name, $lastname, $password, $idmember) {
     $conn = dbconnect();
-    $SQLCommand = "UPDATE `member` SET "
-            . "`name`=:name,"
-            . "`lastname`=:lastname,"
-            
-            . "`password`=:password,"
-            . "`status_member`=:status_member "
-            . "WHERE `idmember`=:idmember";
+    $SQLCommand = "UPDATE `member` SET `name`=:name,`lastname`=:lastname,`password`=:password WHERE `idmember`=:idmember";
 
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
                 ":name" => $name,
                 ":lastname" => $lastname,
-    
                 ":password" => $password,
-                ":status_member" => $status_member,
                 ":idmember" => $idmember
             )
     );
@@ -94,7 +84,7 @@ function delMember($idmember) {
 
 function getMembers() {
     $conn = dbconnect();
-    $SQLCommand = "SELECT `idmember`, `name`, `lastname`, `username`, `password`, `status_member` FROM `member`";
+    $SQLCommand = "SELECT `idmember`, `name`, `lastname`, `username`, `password` FROM `member`";
 
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute();
@@ -112,8 +102,7 @@ function getMemberByID($idmember) {
             . "`name`, "
             . "`lastname`, "
             . "`username`, "
-            . "`password`, "
-            . "`status_member` "
+            . "`password` "
             . "FROM `member` "
             . "WHERE `idmember`=:idmember ";
 
