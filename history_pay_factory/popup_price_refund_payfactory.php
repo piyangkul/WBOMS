@@ -21,6 +21,10 @@ $price_product_refund = $_GET['price_product_refund'];
 //$val_price_pay_factory = $getPricePayFactory['price_pay_factory'];
 //$val_shipment_period_idshipment = $getPricePayFactory['shipment_period_idshipment'];
 ?>
+<?php
+//ยอดเงินสินค้าคืนรวม
+$price_product_refund_factory = 0;
+?>
 ﻿<form class="form" action="#" method="post">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -51,18 +55,17 @@ $price_product_refund = $_GET['price_product_refund'];
                                         <th rowspan="2"><div align="center">ชื่อร้านค้า</div></th>
                                         <th rowspan="2"><div align="center">ชื่อสินค้า</div></th>
                                         <th rowspan="2"><div align="center">จำนวน</div></th>
-                                        <th colspan="5"><div align="center">ราคา/หน่วย</div></th>
-                                        <th colspan="3"><div align="center">ราคาทั้งหมด</div></th>
+                                        <th colspan="3"><div align="center">ราคา/หน่วย</div></th>
+                                        <th colspan="2"><div align="center">ราคาทั้งหมด</div></th>
                                         </tr>
 
                                         <tr>
                                             <th><div align="center">ราคาเปิด</div></th>
-                                        <th><div align="center">ต้นทุนลด</div></th>
-                                        <th><div align="center">ราคาต้นทุน</div></th>
                                         <th><div align="center">คืนลด</div></th>
                                         <th><div align="center">ราคาคืน</div></th>
+<!--                                        <th><div align="center">คืนลด</div></th>
+                                        <th><div align="center">ราคาคืน</div></th>-->
                                         <th><div align="center">ราคาเปิดรวม</div></th>
-                                        <th><div align="center">ราคาต้นทุนรวม</div></th>
                                         <th><div align="center">ราคาคืนรวม</div></th>
                                         </tr>
                                         </thead>
@@ -70,12 +73,11 @@ $price_product_refund = $_GET['price_product_refund'];
                                             <?php
                                             $getProduct_refunds = getProduct_refunds($idfactory, $idshipment_period);
                                             $i = 0;
-                                            $sum = 0;
                                             foreach ($getProduct_refunds as $value) {
                                                 $i++;
                                                 $val_name_shop = $value['name_shop'];
                                                 $val_name_product = $value['name_product'];
-                                                $val_amount_product_refunds = $value['amount_product_refunds'];
+                                                $val_amount_product_refunds = $value['amount_product_refunds']; //จำนวนที่คืน
                                                 $val_name_unit = $value['name_unit'];
                                                 $val_price_unit = $value['price_unit'];
                                                 //ต้นทุนลด
@@ -87,10 +89,7 @@ $price_product_refund = $_GET['price_product_refund'];
                                                 $cost = $val_price_unit - (($val_difference_amount / 100.0) * $val_price_unit); //ราคาต้นทุน
                                                 $val_price_difference = $value['price_difference']; //ขายลด,คืนลด
                                                 $type_money = $value['type_money']; //% หรือ BATH
-                                                $val_price_product_refunds = $value['price_product_refunds']; //ราคาขาย,ราคาคืน
-                                                //$val_total_product_refund = $value['total_product_refund']; //ราคาคืนรวม
-//                                                $val_total_product_refund2 = $val_total_product_refund+$val_total_product_refund;
-                                                $sum = $sum + $val_price_product_refunds;
+                                                $val_price_product_refunds = $value['price_product_refunds']; //ราคาคืนที่คูณจำนวนแล้ว
                                                 ?>
                                                 <tr>
                                                     <td><?php echo $i; ?></td>
@@ -98,19 +97,25 @@ $price_product_refund = $_GET['price_product_refund'];
                                                     <td><?php echo $val_name_product; ?></td>
                                                     <td><?php echo $val_amount_product_refunds . " " . $val_name_unit; ?></td><!-- จำนวน-->
                                                     <td class="text-right"><?php echo number_format($val_price_unit, 2); ?></td><!-- ราคาเปิด-->
-                                                    <td><?php echo $val_difference_amount . "%"; ?></td><!-- ต้นทุนลด-->                                      
-                                                    <td class="text-right"><?php echo number_format($cost, 2, '.', ''); ?></td><!-- ราคาต้นทุน-->
-                                                    <td><?php echo $val_price_difference; ?><?php echo ($type_money == "PERCENT") ? "%" : "฿"; ?></td><!-- คืนลด -->
-                                                    <td class="text-right"><?php echo number_format($val_price_product_refunds / $val_amount_product_refunds, 2); ?></td><!-- ราคาคืน-->
-                                                    <td class="text-right"><?php echo number_format($val_price_unit * $val_amount_product_refunds, 2); ?></td>
-                                                    <td class="text-right"><?php echo number_format($cost * $val_amount_product_refunds, 2); ?></td>
-                                                    <td class="text-right"><?php echo number_format($val_price_product_refunds, 2); ?></td>
+                                                    
+                                                    <?php if ($type_money == "PERCENT") { ?><!-- คืนนลด--> 
+                                                        <td><?php echo number_format($val_difference_amount, 2) . "%"; ?></td>
+                                                    <?php } else { ?>
+                                                        <td><?php echo "สุทธิ"; ?></td>
+                                                    <?php } ?>  
+                                                    
+                                                    <td class="text-right"><?php echo number_format($cost, 2); ?></td><!-- ราคาคืน-->
+    <!--                                                    <td><?php //echo number_format($val_price_difference, 2);  ?><?php //echo ($type_money == "PERCENT") ? "%" : "฿";  ?></td> คืนลด 
+                                                    <td class="text-right"><?php //echo number_format($val_price_product_refunds, 2);  ?></td> ราคาคืนต่อหน่วย-->
+                                                    <td class="text-right"><?php echo number_format($val_price_unit * $val_amount_product_refunds, 2); ?></td><!-- ราคาเปิดรวม-->
+                                                    <td class="text-right"><?php echo number_format($val_amount_product_refunds * $cost, 2); ?></td><!-- ราคาคืนรวม-->
+                                                    <?php $price_product_refund_factory = $price_product_refund_factory + ($val_amount_product_refunds * $cost); ?>
                                                 </tr>
                                             <?php } ?>
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="col-md-8 col-md-offset-8">ยอดเงินสินค้าคืนรวม &nbsp;&nbsp; <b><?php echo number_format($sum, 2); ?></b> &nbsp;&nbsp; บาท </div>
+                                <div class="col-md-8 col-md-offset-8">ยอดเงินสินค้าคืนรวม &nbsp;&nbsp; <b><?php echo number_format($price_product_refund_factory, 2); ?></b> &nbsp;&nbsp; บาท </div>
                             </div>
 
                         </div>

@@ -7,7 +7,7 @@ require_once dirname(__FILE__) . '/../function/func_history_pay_factory.php';
             <th><div align="center">วันที่เริ่มรอบ</div></th>
 <th><div align="center">วันที่สิ้นสุดรอบ</div></th>
 <th><div align="center">วันที่จ่ายเงิน</div></th>
-<th><div align="center">ยอดเรียกเก็บ</div></th>
+<th><div align="center">ยอดสั่งซื้อรวม</div></th>
 <th><div align="center">ยอดสินค้าคืนรวม</div></th>
 <th><div align="center">ยอดจ่ายเงินสุทธิ</div></th>
 </tr>

@@ -91,7 +91,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                     </div>
                     <!-- /. ROW  -->
                     <hr />
-                    
+                    <!--<div class="alert alert-danger" role="alert">แก้ 1.sqlสินค้าคืน </div>-->
                     <!-- ค้นหา -->
                     <div class="row">
                         <div class="col-md-3"></div>                        
