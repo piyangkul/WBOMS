@@ -1,6 +1,6 @@
 <?php
 
-define("DSN", "mysql:dbname=project;host=localhost");
+define("DSN", "mysql:dbname=u641200351_wboms;host=mysql.hostinger.in.th");
 define("DB_USER", "u641200351_wboms");
 define("DB_PASS", "123456");
 

@@ -1,8 +1,8 @@
 <?php
-$host = "localhost";
+$host = "mysql.hostinger.in.th";
 $user = "u641200351_wboms";
 $pass = "123456";
-$db = "project";
+$db = "u641200351_wboms";
 $objConnect = mysql_connect($host,$user,$pass)or die("Error:". mysql_error());
 $select_db = mysql_select_db($db)or die("Error:". mysql_error());
 mysql_query("SET character_set_results=tis620");//ตั้งค่าการดึงข้อมูลออกมาให้เป็นภาษาไทย
