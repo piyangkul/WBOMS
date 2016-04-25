@@ -208,8 +208,8 @@ if (isset($_SESSION['idshop'])) {
                         </div>
                         <div align="right">
                             <button class="btn btn-danger btn-lg" type="button" onclick="if (confirm('คุณต้องการลบหน่วยสินค้าทั้งหมดหรือไม่')) {
-                                                            resetInfo();
-                                                        }">
+                                        resetInfo();
+                                    }">
                                 <span class="glyphicon glyphicon-trash"></span> ลบข้อมูลทั้งหมด
                             </button>
                         </div>
@@ -362,33 +362,30 @@ if (isset($_SESSION['idshop'])) {
                                                 }
                                                 function resetUnit() {
                                                     $.get("action_addProduct.php?p=resetUnit", function (data, status) {
-                                                        if (data != "-1") {
+                                                        if (data !== "-1") {
                                                             showUnit();
-                                                            getBigestUnit();
-                                                            getBigestPrice();
-                                                            alert("ลบหน่วยทั้งหมดแล้ว");
+                                                            alert("ลบสินค้าสั่งซื้อทั้งหมดแล้ว");
                                                         }
                                                         else {
-                                                            alert("ไม่สามารถลบหน่วยได้");
+                                                            alert("ไม่สามารถลบสินค้าสั่งซื้อได้");
 
                                                         }
                                                     });
                                                 }
                                                 function resetInfo() {
                                                     $.get("action_addProduct.php?p=resetInfo", function (data, status) {
-                                                        if (data != "-1") {
+                                                        if (data !== "-1") {
                                                             showUnit();
-                                                            getBigestUnit();
-                                                            getBigestPrice();
-                                                            alert("ลบหน่วยข้อมูลทั้งหมดแล้ว");
+                                                            alert("ลบข้อมูลทั้งหมดแล้ว");
                                                         }
                                                         else {
-                                                            alert("ลบหน่วยข้อมูลทั้งหมดแล้ว");
+                                                            alert("ลบข้อมูลทั้งหมดแล้ว");
 
                                                         }
                                                     });
                                                     document.getElementById('name_shop').value = "";
                                                     document.getElementById('name_shop').disabled = false;
+                                                    document.getElementById('add_p').disabled = true;
                                                 }
                                                 function addProduct_Order() {
                                                     if (document.getElementById("name_shop").value.length > 0) {

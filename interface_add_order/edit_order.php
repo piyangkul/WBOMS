@@ -46,7 +46,7 @@ $total_price_all = 0;
         <script>
 
             /*  $(function () {
-             var data = JSON.stringify(<?php //getShop2();                                                                       ?>);
+             var data = JSON.stringify(<?php //getShop2();                                                                                ?>);
              //var www = JSON.parse(data);
              //alert(www);
              alert(data);
@@ -103,9 +103,7 @@ $total_price_all = 0;
                                                     <input type="date" class="form-control" id ="date_order" name="date_order" value="<?= $val_date_order_p; ?>"/>
                                                     <input type="time" class="form-control" id ="time_order" name="time_order" value="<?= $val_time_order_p ?>"/>
                                                 </div>
-
-                                            </div>                                        
-
+                                            </div>   
                                         </div>
                                     </div>
                                 </div>
@@ -124,8 +122,18 @@ $total_price_all = 0;
                                         </div>
                                         <div class="panel-body">
                                             <div class="table-responsive">
-                                                <a href="addproduct_editorder.php?idorder=<?= $val_idorder; ?>" class="btn btn-info btn-lg">
-                                                    <span class="glyphicon glyphicon-plus"></span> เพิ่มสินค้า </a>
+                                                <?php
+                                                $chkAddPO = chkAddPO($val_idorder);
+                                                $status_P = $chkAddPO['status_checktransport'];
+                                                if ($status_P !== "check" && $status_P !== "postpone") {
+                                                    ?>
+                                                    <a href="addproduct_editorder.php?idorder=<?= $val_idorder; ?>" class="btn btn-info btn-lg">
+                                                        <span class="glyphicon glyphicon-plus"></span> เพิ่มสินค้า </a>
+                                                    <?php
+                                                }
+                                                ?>
+
+
                                                 <table class="table table-striped table-bordered table-hover text-center" id="dataTables-example">
                                                     <thead>
                                                         <tr>
@@ -152,7 +160,7 @@ $total_price_all = 0;
                                                             $val_amount_product_order = $value['amount_product_order'];
                                                             $val_difference_product_order = $value['difference_product_order'];
                                                             $val_type_product_order = $value['type_product_order'];
-                                                            $val_difference_amount_factory = $value['difference_amount_factory'];
+                                                            $val_difference_amount_factory = $value['difference_amount_product'];
                                                             $val_price_unit = $value['price_unit'];
                                                             $total_open = $val_price_unit * $val_amount_product_order;
                                                             $total_percent = $total_open - ($total_open * ($val_difference_product_order / 100));
@@ -167,7 +175,7 @@ $total_price_all = 0;
                                                                 <td class ="text-right"><?= number_format($val_price_unit, 2); ?> </td>
 
                                                                 <?php if ($val_type_product_order === 'PERCENT') { ?>
-                                                                    <td><?= number_format($val_difference_amount_factory, 2); ?></td>
+                                                                    <td><?= number_format($val_difference_amount_factory, 2) . "%"; ?></td>
                                                                     <td><?= number_format($val_difference_product_order, 2) . "%"; ?></td>
                                                                     <td class ="text-right"><?= number_format($total_percent, 2); ?></td>
                                                                     <?php

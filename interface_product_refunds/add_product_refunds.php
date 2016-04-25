@@ -35,110 +35,111 @@ $dateEnd = $getDateShipment['date_end'];
         <link href="../assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
         <!-- CUSTOM STYLES-->
         <link href="../assets/css/custom.css" rel="stylesheet" />
-        <!-- GOOGLE FONTS-->
-        <link href='../http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
-        <!-- Date Picker -->
-        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"/>
-        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-        <link rel="stylesheet" href="/resources/demos/style.css"/>
-        <script>
-            var Shop = JSON.stringify(<?php echo getShop2(); ?>);
-            var ShopP = JSON.parse(Shop);
-            var shopName = new Array();
-            var shopId = new Array();
-            for (var i = 0; i < ShopP.length; i++) {
-                shopName.push(ShopP[i].name_shop + " (" + ShopP[i].code_shop + ")");
-                shopId["'" + ShopP[i].name_shop + " (" + ShopP[i].code_shop + ")" + "'"] = ShopP[i].idshop;
-            }
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+            <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+            <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+            <script>
+                var Shop = JSON.stringify(<?php echo getShop2(); ?>);
+                var ShopP = JSON.parse(Shop);
+                var shopName = new Array();
+                var shopId = new Array();
+                for (var i = 0; i < ShopP.length; i++) {
+                    shopName.push(ShopP[i].name_shop + " (" + ShopP[i].code_shop + ")");
+                    shopId["'" + ShopP[i].name_shop + " (" + ShopP[i].code_shop + ")" + "'"] = ShopP[i].idshop;
+                }
 
-            $(function () {
-                $("#name_shop").autocomplete({
-                    source: shopName
+                $(function () {
+                    $("#name_shop").autocomplete({
+                        source: shopName
+                    });
                 });
-            });
-            function getShopId() {
-                var price = document.getElementById("name_shop").value;
-                document.getElementById("idshop").value = shopId["'" + price + "'"];
-                //alert("555");
-                var idshop = shopId["'" + price + "'"];
-                $.ajax({type: "GET",
-                    url: "action/action_session.php",
-                    async: false,
-                    data: "idshop=" + idshop,
-                    dataType: 'html',
-                    success: function ()
-                    {
+                function getShopId() {
+                    var price = document.getElementById("name_shop").value;
+                    document.getElementById("idshop").value = shopId["'" + price + "'"];
+                    var oldname_shop = document.getElementById("oldnameshop").value;
+                    var idshop = shopId["'" + price + "'"];
+                    $.ajax({type: "GET",
+                        url: "action/action_session.php",
+                        async: false,
+                        data: "idshop=" + idshop,
+                        dataType: 'html',
+                        success: function (www)
+                        {
+                            if (www === 'discon') {
+                                alert('ร้านค้านี้ไม่เคยสั่งซื้อสินค้าเหล่านี้');
+                                $("#name_shop").val(oldname_shop);
+                                $("#oldnameshop").val(price);
+                            }
+                        }
+                    });
+                    if (document.getElementById("idshop").value > 0) {
+                        document.getElementById('add_p').disabled = false;
+                    } else {
+                        document.getElementById('add_p').disabled = true;
                     }
-                });
-                if (document.getElementById("idshop").value > 0) {
-                    document.getElementById('add_p').disabled = false;
-                } else {
-                    document.getElementById('add_p').disabled = true;
-                }
 
-                showUnit();
-            }
-            function LoadShipment(str) {
-                //var idshipment = document.getElementById("idShipment").value;
-                //var amount = document.getElementById("AmountProduct").value;
-                alert(str);
-                if (str === "") {
-                    //document.getElementById("factoryName").innerHTML = "";
-                    return;
+                    showUnit();
                 }
-                else {
-                    $.ajax({type: "GET",
-                        url: "action/action_ajaxDateShip.php",
-                        async: false,
-                        data: "q=chk&idshipment=" + str,
-                        dataType: 'html',
-                        success: function (response)
-                        {
-                            //alert(response)
-                            if (response === '1') {
-                                //alert("สามารถเลือกได้");
+                function LoadShipment(str) {
+                    //var idshipment = document.getElementById("idShipment").value;
+                    //var amount = document.getElementById("AmountProduct").value;
+                    alert(str);
+                    if (str === "") {
+                        //document.getElementById("factoryName").innerHTML = "";
+                        return;
+                    }
+                    else {
+                        $.ajax({type: "GET",
+                            url: "action/action_ajaxDateShip.php",
+                            async: false,
+                            data: "q=chk&idshipment=" + str,
+                            dataType: 'html',
+                            success: function (response)
+                            {
+                                //alert(response)
+                                if (response === '1') {
+                                    //alert("สามารถเลือกได้");
+
+                                }
+                                else {
+                                    alert("ไม่สามารถเลือกได้");
+                                }
 
                             }
-                            else {
-                                alert("ไม่สามารถเลือกได้");
+                        });
+
+                        $.ajax({type: "GET",
+                            url: "action/action_ajaxDateShip.php",
+                            async: false,
+                            data: "q=max&idshipment=" + str,
+                            dataType: 'html',
+                            success: function (response)
+                            {
+
+                                $("#maxDate").val(response);
                             }
+                        });
+                        $.ajax({type: "GET",
+                            url: "action/action_ajaxDateShip.php",
+                            async: false,
+                            data: "q=min&idshipment=" + str,
+                            dataType: 'html',
+                            success: function (response)
+                            {
 
-                        }
-                    });
+                                $("#minDate").val(response);
+                            }
+                        });
+                    }
 
-                    $.ajax({type: "GET",
-                        url: "action/action_ajaxDateShip.php",
-                        async: false,
-                        data: "q=max&idshipment=" + str,
-                        dataType: 'html',
-                        success: function (response)
-                        {
+                    var max = document.getElementById("maxDate").value;
+                    var min = document.getElementById("minDate").value;
 
-                            $("#maxDate").val(response);
-                        }
-                    });
-                    $.ajax({type: "GET",
-                        url: "action/action_ajaxDateShip.php",
-                        async: false,
-                        data: "q=min&idshipment=" + str,
-                        dataType: 'html',
-                        success: function (response)
-                        {
-
-                            $("#minDate").val(response);
-                        }
-                    });
+                    document.getElementById("date_order").max = max;
+                    document.getElementById("date_order").min = min;
                 }
 
-                var max = document.getElementById("maxDate").value;
-                var min = document.getElementById("minDate").value;
-
-                document.getElementById("date_order").max = max;
-                document.getElementById("date_order").min = min;
-            }
-
-        </script>
+            </script>
 
 
     </head>
@@ -181,16 +182,20 @@ $dateEnd = $getDateShipment['date_end'];
                                                         if ($_SESSION['idshopP'] > 0) {
                                                             ?>
                                                             <input type="text" class="form-control" id="name_shop" name="name_shop" placeholder="กรุณาระบุชื่อร้านค้า" autocomplete= on onblur="getShopId()" value="<?= $name_shop; ?>"></input>
+                                                            <input type = "hidden" id = "oldnameshop" name = "oldnameshop" value = "<?= $name_shop; ?>"></input>
                                                         <?php } else { ?>
                                                             <input type="text" class="form-control" id="name_shop" name="name_shop" placeholder="กรุณาระบุชื่อร้านค้า" autocomplete= on onblur="getShopId()" value=""></input>
+                                                            <input type = "hidden" id = "oldnameshop" name = "oldnameshop" value = ""></input>
                                                             <?php
                                                         }
                                                     } else {
                                                         ?>
                                                         <input type="text" class="form-control" id="name_shop" name="name_shop" placeholder="กรุณาระบุชื่อร้านค้า" autocomplete= on onblur="getShopId()" value=""></input>
+                                                        <input type = "hidden" id = "oldnameshop" name = "oldnameshop" value = ""></input>
                                                     <?php } ?>
 <!--<input type="text" class="form-control" id="name_product" name="name_product" placeholder="กรุณาระบุชื่อสินค้า" autocomplete = "on" > -->
                                                     <input type = "hidden" id = "idshop" name = "idshop" value = "<?= $idshop; ?>"></input>
+
                                                 </div>
                                                 <label>รอบ</label>
                                                 <div class = "input-group">
@@ -236,6 +241,13 @@ $dateEnd = $getDateShipment['date_end'];
                                 <!--End บิล -->
 
                             </div>
+                        </div>
+                        <div align="right">
+                            <button class="btn btn-danger btn-lg" type="button" onclick="if (confirm('คุณต้องการลบหน่วยสินค้าทั้งหมดหรือไม่')) {
+                                        resetInfo();
+                                    }">
+                                <span class="glyphicon glyphicon-trash"></span> ลบข้อมูลทั้งหมด
+                            </button>
                         </div>
                         <div class = "row">
                             <div class = "col-md-12">
@@ -283,7 +295,7 @@ $dateEnd = $getDateShipment['date_end'];
                                         <a href="action/action_reset.php?cancel=cancel" class = "btn btn-danger btn-lg text-center">
                                             <span class = "glyphicon glyphicon-floppy-remove"></span> ยกเลิก
                                         </a>
-                                        <button type = "submit" class = "btn btn-info btn-lg text-center">
+                                        <button type="submit" class="btn btn-info btn-lg text-center">
                                             <span class = "glyphicon glyphicon-floppy-save"></span> บันทึก
                                         </button>
                                     </div>
@@ -297,9 +309,7 @@ $dateEnd = $getDateShipment['date_end'];
             <!--/. PAGE WRAPPER -->
         </div>
         <!--/. WRAPPER -->
-        <!--SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
-        <!--JQUERY SCRIPTS -->
-        <script src = "../assets/js/jquery-1.10.2.js"></script>
+        <script src="../assets/js/jquery-1.10.2.js"></script>
         <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
         <!-- BOOTSTRAP SCRIPTS -->
         <script src="../assets/js/bootstrap.min.js"></script>
@@ -389,12 +399,15 @@ $dateEnd = $getDateShipment['date_end'];
                                                         var type = document.getElementById('typefactory').value;
                                                         var price = document.getElementById('price_factory').value;
                                                         var diff = document.getElementById('diff').value;
+                                                        var amount = document.getElementById('AmountProduct').value;
                                                         var total_bath = (price * 1) + (diff * 1);
                                                         var total_percent = price - ((price * diff) / 100)
                                                         if (type === 'PERCENT') {
+                                                            document.getElementById('total_price').value = (total_percent * amount).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
                                                             document.getElementById('price').value = total_percent.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
                                                         }
                                                         else {
+                                                            document.getElementById('total_price').value = (total_bath * amount).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
                                                             document.getElementById('price').value = total_bath.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
                                                         }
                                                     }
@@ -456,17 +469,30 @@ $dateEnd = $getDateShipment['date_end'];
                                                     }
                                                     function resetUnit() {
                                                         $.get("action_addProduct.php?p=resetUnit", function (data, status) {
-                                                            if (data != "-1") {
+                                                            if (data !== "-1") {
                                                                 showUnit();
-                                                                getBigestUnit();
-                                                                getBigestPrice();
-                                                                alert("ลบหน่วยทั้งหมดแล้ว");
+                                                                alert("ลบสินค้าคืนทั้งหมดแล้ว");
                                                             }
                                                             else {
                                                                 alert("ไม่สามารถลบหน่วยได้");
 
                                                             }
                                                         });
+                                                    }
+                                                    function resetInfo() {
+                                                        $.get("action_addProduct.php?p=resetInfo", function (data, status) {
+                                                            if (data !== "-1") {
+                                                                showUnit();
+                                                                alert("ลบข้อมูลทั้งหมดแล้ว");
+                                                            }
+                                                            else {
+                                                                alert("ลบข้อมูลทั้งหมดแล้ว");
+
+                                                            }
+                                                        });
+                                                        document.getElementById('name_shop').value = "";
+                                                        document.getElementById('add_p').disabled = true;
+                                                        //document.getElementById('name_shop').disabled = false;
                                                     }
                                                     /*
                                                      function addProduct_Order() {

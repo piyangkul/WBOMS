@@ -157,11 +157,11 @@ foreach ($getProducts as $value) {
                                             <table class="table table-striped table-bordered table-hover text-center" id="dataTables-example">
                                                 <thead>
                                                     <tr>
-                                                        <th>หน่วยใหญ่</th>
-                                                        <th>จำนวนต่อหน่วยใหญ่</th>
-                                                        <th>หน่วย</th>
-                                                        <th>ราคาหน่วย</th>
-                                                        <th>การกระทำ</th>
+                                                        <th class="text-center">หน่วยใหญ่</th>
+                                                        <th class="text-center">จำนวนต่อหน่วยใหญ่</th>
+                                                        <th class="text-center">หน่วย</th>
+                                                        <th class="text-center">ราคาหน่วย</th>
+                                                        <th class="text-center">การกระทำ</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -178,16 +178,16 @@ foreach ($getProducts as $value) {
                                                         <td><?php echo $valAmountBig; ?></td>
 
                                                         <td><?php echo $valNameBigUnit; ?></td>
-                                                        <td><?php echo number_format($val_price_bigunit, 2); ?></td>
+                                                        <td class="text-right"><?php echo number_format($val_price_bigunit, 2); ?></td>
                                                         <td>
                                                             <!-- Button trigger modal -->
                                                             <a href="popup_edit_product_editunitBig.php?unitid=<?php echo $valIdUnitBig; ?>&countUnit=<?= $countUnit; ?>&idproduct=<?= $val_idproduct; ?>" class="btn btn-warning" data-toggle="modal" data-target="#myModal2" data-toggle="tooltip" title="แก้ไข">
                                                                 <span class="glyphicon glyphicon-edit"></span> 
                                                             </a>
                                                             <?php if ($numUnit == $countUnit) { ?>
-                                                                                                                      <!--  <a class = "btn btn-danger" data-toggle = "tooltip" title = "ลบ" id="deleteProduct<?= $val_idproduct_refunds; ?>" name="deleteProduct<?= $val_idproduct_refunds; ?>" onclick="delUnit(<?= $valIdUnitBig; ?>)">
-                                                                                                                            <span class = "glyphicon glyphicon-trash"></span>
-                                                                                                                        </a>    -->   
+                                                                                                                              <!--  <a class = "btn btn-danger" data-toggle = "tooltip" title = "ลบ" id="deleteProduct<?= $val_idproduct_refunds; ?>" name="deleteProduct<?= $val_idproduct_refunds; ?>" onclick="delUnit(<?= $valIdUnitBig; ?>)">
+                                                                                                                                    <span class = "glyphicon glyphicon-trash"></span>
+                                                                                                                                </a>    -->   
                                                             <?php } ?>
                                                         </td>
                                                     </tr> 
@@ -211,7 +211,7 @@ foreach ($getProducts as $value) {
                                                             <td><?php echo $valBigUnit; ?></td>
                                                             <td id="AmountPerUnitSmall<?= $valIdunit; ?>"><?php echo $valAmount; ?></td>
                                                             <td id="nameUnitSmall<?= $valIdunit; ?>"><?php echo $valUnit; ?></td>
-                                                            <td id="PriceSmall<?= $valIdunit; ?>"><?php echo number_format($val_price_smallunit, 2); ?></td>
+                                                            <td id="PriceSmall<?= $valIdunit; ?>" class="text-right"><?php echo number_format($val_price_smallunit, 2); ?></td>
                                                             <td>
                                                                 <!-- Button trigger modal -->
                                                                 <a href="popup_edit_product_editunit.php?unitid=<?php echo $valIdunit; ?>&idUnitBig=<?= $valIdUnitBig; ?>&countUnit=<?= $countUnit; ?>" class="btn btn-warning" data-toggle="modal" data-target="#myModal2" data-toggle="tooltip" title="แก้ไข">
@@ -255,11 +255,11 @@ foreach ($getProducts as $value) {
                                             </div>
 
                                             <div class="form-group col-xs-12">
-                                                <label for="difference_amount">ต้นทุนลดเป็น% (%ที่โรงงานลดให้เรา)//ลด10%</label>
+                                                <label for="difference_amount">ต้นทุนลดเป็น%</label>
                                                 <input type="text" class="form-control" id="difference_amount" placeholder="n/a" name="difference_amount" value="<?php echo $val_difference_amount_product; ?>"  onkeyup="calBigestPrice();" required>
                                             </div>
                                             <div class="form-group col-xs-12">
-                                                <label for="bigestPriceResult"> ดังนั้นราคาต้นทุนต่อหน่วยใหญ่สุด//ระบบคำนวณอัตโนมัติ </label>
+                                                <label for="bigestPriceResult"> ดังนั้นราคาต้นทุนต่อหน่วยใหญ่สุด</label>
                                                 <input type="text" class="form-control" id="bigestPriceResult" name="bigestPriceResult" placeholder="n/a" readonly>
                                             </div>
                                         </div>
@@ -403,7 +403,7 @@ foreach ($getProducts as $value) {
                                                         var difference_amount = $("#difference_amount").val();
                                                         var bigestPrice = $("#bigestPrice").val();
                                                         var total = bigestPrice - (bigestPrice * (difference_amount / 100.0));
-                                                        $("#bigestPriceResult").val(total);
+                                                        document.getElementById('bigestPriceResult').value = total.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
                                                     }
 
 </script>

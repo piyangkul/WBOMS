@@ -508,7 +508,7 @@ function getProductRefunds($id) {
 
 function getProductRefunds_total($id, $idproduct_refunds) {
     $conn = dbconnect();
-    $SQLCommand = "SELECT product_refunds.idproduct_refunds,product_refunds.amount_product_refunds,product_refunds.idunit,unit.name_unit,price_product_refunds,product_refunds.amount_product_refunds,factory.name_factory,product.name_product,product_refunds.status_product_refund FROM product_refunds INNER JOIN unit ON unit.idunit = product_refunds.idunit INNER JOIN product ON product.idproduct = unit.idproduct INNER JOIN factory ON factory.idfactory = product.idfactory WHERE idorder_product_refunds = :id AND idproduct_refunds != :idproduct_refunds";
+    $SQLCommand = "SELECT product_refunds.idproduct_refunds,product_refunds.amount_product_refunds,product_refunds.idunit,unit.name_unit,price_product_refunds,product_refunds.amount_product_refunds,factory.name_factory,product.name_product,product_refunds.status_product_refund FROM product_refunds INNER JOIN unit ON unit.idunit = product_refunds.idunit INNER JOIN product ON product.idproduct = unit.idproduct INNER JOIN factory ON factory.idfactory = product.idfactory WHERE product_refunds.order_product_refunds_idorder_product_refunds = :id AND idproduct_refunds != :idproduct_refunds";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
@@ -797,6 +797,18 @@ function getDiffProduct($idprodcut) {
             )
     );
     //$resultArr = array();
+    $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
+    return $result;
+}
+function chkAddPR($idorder){
+    $conn = dbconnect();
+    $SQLCommand = "SELECT order_product_refunds.idorder_product_refunds,product_refunds.status_product_refund FROM order_product_refunds INNER JOIN product_refunds ON order_product_refunds.idorder_product_refunds = product_refunds.order_product_refunds_idorder_product_refunds WHERE order_product_refunds.idorder_product_refunds = :idorder AND product_refunds.status_product_refund = 'returned' GROUP BY product_refunds.status_product_refund";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idorder" => $idorder
+            )
+    );
     $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
     return $result;
 }

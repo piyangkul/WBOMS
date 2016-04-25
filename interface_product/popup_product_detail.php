@@ -33,14 +33,15 @@ $val_difference_amount_product = $getProductDetail['difference_amount_product'];
                 <input type = "text" class = "form-control" id = "disabledInput2" value="<?php echo $val_name_product; ?>" disabled>
             </div>
             <div class = "form-group col-xs-12">
+                <label for = "disabledInput3"> ชื่อโรงงาน </label>
+                <input type = "text" class = "form-control" id = "disabledInput3" value="<?php echo $val_name_factory . " (" . $val_code_factory . ")"; ?>" disabled>
+            </div>
+            <div class = "form-group col-xs-12">
                 <label for = "disabledInput3"> รายละเอียดสินค้า </label>
                 <textarea type = "text" class = "form-control" id = "disabledInput3" disabled> <?php echo $val_detail_product; ?></textarea> 
             </div>
-            <div class = "form-group col-xs-12">
-                <label for = "disabledInput3"> ชื่อโรงงาน </label>
-                <input type = "text" class = "form-control" id = "disabledInput3" value="<?php echo $val_name_factory." (".$val_code_factory.")"; ?>" disabled>
-            </div>
-            
+
+
             <!--หน่วยสินค้า -->
             <div class = "row">
                 <div class = "col-md-2 col-sm-2 "></div>
@@ -98,7 +99,11 @@ $val_difference_amount_product = $getProductDetail['difference_amount_product'];
                         <div class = "panel-body">
                             <div class = "table-responsive ">
                                 <center>
-                                    <h4>ต้นทุนลด <?php echo $val_difference_amount_product; ?> %</h4>
+                                    <?php if ($val_difference_amount_product == 0) { ?>
+                                        <h4>สินค้าราคาสุทธิ</h4>
+                                    <?php } else { ?>
+                                        <h4>ต้นทุนลด <?php echo $val_difference_amount_product; ?> %</h4>
+                                    <?php } ?>
                                 </center>
                                 <table class = "table table-striped table-bordered table-hover text-center"
                                        id = "dataTables-example">
@@ -119,8 +124,8 @@ $val_difference_amount_product = $getProductDetail['difference_amount_product'];
                                             <tr>
                                                 <td>1</td>
                                                 <td><?php echo $valUnit; ?></td>
-                                                <td><?php echo $valPrice; ?></td>
-                                                <td><?php echo $valPrice * ((100 - $val_difference_amount_product) / 100.0); ?></td>
+                                                <td><?php echo number_format($valPrice, 2); ?></td>
+                                                <td><?php echo number_format($valPrice * ((100 - $val_difference_amount_product) / 100.0), 2); ?></td>
                                             </tr>
                                         <?php } ?>
                                 </table>

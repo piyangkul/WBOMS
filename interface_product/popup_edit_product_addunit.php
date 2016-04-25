@@ -20,7 +20,7 @@ $val_price = 0;
             </div>
             <div class="form-group col-xs-12">
                 <label for="under_unit">หน่วยใหญ่ที่จะเปรียบเทียบ</label>
-                <select class="form-control" name="under_unit" id="under_unit" onchange="calPriceS();">
+                <select class="form-control" name="under_unit" id="under_unit" onchange="calPriceS();" readonly>
                     <?php
                     $getUnitAdd = getUnitAdd($val_idproduct);
                     foreach ($getUnitAdd as $value) {
@@ -142,6 +142,6 @@ $val_price = 0;
         var amount = document.getElementById("AmountPerUnit").value;
         var price = document.getElementById("ajaxprice").value;
         var total = price / amount;
-        document.getElementById("price").value = total;
+        document.getElementById("price").value = total.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
     }
 </script>

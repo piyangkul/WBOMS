@@ -164,7 +164,10 @@ $totaldiff = ($price * $amount_product_order) - ((($price * $amount_product_orde
                                     <input type="hidden" class="form-control" id="name_factory" name="name_factory" placeholder="กรุณาระบุชื่อสินค้า" value ="<?= $nameFactory ?>" disabled></input>
                                     <input type="hidden" id="idfactory" name="idfactory" value ="<?= $idFactory ?>"></input>
                                 </div>
-
+                                <div class="form-group col-xs-12" style="float:left;width:50%;">
+                                    <label for="amount_product">จำนวน</label>
+                                    <input type="text" class="form-control" id="AmountProduct" placeholder="กรอกจำนวนสินค้า" onkeyup="updateAmount()" value="<?= $amount_product_order; ?>" required="">
+                                </div>
                                 <div class="form-group col-xs-12" style="float:left;width:50%;">
                                     <label for="name_product"> หน่วย</label>  <font size="1" color ="red">*กรุณาเลือกสินค้าก่อน</font>
 
@@ -182,10 +185,7 @@ $totaldiff = ($price * $amount_product_order) - ((($price * $amount_product_orde
                                     </select>                
                                     <div id="tee"></div>
                                 </div>
-                                <div class="form-group col-xs-12" style="float:left;width:50%;">
-                                    <label for="amount_product">จำนวน</label>
-                                    <input type="text" class="form-control" id="AmountProduct" placeholder="กรอกจำนวนสินค้า" onkeyup="updateAmount()" value="<?= $amount_product_order; ?>" required="">
-                                </div>
+
                                 <div class="form-group col-xs-12">
                                     <label for="disabled_price_unit">ราคาเปิดต่อหน่วย</label>
                                     <input type="text" class="form-control" id="price" readonly="true" onkeyup="cal_difference()" value="<?= $price; ?>">
@@ -400,7 +400,6 @@ $totaldiff = ($price * $amount_product_order) - ((($price * $amount_product_orde
                             function LoadData(str) {
                                 document.getElementById("idUnit").value = str;
                                 var amount = document.getElementById("AmountProduct").value;
-                                var diff = document.getElementById("DifferencePer").value;
                                 var type = document.getElementById("type").value;
                                 //var price = 0;
                                 if (str == "") {
@@ -411,7 +410,10 @@ $totaldiff = ($price * $amount_product_order) - ((($price * $amount_product_orde
                                     document.getElementById("productName").disabled = false;
                                 }
                                 else {
+
                                     if (type === "PERCENT") {
+                                        var diff = document.getElementById("DifferencePer").value;
+                                        var diff_pro = document.getElementById('difference').value;
                                         $.ajax({type: "GET",
                                             url: "action/action_ajax.php",
                                             async: false,
@@ -422,12 +424,17 @@ $totaldiff = ($price * $amount_product_order) - ((($price * $amount_product_orde
                                                 $("#total_price").val(response);
                                                 $("#price").val(response);
                                                 $("#idFactory2").val(response);
-                                                $("#total_price").val(response * amount);
-                                                $("#total").val((response * amount) - ((response * amount) * diff) / 100);
+                                                //$("#total_price").val(response * amount);
+                                                //$("#total").val((response * amount) - ((response * amount) * diff) / 100);
                                             }
                                         });
+                                        var price = document.getElementById('price').value.replace(",", "");
+                                        document.getElementById('total_price').value = (price * amount).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+                                        document.getElementById('total').value = ((price * amount) - ((price * amount) * diff) / 100).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+                                        document.getElementById('cal_difference').value = ((price * amount) - ((price * amount) * diff_pro) / 100).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
                                     }
                                     else {
+                                        var diffB = document.getElementById("DifferenceBath").value;
                                         $.ajax({type: "GET",
                                             url: "action/action_ajax.php",
                                             async: false,
@@ -438,10 +445,13 @@ $totaldiff = ($price * $amount_product_order) - ((($price * $amount_product_orde
                                                 $("#total_price").val(response);
                                                 $("#price").val(response);
                                                 $("#idFactory2").val(response);
-                                                $("#total_price").val(response * amount);
-                                                $("#total").val((response * amount) + (diff * amount));
+                                                // $("#total_price").val(response * amount);
+                                                //$("#total").val((response * amount) + (diffB * amount));
                                             }
                                         });
+                                        var price = document.getElementById('price').value.replace(",", "");
+                                        document.getElementById('total_price').value = (price * amount).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+                                        document.getElementById('total').value = ((price * amount) + (diffB * amount)).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
                                     }
                                 }
                             }

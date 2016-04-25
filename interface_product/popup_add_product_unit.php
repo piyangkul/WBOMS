@@ -15,7 +15,7 @@ session_start();
             <?php if (isset($_SESSION['countUnit'])) { ?>
                 <div class="form-group col-xs-12">
                     <label for="under_unit">หน่วยใหญ่ที่จะเปรียบเทียบ</label>
-                    <select class="form-control" name="under_unit" id="under_unit" onchange="calPrice();" >
+                    <select class="form-control" name="under_unit" id="under_unit" onchange="calPrice();" readonly>
                         <option value="<?php echo $_SESSION["countUnit"]; ?>"><?php echo $_SESSION["unit"][$_SESSION["countUnit"]]["NameUnit"]; ?></option>
                     </select>
                 </div>
@@ -27,7 +27,7 @@ session_start();
                     </select>
                 </div>
             <?php } ?>
-            
+
             <div class="form-group col-xs-12">
                 <label for="AmountPerUnit">จำนวนต่อหน่วยใหญ่</label>
                 <input type="text" class="form-control" name="AmountPerUnit" onkeyup="calPrice();" id="AmountPerUnit" placeholder="ใส่จำนวนต่อหน่วยรอง เช่น(2)" >
@@ -40,7 +40,7 @@ session_start();
                 <div class="form-group col-xs-12">
                     <label for="price">ราคาต่อหน่วยสินค้า</label>
                     <input type="hidden" class="form-control" id="priceS" name="priceS" value="<?= $_SESSION["unit"][$_SESSION["countUnit"]]["price"] ?>" readonly>
-                    <input type="text" class="form-control" id="price" name="price" placeholder="0" value="<?= $_SESSION["unit"][$_SESSION["countUnit"]]["price"] ?>" readonly>
+                    <input type="text" class="form-control" id="price" name="price" placeholder="0" value="<?= number_format($_SESSION["unit"][$_SESSION["countUnit"]]["price"], 2); ?>" readonly>
 
                 </div>
             <?php } else { ?>
@@ -128,8 +128,8 @@ session_start();
 
     function calPrice() {
         var subUnitAmount = $("#AmountPerUnit").val();
-        var priceS = $("#priceS").val();
-        document.getElementById('price').value = priceS / subUnitAmount;
+        var priceS = $("#priceS").val().replace(",", "");
+        document.getElementById('price').value = (priceS / subUnitAmount).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
 
     }
 </script>

@@ -27,7 +27,7 @@ $diffFac = $getUnit['difference_amount_product'];
 $price = $getUnit['price_unit'];
 $totaldiff = ($price * $amountProduct) - ((($price * $amountProduct) * $diffFac) / 100);
 $totaldiffPer = ($price * $amountProduct) - ((($price * $amountProduct) * $diffPer) / 100);
-$totaldiffBath = ($price - $diffBath) * $amountProduct;
+$totaldiffBath = ($price + $diffBath) * $amountProduct;
 $nameP = "[" . $code_product . "]" . $nameProduct . " - " . $nameFactory;
 if (isset($_SESSION['idshop'])) {
     $idshop = $_SESSION['idshop'];
@@ -172,6 +172,10 @@ if (isset($_SESSION['idshop'])) {
                                     <h id="idFactory2"></h>
                                 </div>
                                 <div class="form-group col-xs-12" style="float:left;width:50%;">
+                                    <label for="amount_product">จำนวน</label>
+                                    <input type="text" class="form-control" id="AmountProduct" placeholder="กรอกจำนวนสินค้า" onkeyup="updateAmount()" value="<?= $amountProduct ?>">
+                                </div>
+                                <div class="form-group col-xs-12" style="float:left;width:50%;">
                                     <label for="name_product"> หน่วย</label>  <font size="1" color ="red">*กรุณาเลือกสินค้าก่อน</font>
 
                                     <select class="form-control" id="idUnit" name="idUnit" onchange="LoadData(this.value)" onkeyup="" required>
@@ -188,14 +192,11 @@ if (isset($_SESSION['idshop'])) {
                                     </select>                
                                     <div id="tee"></div>
                                 </div>
-                                <div class="form-group col-xs-12" style="float:left;width:50%;">
-                                    <label for="amount_product">จำนวน</label>
-                                    <input type="text" class="form-control" id="AmountProduct" placeholder="กรอกจำนวนสินค้า" onkeyup="updateAmount()" value="<?= $amountProduct ?>">
-                                </div>
                                 <div class="form-group col-xs-12">
                                     <label for="disabled_price_unit">ราคาเปิดต่อหน่วย</label>
                                     <input type="text" class="form-control" id="price" readonly="true" onkeyup="cal_difference()" value="<?= number_format($price, 2); ?>">
                                 </div>
+
                                 <div class="form-group col-xs-12">
                                     <label for="disabled_price_unit">ราคาเปิดทั้งหมด</label>
                                     <input type="text" class="form-control" id="total_price" readonly="true" onkeyup="cal_difference()" value="<?= number_format($price * $amountProduct, 2); ?>">
@@ -212,7 +213,7 @@ if (isset($_SESSION['idshop'])) {
                                                         <div class="panel-body">
                                                             <div class="table-responsive ">
                                                                 <label for="name_product"> ขายเพิ่มสุทธิ </label>
-                                                                <input type="text" class="form-control" placeholder="กรอกราคาขายเพิ่มสุทธิ" id="DifferenceBath" value="<?= $diffBath; ?>" onkeyup="updateAmount()"> </input>
+                                                                <input type="text" class="form-control" placeholder="กรอกราคาขายเพิ่มสุทธิ" id="DifferenceBath" value="<?= number_format($diffBath, 2); ?>" onkeyup="updateAmount()"> </input>
                                                                 <input type="hidden" id="type" name="type" value="<?= $type ?>">
                                                             </div>
                                                         </div>
@@ -221,7 +222,7 @@ if (isset($_SESSION['idshop'])) {
                                                             <div class="table-responsive">
                                                                 <div class="form-group">
                                                                     <label for="disabled_cost_discounts_percent"> เปอร์เซ็นต์ส่วนลดราคาต้นทุน </label>
-                                                                    <input type="text" class="form-control" id="difference" readonly="true" value ="<?= $diffFac; ?>" onkeyup="cal_difference()" >
+                                                                    <input type="text" class="form-control" id="difference" readonly="true" value ="<?= number_format($diffFac, 2); ?>" onkeyup="cal_difference()" >
                                                                 </div>
                                                                 <div class ="form-group">
                                                                     <label for="exampleInputName2"> ราคาต้นทุน</label>
@@ -440,6 +441,7 @@ if (isset($_SESSION['idshop'])) {
 
                                     if (type === "PERCENT") {
                                         var diff = document.getElementById("DifferencePer").value;
+                                        var diff_pro = document.getElementById('difference').value;
                                         $.ajax({type: "GET",
                                             url: "action/action_ajax.php",
                                             async: false,
@@ -450,10 +452,14 @@ if (isset($_SESSION['idshop'])) {
                                                 $("#total_price").val(response);
                                                 $("#price").val(response);
                                                 $("#idFactory2").val(response);
-                                                $("#total_price").val(response * amount);
-                                                $("#total").val((response * amount) - ((response * amount) * diff) / 100);
+                                                //$("#total_price").val(response * amount);
+                                                //$("#total").val((response * amount) - ((response * amount) * diff) / 100);
                                             }
                                         });
+                                        var price = document.getElementById('price').value.replace(",", "");
+                                        document.getElementById('total_price').value = (price * amount).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+                                        document.getElementById('total').value = ((price * amount) - ((price * amount) * diff) / 100).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+                                        document.getElementById('cal_difference').value = ((price * amount) - ((price * amount) * diff_pro) / 100).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
                                     }
                                     else {
                                         var diffB = document.getElementById("DifferenceBath").value;
@@ -467,10 +473,13 @@ if (isset($_SESSION['idshop'])) {
                                                 $("#total_price").val(response);
                                                 $("#price").val(response);
                                                 $("#idFactory2").val(response);
-                                                $("#total_price").val(response * amount);
-                                                $("#total").val((response * amount) + (diffB * amount));
+                                                // $("#total_price").val(response * amount);
+                                                //$("#total").val((response * amount) + (diffB * amount));
                                             }
                                         });
+                                        var price = document.getElementById('price').value.replace(",", "");
+                                        document.getElementById('total_price').value = (price * amount).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+                                        document.getElementById('total').value = ((price * amount) + (diffB * amount)).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
                                     }
                                 }
                             }

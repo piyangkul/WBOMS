@@ -69,7 +69,6 @@ require_once '/function/func_addorder.php';
                     source: shopName
                 });
             });
-
             function getShopId() {
                 var price = document.getElementById("name_shop").value;
                 document.getElementById("idshop").value = shopId["'" + price + "'"];
@@ -101,10 +100,11 @@ require_once '/function/func_addorder.php';
             });
             function getProductID() {
                 var name_shop = document.getElementById("name_product").value;
+                var diff = factoryDiff["'" + name_shop + "'"];
                 document.getElementById("name_factory").value = factoryName["'" + name_shop + "'"];
                 document.getElementById("idproduct").value = productId["'" + name_shop + "'"];
                 document.getElementById("idfactory").value = factoryId["'" + name_shop + "'"];
-                document.getElementById("difference").value = factoryDiff["'" + name_shop + "'"];
+                document.getElementById("difference").value = parseInt(diff).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
                 document.getElementById("typefactory").value = factoryType["'" + name_shop + "'"];
                 document.getElementById("type").value = factoryType["'" + name_shop + "'"];
                 if (document.getElementById("typefactory").value == "PERCENT") {
@@ -127,7 +127,6 @@ require_once '/function/func_addorder.php';
                         //alert(response);
                     }
                 });
-
                 var iddiff = productId["'" + name_shop + "'"];
                 $.ajax({type: "GET",
                     url: "action/action_ajax_hisdiff.php",
@@ -181,16 +180,17 @@ require_once '/function/func_addorder.php';
                                     <input type="hidden" class="form-control" id="typefactory" name="typefactory"></input>
                                 </div>
                                 <div class="form-group col-xs-12" style="float:left;width:50%;">
+                                    <label for="amount_product">จำนวน</label>
+                                    <input type="text" class="form-control" id="AmountProduct" placeholder="กรอกจำนวนสินค้า" onkeyup="updateAmount()"></input>
+                                </div>
+                                <div class="form-group col-xs-12" style="float:left;width:50%;">
                                     <label> หน่วย</label>  <font size="1" color ="red">*กรุณาเลือกสินค้าก่อน</font>
                                     <select class="form-control" id="idUnit" name="idUnit" onchange="LoadData(this.value)" required>
                                         <option value="0">กรุณาเลือกหน่วยขาย</option>
                                     </select>
                                     <div id="tee"></div>
                                 </div>
-                                <div class="form-group col-xs-12" style="float:left;width:50%;">
-                                    <label for="amount_product">จำนวน</label>
-                                    <input type="text" class="form-control" id="AmountProduct" placeholder="กรอกจำนวนสินค้า" onkeyup="updateAmount()"></input>
-                                </div>
+
                                 <div class="form-group col-xs-12">
                                     <label for="disabled_price_unit">ราคาเปิดต่อหน่วย</label>
                                     <input type="text" class="form-control" id="price" readonly="true" onkeyup="cal_difference()"></input>
@@ -302,7 +302,6 @@ require_once '/function/func_addorder.php';
                                 var price = document.getElementById("total_price").value;
                                 var qwer = document.getElementById("idFactory2").value;
                                 var amount = document.getElementById("AmountProduct").value;
-
                                 var total = (amount * qwer) + (amount * x);
                                 document.getElementById("total").value = total;
                                 document.getElementById("type").value = "BATH";
@@ -312,7 +311,7 @@ require_once '/function/func_addorder.php';
                                 }
                             }
                             function updateAmount() {
-                                var price = document.getElementById("price").value;
+                                var price = document.getElementById("price").value.replace(",", "");
                                 var amount = document.getElementById("AmountProduct").value;
                                 //var difference = document.getElementById("difference").value;
                                 var total = amount * price;
@@ -343,6 +342,7 @@ require_once '/function/func_addorder.php';
                                 if (x === "Choose") {
                                     document.getElementById("productName").disabled = true;
                                 }
+
                                 else {
                                     document.getElementById("productName").disabled = false;
                                 }
@@ -352,8 +352,9 @@ require_once '/function/func_addorder.php';
                                 var amount = document.getElementById("AmountProduct").value;
                                 var diff = document.getElementById("DifferencePer").value;
                                 var type = document.getElementById("type").value;
+                                var diff_pro = document.getElementById('difference').value;
                                 //var price = 0;
-                                if (str == "") {
+                                if (str === "") {
                                     //document.getElementById("factoryName").innerHTML = "";
                                     return;
                                 }
@@ -372,10 +373,14 @@ require_once '/function/func_addorder.php';
                                                 $("#total_price").val(response);
                                                 $("#price").val(response);
                                                 $("#idFactory2").val(response);
-                                                $("#total_price").val(response * amount);
-                                                $("#total").val((response * amount) - ((response * amount) * diff) / 100);
+                                                //$("#total_price").val(response * amount);
+                                                //$("#total").val((response * amount) - ((response * amount) * diff) / 100);
                                             }
                                         });
+                                        var price = document.getElementById('price').value.replace(",", "");
+                                        document.getElementById('total_price').value = (price * amount).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+                                        document.getElementById('total').value = ((price * amount) - ((price * amount) * diff) / 100).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+                                        document.getElementById('cal_difference').value = ((price * amount) - ((price * amount) * diff_pro) / 100).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
                                     }
                                     else {
                                         $.ajax({type: "GET",
@@ -388,11 +393,16 @@ require_once '/function/func_addorder.php';
                                                 $("#total_price").val(response);
                                                 $("#price").val(response);
                                                 $("#idFactory2").val(response);
-                                                $("#total_price").val(response * amount);
-                                                $("#total").val((response * amount) + (diff * amount));
+                                                //  $("#total_price").val(response * amount);
+                                                //$("#total").val((response * amount) + (diff * amount));
                                             }
+
                                         });
+                                        var price = document.getElementById('price').value.replace(",", "");
+                                        document.getElementById('total_price').value = (price * amount).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+                                        document.getElementById('total').value = ((price * amount) + (diff * amount)).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
                                     }
+
                                 }
                             }
                             function LoadFactory(str) {
@@ -463,7 +473,6 @@ require_once '/function/func_addorder.php';
                                 var total = $("#total").val().replace(",", "");
                                 var type = document.getElementById("typefactory").value;
                                 var chk = $("#name_product").val();
-
                                 if (chk.length > 0 && idUnit > 0 && AmountProduct.length > 0 && (DifferenceBath.length > 0 || DifferencePer.length > 0)) {
                                     if ($("#idshop").val().length > 0) {
                                         var idshop = $("#idshop").val();
@@ -498,7 +507,6 @@ require_once '/function/func_addorder.php';
                                                 $("#total").val("");
                                                 $("#type").val("");
                                                 showUnit();
-
                                             }
                                         });
                                         window.location.href = 'add_order.php?idshop=' + idshop;
@@ -535,7 +543,6 @@ require_once '/function/func_addorder.php';
                                                 $("#total").val("");
                                                 $("#type").val("");
                                                 showUnit();
-
                                             }
                                         });
                                         window.location.href = 'add_order.php';

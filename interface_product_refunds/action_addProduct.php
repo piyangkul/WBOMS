@@ -87,21 +87,26 @@ else if ($_GET['p'] == "editProduct") {
     } else {
         echo -1;
     }
+} else if ($_GET['p'] == "resetInfo") {
+    unset($_SESSION["countProductR"]);
+    unset($_SESSION["productR"]);
+    unset($_SESSION["idshopP"]);
+    echo 1;
 } else if ($_GET['p'] == "showUnit") {
     $sum = 0;
     ?>
     <table class="table table-striped table-bordered table-hover text-center" id="dataTables-example">
         <thead>
             <tr>
-                <th>ลำดับ</th>
-                <th>ชื่อสินค้า</th>
-                <th>ชื่อโรงงาน</th>
-                <th>จำนวน</th>
-                <th>ราคาเปิดต่อหน่วย</th>
-                <th>ส่วนลด</th>
-                <th>ราคาคืนต่อหน่วย</th>
-                <th>ราคาคืนทั้งหมด</th>
-                <th>การกระทำ</th> 
+                <th class="text-center">ลำดับ</th>
+                <th class="text-center">ชื่อสินค้า</th>
+                <th class="text-center">ชื่อโรงงาน</th>
+                <th class="text-center">จำนวน</th>
+                <th class="text-center">ราคาเปิดต่อหน่วย</th>
+                <th class="text-center">ส่วนลด</th>
+                <th class="text-center">ราคาคืนต่อหน่วย</th>
+                <th class="text-center">ราคาคืนทั้งหมด</th>
+                <th class="text-center">การกระทำ</th> 
             </tr>
         </thead>
         <tbody>
@@ -144,7 +149,7 @@ else if ($_GET['p'] == "editProduct") {
                         <td class="text-right"><?= number_format($_SESSION["productR"][$i]["price_factory"], 2); ?></td>
 
                         <?php if ($_SESSION["productR"][$i]["type_factory"] === "PERCENT") { ?>
-                            <td><?= number_format($_SESSION["productR"][$i]["diff"], 2) . " " . "%" ?></td>
+                            <td><?= number_format($_SESSION["productR"][$i]["diff"], 2) . "%" ?></td>
                         <?php } else { ?>
                             <td><?= number_format($_SESSION["productR"][$i]["diff"], 2) . "฿" ?></td>
                         <?php }

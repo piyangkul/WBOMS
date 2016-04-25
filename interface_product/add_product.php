@@ -91,7 +91,7 @@ require_once '/function/func_product.php';
                                             </div>
                                             <div class="form-group">
                                                 <label for="factoryName"> ชื่อโรงงาน </label><label class="text-danger">*</label>
-                                                <input type="text" class="form-control" id="name_factory" name="name_factory" placeholder="กรุณาระบุชื่อโรงงาน" autocomplete= on onblur="getFactoryId()"></input>                    
+                                                <input type="text" class="form-control" id="name_factory" name="name_factory" placeholder="กรุณาระบุชื่อโรงงาน" autocomplete= on onblur="getFactoryId()" required=""></input>                    
                                                 <input type="hidden" id="idfactory" name="idfactory" onchange="getDiff_factory()"></input>
                                             </div>
                                             <div class="form-group">

@@ -55,8 +55,14 @@ $idshop = $_GET['idshop'];
             dataType: 'html',
             success: function (www)
             {
-                $("#diff").val(www);
-                //alert(response);
+                if (www === 'discon') {
+                    alert('สินค้าไม่เคยถูกสั่งซื้อ');
+                    $("#name_product").val("");
+                    $("#idUnit").html("");
+                } else {
+                    $("#diff").val(www);
+
+                }
             }
         });
 
@@ -88,18 +94,18 @@ $idshop = $_GET['idshop'];
 
                 </div>
             </div>
-            <div class="form-group col-xs-12" style="float:left;width:50%;">
-                <label for="name_product"> หน่วย</label>  <font size="1" color ="red">*กรุณาเลือกสินค้าก่อน</font>
-                <select class="form-control" id="idUnit" name="idUnit" onchange="LoadData(this.value)" required>
-                    <option>กรุณาเลือกหน่วยขาย</option>
-                </select>
-                <div id="tee"></div>
-            </div>
+
             <div class="form-group col-xs-12" style="float:left;width:50%;">
                 <label for="amount_product">จำนวน</label>
                 <input type="hidden" class="form-control" id="diff" readonly="true">
                 <input type="hidden" class="form-control" id="price_factory" readonly="true">
-                <input type="text" class="form-control" id="AmountProduct" placeholder="กรอกจำนวนสินค้า" onkeyup="updateAmount()">
+                <input type="text" class="form-control" id="AmountProduct" placeholder="กรอกจำนวนสินค้า" onkeyup="updateAmount()" required>
+            </div>
+            <div class="form-group col-xs-12" style="float:left;width:50%;">
+                <label for="name_product"> หน่วย</label>  <font size="1" color ="red">*กรุณาเลือกสินค้าก่อน</font>
+                <select class="form-control" id="idUnit" name="idUnit" onchange="LoadData(this.value)" required>
+                </select>
+                <div id="tee"></div>
             </div>
             <div class="form-group col-xs-12">
                 <label for="disabled_price_unit">ราคาคืนต่อหน่วย</label>
@@ -115,48 +121,53 @@ $idshop = $_GET['idshop'];
 <div class="modal-footer">
     <p id="alertPass"></p>
     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-    <button type="button" class="btn btn-primary" onclick="addProduct();" data-dismiss="modal">Save changes</button>
+    <button type="button" class="btn btn-primary" onclick="addProduct();">Save changes</button>
 </div>
 
 <script>
 
     function addProduct() {
-        var idorder = <?= $idorder; ?>;
-        var idUnit = $("#idUnit").val();
-        var productName = $("#idproduct").val();
-        var factoryName = $("#idfactory").val();
-        var AmountProduct = $("#AmountProduct").val();
-        var price = $("#price").val().replace(",", "");
-        var total_price = $("#total_price").val().replace(",", "");
-        var diff = $("#diff").val()
-        var type_factoty = $("#typefactory").val();
-        var total_price_all = $("#total_price_all").val().replace(",", "");
+        if (document.getElementById("name_product").value.length > 0 && document.getElementById("AmountProduct").value.length > 0) {
+            var idorder = <?= $idorder; ?>;
+            var idUnit = $("#idUnit").val();
+            var productName = $("#idproduct").val();
+            var factoryName = $("#idfactory").val();
+            var AmountProduct = $("#AmountProduct").val();
+            var price = $("#price").val().replace(",", "");
+            var total_price = $("#total_price").val().replace(",", "");
+            var diff = $("#diff").val()
+            var type_factoty = $("#typefactory").val();
+            var total_price_all = $("#total_price_all").val().replace(",", "");
 
-        var p = "&idUnit=" + idUnit + "&productName=" + productName + "&factoryName=" + factoryName + "&AmountProduct=" + AmountProduct + "&price=" + price + "&total_price=" + total_price + "&idorder=" + idorder + "&type_factory=" + type_factoty + "&diff=" + diff + "&total_price_all=" + total_price_all;
-       // alert(p);
-        $.get("action_editProduct.php?p=addProduct" + p, function (data, status) {
-            //alert("Data: " + data + "\nStatus: " + status);
-            if (data == "1") {
-                $("#alert").html("บันทึกแล้ว");
-                $("#idUnit").val("");
-                $("#productName").val("");
-                $("#factoryName").val("");
-                $("#AmountProduct").val("");
-                $("#price").val("");
-                $("#total_price").val("");
-                showUnit();
-            }
-            else {
-                $("#idUnit").val("");
-                $("#productName").val("");
-                $("#factoryName").val("");
-                $("#AmountProduct").val("");
-                $("#price").val("");
-                $("#total_price").val("");
-                showUnit();
-            }
-        });
-        window.location.href = 'edit_product_refunds.php?idorder=' + idorder;
+            var p = "&idUnit=" + idUnit + "&productName=" + productName + "&factoryName=" + factoryName + "&AmountProduct=" + AmountProduct + "&price=" + price + "&total_price=" + total_price + "&idorder=" + idorder + "&type_factory=" + type_factoty + "&diff=" + diff + "&total_price_all=" + total_price_all;
+            // alert(p);
+            $.get("action_editProduct.php?p=addProduct" + p, function (data, status) {
+                //alert("Data: " + data + "\nStatus: " + status);
+                if (data === "1") {
+                    $("#alert").html("บันทึกแล้ว");
+                    $("#idUnit").val("");
+                    $("#productName").val("");
+                    $("#factoryName").val("");
+                    $("#AmountProduct").val("");
+                    $("#price").val("");
+                    $("#total_price").val("");
+                    showUnit();
+                }
+                else {
+                    $("#idUnit").val("");
+                    $("#productName").val("");
+                    $("#factoryName").val("");
+                    $("#AmountProduct").val("");
+                    $("#price").val("");
+                    $("#total_price").val("");
+                    showUnit();
+                }
+            });
+            $('#myModal').modal('hide');
+            window.location.href = 'edit_product_refunds.php?idorder=' + idorder;
+        } else {
+            alert("กรุณากรอกข้อมูลให้ครบ");
+        }
     }
 
 </script>

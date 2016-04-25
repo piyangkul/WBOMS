@@ -165,7 +165,7 @@ $total_price_all = 0;
                                                                 <td class ="text-right"><?= number_format($val_price_unit, 2); ?> </td>
 
                                                                 <?php if ($val_type_product_order === 'PERCENT') { ?>
-                                                                    <td><?= number_format($val_difference_amount_factory, 2); ?></td>
+                                                                    <td><?= number_format($val_difference_amount_factory, 2)."%"; ?></td>
                                                                     <td><?= number_format($val_difference_product_order, 2) . "%"; ?></td>
                                                                     <td class ="text-right"><?= number_format($total_percent, 2); ?></td>
                                                                     <?php
