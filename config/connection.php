@@ -1,7 +1,7 @@
 <?php
 $host = "localhost";
-$user = "root";
-$pass = "1111";
+$user = "u641200351_wboms";
+$pass = "123456";
 $db = "project";
 $objConnect = mysql_connect($host,$user,$pass)or die("Error:". mysql_error());
 $select_db = mysql_select_db($db)or die("Error:". mysql_error());

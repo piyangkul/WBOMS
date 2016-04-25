@@ -1,8 +1,8 @@
 <?php
 
 define("DSN", "mysql:dbname=project;host=localhost");
-define("DB_USER", "root");
-define("DB_PASS", "1111");
+define("DB_USER", "u641200351_wboms");
+define("DB_PASS", "123456");
 
 $con;
 
