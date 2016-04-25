@@ -12,7 +12,7 @@ $username = $_POST['username'];
 $password = $_POST['confirm_password'];
 
 if (!checkDuplicateMember($name, $lastname)) {
-    $memberID = addMember($name, $lastname, $username, $password, "");
+    $memberID = addMember($name, $lastname, $username, $password);
     if ($memberID > 0) {
         header("location: ../membership.php?action=addMemCompleted");
     } else {

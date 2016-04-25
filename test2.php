@@ -1,3 +1,4 @@
+
 <?php
 //Example: 
 $var_arr = array(array("idshipment_period" => 1, "date_start" => 00), array("idshipment_period" => 2, "date_start" => 00));

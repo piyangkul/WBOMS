@@ -11,7 +11,7 @@ $lastname = $_POST['lastname_member'];
 $password = $_POST['confirm_password'];
 
 if (!checkDuplicateMember($name, $lastname)) {
-    $checkEdit = editMember($name, $lastname, $password, "", $idmember);
+    $checkEdit = editMember($name, $lastname, $password, $idmember);
     if ($checkEdit) {
         header("location: ../membership.php?action=editMemCompleted");
     } else {

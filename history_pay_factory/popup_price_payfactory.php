@@ -32,7 +32,7 @@ $val_shipment_period_idshipment = $getPricePayFactory['shipment_period_idshipmen
 
                     <center><h4 class="text text-info"><b>รอบการส่งที่</b> <?php echo date_format($date_start, 'd-m-Y'); ?> ถึง <?php echo date_format($date_end, 'd-m-Y'); ?></h4></center>
                     <center><h4 class="text text-info"><b>โรงงาน</b> <?php echo $val_name_factory; ?></h4></center>
-                    <center><h4 class="text text-info"><b>ยอดเงินที่โรงงานเรียกเก็บ</b> <?php echo number_format($val_price_pay_factory, 2); ?> บาท</h4></center>
+                    <center><h4 class="text text-info"><b>ยอดสั่งซื้อรวม(สั่งซื้อ+ค่าขนส่ง)</b> <?php echo number_format($val_price_pay_factory, 2); ?> บาท</h4></center>
                 </div>
                 <div class = "row">
                     <!--<div class = "col-md-1 col-sm-1 "></div>-->
@@ -67,6 +67,8 @@ $val_shipment_period_idshipment = $getPricePayFactory['shipment_period_idshipmen
                                             <?php
                                             $getProductDetail_payFactory = getProductDetail_payFactory($idshipment_period, $idfactory);
                                             $i = 0;
+                                            $n = 0;
+                                            $sum_transport = 0;
                                             foreach ($getProductDetail_payFactory as $value) {
                                                 $i++;
                                                 $val_idorder_p = $value['idorder_p'];
@@ -82,7 +84,7 @@ $val_shipment_period_idshipment = $getPricePayFactory['shipment_period_idshipmen
                                                 $val_amount_product_order = $value['amount_product_order'];
                                                 $val_name_unit = $value['name_unit'];
                                                 $val_difference_amount_product = $value['difference_amount_product'];
-                                                //$val_status_checktransport = $value['status_checktransport'];
+                                                $val_type_product_order = $value['type_product_order'];
                                                 //$val_confirm_status_shipment = $value['status_shipment'];
                                                 $val_idtransport = $value['idtransport'];
 
@@ -110,31 +112,55 @@ $val_shipment_period_idshipment = $getPricePayFactory['shipment_period_idshipmen
 //                                                    }
                                                 $cost = $val_price_unit - (($val_difference_amount_product / 100.0) * $val_price_unit);
                                                 $total = $cost * $val_amount_product_order;
-                                                $sum_sale_transport = 0;
                                                 ?>
                                                 <tr>
                                                     <td><?php echo $i; ?></td>
                                                     <td><?php echo date_format($date_order_p, 'd-m-Y'); ?></td>
                                                     <td><?php echo $val_name_shop; ?></td>
                                                     <td><?php echo $val_name_product; ?></td>
-                                                    <td class="text-right"><?php echo number_format($val_price_unit,2); ?></td>
-                                                    <td><?php echo $val_difference_amount_product . "%"; ?></td>
+                                                    <td class="text-right"><?php echo number_format($val_price_unit, 2); ?></td>
+                                                    <?php if ($val_type_product_order == "PERCENT") { ?>
+                                                        <td><?php echo number_format($val_difference_amount_product, 2) . "%"; ?></td>
+                                                    <?php } else { ?>
+                                                        <td><?php echo "สุทธิ"; ?></td>
+                                                    <?php } ?>
                                                     <td class="text-right"><?php echo number_format($cost, 2); ?></td><!-- ราคาต้นทุน-->
                                                     <td><?php echo $val_amount_product_order . " " . $val_name_unit; ?></td>
-                                                    <td><?php echo date_format($date_transport, 'd-m-Y'); ?></td>
-                                                    <td><?php echo $val_name_transport . "/" . $val_volume . "/" . $val_number; ?></td>
-                                                    <td class="text-right"><?php echo number_format($val_price_transport, 2); ?></td>
-                                                    <td class="text-right"><?php echo number_format($total, 2); ?></td>
-                                                    <?php $sum_sale_transport = $sum_sale_transport + $total; ?>
+
+                                                    <?php
+                                                    $ShipmentDuplicate = getShipmentDuplicateByID($idfactory, $idshipment_period, $val_name_transport, $val_number, $val_volume);
+                                                    if ($ShipmentDuplicate > 1) {//ถ้าการส่ง1ครั้ง มีหลายรายการสั่ง
+                                                        if ($n == 0) {
+                                                            echo "<td style=\"vertical-align:middle\" " . "rowspan=" . '"' . $ShipmentDuplicate . '" >' . date_format($date_transport, 'd-m-Y') . '</td>';
+                                                            echo "<td style=\"vertical-align:middle\" " . "rowspan=" . '"' . $ShipmentDuplicate . '" >' . $val_name_transport . "/" . $val_volume . "/" . $val_number . '</td>';
+                                                            echo "<td class='text-right' style=\"vertical-align:middle\" " . "rowspan=" . '"' . $ShipmentDuplicate . '" valign="middle">' . number_format($val_price_transport, 2) . '</td>';
+                                                            echo "<td class='text-right' style=\"vertical-align:middle\" " . "rowspan=" . '"' . $ShipmentDuplicate . '" valign="middle">' . number_format($total * $ShipmentDuplicate, 2) . '</td>';
+                                                        }
+                                                        $n++;
+                                                        if ($n == $ShipmentDuplicate) {
+                                                            $n = 0;
+                                                        }
+                                                    } else {//ถ้าการส่ง1ครั้ง มี1รายการสั่ง
+                                                        ?>
+                                                        <td><?php echo date_format($date_transport, 'd-m-Y'); ?></td>
+                                                        <td><?php
+                                                            echo $val_name_transport . "/" . $val_volume . "/" . $val_number;
+                                                            ?> </td>
+                                                        <td class="text-right"><?php echo number_format($val_price_transport, 2); ?></td>
+                                                        <td class="text-right"><?php echo number_format($total, 2); ?></td>
+                                                    <?php }
+                                                    ?>
+
+                                                    <?php $getPrice_transportByshipment_period = getPrice_transportByshipment_period($idshipment_period, $idfactory); ?>
                                                 </tr>
                                             <?php } ?>
                                         </tbody>
                                     </table>
-                                    <?php $total_transport = $val_price_pay_factory - $sum_sale_transport; ?>
+                                    <?php //$total_transport = $val_price_pay_factory - $sum_transport;    ?>
                                 </div>
-                                <div class="col-md-8 col-md-offset-8">ยอดเงินรวมสินค้าที่สั่งซื้อ &nbsp;&nbsp; <b><?php echo number_format($sum_sale_transport, 2); ?></b> &nbsp;&nbsp; บาท </div>
-                                <div class="col-md-8 col-md-offset-8">ยอดเงินรวมค่าขนส่ง &nbsp;&nbsp; <b><?php echo number_format($total_transport, 2); ?></b> &nbsp;&nbsp; บาท </div>
-                                <div class="col-md-8 col-md-offset-8">ยอดเงินที่โรงงานเรียกเก็บ &nbsp;&nbsp; <b><?php echo number_format($val_price_pay_factory, 2); ?></b> &nbsp;&nbsp; บาท </div>
+                                <div class="col-md-8 col-md-offset-8">ยอดเงินรวมสินค้าที่สั่งซื้อ &nbsp;&nbsp; <b><?php echo number_format($val_price_pay_factory - $getPrice_transportByshipment_period['sum_price_transport'], 2); ?></b> &nbsp;&nbsp; บาท </div>
+                                <div class="col-md-8 col-md-offset-8">ยอดเงินรวมค่าขนส่ง &nbsp;&nbsp; <b><?php echo number_format($getPrice_transportByshipment_period['sum_price_transport'], 2); ?></b> &nbsp;&nbsp; บาท </div>
+                                <div class="col-md-8 col-md-offset-8">ยอดเงินสั่งซื้อรวม(สั่งซื้อ+ค่าขนส่ง) &nbsp;&nbsp; <b><?php echo number_format($val_price_pay_factory, 2); ?></b> &nbsp;&nbsp; บาท </div>
                             </div>
 
                         </div>
