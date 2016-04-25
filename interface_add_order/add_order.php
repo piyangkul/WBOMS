@@ -1,6 +1,6 @@
 ﻿<?php
 session_start();
-require_once '/function/func_addorder.php';
+require_once 'function/func_addorder.php';
 if (!isset($_SESSION['member']))
     header('Location: ../index.php');
 
