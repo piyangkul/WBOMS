@@ -1,4 +1,4 @@
-<?php 
+<?php
 session_start();
 if (!isset($_SESSION['member']))
     header('Location: ../index.php');
@@ -70,7 +70,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                     echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถเพิ่มได้เนื่องจากคุณได้เพิ่มชื่อสินค้าสินค้าไปแล้ว</h4></center>';
                                 } else if ($_GET['action'] == "addErrorNotHaveUnit") {
                                     echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถเพิ่มได้เนื่องจากคุณไม่ได้กรอกหน่วยสินค้า</h4></center>';
-                                }                              
+                                }
                             }
                             ?>
                             <!-- ตารางสินค้า -->
@@ -89,7 +89,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                     <th><div align="center">ชื่อโรงงาน</div></th>
                                                     <th><div align="center">หน่วยสินค้า</div></th>
                                                     <th><div align="center">ราคาเปิด</div></th>
-                                                    <th><div align="center">ต้นทุนลด</div></th>
+                                                    <th><div align="center">ต้นทุนลด%</div></th>
                                                     <th><div align="center">ราคาต้นทุน</div></th>
                                                     <th><div align="center">การกระทำ</div></th>
                                                 </tr>
@@ -118,15 +118,23 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                     $cost = $val_price_unit - (($val_difference_amount / 100.0) * $val_price_unit);
                                                     ?>
                                                     <tr>
-                                                        <td><?php echo $i; ?></td>
-                                                        <td><?php echo $val_code_product; ?></td>
-                                                        <td><?php echo $val_name_product; ?></td>
-                                                        <td><?php echo $val_name_factory; ?></td>
-                                                        <td><?php echo $val_name; ?></td>
+                                                        <td class="text-center"><?php echo $i; ?></td>
+                                                        <td class="text-center"><?php echo $val_code_product; ?></td>
+                                                        <td class="text-center"><?php echo $val_name_product; ?></td>
+                                                        <td class="text-center"><?php echo $val_name_factory; ?></td>
+                                                        <td class="text-center"><?php echo $val_name; ?></td>
                                                         <td class="text-right"><?php echo number_format($val_price_unit, 2); ?></td>
-                                                        <td><?php echo number_format($val_difference_amount, 2) . "%"; ?></td>
+                                                        <td class="text-center">
+                                                            <?php
+                                                            if ($val_difference_amount != 0) {
+                                                                echo number_format($val_difference_amount, 2) . "%";
+                                                            } else {
+                                                                echo $val_difference_amount = "-";
+                                                            }
+                                                            ?>
+                                                        </td>
                                                         <td class="text-right"><?php echo number_format($cost, 2) ?></td>
-                                                        <td> 
+                                                        <td class="text-center"> 
                                                             <a href="popup_product_detail.php?idproduct=<?php echo $val_idproduct; ?>" class="btn btn-success" data-toggle="modal" data-target="#myModal">
                                                                 <span class="glyphicon glyphicon-list-alt"></span>
                                                             </a>
@@ -167,9 +175,9 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
         <script src="../assets/js/dataTables/jquery.dataTables.js"></script>
         <script src="../assets/js/dataTables/dataTables.bootstrap.js"></script>
         <script>
-                                                                $(document).ready(function () {
-                                                                    $('#dataTables-example').dataTable();
-                                                                });
+                                                            $(document).ready(function () {
+                                                                $('#dataTables-example').dataTable();
+                                                            });
         </script>
         <script>
             $(document.body).on('hidden.bs.modal', function () {
