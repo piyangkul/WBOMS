@@ -137,7 +137,7 @@ $status_due = "over";
 
                             $Beforeid = getBeforeid($val_idshipment_period); //ได้ค่าidรอบถัดไป --> อัพเดทรอบนี้ด้วย
                             $val_before_idshipment_period = $Beforeid['idshipment_period'];
-                            $getOrder_product_refundsByID = getOrder_product_refundsByID($idshop, $val_before_idshipment_period);
+                            $getOrder_product_refundsByID = getOrder_product_refundsByID($idshop, $val_idshipment_period);
                             $val_order_price_product_refunds = $getOrder_product_refundsByID['order_price_product_refunds'];
                             $getPayDetailByID = getPayDetailByID($idshop, $val_before_idshipment_period);
                             $val_debt_before_shipment = $getPayDetailByID['debt']; //ยอดค้างชำระ(รอบที่แล้ว)
