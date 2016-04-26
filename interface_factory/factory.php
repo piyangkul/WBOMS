@@ -87,7 +87,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                     <th><div align="center">ชื่อโรงงาน</div></th>
                                                     <th><div align="center">เบอร์โทรศัพท์</div></th>
                                                     <th><div align="center">ผู้ติดต่อ</div></th>
-                                                    <th><div align="center">ส่วนลดต้นทุนมาตรฐาน</div></th>
+                                                    <th><div align="center">ต้นทุนลด%(มาตรฐาน)</div></th>
                                                     <th><div align="center">การกระทำ</div></th>
                                                 </tr>
                                             </thead>
@@ -117,7 +117,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                             if ($val_difference_amount_factory != 0) {
                                                             echo number_format($val_difference_amount_factory, 2)."%";
                                                             } else {
-                                                            echo $val_difference_amount_factory = "สุทธิ";
+                                                            echo $val_difference_amount_factory = "-";
                                                             }
                                                             ?>
                                                         </td>
