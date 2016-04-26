@@ -56,7 +56,7 @@ if (isset($_GET['idfactory'])) {
                     <label for="difference_amount_factory">ส่วนลดต้นทุนมาตราฐานของโรงงานเป็น%</label><label class="text-danger">*</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
-                        <input type="text" class="form-control" id="difference_amount_factory" name="difference_amount_factory" value="<?php echo $val_difference_amount; ?>"disabled="" >
+                        <input type="text" class="form-control" id="difference_amount_factory" name="difference_amount_factory" value="<?php echo number_format($val_difference_amount, 2) . "%"; ?>"disabled="" >
                     </div>
                 </div>
                 <div class="form-group col-xs-12">
