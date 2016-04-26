@@ -61,7 +61,7 @@ $price_product_refund_factory = 0;
 
                                         <tr>
                                             <th><div align="center">ราคาเปิด</div></th>
-                                        <th><div align="center">คืนลด</div></th>
+                                        <th><div align="center">คืนลด%</div></th>
                                         <th><div align="center">ราคาคืน</div></th>
 <!--                                        <th><div align="center">คืนลด</div></th>
                                         <th><div align="center">ราคาคืน</div></th>-->
@@ -101,7 +101,7 @@ $price_product_refund_factory = 0;
                                                     <?php if ($type_money == "PERCENT") { ?><!-- คืนนลด--> 
                                                         <td><?php echo number_format($val_difference_amount, 2) . "%"; ?></td>
                                                     <?php } else { ?>
-                                                        <td><?php echo "สุทธิ"; ?></td>
+                                                        <td><?php echo "-"; ?></td>
                                                     <?php } ?>  
                                                     
                                                     <td class="text-right"><?php echo number_format($cost, 2); ?></td><!-- ราคาคืน-->
