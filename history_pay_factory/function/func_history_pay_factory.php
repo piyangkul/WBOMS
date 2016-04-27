@@ -5,11 +5,28 @@ require_once dirname(__FILE__) . '/../../config/connect.php';
 function getPayFactoryByID($idfactory) {
     $conn = dbconnect();
     $SQLCommand = "SELECT * FROM `pay_factory`JOIN shipment_period ON pay_factory.shipment_period_idshipment=shipment_period.idshipment_period WHERE factory_idfactory=:idfactory ";
- 
+
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
                 ":idfactory" => $idfactory
+            )
+    );
+    $resultArr = array();
+    while ($result = $SQLPrepare->fetch(PDO::FETCH_ASSOC)) {
+        array_push($resultArr, $result);
+    }
+    return $resultArr;
+}
+
+//action_factory_period_show
+function getPayFactoryByIDperiod($idshipment_period) {
+    $conn = dbconnect();
+    $SQLCommand = 'SELECT * FROM (SELECT factory.idfactory,factory.name_factory,shipment_period.idshipment_period FROM factory,shipment_period)AS A LEFT JOIN pay_factory ON A.idfactory=pay_factory.factory_idfactory AND A.idshipment_period=pay_factory.shipment_period_idshipment WHERE A.idshipment_period=:idshipment_period ';
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idshipment_period" => $idshipment_period,
             )
     );
     $resultArr = array();
@@ -26,7 +43,7 @@ function getFactoryByName($name_factory) {
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
-                ":name_factory" => "%".$name_factory."%"
+                ":name_factory" => "%" . $name_factory . "%"
             )
     );
     $resultArr = array();
@@ -45,19 +62,19 @@ function getFactory() {
     while ($result = $SQLPrepare->fetch(PDO::FETCH_ASSOC)) {
         array_push($resultArr, $result);
     }
-    return json_encode($resultArr);//, JSON_UNESCAPED_UNICODE);
+    return json_encode($resultArr); //, JSON_UNESCAPED_UNICODE);
     //return "{}";
 }
 
 //ใช้หน้าpopup_price_payfactory
-function getPricePayFactory($idfactory,$idshipment_period) {
+function getPricePayFactory($idfactory, $idshipment_period) {
     $conn = dbconnect();
     $SQLCommand = "SELECT * FROM `pay_factory` WHERE factory_idfactory=:idfactory AND shipment_period_idshipment=:idshipment_period";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
-            ":idfactory" => $idfactory,
-            ":idshipment_period" => $idshipment_period
+                ":idfactory" => $idfactory,
+                ":idshipment_period" => $idshipment_period
             )
     );
     $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
@@ -74,7 +91,7 @@ function getProductDetail_payFactory($idshipment_period, $idfactory) {//รั�
     $SQLPrepare->execute(
             array(
                 ":idshipment_period" => $idshipment_period,
-                ":idfactory" => $idfactory              
+                ":idfactory" => $idfactory
             )
     );
     $resultArr = array();
@@ -83,3 +100,4 @@ function getProductDetail_payFactory($idshipment_period, $idfactory) {//รั�
     }
     return $resultArr;
 }
+
