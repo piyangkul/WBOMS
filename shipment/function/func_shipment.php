@@ -908,7 +908,7 @@ function getNamebank() {
     //return "{}";
 }
 
-//autoComplete ชื่อธนาคาร popup_add_payfactory
+//autoComplete สาขาธนาคาร popup_add_payfactory
 function getBranchbank() {
     $conn = dbconnect();
     $SQLCommand = "SELECT DISTINCT pay_factory.cheque_branch_bank FROM `pay_factory` WHERE cheque_name_bank IS NOT NULL AND cheque_branch_bank IS NOT NULL ";
