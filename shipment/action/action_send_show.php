@@ -87,7 +87,7 @@ $Check_confirm = Check_confirm($idshipment_period, $idfactory);
                 $ShipmentDuplicate = getShipmentDuplicateByID($idfactory, $idshipment_period, $val_name_transport, $val_number, $val_volume);
                 if ($ShipmentDuplicate > 1) {//ถ้าการส่ง1ครั้ง มีหลายรายการสั่ง
                     if ($n == 0) {
-                        echo "<td style=\"vertical-align:middle\" " . "rowspan=" . '"' . $ShipmentDuplicate . '" >' . $val_date_transport . '</td>';
+                        echo "<td style=\"vertical-align:middle\" " . "rowspan=" . '"' . $ShipmentDuplicate . '" >' . date_format($date_transport, 'd-m-Y') . '</td>';
                         echo "<td style=\"vertical-align:middle\" " . "rowspan=" . '"' . $ShipmentDuplicate . '" >' . $val_name_transport . "/" . $val_volume . "/" . $val_number . '</td>';
                         echo "<td class='text-right' style=\"vertical-align:middle\" " . "rowspan=" . '"' . $ShipmentDuplicate . '" valign="middle">' . number_format($val_price_transport, 2) . '</td>';
                         ?>

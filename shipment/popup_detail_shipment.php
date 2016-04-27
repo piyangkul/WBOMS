@@ -35,6 +35,7 @@ $val_price_transport = $getShipmentDetailByID['price_transport'];
         <h4 class="modal-title" id="myModalLabel">รายละเอียดสินค้าตามบิลขนส่ง</h4>
     </div>
     <div class="row">
+        <!--<div class="alert alert-danger" role="alert">1.ยอดเงินสินค้าที่สั่งซื้อของบิลผิดอยู่ </div>-->
         <div class="col-md-12 col-sm-12 ">
             <div class="form-group col-xs-12">
                 <div class="form-group col-xs-12">
@@ -113,9 +114,9 @@ $val_price_transport = $getShipmentDetailByID['price_transport'];
 
                             <tr>
                                 <th><div align="center">ราคาเปิด</div></th>
-                            <th><div align="center">ต้นทุนลด</div></th>
+                            <th><div align="center">ต้นทุนลด%</div></th>
                             <th><div align="center">ราคาต้นทุน</div></th>
-                            <th><div align="center">ขายลด</div></th>
+                            <th><div align="center">ขายลด%</div></th>
                             <th><div align="center">ราคาขาย</div></th>
                             <th><div align="center">ราคาเปิดรวม</div></th>
                             <th><div align="center">ราคาต้นทุนรวม</div></th>
@@ -148,7 +149,7 @@ $val_price_transport = $getShipmentDetailByID['price_transport'];
                                     if ($value['type_product_order'] == "PERCENT") {
                                         $cost2 = $val_price_unit - (($val_difference_product_order / 100.0) * $val_price_unit);
                                     } else {
-                                        $cost2 = $val_price_unit - $val_difference_product_order;
+                                        $cost2 = $val_price_unit + $val_difference_product_order;
                                     }
                                     ?>
                                     <tr>
@@ -156,9 +157,21 @@ $val_price_transport = $getShipmentDetailByID['price_transport'];
                                         <td><?php echo $val_name_product; ?></td>
                                         <td><?php echo $val_amount_product_order . " " . $val_name_unit; ?></td><!-- จำนวน-->
                                         <td class="text-right"><?php echo number_format($val_price_unit, 2); ?></td><!-- ราคาเปิด-->
-                                        <td><?php echo $val_difference_amount . "%"; ?></td><!-- ต้นทุนลด-->                                      
+
+                                        <?php if ($val_type_product_order == "PERCENT") { ?>
+                                            <td><?php echo number_format($val_difference_amount, 2) . "%"; ?></td><!-- ต้นทุนลด-->     
+                                        <?php } else { ?>
+                                            <td><?php echo "-"; ?></td>
+                                        <?php } ?>
+
                                         <td class="text-right"><?php echo number_format($cost, 2) ?></td><!-- ราคาต้นทุน-->
-                                        <td><?php echo $val_difference_product_order; ?><?php echo ($val_type_product_order == "PERCENT") ? "%" : "฿"; ?></td>
+
+                                        <?php if ($val_type_product_order == "PERCENT") { ?><!-- คืนลด--> 
+                                            <td><?php echo number_format($val_difference_product_order, 2) . "%"; ?></td>
+                                        <?php } else { ?>
+                                            <td><?php echo number_format($val_difference_product_order, 2) . "฿"; ?></td>
+                                        <?php } ?>
+
                                         <td class="text-right"><?php echo number_format($cost2, 2); ?></td> <!-- ราคาขาย -->
                                         <td class="text-right"><?php echo number_format($val_price_unit * $val_amount_product_order, 2); ?></td>
                                         <td class="text-right"><?php echo number_format($cost * $val_amount_product_order, 2); ?></td> <!-- ราคาต้นทุนรวม--> 

@@ -95,6 +95,7 @@ $val_name_factory = $getFactoryByID['name_factory'];
                                 <b>หมายเหตุ</b> เมื่อจ่ายเงินโรงงานแล้ว จะกลับมาส่งสินค้าเพิ่มไม่ได้
                                 <br/>จำนวนรายการที่สั่งคงค้าง : (-)สร้างรอบไว้ แต่ยังไม่มีorder (0)ทุกorderของโรงงานนั้นถูกเพิ่มการส่งแล้ว 
                                 <br/>จำนวนรายการที่ส่ง : (-)ยังไม่ได้เพิ่มการส่ง ซักรายการเลย
+                                <br/>ยอดเงินที่สั่งซื้อ : ยอดเงินสินค้าที่สั่งซื้อที่ถูกส่งแล้ว ถ้าสินค้าที่สั่งยังไม่ถูกเพิ่มการส่งเลยจะแสดง(-)
                                 <br/>จะเพิ่มการจ่ายเงินโรงงานได้ ก็ต่อเมื่อ มีการกดConfirmทุกรายการสินค้า หรือเลื่อนรายการสินค้าของโรงงานนั้นครบทุกอันแล้ว
                             </div>
                             <!--<div class="alert alert-danger" role="alert">แก้ 1.ทำไมรง.ลูกโป่งไม่ขึ้น ทั้งๆที่ไม่มีรอบ </div>-->
@@ -110,7 +111,7 @@ $val_name_factory = $getFactoryByID['name_factory'];
                                                 <tr>
                                                     <th><div align="center">ลำดับ</div></th>
                                                     <th><div align="center">โรงงาน</div></th>
-                                                    <th><div align="center">จำนวนรายการที่ส่ง</div></th><!-- จำนวนรายการที่สั่งคงค้าง/ส่ง -->
+                                                    <th><div align="center">จำนวนรายการสั่งคงค้าง/ส่ง</div></th>
                                                     <th><div align="center">ยอดเงินที่สั่งซื้อ</div></th>
                                                     <th><div align="center">ค่าขนส่งรวม</div></th>
                                                     <th><div align="center">สินค้าคืนรวม</div></th>
@@ -145,6 +146,7 @@ $val_name_factory = $getFactoryByID['name_factory'];
 //                                                    }
                                                     $sum_sale = 0;
                                                     $sum_refund = 0;
+                                                    $total_price_refunds = 0;
                                                     $getPrice_transportByshipment_period = getPrice_transportByshipment_period($idshipment_period, $val_idfactory2);
                                                     $getProduct_refunds = getProduct_refunds($val_idfactory2, $idshipment_period);
                                                     foreach ($getProduct_refunds as $value) {
@@ -186,19 +188,20 @@ $val_name_factory = $getFactoryByID['name_factory'];
                                                         $total_price = $sum_sale + $getPrice_transportByshipment_period['sum_price_transport'];
                                                         $total_price_refunds = $sum_sale + $getPrice_transportByshipment_period['sum_price_transport'] - $sum_refund;
                                                         ?>
-                                                    <?php } ?>
+                                                        <?php
+                                                    }
+                                                    $getShipmentByID_notSendRowcount = getShipmentByID_notSendRowcount($val_idfactory2);
+                                                    ?>
 
                                                     <tr>
                                                         <td><?php echo $i; ?></td>
                                                         <td><?php echo $val_name_factory; ?></td>
                                                         <td><?php
-                                                            $text = ($leftArr["$val_idfactory"]['count_left'] == NULL ? '-' : $leftArr["$val_idfactory"]['count_left']) . "/" . $val_CountCheck;
-//                                                            if ($val_status_shipment == "finish") {
-//                                                                echo "เสร็จสิ้น" . "/" . $val_CountCheck;
-//                                                            } else {
-//                                                                echo $text;
-//                                                            }
-                                                            echo $val_CountCheck;
+                                                            if ($getShipmentByID_notSendRowcount == 0) {
+                                                                echo "เสร็จสิ้น" . "/" . $val_CountCheck;
+                                                            } else {
+                                                                echo $getShipmentByID_notSendRowcount . "/" . $val_CountCheck;
+                                                            }
                                                             ?></td>
                                                         <?php
                                                         if ($val_price == NULL) {
