@@ -7,7 +7,7 @@ $p = 'product';
 if (isset($_GET['p']) && !empty($_GET['p'])) {
     $p = $_GET['p'];
 }
-require_once '/function/func_product.php';
+require_once 'function/func_product.php';
 //echo "<pre>";
 //print_r($_POST);
 //print_r($_SESSION["unit"]);

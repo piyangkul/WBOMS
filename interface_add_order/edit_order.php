@@ -7,7 +7,7 @@ $p = 'history_order';
 if (isset($_GET['p']) && !empty($_GET['p'])) {
     $p = $_GET['p'];
 }
-require_once '/function/func_addorder.php';
+require_once 'function/func_addorder.php';
 $val_idorder = $_GET['idorder']; //ส่งค่าpara
 $getOrderEdit = getOrderEdit($val_idorder);
 $getProductOrder = getProductOrder($val_idorder);

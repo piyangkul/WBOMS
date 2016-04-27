@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) . '/function/func_addorder.php';
+require_once 'function/func_addorder.php';
 session_start();
 
 //session_destroy();

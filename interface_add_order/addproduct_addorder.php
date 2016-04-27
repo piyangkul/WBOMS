@@ -27,7 +27,7 @@ if (isset($_GET['time'])) {
     $time = $_GET['time'];
     $_SESSION['time'] = $time;
 }
-require_once '/function/func_addorder.php';
+require_once 'function/func_addorder.php';
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
