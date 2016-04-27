@@ -24,9 +24,8 @@ if ($val_tel_shop == NULL) {
 }
 //$getPayByID2 = getPayByID2($idshop, $idshipment_period);
 //$val_price_order_total = $getPayByID2['price_order_total'];
-
-$Beforeid = getBeforeid($idshipment_period); //ได้ค่าidรอบถัดไป --> อัพเดทรอบนี้ด้วย
-$val_before_idshipment_period = $Beforeid['idshipment_period'];
+//$Beforeid = getBeforeid($idshipment_period); //ได้ค่าidรอบถัดไป --> อัพเดทรอบนี้ด้วย
+//$val_before_idshipment_period = $Beforeid['idshipment_period'];
 ?>
 <form class="form" >
     <div class="modal-header">
@@ -51,56 +50,70 @@ $val_before_idshipment_period = $Beforeid['idshipment_period'];
                             <div class="panel-body">
                                 <div class="table-responsive">
                                     <table class="table table-striped table-bordered table-hover text-center ">
-                                    <thead>
-                                        <tr>
-                                            <th><div align="center">ลำดับ</div></th>
-                                            <th><div align="center">วันที่คืน</div></th>
-                                            <th><div align="center">โรงงาน</div></th>
-                                            <th><div align="center">ชื่อสินค้า</div></th>
-                                            <th><div align="center">จำนวน</div></th> 
-                                            <th><div align="center">ราคาคืน/หน่วย</div></th>
-                                            <th><div align="center">ราคาคืน</div></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php
-                                        $getProductRefundByID = getProductRefundByID($idshop, $val_before_idshipment_period);
-                                        $i2 = 0;
-                                        $refund = 0;
-                                        $sum_refund = 0;
-                                        foreach ($getProductRefundByID as $value) {
-                                            $i2++;
-                                            $val_idfactory = $value['idfactory'];
-                                            $val_name_factory = $value['name_factory'];
-                                            $val_name_product = $value['name_product'];
-                                            $val_price_unit = $value['price_unit'];
-                                            $val_amount_product_refunds = $value['amount_product_refunds'];
-                                            $val_name_unit = $value['name_unit'];
-                                            $val_date_product_refunds = $value['date_product_refunds'];
-                                            $date_product_refunds = date_create($val_date_product_refunds);
-                                            $date_product_refunds->add(new DateInterval('P543Y0M0DT0H0M0S'));
-                                            $val_price_difference = $value['price_difference']; //ขายลด
-                                            $val_type_money = $value['type_money'];
-                                            if ($value['type_money'] == "PERCENT") {
-                                                $cost2 = $val_price_unit - (($val_price_difference / 100.0) * $val_price_unit);
-                                            } else {
-                                                $cost2 = $val_price_unit - $val_price_difference;
-                                            }
-                                            $refund = $cost2 * $val_amount_product_refunds;
-                                            ?>
+                                        <thead>
                                             <tr>
-                                                <td><?php echo $i2; ?></td>
-                                                <td><?php echo date_format($date_product_refunds, 'd-m-Y'); ?></td> 
-                                                <td><?php echo $val_name_factory; ?></td>  
-                                                <td><?php echo $val_name_product; ?></td>
-                                                <td><?php echo $val_amount_product_refunds . " " . $val_name_unit; ?></td>
-                                                <td class="text-right"><?php echo number_format($cost2, 2); ?></td>
-                                                <td class="text-right"><?php echo number_format($refund, 2); ?></td>
-                                                <?php $sum_refund = $sum_refund + $refund; ?>
-                                            </tr>
-                                        <?php } ?>
-                                    </tbody>
-                                </table>
+                                                <th rowspan="2" valign="middle"><div align="center">ลำดับ</div></th>
+                                        <th rowspan="2"><div align="center">วันที่คืน</div></th>
+                                        <th rowspan="2"><div align="center">โรงงาน</div></th>
+                                        <th rowspan="2"><div align="center">ชื่อสินค้า</div></th>
+                                        <th rowspan="2"><div align="center">จำนวน</div></th> 
+                                        <th colspan="3"><div align="center">ราคาคืน/หน่วย</div></th>
+                                        <th colspan="2"><div align="center">ราคาคืน</div></th>
+                                        </tr>
+                                        <tr>
+                                            <th><div align="center">ราคาเปิด</div></th>
+                                        <th><div align="center">คืนลด</div></th>
+                                        <th><div align="center">ราคาคืน</div></th>
+                                        <th><div align="center">ราคาเปิดรวม</div></th>
+                                        <th><div align="center">ราคาคืนรวม</div></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                            $getProductRefundByID = getProductRefundByID($idshop, $idshipment_period);
+                                            $i2 = 0;
+                                            $refund = 0;
+                                            $sum_refund = 0;
+                                            foreach ($getProductRefundByID as $value) {
+                                                $i2++;
+                                                $val_idfactory = $value['idfactory'];
+                                                $val_name_factory = $value['name_factory'];
+                                                $val_name_product = $value['name_product'];
+                                                $val_price_unit = $value['price_unit'];
+                                                $val_amount_product_refunds = $value['amount_product_refunds'];
+                                                $val_name_unit = $value['name_unit'];
+                                                $val_date_product_refunds = $value['date_product_refunds'];
+                                                $date_product_refunds = date_create($val_date_product_refunds);
+                                                $date_product_refunds->add(new DateInterval('P543Y0M0DT0H0M0S'));
+                                                $val_price_difference = $value['price_difference']; //ขายลด
+                                                $val_type_money = $value['type_money'];
+                                                if ($value['type_money'] == "PERCENT") {
+                                                    $cost2 = $val_price_unit - (($val_price_difference / 100.0) * $val_price_unit);
+                                                } else {
+                                                    $cost2 = $val_price_unit + $val_price_difference;
+                                                }
+                                                $refund = $cost2 * $val_amount_product_refunds;
+                                                ?>
+                                                <tr>
+                                                    <td><?php echo $i2; ?></td>
+                                                    <td><?php echo date_format($date_product_refunds, 'd-m-Y'); ?></td> 
+                                                    <td><?php echo $val_name_factory; ?></td>  
+                                                    <td><?php echo $val_name_product; ?></td>
+                                                    <td><?php echo $val_amount_product_refunds . " " . $val_name_unit; ?></td>
+                                                    <td class="text-right"><?php echo number_format($val_price_unit, 2); ?></td><!-- ราคาเปิด -->
+                                                    <?php if ($val_type_money == "PERCENT") { ?>
+                                                        <td><?php echo number_format($val_price_difference, 2) . "%"; ?></td>
+                                                    <?php } else { ?>
+                                                        <td><?php echo number_format($val_price_difference, 2) . "฿"; ?></td>
+                                                    <?php } ?>
+                                                    <td class="text-right"><?php echo number_format($cost2, 2); ?></td>
+                                                    <td class="text-right"><?php echo number_format($val_price_unit * $val_amount_product_refunds, 2); ?></td>
+                                                    <td class="text-right"><?php echo number_format($refund, 2); ?></td>
+                                                    <?php $sum_refund = $sum_refund + $refund; ?>
+                                                </tr>
+                                            <?php } ?>
+                                        </tbody>
+                                    </table>
                                     <div class="text-danger" align="right">ราคาคืนรวม &nbsp;&nbsp; <b><?php echo number_format($sum_refund, 2); ?></b> &nbsp;&nbsp; บาท </div>  
                                     <input type="hidden" id="sum_refund"  value="<?php echo number_format($sum_refund, 2); ?>" >      
                                 </div>                               
@@ -123,8 +136,8 @@ $val_before_idshipment_period = $Beforeid['idshipment_period'];
         var sum_refund = document.getElementById("sum_refund").value;
         var a = ("ราคาคืนรวม ").bold();
         var b = (" บาท").bold();
-        document.getElementById("sum_refund2").innerHTML = a+sum_refund+b;
-        
+        document.getElementById("sum_refund2").innerHTML = a + sum_refund + b;
+
     });
 </script>
 <!--<h4 class="alert alert-danger" role="alert">1.ทำautoCompleteไม่ได้</h4>-->

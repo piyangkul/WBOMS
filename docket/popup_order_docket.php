@@ -53,7 +53,7 @@ if ($val_tel_shop == NULL) {
                                         <th rowspan="2"><div align="center">โรงงาน</div></th>
                                         <th rowspan="2"><div align="center">ชื่อสินค้า</div></th>
                                         <th rowspan="2"><div align="center">จำนวน</div></th> 
-                                        <th rowspan="2"><div align="center">ราคา/หน่วย</div></th>
+                                        <th colspan="3"><div align="center">ราคา/หน่วย</div></th>
                                         <th rowspan="2"><div align="center">ราคา</div></th>
                                         </tr>
 
@@ -61,6 +61,9 @@ if ($val_tel_shop == NULL) {
                                             <th><div align="center">วันที่ส่ง</div></th>
                                         <th><div align="center">ชื่อ/เล่มที่/เลขที่</div></th>
                                         <th><div align="center">ค่าส่ง</div></th>
+                                        <th><div align="center">ราคาเปิด</div></th>
+                                        <th><div align="center">ขายลด</div></th>
+                                        <th><div align="center">ราคาขาย</div></th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -98,7 +101,7 @@ if ($val_tel_shop == NULL) {
                                                 if ($value['type_product_order'] == "PERCENT") {
                                                     $cost = $val_price_unit - (($val_difference_product_order / 100.0) * $val_price_unit);
                                                 } else {
-                                                    $cost = $val_price_unit - $val_difference_product_order;
+                                                    $cost = $val_price_unit + $val_difference_product_order;
                                                 }
                                                 $sale = $cost * $val_amount_product_order;
                                                 ?>
@@ -129,6 +132,12 @@ if ($val_tel_shop == NULL) {
                                                     <td><?php echo $val_name_factory; ?></td>  
                                                     <td><?php echo $val_name_product; ?></td>
                                                     <td><?php echo $val_amount_product_order . " " . $val_name_unit; ?></td>
+                                                    <td class="text-right"><?php echo number_format($val_price_unit, 2); ?></td>
+                                                    <?php if ($val_type_product_order == "PERCENT") { ?><!-- ขายลด--> 
+                                                        <td><?php echo number_format($val_difference_product_order, 2) . "%"; ?></td>
+                                                    <?php } else { ?>
+                                                        <td><?php echo number_format($val_difference_product_order, 2) . "฿"; ?></td>
+                                                    <?php } ?>  
                                                     <td class="text-right"><?php echo number_format($cost, 2); ?></td>
                                                     <td class="text-right"><?php echo number_format($sale, 2); ?></td>
                                                     <?php $sum_cost = $sum_cost + $sale; ?>

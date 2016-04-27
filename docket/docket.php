@@ -85,7 +85,7 @@ if (isset($_GET['idshop'])) {
                         idshop = JSON_shopName["'" + input + "'"];
                     }
                     console.log(idshop);
-                    show_docket_table();
+                    show_docket_table_shop();
                 }
                 return false;
             }
@@ -131,51 +131,163 @@ if (isset($_GET['idshop'])) {
                     </span>
                     <div class="alert alert-success" role="alert"><b>คำชี้แจง</b> : กรุณาพิมพ์ใบแจ้งหนี้ และเพิ่มข้อมูลการเก็บเงินร้านค้า
                         <br/><b>หมายเหตุ</b> : รอบไหนที่ไม่มีการสั่งซื้อ แต่มีสินค้าคืนจากรอบก่อนหน้า ให้ถือว่ารอบนั้นเก็บไม่ได้ 
-                        <br/>1.กรณีถ้าร้านค้าไม่ได้เลิกกิจการ --> ระบบจะมองว่ารอบนั้นขาดทุน และจะเก็บในรอบถัดไป  
+                        <br/>1.กรณีถ้าร้านค้ายังเปิดกิจการอยู่ --> ระบบจะมองว่ารอบนั้นขาดทุน และจะเก็บในรอบถัดไป  
                         <br/>2.กรณีถ้าร้านค้าเลิกกิจการ --> ระบบจะมองว่ารอบนั้นขาดทุน
                     </div>
-                    <!-- ค้นหา -->
-                    <div class="row">
-                        <div class="col-md-3"></div>                        
-                        <div class="col-md-6 "> 
-                            <div class="panel panel-default">
-                                <div class="panel-heading ">
-                                    <div class="table-responsive">
-                                        <div class="form-group">
-                                            <label for="name_shop">ค้นหารหัสหรือชื่อร้านค้า</label>
-                                            <div class="form-group input-group">
-                                                <span class="input-group-addon"><i class="fa fa-shopping-cart" ></i></span>
-                                                <input type="text" class="form-control" id="shop" autocomplete=on name="shop" placeholder="กรอกรหัสหรือชื่อร้านค้า" onblur ="getShopId(event)" onkeypress="getShopId(event)">
+                    <!--<div class="alert alert-danger" role="alert">แก้ 1.เช็คเงื่อนไขของค้นหารอบด้วย </div>-->
+
+                    <div class="container col-md-12">
+                        <ul class="nav nav-pills nav-justified">
+                            <li class="active"><a data-toggle="tab" href="#tab_shop">ค้นหาร้านค้า</a></li>
+                            <li><a data-toggle="tab" href="#tab_shipment_period">ค้นหารอบการส่ง</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                            <div id="tab_shop" class="tab-pane fade in active">
+                                </br>
+                                <!-- ค้นหา -->
+                                <div class="row">
+                                    <div class="col-md-3"></div>                        
+                                    <div class="col-md-6 "> 
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading ">
+                                                <div class="table-responsive">
+                                                    <div class="form-group">
+                                                        <label for="name_shop">ค้นหารหัสหรือชื่อร้านค้า</label>
+                                                        <div class="form-group input-group">
+                                                            <span class="input-group-addon"><i class="fa fa-shopping-cart" ></i></span>
+                                                            <input type="text" class="form-control" id="shop" autocomplete=on name="shop" placeholder="กรอกรหัสหรือชื่อร้านค้า" onblur ="getShopId(event)" onkeypress="getShopId(event)">
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--End ค้นหา -->
-                    <!-- ข้อมูลการจ่ายเงินโรงงานรายเดือน-ปี -->
-                    <div class="row">
-                        <!--<div class="col-md-1"></div>-->                        
-                        <div class="col-md-12 ">
-                            <div class="panel panel-primary">
-                                <div class="panel-heading">
-                                    <h4>ข้อมูลการเก็บเงินร้านค้ารายเดือน-ปี</h4>
-                                </div>
-                                <div class="panel-body">
-                                    <div class="table-responsive" id="show_docket_table">
-                                        <!--show_docket_table--> 
+                                <!--End ค้นหา -->
+                                <!-- ข้อมูลการจ่ายเงินโรงงานรายเดือน-ปี -->
+                                <div class="row">
+                                    <!--<div class="col-md-1"></div>-->                        
+                                    <div class="col-md-12 ">
+                                        <div class="panel panel-primary">
+                                            <div class="panel-heading">
+                                                <h4>ข้อมูลการเก็บเงินร้านค้ารายเดือน-ปี</h4>
+                                            </div>
+                                            <div class="panel-body">
+                                                <div class="table-responsive" id="show_docket_table_shop">
+                                                    <!--show_docket_table_shop--> 
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+                                <!-- End ข้อมูลการจ่ายเงินโรงงานรายเดือน-ปี -->
+                            </div>
+
+
+                            <div id="tab_shipment_period" class="tab-pane fade">
+                                </br>
+                                <!-- ค้นหา -->
+                                <div class="row">
+                                    <div class="col-md-1"></div>                        
+                                    <div class="col-md-10 "> 
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading ">
+                                                <div class="table-responsive">
+                                                    <div class="form-group">
+                                                        <!--<span class="col-md-0"> </span>-->
+                                                        <label for="search_shipment_period">เลือกรอบการส่ง</label>
+                                                        <span class="col-md-offset-5"> </span>
+                                                        <label for="search_region">เลือกภูมิภาค</label>
+                                                        <span class="col-md-offset-2"> </span>
+                                                        <label for="search_region">เลือกจังหวัด</label>
+
+                                                        <div class="form-group input-group">
+                                                            <span class="input-group-addon"><i class="fa fa-calendar-o" ></i></span>
+                                                            <select id="idshipment" class="form-control" onchange="show_docket_table_period()" >
+                                                                <?php
+                                                                $getShipment = getShipment();
+                                                                $num = sizeof($getShipment) + 1;
+                                                                foreach ($getShipment as $value) {
+                                                                    $num--;
+                                                                    $idshipment = $value['idshipment_period'];
+                                                                    $date_start = $value['date_start'];
+                                                                    $date_end = $value['date_end'];
+                                                                    echo "<option  value = $idshipment> รอบที่$num : $date_start ถึง $date_end </option>";
+                                                                }
+                                                                ?>                                                              
+                                                            </select>
+                                                            <span class="input-group-addon"><i class="fa fa-home" ></i></span>
+                                                            <select id="idregion" class="form-control" onchange="change_province();" >
+                                                                <option value="" >ทุกภูมิภาค</option>
+                                                                <?php
+                                                                $getRegion = getRegion();
+                                                                foreach ($getRegion as $value) {
+                                                                    $idregion = $value['idregion'];
+                                                                    $name_region = $value['name_region'];
+                                                                    $code_region = $value['code_region'];
+                                                                    echo "<option value = $idregion> $name_region </option>";
+                                                                }
+                                                                ?>                                                             
+                                                            </select>
+                                                            <span class="input-group-addon"><i class="fa fa-home" ></i></span>
+                                                            <select id="show_province" class="form-control" onchange="show_docket_table_period()" >
+
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--End ค้นหา -->
+                                <!-- ข้อมูลการจ่ายเงินโรงงานรายเดือน-ปี -->
+                                <div class="row">
+                                    <!--<div class="col-md-1"></div>-->                        
+                                    <div class="col-md-12 ">
+                                        <div class="panel panel-primary">
+                                            <div class="panel-heading">
+                                                <h4>ข้อมูลการเก็บเงินร้านค้าประจำรอบ</h4>
+                                            </div>
+                                            <div class="panel-body">
+                                                <div class="table-responsive" id="show_docket_table_period">
+                                                    <!--show_docket_table_period--> 
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End ข้อมูลการจ่ายเงินโรงงานรายเดือน-ปี -->
                             </div>
                         </div>
                     </div>
-                    <!-- End ข้อมูลการจ่ายเงินโรงงานรายเดือน-ปี -->
 
                 </div>
                 <!-- /. PAGE INNER  -->
             </div>
             <!-- /. PAGE WRAPPER  -->
+        </div>
+        <div class="modal fade" id="myModal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content modal-lg ui-front">
+                    <!-- Content -->
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="myModal-sm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content modal-sm ui-front">
+                    <!-- Content -->
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content ui-front">
+                    <!-- Content -->
+                </div>
+            </div>
         </div>
         <!-- /. WRAPPER  -->
         <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
@@ -190,15 +302,38 @@ if (isset($_GET['idshop'])) {
         <script src="../assets/js/dataTables/dataTables.bootstrap.js"></script>
 
         <script>
-                                                    $(document).ready(function () {
-                                                        $('#dataTables-example').dataTable();
-                                                    });
+                                                                $(document).ready(function () {
+                                                                    $('#dataTables-example').dataTable();
+                                                                });
         </script>
         <script>
-            show_docket_table();
-            function show_docket_table() {
+            function change_province() {
+                show_docket_table_period();
+                var idregion = document.getElementById('idregion').value;
+                //alert(idregion);
+                $.get('action/action_change_province.php?idregion=' + idregion, function (data, status) {
+                    //alert(data);
+                    $("#show_province").html(data);
+                });
+                //show_docket_table_period();
+            }
+
+            show_docket_table_period();
+            function show_docket_table_period() {
+                var idshipment = document.getElementById('idshipment').value;
+                var idregion = document.getElementById('idregion').value;
+                var idprovince = document.getElementById('show_province').value;
+                //alert(idprovince);
+                $.get('action/action_docket_period_show.php?idshipment_period=' + idshipment + '&idregion=' + idregion + '&idprovince=' + idprovince, function (data, status) {//+"&id="+
+                    $("#show_docket_table_period").html(data);
+                });
+            }
+        </script>
+        <script>
+            show_docket_table_shop();
+            function show_docket_table_shop() {
                 $.get("action/action_docket_show.php?idshop=" + idshop, function (data, status) {//+"&id="+
-                    $("#show_docket_table").html(data);
+                    $("#show_docket_table_shop").html(data);
                 });
             }
         </script>
@@ -208,32 +343,13 @@ if (isset($_GET['idshop'])) {
             });
 
             $(document.body).on('hidden.bs.modal', function () {
-                $('#myModal').removeData('bs.modal');
+                $('#myModal-lg').removeData('bs.modal');
             });
 
         </script>
-
+        
     </body>
+
 </html>
-<div class="modal fade" id="myModal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content modal-lg ui-front">
-            <!-- Content -->
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="myModal-sm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content modal-sm ui-front">
-            <!-- Content -->
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content ui-front">
-            <!-- Content -->
-        </div>
-    </div>
-</div>
+
 <!--<div class="alert alert-danger" role="alert">1.รง.ไทยฟูดส์เพี้ยน </div>-->

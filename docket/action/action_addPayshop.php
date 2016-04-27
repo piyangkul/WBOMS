@@ -34,7 +34,9 @@ $status_pay = $_POST['status_pay']; //get,lack,unget
 
 $debt_lack = $_POST['debt_lack']; //ยอดเงินหนี้
 $debt_unget = $_POST['debt_unget'];
-if ($debt_lack != NULL) {
+if ($debt_lack == NULL && $debt_unget == NULL) {
+    $debt = 0;
+} elseif ($debt_lack != NULL) {
     $debt = $debt_lack;
 } else {
     $debt = $debt_unget;
@@ -50,7 +52,6 @@ $status_process = "add";
 //
 //$date_cheque = date_create($date_pay_credit);
 //$month_cheque = date_format($date_cheque, 'm');
-
 //echo $month_end;
 //if ($month_cheque > $month_end) {
 // $status_due = "over";
