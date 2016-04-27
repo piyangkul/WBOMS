@@ -35,7 +35,7 @@ $status_pay = $_GET['status_pay'];
                     <th><div align="center">ยอดสุทธิ</div></th><!--ยอดเก็บเงินสุทธิ-->
                     <th><div align="center">ยอดที่เก็บได้</div></th>
                     <th><div align="center">ยอดหนี้</div></th>
-                    <th><div align="center">สถานะ</div></th><!--สถานะการเก็บเงิน เก็บได้ เก็บไม่ได้-->
+                    <!--<th><div align="center">สถานะ</div></th>สถานะการเก็บเงิน เก็บได้ เก็บไม่ได้-->
                     <!--<th><div align="center">การกระทำ</div></th>-->
                     </tr>
                     </thead>
@@ -170,7 +170,7 @@ $status_pay = $_GET['status_pay'];
                                         <?php echo number_format(-1 * $val_debt, 2); ?>
                                     </td>
                                 <?php } ?>
-                                <td><?php echo $val_status_pay; ?></td>
+                                <!--<td><?php // echo $val_status_pay; ?></td>-->
     <!--                                    <td>
                                      ดูใบปะหน้า 
                                     <a href="../docket/docket_paper.php?idshipment_period=<?php echo $val_idshipment_period; ?>&idshop=<?php echo $idshop; ?>" class="btn btn-primary" data-toggle="tooltip" title="ดูใบปะหน้า">
