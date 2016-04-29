@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__FILE__) . 'function/func_addorder.php';
+require_once dirname(__FILE__) . '/function/func_addorder.php';
 session_start();
 $z = 1;
 if ($_GET['p'] == "addProduct") {

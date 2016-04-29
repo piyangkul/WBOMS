@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) . 'function/func_addorder.php';
+require_once dirname(__FILE__) . '/function/func_addorder.php';
 session_start();
 
 //session_destroy();
@@ -151,7 +151,15 @@ else if ($_GET['p'] == "editProduct") {
                         <?php if ($_SESSION["productR"][$i]["type_factory"] === "PERCENT") { ?>
                             <td><?= number_format($_SESSION["productR"][$i]["diff"], 2) . "%" ?></td>
                         <?php } else { ?>
-                            <td><?= number_format($_SESSION["productR"][$i]["diff"], 2) . "฿" ?></td>
+                            <td><?= number_format($_SESSION["productR"][$i]["diff"], 2) . "฿/"; ?>
+                                <?php
+                                $getUnit = getUnit2($idUnitS);
+                                //print_r($getUnit);;
+                                foreach ($getUnit as $value) {
+                                    $val_name_unit = $value['name_unit'];
+                                    echo $val_name_unit;
+                                }
+                                ?></td>
                         <?php }
                         ?>
                         <td class="text-right"><?php echo number_format($_SESSION["productR"][$i]["price"], 2); ?></td>
@@ -161,8 +169,8 @@ else if ($_GET['p'] == "editProduct") {
                                 <span class="glyphicon glyphicon-edit"></span>
                             </a>
                             <a class = "btn btn-danger" data-toggle = "modal" data-toggle = "tooltip" title = "ลบ" id="deleteProduct<?= $i; ?>" name="deleteProduct<?= $i; ?>" onclick="if (confirm('คุณต้องการลบหน่วยสินค้าหรือไม่')) {
-                                                    delProduct(<?= $i; ?>);
-                                                }">
+                                        delProduct(<?= $i; ?>);
+                                    }">
                                 <span class = "glyphicon glyphicon-trash"></span>
                             </a>     
                         </td>

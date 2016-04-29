@@ -184,7 +184,7 @@ $total_price_all = 0;
                                                                 ?>
                                                                 <?php if ($val_type_product_order === 'BATH') { ?>
                                                                     <td>-</td>
-                                                                    <td><?= number_format($val_difference_product_order, 2) . "฿"; ?></td>                                                                  
+                                                                    <td><?= number_format($val_difference_product_order, 2) . "฿/".$val_name_unit; ?></td>                                                                  
                                                                     <td class ="text-right"><?= number_format($total_bath, 2); ?></td> 
                                                                     <?php
                                                                     $total_price_all += $total_bath;

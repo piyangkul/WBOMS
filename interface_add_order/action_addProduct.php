@@ -100,10 +100,10 @@ else if ($_GET['p'] == "editProduct") {
         echo -1;
     }
 } else if ($_GET['p'] == "resetInfo") {
-        unset($_SESSION["countProduct"]);
-        unset($_SESSION["product"]);
-        unset($_SESSION["idshop"]);
-        echo 1;
+    unset($_SESSION["countProduct"]);
+    unset($_SESSION["product"]);
+    unset($_SESSION["idshop"]);
+    echo 1;
 } else if ($_GET['p'] == "showUnit") {
     $sum = 0;
     ?>
@@ -168,22 +168,30 @@ else if ($_GET['p'] == "editProduct") {
                         <?php } ?>
                         <?php if ($_SESSION["product"][$i]["type"] === "BATH") { ?>
                             <td>-</td>
-                            <td><?php echo number_format($_SESSION["product"][$i]["DifferenceBath"], 2) . " ฿"; ?></td>
-                        <?php } ?>
+                            <td><?php
+                                echo number_format($_SESSION["product"][$i]["DifferenceBath"], 2) . " ฿/";
+                                $getUnit = getUnit2($idUnitS);
+                                //print_r($getUnit);;
+                                foreach ($getUnit as $value) {
+                                    $val_name_unit = $value['name_unit'];
+                                    echo $val_name_unit;
+                                }
+                                ?></td>
+                            <?php } ?>
                         <td class ="text-right"><?php echo number_format($_SESSION["product"][$i]["total"], 2); ?></td>
                         <td>
-                            <?php if (isset($_SESSION['idshop'])) { ?>
+            <?php if (isset($_SESSION['idshop'])) { ?>
                                 <a href="editproduct_addorder.php?idproduct_order=<?= $i ?>&idunit=<?php echo $idUnitS; ?>&amount=<?= $_SESSION["product"][$i]["AmountProduct"]; ?>&DifferencePer=<?= $_SESSION["product"][$i]["DifferencePer"]; ?>&DifferenceBath=<?= $_SESSION["product"][$i]["DifferenceBath"]; ?>&type=<?= $_SESSION["product"][$i]["type"]; ?>&idshop=<?= $_SESSION["idshop"]; ?>" class="btn btn-warning " data-toggle="tooltip" title="แก้ไข">
                                     <span class="glyphicon glyphicon-edit"></span>
                                 </a>
-                            <?php } else { ?>
+            <?php } else { ?>
                                 <a href="editproduct_addorder.php?idproduct_order=<?= $i ?>&idunit=<?php echo $idUnitS; ?>&amount=<?= $_SESSION["product"][$i]["AmountProduct"]; ?>&DifferencePer=<?= $_SESSION["product"][$i]["DifferencePer"]; ?>&DifferenceBath=<?= $_SESSION["product"][$i]["DifferenceBath"]; ?>&type=<?= $_SESSION["product"][$i]["type"]; ?>" class="btn btn-warning " data-toggle="tooltip" title="แก้ไข">
                                     <span class="glyphicon glyphicon-edit"></span>
                                 </a>
                             <?php } ?>
                             <a class = "btn btn-danger" data-toggle = "modal" data-toggle = "tooltip" title = "ลบ" id="deleteProduct<?= $i; ?>" name="deleteProduct<?= $i; ?>" onclick="if (confirm('คุณต้องการลบหน่วยสินค้าหรือไม่')) {
-                                                    delProduct(<?= $i; ?>);
-                                                }">
+                                        delProduct(<?= $i; ?>);
+                                    }">
                                 <span class = "glyphicon glyphicon-trash"></span>
                             </a>     
                         </td>
