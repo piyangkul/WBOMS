@@ -4,7 +4,7 @@ $idUnit = $_GET['idUnit'];
 $nameUnit = $_SESSION['unit'][$idUnit]['NameUnit'];
 $AmountPerUnit = $_SESSION['unit'][$idUnit]['AmountPerUnit'];
 $under_unitid = $_SESSION['unit'][$idUnit]['under_unit'];
-$price = $_SESSION['unit'][$idUnit]['price'];
+$price = $_SESSION['unit'][$idUnit - 1]['price'];
 $type = $_SESSION['unit'][$idUnit]['type'];
 ?>
 <div class="modal-header">
@@ -25,6 +25,7 @@ $type = $_SESSION['unit'][$idUnit]['type'];
             </div>
             <div class="form-group col-xs-12">
                 <label for="AmountPerUnit">จำนวนต่อหน่วยใหญ่</label>
+
                 <input type="text" class="form-control" name="AmountPerUnit" onkeyup="calPrice();" id="AmountPerUnit" placeholder="ใส่จำนวนต่อหน่วยรอง เช่น(2)"  value="<?php echo $AmountPerUnit; ?>">
             </div>
             <div class="form-group col-xs-12">
@@ -34,7 +35,8 @@ $type = $_SESSION['unit'][$idUnit]['type'];
 
             <div class="form-group col-xs-12">
                 <label for="price">ราคาต่อหน่วยสินค้า</label>
-                <input type="text" class="form-control" id="price" name="price" placeholder="0" value="<?php echo $price; ?>" readonly>
+                <input type="hidden" id="oldprice" name="oldprice" value="<?= $price; ?>">
+                <input type="text" class="form-control" id="price" name="price" placeholder="0" value="<?php echo number_format($price / $AmountPerUnit, 2); ?>" readonly>
 
             </div>
             <div class="form-group col-xs-12">
@@ -112,9 +114,7 @@ $type = $_SESSION['unit'][$idUnit]['type'];
     }
     function calPrice() {
         var subUnitAmount = $("#AmountPerUnit").val();
-        var under_unitID = $("#under_unit").val();
-        $.get("action_addUnit.php?p=getPriceUnit&id=" + under_unitID, function (data, status) {
-            $("#price").val(data / subUnitAmount);
-        });
+        var priceS = $("#oldprice").val();
+        document.getElementById('price').value = (priceS / subUnitAmount).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
     }
 </script>

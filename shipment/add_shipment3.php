@@ -80,8 +80,8 @@ if (isset($_GET['idshipment_period'])and isset($_GET['idfactory'])) {
                             <div>
                                 <center><h4 class="text text-info"><b>รอบการส่งที่</b> <?php echo date_format($date_start, 'd-m-Y'); ?> ถึง <?php echo date_format($date_end, 'd-m-Y'); ?></h4></center>
                                 <center><h4 class="text text-info"><b>โรงงาน</b> <?php echo $val_name_factory; ?></h4></center>
-                                <center><h4 class="text text-info"><b>จำนวนใบขนส่ง</b> <?php echo $val_count_idorder_transport; ?> <b>ใบ</b></h4></center>
-                                <center><h4 class="text text-info"><b>ยอดเงินที่โรงงานเรียกเก็บ</b> <?php echo number_format($total_price, 2); ?> <b>บาท</b> </h4></center>
+                                <!--<center><h4 class="text text-info"><b>จำนวนใบขนส่ง</b> <?php //echo $val_count_idorder_transport; ?> <b>ใบ</b></h4></center>-->
+                                <center><h4 class="text text-info"><b>ยอดสั่งซื้อรวม(สั่งซื้อ+ค่าขนส่ง)</b> <?php echo number_format($total_price, 2); ?> <b>บาท</b> </h4></center>
                             </div>
 
                             <span>

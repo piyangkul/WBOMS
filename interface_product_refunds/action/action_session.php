@@ -3,6 +3,10 @@
 session_start();
 require_once dirname(__FILE__) . '/../function/func_addorder.php';
 if (isset($_GET['idshop'])) {
+    $idshopOld;
+    if (isset($_SESSION['idshopP'])) {
+        $idshopOld = $_SESSION['idshopP'];
+    }
     $_SESSION['idshopP'] = $_GET['idshop'];
     if (isset($_SESSION["countProductR"])) {
         $count = $_SESSION["countProductR"];
@@ -30,17 +34,19 @@ if (isset($_GET['idshop'])) {
                     $_SESSION["productR"][$i]["diff"] = $price_diff;
                 }
             } else {
-                $getDiffProduct = getDiffProduct($idproduct);
-                $diffProduct = $getDiffProduct['difference_amount_product'];
-                if ($type === "PERCENT") {
-                    $_SESSION["productR"][$i]["price"] = $price_factory - ($price_factory * ($diffProduct / 100));
-                    $_SESSION["productR"][$i]["total_price"] = ($price_factory - ($price_factory * ($diffProduct / 100))) * $amount;
-                    $_SESSION["productR"][$i]["diff"] = $diffProduct;
-                } else {
-                    $_SESSION["productR"][$i]["price"] = ($price_factory * 1) + ($diffProduct * 1);
-                    $_SESSION["productR"][$i]["total_price"] = ($price_factory * $amount) + ($diffProduct * $amount);
-                    $_SESSION["productR"][$i]["diff"] = $diffProduct;
-                }
+                $_SESSION['idshopP'] = $idshopOld;
+                echo 'discon';
+                /* $getDiffProduct = getDiffProduct($idproduct);
+                  $diffProduct = $getDiffProduct['difference_amount_product'];
+                  if ($type === "PERCENT") {
+                  $_SESSION["productR"][$i]["price"] = $price_factory - ($price_factory * ($diffProduct / 100));
+                  $_SESSION["productR"][$i]["total_price"] = ($price_factory - ($price_factory * ($diffProduct / 100))) * $amount;
+                  $_SESSION["productR"][$i]["diff"] = $diffProduct;
+                  } else {
+                  $_SESSION["productR"][$i]["price"] = ($price_factory * 1) + ($diffProduct * 1);
+                  $_SESSION["productR"][$i]["total_price"] = ($price_factory * $amount) + ($diffProduct * $amount);
+                  $_SESSION["productR"][$i]["diff"] = $diffProduct;
+                  } */
             }
         }
     }

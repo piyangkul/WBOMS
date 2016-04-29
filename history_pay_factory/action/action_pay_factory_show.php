@@ -41,11 +41,25 @@ require_once dirname(__FILE__) . '/../function/func_history_pay_factory.php';
             <td><?php echo date_format($date_start, 'd-m-Y'); ?></td>
             <td><?php echo date_format($date_end, 'd-m-Y'); ?></td>
             <td><?php echo date_format($date_pay_factory, 'd-m-Y'); ?></td>
-            <td class="text-right">
-                <?php echo "<a href='popup_price_payfactory.php?idshipment_period=$val_shipment_period_idshipment&idfactory=$idfactory' data-toggle='modal' data-target='#myModal-lg'> " . number_format($val_price_pay_factory, 2) . " </a>"; ?>
+            
+            <td class="text-right"><!-- ยอดสั่งซื้อ -->
+                <?php if ($val_price_pay_factory != 0) { ?>
+                    <?php echo "<a href='popup_price_payfactory.php?idshipment_period=$val_shipment_period_idshipment&idfactory=$idfactory' data-toggle='modal' data-target='#myModal-lg'> " . number_format($val_price_pay_factory, 2) . " </a>"; ?>
+                    <?php
+                } else {
+                    echo number_format($val_price_pay_factory, 2);
+                }
+                ?>
             </td>
-            <td class="text-right">
-                <?php echo "<a href='popup_price_refund_payfactory.php?idshipment_period=$val_shipment_period_idshipment&idfactory=$idfactory&price_product_refund=$val_price_product_refund_factory' data-toggle='modal' data-target='#myModal-lg'> " . number_format($val_price_product_refund_factory, 2) . " </a>"; ?>
+            
+            <td class="text-right"><!-- สินค้าคืน-->
+                <?php if ($val_price_product_refund_factory != 0) { ?>
+                    <?php echo "<a href='popup_price_refund_payfactory.php?idshipment_period=$val_shipment_period_idshipment&idfactory=$idfactory&price_product_refund=$val_price_product_refund_factory' data-toggle='modal' data-target='#myModal-lg'> " . number_format($val_price_product_refund_factory, 2) . " </a>"; ?>
+                    <?php
+                } else {
+                    echo number_format($val_price_product_refund_factory, 2);
+                }
+                ?>
             </td>
             <td class="text-right"><?php echo number_format($val_real_price_pay_factory, 2) ?></td>
         </tr>
@@ -53,33 +67,7 @@ require_once dirname(__FILE__) . '/../function/func_history_pay_factory.php';
 </tbody>
 </table>
 <script>
-    $(document.body).on('hidden.bs.modal', function () {
-        $('#myModal-lg').removeData('bs.modal');
-    });
-</script>
-<script>
     $(document).ready(function () {
-        $('#dataTables-example').dataTable();
+        $('#dataTables-example').dataTable({"sort": false});
     });
 </script>
-<div class="modal fade" id="myModal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content modal-lg">
-            <!-- Content -->
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="myModal-sm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content modal-sm">
-            <!-- Content -->
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <!-- Content -->
-        </div>
-    </div>
-</div>

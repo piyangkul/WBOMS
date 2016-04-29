@@ -51,7 +51,7 @@ $val_shipment_period_idshipment = $getPricePayFactory['shipment_period_idshipmen
                                         <th rowspan="2"><div align="center">ร้านค้า</div></th>
                                         <th rowspan="2"><div align="center">ชื่อสินค้า</div></th>
                                         <th rowspan="2"><div align="center">ราคาเปิดต่อหน่วย</div></th>
-                                        <th rowspan="2"><div align="center">ต้นทุนลด</div></th>
+                                        <th rowspan="2"><div align="center">ต้นทุนลด%</div></th>
                                         <th rowspan="2"><div align="center">ราคาต้นทุน</div></th>
                                         <th rowspan="2"><div align="center">จำนวน</div></th>
                                         <th colspan="3"><div align="center">ข้อมูลการส่งสินค้า</div></th>
@@ -122,7 +122,7 @@ $val_shipment_period_idshipment = $getPricePayFactory['shipment_period_idshipmen
                                                     <?php if ($val_type_product_order == "PERCENT") { ?>
                                                         <td><?php echo number_format($val_difference_amount_product, 2) . "%"; ?></td>
                                                     <?php } else { ?>
-                                                        <td><?php echo "สุทธิ"; ?></td>
+                                                        <td><?php echo "-"; ?></td>
                                                     <?php } ?>
                                                     <td class="text-right"><?php echo number_format($cost, 2); ?></td><!-- ราคาต้นทุน-->
                                                     <td><?php echo $val_amount_product_order . " " . $val_name_unit; ?></td>

@@ -7,7 +7,7 @@ if ($_GET['q'] > 0) {
     foreach ($row as $value) {
         $val = $value['name_unit'];
         $val_price = $value['price_unit'];
-        echo $val_price;
+        echo number_format($val_price,2);
     }
 }
 ?>

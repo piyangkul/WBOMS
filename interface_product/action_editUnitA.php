@@ -6,7 +6,7 @@ session_start();
 //session_destroy();
 if ($_GET['p'] == "addUnit") {
     $idproduct = $_GET['idproduct'];
-   // $idUnit = $_GET['idUnit'];
+    // $idUnit = $_GET['idUnit'];
     $idUnitBig = $_GET['idUnitBig'];
     $unitName = $_GET['NameUnit'];
     $AmountPerUnit = $_GET['AmountPerUnit'];
@@ -15,6 +15,7 @@ if ($_GET['p'] == "addUnit") {
 
     $idUnitEdit = EditUnitAdd($idproduct, $idUnitBig, $unitName, $price, $type, $AmountPerUnit);
 
+    header("location: edit_product.php?idproduct=" + $idproduct);
     echo "1";
 }
 ?>

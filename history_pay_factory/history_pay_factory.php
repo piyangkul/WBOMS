@@ -1,5 +1,6 @@
 ﻿<?php
 require_once 'function/func_history_pay_factory.php';
+require_once '../docket/function/func_docket.php';
 session_start();
 if (!isset($_SESSION['member']))
     header('Location: ../index.php');
@@ -37,7 +38,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                 //pushข้อมูลลงArray
                 for (var i = 0; i < Obj.length; i++) {
                     //Arr.push(Obj[i].code_factory);
-                    Arr.push(Obj[i].name_factory+" ("+Obj[i].code_factory+")");
+                    Arr.push(Obj[i].name_factory + " (" + Obj[i].code_factory + ")");
                     JSON_factoryCode["'" + Obj[i].code_factory + "'"] = Obj[i].idfactory;
                     JSON_factoryName["'" + Obj[i].name_factory + "'"] = Obj[i].idfactory;
                     console.log(JSON_factoryCode);
@@ -58,7 +59,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                         //alert(input);
                         firstParen = input.lastIndexOf("(");
                         secondParen = input.lastIndexOf(")");
-                        input = input.substr(firstParen+1,secondParen - firstParen-1);
+                        input = input.substr(firstParen + 1, secondParen - firstParen - 1);
                         //alert(input+ firstParen +","+ secondParen);
                         if (JSON_factoryCode["'" + input + "'"] != null) {
                             idfactory = JSON_factoryCode["'" + input + "'"];
@@ -92,59 +93,111 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                     <!-- /. ROW  -->
                     <hr />
                     <!--<div class="alert alert-danger" role="alert">แก้ 1.sqlสินค้าคืน </div>-->
-                    <!-- ค้นหา -->
-                    <div class="row">
-                        <div class="col-md-3"></div>                        
-                        <div class="col-md-6 "> 
-                            <div class="panel panel-default">
-                                <div class="panel-heading ">
-                                    <div class="table-responsive">
-                                        <!--                                        <div class="form-group">
-                                                                                    <label for="code_factory">ค้นหารหัสหรือชื่อโรงงาน</label>
-                                                                                    <div class="form-group input-group">
-                                                                                        <span class="input-group-addon"><i class="fa fa-cube" ></i></span>
-                                                                                        <input type="text" class="form-control" id="searchFactory" name="searchFactory" onkeyup="searchFactory()" placeholder="กรอกชื่อโรงงาน" />
-                                                                                    </div>
-                                                                                </div>-->
-                                        <div class="form-group">
-                                            <label for="name_factory">ค้นหารหัสหรือชื่อโรงงาน</label>
-                                            <div class="form-group input-group">
-                                                <span class="input-group-addon"><i class="fa fa-building-o" ></i></span>
-                                                <input type="text" class="form-control" id="code_order" autocomplete=on name="code_order" placeholder="กรอกรหัสหรือชื่อโรงงาน" onblur ="getFactoryId(event)" onkeypress="getFactoryId(event)">
+                    <div class="container col-md-12">
+                        <ul class="nav nav-pills nav-justified">
+                            <li class="active"><a data-toggle="tab" href="#tab_factory">ค้นหาโรงงาน</a></li>
+                            <li><a data-toggle="tab" href="#tab_shipment_period">ค้นหารอบการส่ง</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div id="tab_factory" class="tab-pane fade in active">
+                                </br>
+                                <!-- ค้นหา -->
+                                <div class="row">
+                                    <div class="col-md-3"></div>                        
+                                    <div class="col-md-6 "> 
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading ">
+                                                <div class="table-responsive">                                          
+                                                    <div class="form-group">
+                                                        <label for="name_factory">ค้นหารหัสหรือชื่อโรงงาน</label>
+                                                        <div class="form-group input-group">
+                                                            <span class="input-group-addon"><i class="fa fa-building-o" ></i></span>
+                                                            <input type="text" class="form-control" id="code_order" autocomplete=on name="code_order" placeholder="กรอกรหัสหรือชื่อโรงงาน" onblur ="getFactoryId(event)" onkeypress="getFactoryId(event)">
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-
-                                            <!--                                            <div class="form-group input-group">
-                                                                                            <span class="input-group-addon"><i class="fa fa-cube" ></i></span>
-                                                                                            <select class="form-control" id="idFactory" name="idFactory" onchange="show_pay_factory_table()"></select>
-                                                                                        </div>-->
                                         </div>
-
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--End ค้นหา -->
-                    
-                    
-                    <!-- ข้อมูลการจ่ายเงินโรงงานรายเดือน-ปี -->
-                    <div class="row">
-                        <div class="col-md-1"></div>                        
-                        <div class="col-md-10 ">
-                            <div class="panel panel-primary">
-                                <div class="panel-heading">
-                                    <h4>ข้อมูลการจ่ายเงินโรงงานรายเดือน-ปี</h4>
-                                </div>
-                                <div class="panel-body">
-                                    <div class="table-responsive" id="show_pay_factory_table">
-                                        <!--show_pay_factory_table--> 
+                                <!--End ค้นหา -->
+                                <!-- ข้อมูลการจ่ายเงินโรงงานรายเดือน-ปี -->
+                                <div class="row">
+                                    <div class="col-md-1"></div>                        
+                                    <div class="col-md-10 ">
+                                        <div class="panel panel-primary">
+                                            <div class="panel-heading">
+                                                <h4>ข้อมูลการจ่ายเงินโรงงานรายเดือน-ปี</h4>
+                                            </div>
+                                            <div class="panel-body">
+                                                <div class="table-responsive" id="show_pay_factory_table">
+                                                    <!--show_pay_factory_table--> 
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+                                <!-- End ข้อมูลการจ่ายเงินโรงงานรายเดือน-ปี -->
                             </div>
+
+                            <div id="tab_shipment_period" class="tab-pane fade">
+                                </br>
+                                <!-- ค้นหา -->
+                                <div class="row">
+                                    <div class="col-md-3"></div>                        
+                                    <div class="col-md-6"> 
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading ">
+                                                <div class="table-responsive">
+                                                    <div class="form-group">
+                                                        <!--<span class="col-md-0"> </span>-->
+                                                        <label for="search_shipment_period">เลือกรอบการส่ง</label>
+                                                        <span class="col-md-offset-5"> </span>
+
+                                                        <div class="form-group input-group">
+                                                            <span class="input-group-addon"><i class="fa fa-calendar-o" ></i></span>
+                                                            <select id="idshipment" class="form-control" onchange="show_factory_table_period()" >
+                                                                <?php
+                                                                $getShipment = getShipment();
+                                                                $num = sizeof($getShipment) + 1;
+                                                                foreach ($getShipment as $value) {
+                                                                    $num--;
+                                                                    $idshipment = $value['idshipment_period'];
+                                                                    $date_start = $value['date_start'];
+                                                                    $date_end = $value['date_end'];
+                                                                    echo "<option  value = $idshipment> รอบที่$num : $date_start ถึง $date_end </option>";
+                                                                }
+                                                                ?>                                                              
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--End ค้นหา -->
+                                <!-- ข้อมูลการจ่ายเงินโรงงานรายเดือน-ปี -->
+                                <div class="row">
+                                    <div class="col-md-1"></div>                        
+                                    <div class="col-md-10 ">
+                                        <div class="panel panel-primary">
+                                            <div class="panel-heading">
+                                                <h4>ข้อมูลการเก็บเงินร้านค้าประจำรอบ</h4>
+                                            </div>
+                                            <div class="panel-body">
+                                                <div class="table-responsive" id="show_factory_table_period">
+                                                    <!--show_docket_table_period--> 
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End ข้อมูลการจ่ายเงินโรงงานรายเดือน-ปี -->
+                            </div>
+
                         </div>
                     </div>
-                    <!-- End ข้อมูลการจ่ายเงินโรงงานรายเดือน-ปี -->
-
                 </div>
                 <!-- /. PAGE INNER  -->
             </div>
@@ -162,9 +215,18 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
         <script src="../assets/js/dataTables/jquery.dataTables.js"></script>
         <script src="../assets/js/dataTables/dataTables.bootstrap.js"></script>
         <script>
-                                                    $(document).ready(function () {
-                                                        $('#dataTables-example').dataTable();
-                                                    });
+                                                                $(document).ready(function () {
+                                                                    $('#dataTables-example').dataTable();
+                                                                });
+        </script>
+        <script>
+            show_factory_table_period();
+            function show_factory_table_period() {
+                var idshipment = document.getElementById('idshipment').value;
+                $.get('action/action_factory_period_show.php?idshipment_period=' + idshipment, function (data, status) {//+"&id="+
+                    $("#show_factory_table_period").html(data);
+                });
+            }
         </script>
         <script>
             show_pay_factory_table();
@@ -176,29 +238,29 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
             }
         </script>
         <script>
-//            show_pay_factory_table();
-//            function show_pay_factory_table() {
-//                    var idfactory = $("#idFactory").val();
-//                $.get("action/action_pay_factory_show.php?idfactory=" + idfactory, function (data, status) {
-//            $("#show_pay_factory_table").html(data);
-//            });
-//            }
+            //            show_pay_factory_table();
+            //            function show_pay_factory_table() {
+            //                    var idfactory = $("#idFactory").val();
+            //                $.get("action/action_pay_factory_show.php?idfactory=" + idfactory, function (data, status) {
+            //            $("#show_pay_factory_table").html(data);
+            //            });
+            //            }
 
-//            searchFactory();
-//            function searchFactory() {
-//                var searchFactory = $("#searchFactory").val();
-//                $.get("history_search_pay_factory.php?searchFactory=" + searchFactory, function (data, status) {
-//                    $("#idFactory").html(data);
-//                    show_pay_factory_table();
-//                });
-//            }
+            //            searchFactory();
+            //            function searchFactory() {
+            //                var searchFactory = $("#searchFactory").val();
+            //                $.get("history_search_pay_factory.php?searchFactory=" + searchFactory, function (data, status) {
+            //                    $("#idFactory").html(data);
+            //                    show_pay_factory_table();
+            //                });
+            //            }
 
             $(function () {
                 $('[data-toggle="tooltip"]').tooltip();
             });
 
             $(document.body).on('hidden.bs.modal', function () {
-                $('#myModal').removeData('bs.modal');
+                $('#myModal-lg').removeData('bs.modal');
             });
 
         </script>

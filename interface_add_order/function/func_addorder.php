@@ -271,7 +271,7 @@ function getOrderEdit($id) {
 
 function getProductOrder($id) {
     $conn = dbconnect();
-    $SQLCommand = "SELECT product_order.idproduct_order,product_order.idorder_p,product.name_product,unit.name_unit,factory.name_factory,factory.difference_amount_factory,product_order.amount_product_order,product_order.difference_product_order,product_order.type_product_order,unit.price_unit,product_order.status_checktransport FROM product_order INNER JOIN unit ON unit.idunit = product_order.idunit INNER JOIN product ON product.idproduct = unit.idproduct INNER JOIN factory ON factory.idfactory = product.idfactory WHERE product_order.idorder_p = {$id}";
+    $SQLCommand = "SELECT product_order.idproduct_order,product_order.idorder_p,product.name_product,unit.name_unit,factory.name_factory,factory.difference_amount_factory,difference_amount_product,product_order.amount_product_order,product_order.difference_product_order,product_order.type_product_order,unit.price_unit,product_order.status_checktransport FROM product_order INNER JOIN unit ON unit.idunit = product_order.idunit INNER JOIN product ON product.idproduct = unit.idproduct INNER JOIN factory ON factory.idfactory = product.idfactory WHERE product_order.idorder_p = {$id}";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute();
     //$resultArr = array();
@@ -569,13 +569,14 @@ function getShopAdd_Order($idshop) {
     return $result;
 }
 
-function deleteDifference($id) {
+function deleteDifference($id, $idshop) {
     $conn = dbconnect();
-    $SQLCommand = "DELETE FROM difference WHERE idproduct =:id";
+    $SQLCommand = "DELETE FROM difference WHERE idproduct =:id AND idshop = :idshop";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
-                ":id" => $id
+                ":id" => $id,
+                ":idshop" => $idshop
             )
     );
     if ($SQLPrepare->rowCount() > 0) {
@@ -605,6 +606,19 @@ function getEdit_Order($idproduct_order) {
     $SQLPrepare->execute(
             array(
                 ":idproduct_order" => $idproduct_order
+            )
+    );
+    $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
+    return $result;
+}
+
+function chkAddPO($idorder) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT order_p.idorder_p,product_order.status_checktransport FROM order_p INNER JOIN product_order ON  order_p.idorder_p = product_order.idorder_p WHERE (product_order.status_checktransport = 'check' OR product_order.status_checktransport = 'postpone') AND order_p.idorder_p = :idorder GROUP BY product_order.status_checktransport";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idorder" => $idorder
             )
     );
     $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);

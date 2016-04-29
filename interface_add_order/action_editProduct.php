@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) . '/function/func_addorder.php';
+require_once 'function/func_addorder.php';
 session_start();
 
 //session_destroy();
@@ -26,7 +26,7 @@ if ($_GET['p'] == "addProduct") {
         $idproduct = addProductOrder($idUnit, $idorder, $AmountProduct, $DifferencePer, $type, $price);
         $getproduct = getIDProduct($idUnit);
         $idproduct2 = $getproduct['idproduct'];
-        $delDiff = deleteDifference($idproduct2);
+        $delDiff = deleteDifference($idproduct2,$idshop);
         $addDiff = addDiff_edit($idproduct2, $idshop, $type, $DifferencePer, $date_order);
         //echo $idUnit.' '.$idproduct2.' '.$idshop.' '.$type.' '.$DifferencePer.' '.$date_order;
     }
@@ -34,7 +34,7 @@ if ($_GET['p'] == "addProduct") {
         $idproduct = addProductOrder($idUnit, $idorder, $AmountProduct, $DifferenceBath, $type, $price);
         $getproduct = getIDProduct($idUnit);
         $idproduct2 = $getproduct['idproduct'];
-        $delDiff = deleteDifference($idproduct2);
+        $delDiff = deleteDifference($idproduct2,$idshop);
         $addDiff = addDiff_edit($idproduct2, $idshop, $type, $DifferenceBath, $date_order);
     }
     echo "1";

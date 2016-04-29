@@ -55,7 +55,16 @@ session_start();
             success: function (www)
             {
                 //alert(www);
-                $("#diff").val(www);
+
+                if (www === 'discon') {
+                    alert('สินค้าไม่เคยถูกสั่งซื้อ');
+                    $("#name_product").val("");
+                    $("#idUnit").html("");
+                } else {
+                    $("#diff").val(www);
+
+                }
+
                 //alert(response);
             }
         });
@@ -76,7 +85,7 @@ session_start();
                 <label>ชื่อสินค้า</label>
                 <div class="input-group ui-front">
                     <span class="input-group-addon"><i class="fa fa-cube" ></i></span>
-                    <input type="text" class="form-control" id="name_product" name="name_product" placeholder="กรุณาระบุชื่อสินค้า" onblur="getProductID()" autocomplete= "on" ></input>
+                    <input type="text" class="form-control" id="name_product" name="name_product" placeholder="กรุณาระบุชื่อสินค้า" onblur="getProductID()" autocomplete= "on" value="" required="true"></input>
                     <input type="hidden" id="idproduct" name="idproduct">
                     <input type="hidden" class="form-control" id="name_factory" name="name_factory" disabled>
                     <input type="hidden" class="form-control" id="idfactory" name="idfactory">
@@ -86,16 +95,16 @@ session_start();
                 </div>
             </div>
             <div class="form-group col-xs-12" style="float:left;width:50%;">
+                <label>จำนวน</label>
+                <input type="text" class="form-control" id="AmountProduct" placeholder="กรอกจำนวนสินค้า" onkeyup="updateAmount()" value="" required="true">
+            </div>
+            <div class="form-group col-xs-12" style="float:left;width:50%;">
                 <label> หน่วย</label>  <font size="1" color ="red">*กรุณาเลือกสินค้าก่อน</font>
-                <select class="form-control" id="idUnit" name="idUnit" onchange="LoadData(this.value)" required>
-                    <option>กรุณาเลือกหน่วยขาย</option>
+                <select class="form-control" id="idUnit" name="idUnit" onchange="LoadData(this.value)" required="">
                 </select>
                 <div id="tee"></div>
             </div>
-            <div class="form-group col-xs-12" style="float:left;width:50%;">
-                <label>จำนวน</label>
-                <input type="text" class="form-control" id="AmountProduct" placeholder="กรอกจำนวนสินค้า" onkeyup="updateAmount()">
-            </div>
+
             <div class="form-group col-xs-12">
                 <label>ราคาคืนต่อหน่วย</label>
                 <input type="hidden" class="form-control" id="diff" readonly="true">
@@ -112,47 +121,53 @@ session_start();
 <div class="modal-footer">
     <p id="alertPass"></p>
     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-    <button type="button" class="btn btn-primary" onclick="addProduct();" data-dismiss="modal">Save changes</button>
+    <button type="button" class="btn btn-primary" onclick="addProduct();" >Save changes</button>
 </div>
-
 <script>
     function addProduct() {
-        var idUnit = $("#idUnit").val();
-        var productName = $("#idproduct").val();
-        var factoryName = $("#idfactory").val();
-        var AmountProduct = $("#AmountProduct").val();
-        var price = $("#price").val().replace(",", "");
-        var price_factory = $("#price_factory").val().replace(",", "");
-        var type_factory = $("#typefactory").val();
-        var diff = $("#diff").val();
-        var total_price = $("#total_price").val().replace(",", "");
+        if (document.getElementById("name_product").value.length > 0 && document.getElementById("AmountProduct").value.length > 0) {
+            var idUnit = $("#idUnit").val();
+            var productName = $("#idproduct").val();
+            var factoryName = $("#idfactory").val();
+            var AmountProduct = $("#AmountProduct").val();
+            var price = $("#price").val().replace(",", "");
+            var price_factory = $("#price_factory").val().replace(",", "");
+            var type_factory = $("#typefactory").val();
+            var diff = $("#diff").val();
+            var total_price = $("#total_price").val().replace(",", "");
 
-        var p = "&idUnit=" + idUnit + "&productName=" + productName + "&factoryName=" + factoryName + "&AmountProduct=" + AmountProduct + "&price=" + price + "&total_price=" + total_price + "&diff=" + diff + "&price_factory=" + price_factory + "&type_factory=" + type_factory;
-        //alert(p);
-        $.get("action_addProduct.php?p=addProduct" + p, function (data, status) {
-            //  alert("Data: " + data + "\nStatus: " + status);
-            if (data == "1") {
-                $("#alert").html("บันทึกแล้ว");
-                $("#idUnit").val("");
-                $("#productName").val("");
-                $("#factoryName").val("");
-                $("#AmountProduct").val("");
-                $("#price").val("");
-                $("#total_price").val("");
-                showUnit();
+            var p = "&idUnit=" + idUnit + "&productName=" + productName + "&factoryName=" + factoryName + "&AmountProduct=" + AmountProduct + "&price=" + price + "&total_price=" + total_price + "&diff=" + diff + "&price_factory=" + price_factory + "&type_factory=" + type_factory;
+            //alert(p);
+            $.get("action_addProduct.php?p=addProduct" + p, function (data, status) {
+                //  alert("Data: " + data + "\nStatus: " + status);
+                if (data == "1") {
+                    $("#alert").html("บันทึกแล้ว");
+                    $("#idUnit").val("");
+                    $("#productName").val("");
+                    $("#factoryName").val("");
+                    $("#AmountProduct").val("");
+                    $("#price").val("");
+                    $("#total_price").val("");
+                    showUnit();
+                }
+                else {
+                    $("#idUnit").val("");
+                    $("#productName").val("");
+                    $("#factoryName").val("");
+                    $("#AmountProduct").val("");
+                    $("#price").val("");
+                    $("#total_price").val("");
+                    showUnit();
+                }
             }
-            else {
-                $("#idUnit").val("");
-                $("#productName").val("");
-                $("#factoryName").val("");
-                $("#AmountProduct").val("");
-                $("#price").val("");
-                $("#total_price").val("");
-                showUnit();
-            }
+
+            );
+            $('#myModal').modal('hide');
+        } else {
+            alert("กรุณากรอกข้อมูลให้ครบ");
         }
-        );
     }
+
 
 
 </script>

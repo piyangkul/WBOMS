@@ -92,7 +92,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                     <center>
                                                         <th><center>ลำดับ</center></th>
                                                         <th class="text-center">ชื่อร้านค้า</th>
-                                                        <th class="text-center">วันที่สั่งซื้อ</th>
+                                                        <th class="text-center">วันที่คืนสินค้า</th>
                                                         <th class="text-center">จำนวนสินค้าคืน</th>
                                                         <th class="text-center">ราคารวม</th>
                                                         <th class="text-center">การกระทำ</th>

@@ -15,7 +15,7 @@ if ($_GET['p'] == "addUnit") {
     $_SESSION["unit"][$_SESSION["countUnit"]]["NameUnit"] = $NameUnit;
     $_SESSION["unit"][$_SESSION["countUnit"]]["AmountPerUnit"] = $AmountPerUnit;
     $_SESSION["unit"][$_SESSION["countUnit"]]["under_unit"] = $under_unit;
-    $_SESSION["unit"][$_SESSION["countUnit"]]["price"] = $price;
+    $_SESSION["unit"][$_SESSION["countUnit"]]["price"] = str_replace(",", "", $price);
     $_SESSION["unit"][$_SESSION["countUnit"]]["type"] = $type;
 
     echo "1";
@@ -29,7 +29,7 @@ else if ($_GET['p'] == "editUnit") {
 
     $_SESSION["unit"][$idUnit]["NameUnit"] = $NameUnit;
     $_SESSION["unit"][$idUnit]["AmountPerUnit"] = $AmountPerUnit;
-    $_SESSION["unit"][$idUnit]["price"] = $price;
+    $_SESSION["unit"][$idUnit]["price"] = str_replace(",", "", $price);
     $_SESSION["unit"][$idUnit]["type"] = $type;
 
     for ($i = $idUnit; $i < $_SESSION["countUnit"]; $i++) {
@@ -54,7 +54,7 @@ else if ($_GET['p'] == "getPriceUnit") {
     }
 } else if ($_GET['p'] == "getBigestPrice") {
     if (isset($_SESSION["countUnit"])) {
-        echo number_format($_SESSION["unit"][1]["price"],2);
+        echo number_format($_SESSION["unit"][1]["price"], 2);
     } else {
         echo "-1";
     }
@@ -96,8 +96,8 @@ else if ($_GET['p'] == "getPriceUnit") {
                                 </a>
                                 <?php if ($i == $_SESSION["countUnit"]) { ?>
                                     <a class = "btn btn-danger" data-toggle = "modal" data-toggle = "tooltip" title = "ลบ" id="deleteProduct" name="deleteProduct" onclick="if (confirm('คุณต้องการลบหน่วยสินค้าหรือไม่')) {
-                                                            delProduct(<?= $i; ?>);
-                                                        }">
+                                                                    delProduct(<?= $i; ?>);
+                                                                }">
                                         <span class = "glyphicon glyphicon-trash"></span>
                                     </a>     
                                 <?php } ?>
@@ -110,7 +110,7 @@ else if ($_GET['p'] == "getPriceUnit") {
                     ?>
                     <tr>
                         <td><?php echo $_SESSION["unit"][$i - 1]["NameUnit"]; ?></td>
-                        <td><?php echo $_SESSION["unit"][$i]["AmountPerUnit"].$_SESSION["unit"][$i]["under_unit"]; ?></td>
+                        <td><?php echo $_SESSION["unit"][$i]["AmountPerUnit"]; ?></td>
                         <td><?php echo $_SESSION["unit"][$i]["NameUnit"]; ?></td>
                         <td class="text-right"><?= number_format($_SESSION["unit"][$i]["price"], 2); ?></td>
                         <td>
@@ -119,8 +119,8 @@ else if ($_GET['p'] == "getPriceUnit") {
                             </a>
                             <?php if ($i == $_SESSION["countUnit"]) { ?>
                                 <a class = "btn btn-danger" data-toggle = "modal" data-toggle = "tooltip" title = "ลบ" id="deleteProduct" name="deleteProduct" onclick="if (confirm('คุณต้องการลบหน่วยสินค้าหรือไม่')) {
-                                                        delProduct(<?= $i; ?>);
-                                                    }">
+                                                            delProduct(<?= $i; ?>);
+                                                        }">
                                     <span class = "glyphicon glyphicon-trash"></span>
                                 </a>     
                             <?php } ?>

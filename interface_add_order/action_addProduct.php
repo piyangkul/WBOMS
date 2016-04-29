@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) . '/function/func_addorder.php';
+require_once 'function/func_addorder.php';
 session_start();
 
 //session_destroy();
@@ -100,14 +100,10 @@ else if ($_GET['p'] == "editProduct") {
         echo -1;
     }
 } else if ($_GET['p'] == "resetInfo") {
-    if (isset($_SESSION["countProduct"])) {
         unset($_SESSION["countProduct"]);
         unset($_SESSION["product"]);
         unset($_SESSION["idshop"]);
         echo 1;
-    } else {
-        echo -1;
-    }
 } else if ($_GET['p'] == "showUnit") {
     $sum = 0;
     ?>
@@ -167,12 +163,12 @@ else if ($_GET['p'] == "editProduct") {
                             ?></td>
                         <td  class ="text-right"><?php echo number_format($_SESSION["product"][$i]["total_price"] / $_SESSION["product"][$i]["AmountProduct"], 2); ?></td>
                         <?php if ($_SESSION["product"][$i]["type"] === "PERCENT") { ?>
-                        <td><?php echo number_format($_SESSION["product"][$i]["difference"],2); ?></td>                        
-                        <td><?php echo number_format($_SESSION["product"][$i]["DifferencePer"],2) . "%"; ?></td>
+                            <td><?php echo number_format($_SESSION["product"][$i]["difference"], 2) . "%"; ?></td>                        
+                            <td><?php echo number_format($_SESSION["product"][$i]["DifferencePer"], 2) . "%"; ?></td>
                         <?php } ?>
                         <?php if ($_SESSION["product"][$i]["type"] === "BATH") { ?>
                             <td>-</td>
-                            <td><?php echo number_format($_SESSION["product"][$i]["DifferenceBath"],2) . " ฿"; ?></td>
+                            <td><?php echo number_format($_SESSION["product"][$i]["DifferenceBath"], 2) . " ฿"; ?></td>
                         <?php } ?>
                         <td class ="text-right"><?php echo number_format($_SESSION["product"][$i]["total"], 2); ?></td>
                         <td>
@@ -186,8 +182,8 @@ else if ($_GET['p'] == "editProduct") {
                                 </a>
                             <?php } ?>
                             <a class = "btn btn-danger" data-toggle = "modal" data-toggle = "tooltip" title = "ลบ" id="deleteProduct<?= $i; ?>" name="deleteProduct<?= $i; ?>" onclick="if (confirm('คุณต้องการลบหน่วยสินค้าหรือไม่')) {
-                                                        delProduct(<?= $i; ?>);
-                                                    }">
+                                                    delProduct(<?= $i; ?>);
+                                                }">
                                 <span class = "glyphicon glyphicon-trash"></span>
                             </a>     
                         </td>

@@ -83,7 +83,8 @@ function getIncomeBYidshipment($idshipment_period) {
 //popup_stat_outcome
 function getOutcomeBYidshipment($idshipment_period) {
     $conn = dbconnect();
-    $SQLCommand = "SELECT shipment_period.idshipment_period,pay_factory.factory_idfactory,factory.code_factory,factory.name_factory,pay_factory.price_pay_factory,pay_factory.price_product_refund_factory,pay_factory.real_price_pay_factory AS outcome FROM pay_factory JOIN shipment_period ON pay_factory.shipment_period_idshipment=shipment_period.idshipment_period JOIN factory ON factory.idfactory=pay_factory.idpay_factory WHERE shipment_period.idshipment_period=:idshipment_period ORDER BY pay_factory.factory_idfactory ";
+    $SQLCommand = "SELECT shipment_period.idshipment_period,pay_factory.factory_idfactory,factory.code_factory,factory.name_factory,pay_factory.price_pay_factory,pay_factory.price_product_refund_factory,pay_factory.real_price_pay_factory AS outcome 
+FROM pay_factory JOIN factory ON factory.idfactory=pay_factory.factory_idfactory JOIN shipment_period ON shipment_period.idshipment_period=pay_factory.shipment_period_idshipment WHERE shipment_period.idshipment_period=:idshipment_period ORDER BY pay_factory.factory_idfactory ";
 
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(

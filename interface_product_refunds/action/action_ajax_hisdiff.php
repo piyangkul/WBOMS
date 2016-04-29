@@ -11,9 +11,9 @@ if ($_GET['q'] > 0) {
     if (isset($price_diff)) {
         echo $price_diff;
     } else {
-        $getDiffProduct = getDiffProduct($idproduct);
-        $diffProduct = $getDiffProduct['difference_amount_product'];
-        echo $diffProduct;
+        /*$getDiffProduct = getDiffProduct($idproduct);
+        $diffProduct = $getDiffProduct['difference_amount_product'];*/
+        echo "discon";
     }
 }
 ?>

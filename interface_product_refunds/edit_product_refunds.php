@@ -1,6 +1,6 @@
 ﻿<?php
 session_start();
-require_once '/function/func_addorder.php';
+require_once 'function/func_addorder.php';
 if (!isset($_SESSION['member']))
     header('Location: ../index.php');
 
@@ -100,7 +100,7 @@ $dateEnd = $getDateShipment['date_end'];
                                                         <input type = "hidden" class = "form-control" id = "maxDate" name = "maxDate" value="<?= $date_end; ?>"/>
                                                         <input type = "hidden" class = "form-control" id = "minDate" name = "minDate" value="<?= $date_start; ?>"/>
                                                 </div>
-                                                <label>วันที่สั่งซื้อ</label> 
+                                                <label>วันที่สินค้าคืน</label> 
                                                 <div class="input-group">
                                                     <span class="input-group-addon"><i class="fa fa-calendar-o" ></i></span>
                                                     <input type="date" class="form-control" id ="date_order" name="date_order" value="<?= $val_date_product_refunds; ?>" max="<?= $dateEnd; ?>">
@@ -126,22 +126,32 @@ $dateEnd = $getDateShipment['date_end'];
 
                                         <div class="panel-body">
                                             <div class="table-responsive">
-                                                <a href="popup_edit_addproduct_refunds.php?idorder=<?= $val_idorder; ?>&idshop=<?= $idshop; ?>" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">
-                                                    <span class="glyphicon glyphicon-plus"></span> เพิ่มสินค้า </a>
-                                                <br/>
-                                                <br/>
+                                                <?php
+                                                $chkAddPr = chkAddPR($val_idorder);
+                                                $statusCk = $chkAddPr['status_product_refund'];
+                                                if ($statusCk !== 'returned') {
+                                                    ?>
+                                                    <a href="popup_edit_addproduct_refunds.php?idorder=<?= $val_idorder; ?>&idshop=<?= $idshop; ?>" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">
+                                                        <span class="glyphicon glyphicon-plus"></span> เพิ่มสินค้า </a>
+                                                    <br/>
+                                                    <br/>
+                                                    <?php
+                                                }
+                                                ?>
+
+
                                                 <table class="table table-striped table-bordered table-hover text-center" id="dataTables-example">
                                                     <thead>
                                                         <tr>
-                                                            <th>ลำดับ</th>
-                                                            <th>ชื่อสินค้า</th>
-                                                            <th>ชื่อโรงงาน</th>
-                                                            <th>จำนวน</th>
-                                                            <th>ราคาเปิดต่อหน่วย</th>
-                                                            <th>ส่วนลด</th>
-                                                            <th>ราคาคืนต่อหน่วย</th>
-                                                            <th>ราคาคืนทั้งหมด</th>
-                                                            <th>การกระทำ</th> 
+                                                            <th class="text-center">ลำดับ</th>
+                                                            <th class="text-center">ชื่อสินค้า</th>
+                                                            <th class="text-center">ชื่อโรงงาน</th>
+                                                            <th class="text-center">จำนวน</th>
+                                                            <th class="text-center">ราคาเปิดต่อหน่วย</th>
+                                                            <th class="text-center">ส่วนลด</th>
+                                                            <th class="text-center">ราคาคืนต่อหน่วย</th>
+                                                            <th class="text-center">ราคาคืนทั้งหมด</th>
+                                                            <th class="text-center">การกระทำ</th> 
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -174,16 +184,16 @@ $dateEnd = $getDateShipment['date_end'];
                                                                     <td id="price<?= $val_idproduct_refunds; ?>"><?= number_format(($val_price_product_refunds * 1) - ($difference_product_refunds * 1), 2); ?></td>
                                                                 <?php } ?>
                                                                 <?php if ($type_factory === "PERCENT") { ?>
-                                                                    <td id="diff<?= $val_idproduct_refunds; ?>"><?= number_format($difference_product_refunds, 2) . " %"; ?></td>
+                                                                    <td id="diff<?= $val_idproduct_refunds; ?>"><?= number_format($difference_product_refunds, 2) . "%"; ?></td>
                                                                 <?php } else { ?>
-                                                                    <td id="diff<?= $val_idproduct_refunds; ?>"><?= number_format($difference_product_refunds, 2) . "฿"; ?></td>
+                                                                    <td id="diff<?= $val_idproduct_refunds; ?>"><?= number_format($difference_product_refunds, 2) . " ฿"; ?></td>
                                                                 <?php } ?>
                                                                 <td id="price_table<?= $val_idproduct_refunds; ?>" class ="text-right"><?= number_format($val_price_product_refunds, 2); ?></td>
                                                                 <td id="total_table<?= $val_idproduct_refunds; ?>" class ="text-right"><?= number_format($total, 2); ?></td>
                                                                 <?php
-                                                                if ($val_status_product_refunds === 'return') {
+                                                                if ($val_status_product_refunds === 'returned') {
                                                                     ?> <td>
-                                                                        <b>สินค้าถูกจัดส่งแล้ว</font></b>
+                                                                        <font color="green"><b>สินค้าถูกคืนโรงงานแล้ว</b></font>
                                                                     </td>
                                                                     <?php
                                                                 } else {
@@ -372,12 +382,15 @@ $dateEnd = $getDateShipment['date_end'];
         var type = document.getElementById('typefactory').value;
         var price = document.getElementById('price_factory').value;
         var diff = document.getElementById('diff').value;
+        var amount = document.getElementById('AmountProduct').value;
         var total_bath = (price * 1) + (diff * 1);
         var total_percent = price - ((price * diff) / 100)
         if (type === 'PERCENT') {
+            document.getElementById('total_price').value = (total_percent * amount).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
             document.getElementById('price').value = total_percent.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
         }
         else {
+            document.getElementById('total_price').value = (total_bath * amount).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
             document.getElementById('price').value = total_bath.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
         }
     }

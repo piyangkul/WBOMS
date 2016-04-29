@@ -35,7 +35,7 @@ $status_due = "on";
                     <th><div align="center">ยอดสุทธิ</div></th><!--ยอดเก็บเงินสุทธิ-->
                     <th><div align="center">ยอดที่เก็บได้</div></th>
                     <th><div align="center">ยอดหนี้</div></th>
-                    <th><div align="center">สถานะ</div></th><!--สถานะการเก็บเงิน เก็บได้ เก็บไม่ได้-->
+                    <!--<th><div align="center">สถานะ</div></th>สถานะการเก็บเงิน เก็บได้ เก็บไม่ได้-->
                     <!--<th><div align="center">การกระทำ</div></th>-->
                     </tr>
                     </thead>
@@ -137,7 +137,7 @@ $status_due = "on";
 
                             $Beforeid = getBeforeid($val_idshipment_period); //ได้ค่าidรอบถัดไป --> อัพเดทรอบนี้ด้วย
                             $val_before_idshipment_period = $Beforeid['idshipment_period'];
-                            $getOrder_product_refundsByID = getOrder_product_refundsByID($idshop, $val_before_idshipment_period);
+                            $getOrder_product_refundsByID = getOrder_product_refundsByID($idshop, $val_idshipment_period);
                             $val_order_price_product_refunds = $getOrder_product_refundsByID['order_price_product_refunds'];
                             $getPayDetailByID = getPayDetailByID($idshop, $val_before_idshipment_period);
                             $val_debt_before_shipment = $getPayDetailByID['debt']; //ยอดค้างชำระ(รอบที่แล้ว)
@@ -170,7 +170,7 @@ $status_due = "on";
                                         <?php echo number_format(-1 * $val_debt, 2); ?>
                                     </td>
                                 <?php } ?>
-                                <td><?php echo $val_status_pay; ?></td>
+                                <!--<td><?php // echo $val_status_pay; ?></td>-->
     <!--                                    <td>
                                      ดูใบปะหน้า 
                                     <a href="../docket/docket_paper.php?idshipment_period=<?php echo $val_idshipment_period; ?>&idshop=<?php echo $idshop; ?>" class="btn btn-primary" data-toggle="tooltip" title="ดูใบปะหน้า">

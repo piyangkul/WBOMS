@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__FILE__) . '/function/func_addorder.php';
+require_once 'function/func_addorder.php';
 session_start();
 
 //session_destroy();
@@ -20,22 +20,22 @@ if ($_GET['p'] == "addProduct") {
     $date_order = date("Y-m-d");
     $getIdOrder = getEdit_Order($idProduct_order);
     $idshop = $getIdOrder['idshop'];
-    
-    echo $type.$idshop;
-    
-    
+
+    echo $type . $idshop;
+
+
     if ($type === "PERCENT") {
         $idproductE = EditProductOrder($idProduct_order, $idUnit, $AmountProduct, $DifferencePer, $price);
         $getproduct = getIDProduct($idUnit);
         $idproduct2 = $getproduct['idproduct'];
-        $delDiff = deleteDifference($idproduct2);
+        $delDiff = deleteDifference($idproduct2, $idshop);
         $addDiff = addDiff_edit($idproduct2, $idshop, $type, $DifferencePer, $date_order);
         echo $idshop;
     } elseif ($type === "BATH") {
         $idproductE = EditProductOrder($idProduct_order, $idUnit, $AmountProduct, $DifferenceBath, $price);
         $getproduct = getIDProduct($idUnit);
         $idproduct2 = $getproduct['idproduct'];
-        $delDiff = deleteDifference($idproduct2);
+        $delDiff = deleteDifference($idproduct2, $idshop);
         $addDiff = addDiff_edit($idproduct2, $idshop, $type, $DifferenceBath, $date_order);
     }
     /* echo "$DifferenceBATH";

@@ -7,7 +7,7 @@ $p = 'history_order';
 if (isset($_GET['p']) && !empty($_GET['p'])) {
     $p = $_GET['p'];
 }
-require_once '/function/func_addorder.php';
+require_once 'function/func_addorder.php';
 $val_idorder = $_GET['idorder']; //ส่งค่าpara
 $getOrderEdit = getOrderEdit($val_idorder);
 $getProductOrder = getProductOrder($val_idorder);
@@ -165,7 +165,7 @@ $total_price_all = 0;
                                                                 <td class ="text-right"><?= number_format($val_price_unit, 2); ?> </td>
 
                                                                 <?php if ($val_type_product_order === 'PERCENT') { ?>
-                                                                    <td><?= number_format($val_difference_amount_factory, 2); ?></td>
+                                                                    <td><?= number_format($val_difference_amount_factory, 2)."%"; ?></td>
                                                                     <td><?= number_format($val_difference_product_order, 2) . "%"; ?></td>
                                                                     <td class ="text-right"><?= number_format($total_percent, 2); ?></td>
                                                                     <?php

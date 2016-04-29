@@ -302,10 +302,11 @@ RIGHT JOIN ((SELECT idfactory,name_factory FROM `view_getfactorybyidshipment_per
 //หน้าshipment2 แสดงโรงงานที่มีการสั่งซื้อ
 function getFactoryByIDshipment_period5($idshipment_period) {
     $conn = dbconnect();
-    $SQLCommand = "SELECT * FROM
-(SELECT A.status_shipment,A.idshipment_period,B.idfactory,B.name_factory,A.CountCheck,A.price,A.amount_product_order,A.difference_amount_product,A.date_start,A.date_end FROM (SELECT * FROM `view_getfactorybyidshipment_period` WHERE `idshipment_period` = :idshipment_period )AS A RIGHT JOIN ((SELECT idfactory,name_factory FROM `view_getfactorybyidshipment_period` WHERE `idshipment_period` = :idshipment_period ) UNION (SELECT factory.idfactory,factory.name_factory FROM factory JOIN product ON factory.idfactory=product.idfactory JOIN unit ON unit.idproduct=product.idproduct JOIN product_order ON product_order.idunit=unit.idunit WHERE status_checktransport = 'uncheck' )) AS B ON A.idfactory = B.idfactory ORDER BY A.idfactory )AS yes LEFT JOIN 
-(SELECT S1.idfactory, S1.CountSumProduct_order-S2.CountSendProduct_order AS count_left FROM(SELECT factory.idfactory,factory.name_factory,CountSumProduct_order FROM(SELECT COUNT(`idproduct_order`) AS `CountSumProduct_order`,factory.idfactory,factory.name_factory FROM product_order JOIN unit ON product_order.idunit=unit.idunit JOIN product ON unit.idproduct=product.idproduct JOIN factory ON product.idfactory=factory.idfactory GROUP BY factory.idfactory) AS A RIGHT JOIN factory ON A.idfactory = factory.idfactory) AS S1 INNER JOIN(SELECT factory.idfactory,factory.name_factory,CountSendProduct_order FROM(SELECT COUNT(`idproduct_order`) AS `CountSendProduct_order` ,factory.idfactory,factory.name_factory FROM product_order JOIN unit ON product_order.idunit=unit.idunit JOIN product ON unit.idproduct=product.idproduct JOIN factory ON product.idfactory=factory.idfactory WHERE product_order.status_checktransport LIKE 'check' OR product_order.status_checktransport LIKE 'postpone' GROUP BY factory.idfactory) AS A RIGHT JOIN factory ON A.idfactory = factory.idfactory )AS S2 ON S1.idfactory = S2.idfactory)AS Alll 
-ON yes.idfactory = Alll.idfactory ";
+    $SQLCommand = "SELECT A.status_shipment,A.idshipment_period,B.idfactory,B.name_factory,A.CountCheck,A.price,A.amount_product_order,A.difference_amount_product,A.date_start,A.date_end FROM (SELECT * FROM `view_getfactorybyidshipment_period` WHERE `idshipment_period` = :idshipment_period )AS A RIGHT JOIN ((SELECT idfactory,name_factory FROM `view_getfactorybyidshipment_period` WHERE `idshipment_period` = :idshipment_period ) UNION (SELECT factory.idfactory,factory.name_factory FROM factory JOIN product ON factory.idfactory=product.idfactory JOIN unit ON unit.idproduct=product.idproduct JOIN product_order ON product_order.idunit=unit.idunit WHERE status_checktransport = 'uncheck' )) AS B ON A.idfactory = B.idfactory ORDER BY A.idfactory ";
+//    SELECT * FROM
+//(SELECT A.status_shipment,A.idshipment_period,B.idfactory,B.name_factory,A.CountCheck,A.price,A.amount_product_order,A.difference_amount_product,A.date_start,A.date_end FROM (SELECT * FROM `view_getfactorybyidshipment_period` WHERE `idshipment_period` = :idshipment_period )AS A RIGHT JOIN ((SELECT idfactory,name_factory FROM `view_getfactorybyidshipment_period` WHERE `idshipment_period` = :idshipment_period ) UNION (SELECT factory.idfactory,factory.name_factory FROM factory JOIN product ON factory.idfactory=product.idfactory JOIN unit ON unit.idproduct=product.idproduct JOIN product_order ON product_order.idunit=unit.idunit WHERE status_checktransport = 'uncheck' )) AS B ON A.idfactory = B.idfactory ORDER BY A.idfactory )AS yes LEFT JOIN 
+//(SELECT S1.idfactory, S1.CountSumProduct_order-S2.CountSendProduct_order AS count_left FROM(SELECT factory.idfactory,factory.name_factory,CountSumProduct_order FROM(SELECT COUNT(`idproduct_order`) AS `CountSumProduct_order`,factory.idfactory,factory.name_factory FROM product_order JOIN unit ON product_order.idunit=unit.idunit JOIN product ON unit.idproduct=product.idproduct JOIN factory ON product.idfactory=factory.idfactory GROUP BY factory.idfactory) AS A RIGHT JOIN factory ON A.idfactory = factory.idfactory) AS S1 INNER JOIN(SELECT factory.idfactory,factory.name_factory,CountSendProduct_order FROM(SELECT COUNT(`idproduct_order`) AS `CountSendProduct_order` ,factory.idfactory,factory.name_factory FROM product_order JOIN unit ON product_order.idunit=unit.idunit JOIN product ON unit.idproduct=product.idproduct JOIN factory ON product.idfactory=factory.idfactory WHERE product_order.status_checktransport LIKE 'check' OR product_order.status_checktransport LIKE 'postpone' GROUP BY factory.idfactory) AS A RIGHT JOIN factory ON A.idfactory = factory.idfactory )AS S2 ON S1.idfactory = S2.idfactory)AS Alll 
+//ON yes.idfactory = Alll.idfactory 
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
@@ -451,6 +452,26 @@ function getShipmentByID_notSend($idfactory) {
     return $resultArr;
 }
 
+//นับจำนวนคงค้าง shipment2
+function getShipmentByID_notSendRowcount($idfactory) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT * FROM view_product_order_shipment LEFT JOIN view_transport_shipment "
+            . "ON view_product_order_shipment.idproduct_order = view_transport_shipment.product_order_idproduct_order "
+            . "WHERE view_product_order_shipment.idfactory = :idfactory "
+            . "AND view_transport_shipment.idshipment_period IS NULL  ORDER BY date_order_p ";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idfactory" => $idfactory
+            )
+    );
+    if ($SQLPrepare->rowCount() > 0) {
+        return TRUE;
+    } else {
+        return false;
+    }
+}
+
 //ใช้หน้าadd_shipment3 --> รวมทั้งสั่งและส่ง
 function getShipmentByID($idfactory, $idshipment_period) {
     $conn = dbconnect();
@@ -458,7 +479,7 @@ function getShipmentByID($idfactory, $idshipment_period) {
             . "ON view_product_order_shipment.idproduct_order = view_transport_shipment.product_order_idproduct_order "
             . "WHERE view_product_order_shipment.idfactory = :idfactory "
             . "AND (view_transport_shipment.idshipment_period = :idshipment_period "
-            . "OR view_transport_shipment.idshipment_period IS NULL ) ORDER BY date_order_p and date_transport "; 
+            . "OR view_transport_shipment.idshipment_period IS NULL ) ORDER BY date_transport,idtransport,volume,number  "; 
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
@@ -478,7 +499,7 @@ function getShipmentByID_send($idfactory, $idshipment_period) {
     $conn = dbconnect();
     $SQLCommand = "SELECT * FROM view_product_order_shipment JOIN view_transport_shipment "
             . "ON view_product_order_shipment.idproduct_order = view_transport_shipment.product_order_idproduct_order "
-            . "WHERE view_product_order_shipment.idfactory = :idfactory AND view_transport_shipment.idshipment_period = :idshipment_period ORDER BY date_transport ";
+            . "WHERE view_product_order_shipment.idfactory = :idfactory AND view_transport_shipment.idshipment_period = :idshipment_period ORDER BY date_transport,idtransport,volume,number ";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
@@ -873,10 +894,24 @@ function editStatus_finish($idorder_transport) {
     }
 }
 
-//autoComplete ชื่อกับสาขาธนาคาร popup_add_payfactory
-function getBank() {
+//autoComplete ชื่อธนาคาร popup_add_payfactory
+function getNamebank() {
     $conn = dbconnect();
-    $SQLCommand = "SELECT * FROM `pay_factory` ";
+    $SQLCommand = "SELECT DISTINCT pay_factory.cheque_name_bank FROM `pay_factory` WHERE cheque_name_bank IS NOT NULL AND cheque_branch_bank IS NOT NULL ";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute();
+    $resultArr = array();
+    while ($result = $SQLPrepare->fetch(PDO::FETCH_ASSOC)) {
+        array_push($resultArr, $result);
+    }
+    return json_encode($resultArr); //, JSON_UNESCAPED_UNICODE);
+    //return "{}";
+}
+
+//autoComplete สาขาธนาคาร popup_add_payfactory
+function getBranchbank() {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT DISTINCT pay_factory.cheque_branch_bank FROM `pay_factory` WHERE cheque_name_bank IS NOT NULL AND cheque_branch_bank IS NOT NULL ";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute();
     $resultArr = array();

@@ -1,11 +1,10 @@
 <?php
 require_once dirname(__FILE__) . '/../function/func_docket.php';
 ?>
-<table class="table table-striped table-bordered table-hover text-center" id="dataTables"> 
+<table class="table table-striped table-bordered table-hover text-center" id="dataTables-example"> 
     <thead>
         <tr>
-            <th><div align="center">วันที่เริ่มรอบ</div></th>
-<th><div align="center">วันที่สิ้นสุดรอบ</div></th>
+            <th><div align="center">ร้านค้า</div></th>
 <th><div align="center">วันที่จ่ายเงิน</div></th>
 <th><div align="center">ยอดค้างชำระ</div></th>
 <th><div align="center">ยอดสั่งซื้อ</div></th>
@@ -19,22 +18,17 @@ require_once dirname(__FILE__) . '/../function/func_docket.php';
 </thead>
 <tbody>
     <?php
-    $idshop = $_GET['idshop'];
+    $idshipment_period = $_GET['idshipment_period'];
+    $idregion = $_GET['idregion'];
+    $idprovince = $_GET['idprovince'];
     $check_popup_addShop = TRUE;
-    $getPayByID = getPayByID($idshop);
-//    echo "<pre>";
-//    print_r($getPayByID);
-//    echo "</pre>";
+    $getPayByID = getPayByIDPeriod($idshipment_period, $idregion, $idprovince);
     $i = 0;
     foreach ($getPayByID as $value) {
         $i++;
         $val_idshipment_period = $value['idshipment_period'];
-        $val_date_start = $value['date_start'];
-        $date_start = date_create($val_date_start);
-        $date_start->add(new DateInterval('P543Y0M0DT0H0M0S'));
-        $val_date_end = $value['date_end'];
-        $date_end = date_create($val_date_end);
-        $date_end->add(new DateInterval('P543Y0M0DT0H0M0S'));
+        $idshop = $value['idshop'];
+        $val_name_shop = $value['name_shop'];
         $val_date_pay = $value['date_pay'];
         if ($val_date_pay == "") {
             $date_pay = "-";
@@ -66,8 +60,6 @@ require_once dirname(__FILE__) . '/../function/func_docket.php';
             $val_status_pay = "เก็บไม่ครบ";
         }
         $val_status_process = $value['status_process'];
-        //ไม่ใช้ $val_price_order_total = $value['price_order_total']; //ยอดสั่งซื้อรวม
-
         $n = 0;
         $sum_cost = 0;
         $sum_price_transport = 0;
@@ -126,13 +118,12 @@ require_once dirname(__FILE__) . '/../function/func_docket.php';
         $price = $val_debt_before_shipment + $sum_order - $val_order_price_product_refunds;
         ?>
         <tr>
-            <td><?php echo date_format($date_start, 'd-m-Y'); ?></td>
-            <td><?php echo date_format($date_end, 'd-m-Y'); ?></td>
+            <td><?php echo $val_name_shop; ?></td>
             <td><?php echo $date_pay; ?></td>
             <td class="text-right"><!-- ยอดค้างชำระ(รอบที่แล้ว)-->
                 <?php echo number_format($val_debt_before_shipment, 2); ?>
             </td>
-            <td class="text-right"><!-- ยอดสั่งซื้อ -->
+           <td class="text-right"><!-- ยอดสั่งซื้อ -->
                 <?php if ($sum_order != 0) { ?>
                     <?php echo "<a href='popup_order_docket.php?idshipment_period=$val_idshipment_period&idshop=$idshop' data-toggle='modal' data-target='#myModal-lg'> " . number_format($sum_order, 2) . " </a>"; ?>
                     <?php
@@ -178,9 +169,10 @@ require_once dirname(__FILE__) . '/../function/func_docket.php';
 
                     $Beforeid2 = getBeforeid($val_idshipment_period); //ได้ค่าidรอบถัดไป --> อัพเดทรอบนี้ด้วย
                     $val_before_idshipment_period_check = $Beforeid2['idshipment_period'];
-
+//
                     $getPayByID_check_finish_payshop = getPayByIDcheckStatus($idshop, $val_before_idshipment_period_check);
                     $val_status_check_finish_payshop = $getPayByID_check_finish_payshop['status_process'];
+//                   echo $val_order_price_product_refunds;
                     ?>
 
                     <?php
@@ -217,15 +209,15 @@ require_once dirname(__FILE__) . '/../function/func_docket.php';
                     <?php if ($val_status_process == "add") { ?>
                         <!-- ลบการเก็บเงินร้านค้า -->
                         <a href="action/action_delPayshop.php?idshipment_period=<?php echo $val_idshipment_period; ?>&idshop=<?php echo $idshop; ?>" onclick="if (!confirm('คุณต้องการลบหรือไม่')) {
-                                                return false;
-                                            }" class="btn btn-danger " title="ลบการเก็บเงินร้านค้า">
+                                    return false;
+                                }" class="btn btn-danger " title="ลบการเก็บเงินร้านค้า">
                             <span class="fa fa-trash fa-lg fa-fw"></span><span class = "fa fa-shopping-cart fa-lg"></span>
                         </a>
 
                         <!-- เปลี่ยนสถานะเก็บเงินร้านค้าเป็นเสร็จสิ้น -->
                         <a href="action/action_finishPayshop.php?idshipment_period=<?php echo $val_idshipment_period; ?>&idshop=<?php echo $idshop; ?>" onclick="if (!confirm('คุณต้องการกดเสร็จสิ้นหรือไม่')) {
-                                                return false;
-                                            }" class="btn btn-outline " title="เปลี่ยนสถานะเก็บเงินร้านค้าเป็นเสร็จสิ้น">
+                                    return false;
+                                }" class="btn btn-outline " title="เปลี่ยนสถานะเก็บเงินร้านค้าเป็นเสร็จสิ้น">
                             <span class="fa fa-check fa-lg fa-fw"></span><span class = "fa fa-shopping-cart fa-lg"></span>
                         </a>
 
@@ -242,6 +234,7 @@ require_once dirname(__FILE__) . '/../function/func_docket.php';
 </table>
 <script>
     $(document).ready(function () {
-        $('#dataTables').dataTable({"sort": false});
+        $('#dataTables-example').dataTable({"sort": false});
     });
 </script>
+

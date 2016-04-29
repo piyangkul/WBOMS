@@ -102,7 +102,7 @@ $val_debt_before_shipment = $getPayDetailByID['debt']; //ยอดค้าง�
                                         </thead>
                                         <tbody>
                                             <?php
-                                            $getProductRefundByID = getProductRefundByID($idshop, $val_before_idshipment_period);
+                                            $getProductRefundByID = getProductRefundByID($idshop, $idshipment_period);
                                             $i2 = 0;
                                             $refund = 0;
                                             $sum_refund = 0;
@@ -122,7 +122,7 @@ $val_debt_before_shipment = $getPayDetailByID['debt']; //ยอดค้าง�
                                                 if ($value['type_money'] == "PERCENT") {
                                                     $cost2 = $val_price_unit - (($val_price_difference / 100.0) * $val_price_unit);
                                                 } else {
-                                                    $cost2 = $val_price_unit - $val_price_difference;
+                                                    $cost2 = $val_price_unit + $val_price_difference;
                                                 }
                                                 $refund = $cost2 * $val_amount_product_refunds;
                                                 ?>
@@ -146,7 +146,7 @@ $val_debt_before_shipment = $getPayDetailByID['debt']; //ยอดค้าง�
                                     <div class="panel-heading">
                                         <h5>รายการสินค้าที่สั่งซื้อ</h5>
                                     </div>
-                                    <table class="table table-striped table-bordered table-hover text-center">
+                                    <table class="table table-striped table-bordered text-center">
                                         <thead>
                                             <tr>
                                                 <th rowspan="2" valign="middle"><div align="center">ลำดับ</div></th>
@@ -197,7 +197,7 @@ $val_debt_before_shipment = $getPayDetailByID['debt']; //ยอดค้าง�
                                                 if ($value['type_product_order'] == "PERCENT") {
                                                     $cost = $val_price_unit - (($val_difference_product_order / 100.0) * $val_price_unit);
                                                 } else {
-                                                    $cost = $val_price_unit - $val_difference_product_order;
+                                                    $cost = $val_price_unit + $val_difference_product_order;
                                                 }
                                                 $sale = $cost * $val_amount_product_order;
                                                 ?>
