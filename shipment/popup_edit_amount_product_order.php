@@ -33,14 +33,14 @@ $status_shipment_factory = $_GET['status_shipment'];
                         <input type="text" class="form-control" id="name_product" name="name_product" value="<?php echo $val_name_product; ?>" disabled>
                     </div>
                 </div>
-                <div class="form-group col-xs-12">
+                <div class="form-group col-xs-12" style="float:left;width:50%;">
                     <label for="amount_product_order">จำนวน</label><label class="text-danger">*</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-circle-o-notch"></i></span>
                         <input type="text" class="form-control" id="amount_product_order" name="amount_product_order" value="<?php echo $val_amount_product_order; ?>">
                     </div>
                 </div>
-                <div class="form-group col-xs-12">
+                <div class="form-group col-xs-12" style="float:left;width:50%;">
                     <label for="name_unit">หน่วยสินค้า</label><label class="text-danger">*</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-circle-o-notch"  ></i></span>
