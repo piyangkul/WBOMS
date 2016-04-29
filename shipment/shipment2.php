@@ -198,7 +198,7 @@ $val_name_factory = $getFactoryByID['name_factory'];
                                                         <td><?php echo $val_name_factory; ?></td>
                                                         <td><?php
                                                             if ($getShipmentByID_notSendRowcount == 0) {
-                                                                echo "เสร็จสิ้น" . "/" . $val_CountCheck;
+                                                                echo "0" . "/" . $val_CountCheck;
                                                             } else {
                                                                 echo $getShipmentByID_notSendRowcount . "/" . $val_CountCheck;
                                                             }

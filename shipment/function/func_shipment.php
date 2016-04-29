@@ -479,7 +479,7 @@ function getShipmentByID($idfactory, $idshipment_period) {
             . "ON view_product_order_shipment.idproduct_order = view_transport_shipment.product_order_idproduct_order "
             . "WHERE view_product_order_shipment.idfactory = :idfactory "
             . "AND (view_transport_shipment.idshipment_period = :idshipment_period "
-            . "OR view_transport_shipment.idshipment_period IS NULL ) ORDER BY date_order_p and date_transport "; 
+            . "OR view_transport_shipment.idshipment_period IS NULL ) ORDER BY date_transport,idtransport,volume,number  "; 
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
@@ -499,7 +499,7 @@ function getShipmentByID_send($idfactory, $idshipment_period) {
     $conn = dbconnect();
     $SQLCommand = "SELECT * FROM view_product_order_shipment JOIN view_transport_shipment "
             . "ON view_product_order_shipment.idproduct_order = view_transport_shipment.product_order_idproduct_order "
-            . "WHERE view_product_order_shipment.idfactory = :idfactory AND view_transport_shipment.idshipment_period = :idshipment_period ORDER BY date_transport ";
+            . "WHERE view_product_order_shipment.idfactory = :idfactory AND view_transport_shipment.idshipment_period = :idshipment_period ORDER BY date_transport,idtransport,volume,number ";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
