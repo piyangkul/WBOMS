@@ -63,34 +63,72 @@ if (isset($_GET['addP'])) {
         $amountUnitNew = $amountOld;
         $getAmountNew = getUnitNew($idproductOld, $idunit, $idunitOld);
         $val_price = 0;
+        $idunitS = $idunit;
+        $count = 0;
         foreach ($getAmountNew as $value) {
             $val_amount_unit = $value['amount_unit'];
             $val_price = $value['price_unit'];
             $amountUnitNew = $val_amount_unit * $amountUnitNew;
+            $count++;
         }
         $amountLatest = $amountUnitNew - $idamount_product_order;
-        if (isset($_SESSION["countProduct"])) {
-            $_SESSION["countProduct"] ++;
-        } else {
-            $_SESSION["countProduct"] = 1;
+        for ($i = 1; $i <= $count; $i++) {
+            $getUnitcal = getUnitCal($idunitS);
+            $idUnitBig = $getUnitcal['idunit_big'];
+            $amountMod = $amountLatest % $getUnitcal['amount_unit'];
+            $priceMod = $getUnitcal['price_unit'];
+            echo $amountMod . " ";
+            if ($amountMod > 0) {
+                if (isset($_SESSION["countProduct"])) {
+                    $_SESSION["countProduct"] ++;
+                } else {
+                    $_SESSION["countProduct"] = 1;
+                }
+                $_SESSION["product"][$_SESSION["countProduct"]]["idUnit"] = $idunitS;
+                $_SESSION["product"][$_SESSION["countProduct"]]["productName"] = $idproductOld;
+                $_SESSION["product"][$_SESSION["countProduct"]]["factoryName"] = $idfactoryOld;
+                $_SESSION["product"][$_SESSION["countProduct"]]["AmountProduct"] = $amountMod;
+                $_SESSION["product"][$_SESSION["countProduct"]]["difference"] = $diff;
+                if ($typeOld === "PERCENT") {
+                    $_SESSION["product"][$_SESSION["countProduct"]]["DifferencePer"] = $diffOld;
+                    $_SESSION["product"][$_SESSION["countProduct"]]["DifferenceBath"] = "";
+                    $_SESSION["product"][$_SESSION["countProduct"]]["total"] = ($priceMod - (($priceMod * $diffOld) / 100)) * $amountMod;
+                } else {
+                    $_SESSION["product"][$_SESSION["countProduct"]]["DifferencePer"] = "";
+                    $_SESSION["product"][$_SESSION["countProduct"]]["DifferenceBath"] = $diffOld;
+                    $_SESSION["product"][$_SESSION["countProduct"]]["total"] = (($priceMod * 1) + ($diffOld * 1)) * $amountMod;
+                }
+                $_SESSION["product"][$_SESSION["countProduct"]]["price"] = ($priceMod * 1);
+                $_SESSION["product"][$_SESSION["countProduct"]]["total_price"] = $priceMod * $amountMod;
+                $_SESSION["product"][$_SESSION["countProduct"]]["type"] = $typeOld;
+            }
+            if ($idUnitBig === "0") {
+                if (isset($_SESSION["countProduct"])) {
+                    $_SESSION["countProduct"] ++;
+                } else {
+                    $_SESSION["countProduct"] = 1;
+                }
+                $_SESSION["product"][$_SESSION["countProduct"]]["idUnit"] = $idunitS;
+                $_SESSION["product"][$_SESSION["countProduct"]]["productName"] = $idproductOld;
+                $_SESSION["product"][$_SESSION["countProduct"]]["factoryName"] = $idfactoryOld;
+                $_SESSION["product"][$_SESSION["countProduct"]]["AmountProduct"] = $amountLatest;
+                $_SESSION["product"][$_SESSION["countProduct"]]["difference"] = $diff;
+                if ($typeOld === "PERCENT") {
+                    $_SESSION["product"][$_SESSION["countProduct"]]["DifferencePer"] = $diffOld;
+                    $_SESSION["product"][$_SESSION["countProduct"]]["DifferenceBath"] = "";
+                    $_SESSION["product"][$_SESSION["countProduct"]]["total"] = ($priceMod - (($priceMod * $diffOld) / 100)) * $amountLatest;
+                } else {
+                    $_SESSION["product"][$_SESSION["countProduct"]]["DifferencePer"] = "";
+                    $_SESSION["product"][$_SESSION["countProduct"]]["DifferenceBath"] = $diffOld;
+                    $_SESSION["product"][$_SESSION["countProduct"]]["total"] = (($priceMod * 1) + ($diffOld * 1)) * $amountLatest;
+                }
+                $_SESSION["product"][$_SESSION["countProduct"]]["price"] = ($priceMod * 1);
+                $_SESSION["product"][$_SESSION["countProduct"]]["total_price"] = $priceMod * $amountLatest;
+                $_SESSION["product"][$_SESSION["countProduct"]]["type"] = $typeOld;
+            }
+            $amountLatest = floor($amountLatest / $getUnitcal['amount_unit']);
+            $idunitS = $getUnitcal['idunit_big'];
         }
-        $_SESSION["product"][$_SESSION["countProduct"]]["idUnit"] = $idunit;
-        $_SESSION["product"][$_SESSION["countProduct"]]["productName"] = $idproductOld;
-        $_SESSION["product"][$_SESSION["countProduct"]]["factoryName"] = $idfactoryOld;
-        $_SESSION["product"][$_SESSION["countProduct"]]["AmountProduct"] = $amountLatest;
-        $_SESSION["product"][$_SESSION["countProduct"]]["difference"] = $diff;
-        if ($typeOld === "PERCENT") {
-            $_SESSION["product"][$_SESSION["countProduct"]]["DifferencePer"] = $diffOld;
-            $_SESSION["product"][$_SESSION["countProduct"]]["DifferenceBath"] = "";
-            $_SESSION["product"][$_SESSION["countProduct"]]["total"] = ($val_price - (($val_price * $diffOld) / 100)) * $amountLatest;
-        } else {
-            $_SESSION["product"][$_SESSION["countProduct"]]["DifferencePer"] = "";
-            $_SESSION["product"][$_SESSION["countProduct"]]["DifferenceBath"] = $diffOld;
-            $_SESSION["product"][$_SESSION["countProduct"]]["total"] = (($val_price * 1) + ($diffOld * 1)) * $amountLatest;
-        }
-        $_SESSION["product"][$_SESSION["countProduct"]]["price"] = ($val_price * 1);
-        $_SESSION["product"][$_SESSION["countProduct"]]["total_price"] = $val_price * $amountLatest;
-        $_SESSION["product"][$_SESSION["countProduct"]]["type"] = $typeOld;
     }
 }
 if ($_GET['p'] === "editProduct") {

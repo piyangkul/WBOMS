@@ -216,7 +216,7 @@ $status_shipment_factorys = $_GET['status_shipment'];
                 var p = "&name_unit=" + idUnit + "&idshipment_period=" + idshipment_period + "&idproduct_order=" + idproduct_order + "&idfactory=" + idfactory + "&amount_product_order=" + amount_product_order + "&price=" + price + "&status_shipment=" + status_shipment;
                 //alert(p);
                 $.get("action/action_edit_amount_product_order.php?p=editProduct" + p, function (data, status) {
-                    // alert("Data: " + data + "\nStatus: " + status);
+                    //alert("Data: " + data + "\nStatus: " + status);
                     if (data == "1") {
                         $("#alert").html("บันทึกแล้ว");
                         $("#name_unit").val("");
