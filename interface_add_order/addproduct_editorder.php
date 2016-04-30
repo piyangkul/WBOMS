@@ -230,7 +230,7 @@ $idorder = $_GET['idorder'];
                                             </div>
                                             <div class="panel-body">
                                                 <div class="table-responsive ">
-                                                    <label for="name_product"> ขายเพิ่มสุทธิ </label>
+                                                    <label for="name_product"> ขายเพิ่มสุทธิ/หน่วย </label>
                                                     <input type="text" class="form-control" placeholder="กรอกราคาขายเพิ่มสุทธิ" id="DifferenceBath" value="" onkeyup="updateAmount()"> </input>
                                                     <h id="type"></h>
                                                 </div>

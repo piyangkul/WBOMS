@@ -203,7 +203,7 @@ echo $totaldiffPer;
                                                     <?php if ($type === "BATH") { ?>
                                                         <div class="panel-body">
                                                             <div class="table-responsive ">
-                                                                <label for="name_product"> ขายเพิ่มสุทธิ </label>
+                                                                <label for="name_product"> ขายเพิ่มสุทธิ/หน่วย </label>
                                                                 <input type="text" class="form-control" placeholder="กรอกราคาขายเพิ่มสุทธิ" id="DifferenceBath" value="<?= $diffBath; ?>" onkeyup="updateTotalBath()"> </input>
                                                                 <h id="type" value="BATH"></h>
                                                             </div>
@@ -212,14 +212,14 @@ echo $totaldiffPer;
                                                         <div class="panel-body">
                                                             <div class="table-responsive">
                                                                 <div class="form-group">
-                                                                    <label for="disabled_cost_discounts_percent"> ต้นทุนลดเป็น% (%ที่โรงงานลดให้เรา) </label>
+                                                                    <label for="disabled_cost_discounts_percent"> เปอร์เซ็นต์ส่วนลดราคาต้นทุน </label>
                                                                     <input type="text" class="form-control" id="difference" readonly="true" value ="<?= $diffFac; ?>" onkeyup="cal_difference()" >
                                                                 </div>
                                                                 <div class ="form-group">
-                                                                    <label for="exampleInputName2"> ดังนั้นราคาต้นทุน //ระบบคิดอัตโนมัติตามหน่วยที่เลือก</label>
+                                                                    <label for="exampleInputName2"> ราคาต้นทุน</label>
                                                                     <input type="text" class="form-control" id="cal_difference" readonly="true" value = "<?= $totaldiff; ?>">
                                                                 </div>
-                                                                <label class="radio"> ขายลดเปอร์เซ็นต์//8% = 44.8 </label>
+                                                                <label class="radio"> เปอร์เซ็นต์ส่วนลดราคาขายจริง </label>
                                                                 <input type="text" class="form-control" placeholder="กรอก%ขายลด"  id="DifferencePer"  value="<?= $diffPer; ?>" onkeyup="updateTotalPer()"/></input>
                                                                 <h id="type" value="PERCENT"></h>
                                                             </div>

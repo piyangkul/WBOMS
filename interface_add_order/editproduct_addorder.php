@@ -212,7 +212,7 @@ if (isset($_SESSION['idshop'])) {
                                                     <?php if ($type === "BATH") { ?>
                                                         <div class="panel-body">
                                                             <div class="table-responsive ">
-                                                                <label for="name_product"> ขายเพิ่มสุทธิ </label>
+                                                                <label for="name_product"> ขายเพิ่มสุทธิ/หน่วย </label>
                                                                 <input type="text" class="form-control" placeholder="กรอกราคาขายเพิ่มสุทธิ" id="DifferenceBath" value="<?= number_format($diffBath, 2); ?>" onkeyup="updateAmount()"> </input>
                                                                 <input type="hidden" id="type" name="type" value="<?= $type ?>">
                                                             </div>
