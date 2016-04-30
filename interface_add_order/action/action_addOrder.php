@@ -41,14 +41,14 @@ if (isset($_SESSION["product"])) {//ถามว่า$_SESSION["unit"]ถูก
                 $idproduct[$i] = addProductOrder($products[$i]['idUnit'], $idorder, $products[$i]['AmountProduct'], $products[$i]['DifferencePer'], $products[$i]['type'], $products[$i]['total_price'] / $products[$i]['AmountProduct']);
                 $getproduct = getIDProduct($products[$i]['idUnit']);
                 $idproduct2 = $getproduct['idproduct'];
-                $delDiff[$i] = deleteDifference($idproduct2,$idshop);
+                $delDiff[$i] = deleteDifference($idproduct2, $idshop);
                 $addDiff[$i] = addDiff($idproduct2, $idshop, $products[$i]['type'], $products[$i]['DifferencePer'], $date_order);
             }
             if ($products[$i]['type'] === "BATH") {
                 $idproduct[$i] = addProductOrder($products[$i]['idUnit'], $idorder, $products[$i]['AmountProduct'], $products[$i]['DifferenceBath'], $products[$i]['type'], $products[$i]['total_price'] / $products[$i]['AmountProduct']);
                 $getproduct = getIDProduct($products[$i]['idUnit']);
                 $idproduct2 = $getproduct['idproduct'];
-                $delDiff[$i] = deleteDifference($idproduct2,$idshop);
+                $delDiff[$i] = deleteDifference($idproduct2, $idshop);
                 $addDiff[$i] = addDiff($idproduct2, $idshop, $products[$i]['type'], $products[$i]['DifferenceBath'], $date_order);
             }
             //echo "555";
@@ -57,16 +57,43 @@ if (isset($_SESSION["product"])) {//ถามว่า$_SESSION["unit"]ถูก
         //echo "555";
         unset($_SESSION["product"]);
         unset($_SESSION["countProduct"]);
-        header("location: ../order.php?p=history_order&action=addCompleted");
+        if (isset($_SESSION['addProductShipment'])) {
+            header("location: ../../shipment/add_shipment3.php?idshipment_period=" . $_SESSION['idshipment_period'] . "&idfactory=" . $_SESSION['idfactory'] . "&price=" . $_SESSION['price'] . "&status_shipment=" . $_SESSION['status_shipment'] . "&action=editProduct_orderCompleted");
+            unset($_SESSION['addProductShipment']);
+            unset($_SESSION['idshipment_period']);
+            unset($_SESSION['idfactory']);
+            unset($_SESSION['price']);
+            unset($_SESSION['status_shipment']);
+        } else {
+            header("location: ../order.php?p=history_order&action=addCompleted");
+        }
     } else {
         unset($_SESSION["product"]);
         unset($_SESSION["countProduct"]);
-        header("location: ../order.php?p=history_order&action=addError");
+        if (isset($_SESSION['addProductShipment'])) {
+            header("location: ../../shipment/add_shipment3.php?idshipment_period=" . $_SESSION['idshipment_period'] . "&idfactory=" . $_SESSION['idfactory'] . "&price=" . $_SESSION['price'] . "&status_shipment=" . $_SESSION['status_shipment'] . "&action=editProduct_orderCompleted");
+            unset($_SESSION['addProductShipment']);
+            unset($_SESSION['idshipment_period']);
+            unset($_SESSION['idfactory']);
+            unset($_SESSION['price']);
+            unset($_SESSION['status_shipment']);
+        } else {
+            header("location: ../order.php?p=history_order&action=addError");
+        }
     }
 } else {
     unset($_SESSION["product"]);
     unset($_SESSION["countProduct"]);
-    header("location: ../order.php?p=history_order&action=addErrorNotHaveProduct");
+    if (isset($_SESSION['addProductShipment'])) {
+        header("location: ../../shipment/add_shipment3.php?idshipment_period=" . $_SESSION['idshipment_period'] . "&idfactory=" . $_SESSION['idfactory'] . "&price=" . $_SESSION['price'] . "&status_shipment=" . $_SESSION['status_shipment'] . "&action=editProduct_orderCompleted");
+        unset($_SESSION['addProductShipment']);
+        unset($_SESSION['idshipment_period']);
+        unset($_SESSION['idfactory']);
+        unset($_SESSION['price']);
+        unset($_SESSION['status_shipment']);
+    } else {
+        header("location: ../order.php?p=history_order&action=addErrorNotHaveProduct");
+    }
 }
 
 
