@@ -64,7 +64,7 @@ $month_end = $_GET['month_end'];
                     <a class="btn btn-danger btn-lg" onclick="Back()"><span class="fa fa-arrow-circle-left"></span> Back</a>
                     <br/>
                     <!-- ข้อมูลการเงินรายเดือน-ปี -->
-                    <table class="highchart" data-graph-container-before="1" data-graph-type="column" style="display:none" data-graph-xaxis-end-on-tick="1" data-graph-height="550" data-graph-subtitle-text="ประกอบด้วย 1.รายได้ 2.รายจ่าย 3.กำไร/ขาดทุน แต่ละรอบ">
+                    <table class="highchart" data-graph-container-before="1" data-graph-type="column" style="display:none" data-graph-xaxis-end-on-tick="1" data-graph-height="550" data-graph-subtitle-text="ประกอบด้วย 1.รายรับ 2.รายจ่าย 3.กำไร/ขาดทุน แต่ละรอบ">
                         <caption>กราฟแสดงข้อมูลการเงินรายเดือน-ปี</caption>
                         <thead>
                             <tr>                                  
