@@ -438,7 +438,7 @@ function getShipmentByID_notSend($idfactory) {
     $SQLCommand = "SELECT * FROM view_product_order_shipment LEFT JOIN view_transport_shipment "
             . "ON view_product_order_shipment.idproduct_order = view_transport_shipment.product_order_idproduct_order "
             . "WHERE view_product_order_shipment.idfactory = :idfactory "
-            . "AND view_transport_shipment.idshipment_period IS NULL  ORDER BY date_order_p ";
+            . "AND view_transport_shipment.idshipment_period IS NULL ORDER BY date_order_p,name_shop ";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
@@ -465,11 +465,8 @@ function getShipmentByID_notSendRowcount($idfactory) {
                 ":idfactory" => $idfactory
             )
     );
-    if ($SQLPrepare->rowCount() > 0) {
-        return TRUE;
-    } else {
-        return false;
-    }
+    $count = $SQLPrepare->rowCount();
+    return $count;
 }
 
 //ใช้หน้าadd_shipment3 --> รวมทั้งสั่งและส่ง
@@ -593,7 +590,7 @@ function getProduct_order_shipmentByID($idfactory) {
     $conn = dbconnect();
     $SQLCommand = "SELECT factory.name_factory, product.idproduct,product_order.idproduct_order,order_p.date_order_p,product_order.amount_product_order,unit.price_unit,shop.name_shop,product.name_product,unit.name_unit,product_order.status_checktransport "
             . "FROM product JOIN unit ON product.idproduct = unit.idproduct JOIN product_order ON product_order.idunit = unit.idunit JOIN order_p ON order_p.idorder_p = product_order.idorder_p JOIN shop ON shop.idshop = order_p.idshop JOIN factory ON factory.idfactory = product.idfactory "
-            . "WHERE product_order.status_checktransport LIKE 'uncheck' AND factory.idfactory = :idfactory ";
+            . "WHERE product_order.status_checktransport LIKE 'uncheck' AND factory.idfactory = :idfactory  ORDER BY date_order_p,name_shop ";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
@@ -1198,9 +1195,9 @@ function getUnit($idproduct,$idunit) {
 }
 
 
-function editProduct_order($idproduct_order, $idamount_product_order,$idunit) {
+function editProduct_order($idproduct_order, $idamount_product_order, $idunit, $price_product_order) {
     $conn = dbconnect();
-    $SQLCommand = "UPDATE `product_order` SET `amount_product_order`=:amount_product_order,idunit = :idunit "
+    $SQLCommand = "UPDATE `product_order` SET `amount_product_order`=:amount_product_order,idunit = :idunit,price_product_order = :price_product_order "
             . "WHERE `idproduct_order`=:idproduct_order";
 
     $SQLPrepare = $conn->prepare($SQLCommand);
@@ -1208,7 +1205,8 @@ function editProduct_order($idproduct_order, $idamount_product_order,$idunit) {
             array(
                 ":idproduct_order" => $idproduct_order,
                 ":amount_product_order" => $idamount_product_order,
-                ":idunit" => $idunit
+                ":idunit" => $idunit,
+                ":price_product_order" => $price_product_order
             )
     );
 
@@ -1232,6 +1230,65 @@ function getTransport() {
     return json_encode($resultArr); //, JSON_UNESCAPED_UNICODE);
     //return "{}";
 }
+
+//action edit_amount_product_order
+function getProductOrderOld($idproduct_order) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT order_p.idshop,product_order.idunit,product.idproduct,product.idfactory,product_order.amount_product_order,product_order.type_product_order,product_order.difference_product_order,unit.price_unit,product_order.price_product_order,product.difference_amount_product FROM product_order INNER JOIN order_p ON product_order.idorder_p = order_p.idorder_p INNER JOIN unit ON product_order.idunit=unit.idunit INNER JOIN  product ON unit.idproduct = product.idproduct WHERE product_order.idproduct_order =:idproduct_order";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idproduct_order" => $idproduct_order
+            )
+    );
+    $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
+    return $result;
+}
+
+function getUnitNew($idproduct, $idunitNew, $idunitOld) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT * FROM unit WHERE unit.idproduct = :idproduct AND unit.idunit BETWEEN :idunitOld AND :idunitNew";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idproduct" => $idproduct,
+                ":idunitNew" => $idunitNew,
+                ":idunitOld" => $idunitOld
+            )
+    );
+    $resultArr = array();
+    while ($result = $SQLPrepare->fetch(PDO::FETCH_ASSOC)) {
+        array_push($resultArr, $result);
+    }
+    return $resultArr;
+}
+
+function getUnitCal($idproduct) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT * FROM unit WHERE unit.idproduct = :idproduct";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idproduct" => $idproduct
+            )
+    );
+    $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
+    return $result;
+}
+
+function getedit_price_unit($idunit) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT * FROM unit WHERE unit.idunit = :idunit";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idunit" => $idunit
+            )
+    );
+    $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
+    return $result;
+}
+
 
 ////ยังไม่เสร็จเปลี่ยนหน่วยไม่ได้
 //function editProduct_order($idproduct_order, $idamount_product_order) {

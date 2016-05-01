@@ -27,13 +27,40 @@ if (isset($_GET['idshipment_period'])and isset($_GET['idfactory'])) {
     $getCountshipment_perroid = getCountshipment_perroidByID($idfactory, $idshipment_period);
     $val_count_idorder_transport = $getCountshipment_perroid['count_idorder_transport'];
 
-    $price = $_GET['price']; //ไม่ใช้แล้ว
+//    $price = $_GET['price']; //ไม่ใช้แล้ว
     $status_shipment_factory = $_GET['status_shipment'];
 
     $getPrice_transportByshipment_period = getPrice_transportByshipment_period($idshipment_period, $idfactory);
     $price_transport = $getPrice_transportByshipment_period['sum_price_transport'];
-    $getPriceFactoryByIDshipment_period = getPriceFactoryByIDshipment_period($idshipment_period, $idfactory);
-    $price = $getPriceFactoryByIDshipment_period['price'];
+    $price = 0;
+    //คำนวณยอดเงินที่สั่งซื้อ
+    $getPrice_orderProductshipment = getPrice_orderProductshipment($idshipment_period, $idfactory);
+    foreach ($getPrice_orderProductshipment as $value) {
+        $val_amount_product_order = $value['amount_product_order'];
+        $val_price_unit = $value['price_unit']; //ราคาเปิด
+
+        if ($value['difference_amount_product'] == null) {
+            $val_difference_amount = $value['difference_amount_factory'];
+        } else {
+            $val_difference_amount = $value['difference_amount_product'];
+        }
+        $cost = $val_price_unit - (($val_difference_amount / 100.0) * $val_price_unit);
+
+        $val_difference_product_order = $value['difference_product_order']; //ขายลด
+        $val_type_product_order = $value['type_product_order'];
+        if ($value['type_product_order'] == "PERCENT") {
+            $cost2 = $val_price_unit - (($val_difference_product_order / 100.0) * $val_price_unit);
+        } else {
+            $cost2 = $val_price_unit - $val_difference_product_order;
+        }
+        ?>
+        <?php
+        $price = $price + $cost * $val_amount_product_order;
+        ?>
+        <?php
+    }
+//    $getPriceFactoryByIDshipment_period = getPriceFactoryByIDshipment_period($idshipment_period, $idfactory);
+//    $price = $getPriceFactoryByIDshipment_period['price'];
     $total_price = $price + $price_transport;
 }
 ?>
@@ -80,7 +107,7 @@ if (isset($_GET['idshipment_period'])and isset($_GET['idfactory'])) {
                             <div>
                                 <center><h4 class="text text-info"><b>รอบการส่งที่</b> <?php echo date_format($date_start, 'd-m-Y'); ?> ถึง <?php echo date_format($date_end, 'd-m-Y'); ?></h4></center>
                                 <center><h4 class="text text-info"><b>โรงงาน</b> <?php echo $val_name_factory; ?></h4></center>
-                                <!--<center><h4 class="text text-info"><b>จำนวนใบขนส่ง</b> <?php //echo $val_count_idorder_transport; ?> <b>ใบ</b></h4></center>-->
+                                <!--<center><h4 class="text text-info"><b>จำนวนใบขนส่ง</b> <?php //echo $val_count_idorder_transport;  ?> <b>ใบ</b></h4></center>-->
                                 <center><h4 class="text text-info"><b>ยอดสั่งซื้อรวม(สั่งซื้อ+ค่าขนส่ง)</b> <?php echo number_format($total_price, 2); ?> <b>บาท</b> </h4></center>
                             </div>
 
@@ -230,7 +257,7 @@ if (isset($_GET['idshipment_period'])and isset($_GET['idfactory'])) {
                                 </div>
                             </div>
                             <!--End ตารางรายการสินค้าที่เพิ่มการส่งแล้ว -->
-                            
+
                         </div>
                     </div>
                 </div>

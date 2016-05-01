@@ -106,7 +106,7 @@ $price = $_GET['price']; //ใช้ไม่ได้
                                 </div>-->
 
                 <div class="form-group col-xs-12">
-                    <label for="volume">เล่มที่</label><label class="text-danger">*</label>
+                    <label for="volume">เล่มที่</label><label class="text-danger">*กรณีไม่มี ใส่00</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-circle-o-notch"  ></i></span>
                         <input type="text" class="form-control" placeholder="กรุณากรอกเล่มที่ " name="volume" onkeypress='return event.charCode >= 48 && event.charCode <= 57;' required />

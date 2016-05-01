@@ -77,11 +77,11 @@ $Check_confirm = Check_confirm($idshipment_period, $idfactory);
         ?>
         <?php if ($val_confirm_status_shipment == "pay" || $val_confirm_status_shipment == "finish") { ?> <!-- สถานะรายการสินค้า -->
             <tr>
-                <td><?php echo $i ; ?></td>
+                <td><?php echo $i; ?></td>
                 <td><?php echo date_format($date_order_p, 'd-m-Y'); ?></td>
                 <td><?php echo $val_name_shop; ?></td>
                 <td><?php echo $val_name_product; ?></td>
-                <td class="text-right"><?php echo $val_price_unit; ?></td>
+                <td class="text-right"><?php echo number_format($val_price_unit, 2); ?></td>
                 <td><?php echo $val_amount_product_order . " " . $val_name_unit; ?></td>
                 <?php
                 $ShipmentDuplicate = getShipmentDuplicateByID($idfactory, $idshipment_period, $val_name_transport, $val_number, $val_volume);
@@ -119,7 +119,7 @@ $Check_confirm = Check_confirm($idshipment_period, $idfactory);
                 } else {//ถ้าการส่ง1ครั้ง มี1รายการสั่ง
                     ?>
                     <td><?php echo date_format($date_transport, 'd-m-Y'); ?></td>
-                    <!--<td><?php //echo ($val_name_transport == "-" ? ($val_name_transport . "/" . $val_volume . "/" . $val_number) : ("<a href='popup_edit_shipment3.php?idshipment_period=$idshipment_period&idfactory=$idfactory&idorder_transport=$val_idorder_transport&idtransport=$val_idtransport' data-toggle='modal' data-target='#myModal'>$val_name_transport/$val_volume/$val_number </a>"));                                                                                                       ?></td>-->
+                    <!--<td><?php //echo ($val_name_transport == "-" ? ($val_name_transport . "/" . $val_volume . "/" . $val_number) : ("<a href='popup_edit_shipment3.php?idshipment_period=$idshipment_period&idfactory=$idfactory&idorder_transport=$val_idorder_transport&idtransport=$val_idtransport' data-toggle='modal' data-target='#myModal'>$val_name_transport/$val_volume/$val_number </a>"));                                                                                                        ?></td>-->
                     <td><?php
                         if ($val_name_transport == "-") {
                             echo $val_name_transport . "/" . $val_volume . "/" . $val_number;
