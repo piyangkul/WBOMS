@@ -9,7 +9,16 @@ if ($_GET['cancel'] == "cancel") {
     unset($_SESSION["detail"]);
     unset($_SESSION["time"]);
     unset($_SESSION["date"]);
-    header("location: ../order.php");
+    if (isset($_SESSION['addProductShipment'])) {
+        header("location: ../../shipment/add_shipment3.php?idshipment_period=" . $_SESSION['idshipment_period'] . "&idfactory=" . $_SESSION['idfactory'] . "&price=" . $_SESSION['price'] . "&status_shipment=" . $_SESSION['status_shipment'] . "&action=editProduct_orderCompleted");
+        unset($_SESSION['addProductShipment']);
+        unset($_SESSION['idshipment_period']);
+        unset($_SESSION['idfactory']);
+        unset($_SESSION['price']);
+        unset($_SESSION['status_shipment']);
+    } else {
+        header("location: ../order.php");
+    }
 }
 if ($_GET['cancel'] == "addorder") {
     unset($_SESSION["product"]);
@@ -18,5 +27,6 @@ if ($_GET['cancel'] == "addorder") {
     unset($_SESSION["detail"]);
     unset($_SESSION["time"]);
     unset($_SESSION["date"]);
+
     header("location: ../add_order.php");
 }

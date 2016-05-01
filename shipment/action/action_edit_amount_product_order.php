@@ -59,7 +59,7 @@ if (isset($_GET['addP'])) {
         $_SESSION["product"][$_SESSION["countProduct"]]["price"] = ($price_unit * 1);
         $_SESSION["product"][$_SESSION["countProduct"]]["total_price"] = $price_unit * ($amountOld - $idamount_product_order);
         $_SESSION["product"][$_SESSION["countProduct"]]["type"] = $typeOld;
-    } else {
+    } else if ($idunit > $idunitOld) {
         $amountUnitNew = $amountOld;
         $getAmountNew = getUnitNew($idproductOld, $idunit, $idunitOld);
         $val_price = 0;
@@ -103,39 +103,58 @@ if (isset($_GET['addP'])) {
                 $_SESSION["product"][$_SESSION["countProduct"]]["type"] = $typeOld;
             }
             if ($idUnitBig === "0") {
-                if (isset($_SESSION["countProduct"])) {
-                    $_SESSION["countProduct"] ++;
-                } else {
-                    $_SESSION["countProduct"] = 1;
+                if ($amountMod > 0) {
+                    if (isset($_SESSION["countProduct"])) {
+                        $_SESSION["countProduct"] ++;
+                    } else {
+                        $_SESSION["countProduct"] = 1;
+                    }
+                    $_SESSION["product"][$_SESSION["countProduct"]]["idUnit"] = $idunitS;
+                    $_SESSION["product"][$_SESSION["countProduct"]]["productName"] = $idproductOld;
+                    $_SESSION["product"][$_SESSION["countProduct"]]["factoryName"] = $idfactoryOld;
+                    $_SESSION["product"][$_SESSION["countProduct"]]["AmountProduct"] = $amountLatest;
+                    $_SESSION["product"][$_SESSION["countProduct"]]["difference"] = $diff;
+                    if ($typeOld === "PERCENT") {
+                        $_SESSION["product"][$_SESSION["countProduct"]]["DifferencePer"] = $diffOld;
+                        $_SESSION["product"][$_SESSION["countProduct"]]["DifferenceBath"] = "";
+                        $_SESSION["product"][$_SESSION["countProduct"]]["total"] = ($priceMod - (($priceMod * $diffOld) / 100)) * $amountLatest;
+                    } else {
+                        $_SESSION["product"][$_SESSION["countProduct"]]["DifferencePer"] = "";
+                        $_SESSION["product"][$_SESSION["countProduct"]]["DifferenceBath"] = $diffOld;
+                        $_SESSION["product"][$_SESSION["countProduct"]]["total"] = (($priceMod * 1) + ($diffOld * 1)) * $amountLatest;
+                    }
+                    $_SESSION["product"][$_SESSION["countProduct"]]["price"] = ($priceMod * 1);
+                    $_SESSION["product"][$_SESSION["countProduct"]]["total_price"] = $priceMod * $amountLatest;
+                    $_SESSION["product"][$_SESSION["countProduct"]]["type"] = $typeOld;
                 }
-                $_SESSION["product"][$_SESSION["countProduct"]]["idUnit"] = $idunitS;
-                $_SESSION["product"][$_SESSION["countProduct"]]["productName"] = $idproductOld;
-                $_SESSION["product"][$_SESSION["countProduct"]]["factoryName"] = $idfactoryOld;
-                $_SESSION["product"][$_SESSION["countProduct"]]["AmountProduct"] = $amountLatest;
-                $_SESSION["product"][$_SESSION["countProduct"]]["difference"] = $diff;
-                if ($typeOld === "PERCENT") {
-                    $_SESSION["product"][$_SESSION["countProduct"]]["DifferencePer"] = $diffOld;
-                    $_SESSION["product"][$_SESSION["countProduct"]]["DifferenceBath"] = "";
-                    $_SESSION["product"][$_SESSION["countProduct"]]["total"] = ($priceMod - (($priceMod * $diffOld) / 100)) * $amountLatest;
-                } else {
-                    $_SESSION["product"][$_SESSION["countProduct"]]["DifferencePer"] = "";
-                    $_SESSION["product"][$_SESSION["countProduct"]]["DifferenceBath"] = $diffOld;
-                    $_SESSION["product"][$_SESSION["countProduct"]]["total"] = (($priceMod * 1) + ($diffOld * 1)) * $amountLatest;
-                }
-                $_SESSION["product"][$_SESSION["countProduct"]]["price"] = ($priceMod * 1);
-                $_SESSION["product"][$_SESSION["countProduct"]]["total_price"] = $priceMod * $amountLatest;
-                $_SESSION["product"][$_SESSION["countProduct"]]["type"] = $typeOld;
             }
             $amountLatest = floor($amountLatest / $getUnitcal['amount_unit']);
             $idunitS = $getUnitcal['idunit_big'];
         }
+    } else if ($idunit < $idunitOld) {
+        $amountUnitNew = $amountOld; //5ห่อ
+
+
+        $getAmountNew = getUnitNewDESC($idproductOld, $idunitOld, $idunit);
+        $val_price = 0;
+        $idunitS = $idunit; //มัด $idamount_product_order 1มัด
+        $count = 0;
+        foreach ($getAmountNew as $value) {
+            $val_amount_unit = $value['amount_unit'];
+            $val_price = $value['price_unit'];
+            $amountUnitNew = $amountUnitNew / $val_amount_unit;
+            if ($amountUnitNew >= 1) {
+                $count++;
+            }
+        }
+        $amountLatest = $amountUnitNew - $idamount_product_order;
     }
 }
 if ($_GET['p'] === "editProduct") {
     $checkEdit_Amount_Product_order = editProduct_order($idproduct_order, $idamount_product_order, $idunit, $price_unit);
 }
-/*if ($checkEdit_Amount_Product_order) {
-    header("location: ../add_shipment3.php?idshipment_period=" . $idshipment_period . "&idfactory=" . $idfactory . "&price=" . $price . "&status_shipment=" . $status_shipment_factory . "&action=editProduct_orderCompleted");
-} else {
-    header("location: ../add_shipment3.php?idshipment_period=" . $idshipment_period . "&idfactory=" . $idfactory . "&price=" . $price . "&status_shipment=" . $status_shipment_factory . "&action=editProduct_orderError");
-}*/
+    /* if ($checkEdit_Amount_Product_order) {
+      header("location: ../add_shipment3.php?idshipment_period=" . $idshipment_period . "&idfactory=" . $idfactory . "&price=" . $price . "&status_shipment=" . $status_shipment_factory . "&action=editProduct_orderCompleted");
+      } else {
+      header("location: ../add_shipment3.php?idshipment_period=" . $idshipment_period . "&idfactory=" . $idfactory . "&price=" . $price . "&status_shipment=" . $status_shipment_factory . "&action=editProduct_orderError");
+      } */    

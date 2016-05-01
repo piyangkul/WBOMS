@@ -13,10 +13,35 @@ $val_name_unit = $getProduct_order['name_unit'];
 $val_idunit = $getProduct_order['idunit'];
 $val_idproduct = $getProduct_order['idproduct'];
 $val_idunitOld = $getProduct_order['idunit'];
-
 $price = $_GET['price'];
 $status_shipment_factorys = $_GET['status_shipment'];
+/* echo $val_idproduct . " ";
+  echo $val_idunitOld . " ";
+  echo $val_amount_product_order; */
 ?>
+
+<script>
+    function LoadData(str) {
+        var idunitOld = <?= $val_idunitOld; ?>;
+        //alert(idunitOld);
+        var idproduct = <?= $val_idproduct; ?>;
+        //alert(idproduct);
+        var amount = <?= $val_amount_product_order; ?>;
+        //alert(amount);
+        $.ajax({type: "GET",
+            url: "action/action_session_amount.php",
+            async: false,
+            data: "idunitNew=" + str + "&idunitOld=" + idunitOld + "&idproduct=" + idproduct + "&amount=" + amount,
+            dataType: 'html',
+            success: function (response)
+            {
+                $("#amount_total").val(response);
+            }
+        });
+
+    }
+
+</script>
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
     <h4 class="modal-title" id="myModalLabel">แก้ไขจำนวนสินค้า</h4>
@@ -45,7 +70,7 @@ $status_shipment_factorys = $_GET['status_shipment'];
                 <label for="name_unit">หน่วยสินค้า</label><label class="text-danger">*</label>
                 <div class="form-group input-group">
                     <span class="input-group-addon"><i class="fa fa-circle-o-notch"  ></i></span>
-                    <select class="form-control" id="name_unit" name="name_unit" required >
+                    <select class="form-control" id="name_unit" name="name_unit" onchange="LoadData(this.value)" required >
                         <option selected value="<?= $val_idunit; ?>"><?= $val_name_unit; ?></option>
                         <?php
                         $getUnit = getUnit($val_idproduct, $val_idunit);
@@ -55,12 +80,18 @@ $status_shipment_factorys = $_GET['status_shipment'];
                             ?>
                             <option value="<?= $val_idunit; ?>"><?= $val_name_unit; ?></option><?php
                         }
+                        /*  $amountUnitNew = $val_amount_product_order;
+                          $getAmountNew = getUnitNew($val_idproduct, $idunitOld, $idunit);
+                          foreach ($getAmountNew as $value) {
+                          $val_amount_unit = $value['amount_unit'];
+                          $val_price = $value['price_unit'];
+                          $amountUnitNew = $val_amount_unit * $amountUnitNew;
+                          } */
                         ?>
-
-                        <?php ?>
                     </select>
                 </div>
             </div>
+            <input id="amount_total" name="amount_total" class="text" value="<?php echo $val_amount_product_order; ?>"/>
             <input id="idUnitOld" name="idUnitOld" class="hidden" value="<?= $val_idunitOld; ?>"/>
             <input id="status_shipment_factory" name="status_shipment_factory" class="hidden" value="<?= $status_shipment_factorys; ?>"/>
         </div>
@@ -83,8 +114,10 @@ $status_shipment_factorys = $_GET['status_shipment'];
             var price = <?= $price; ?>;
             var status_shipment = $("#status_shipment_factory").val();
             var amount_product_order = $("#amount_product_order").val();
+            var amountOld = document.getElementById("amount_total").value;
+            //alert(amountOld);
             if (idUnitOld === idUnit) {
-                if (document.getElementById("amount_product_order").value < document.getElementById("amount_old").value) {
+                if (document.getElementById("amount_product_order").value < document.getElementById("amount_total").value) {
                     var confirms = confirm("คุณต้องการสินค้าที่ลบไปสร้างรอบถัดไปหรือไม่");
                     if (confirms === true) {
                         var addP = "addP";
@@ -161,10 +194,62 @@ $status_shipment_factorys = $_GET['status_shipment'];
                     window.location.href = "add_shipment3.php?idshipment_period=" + idshipment_period + "&idfactory=" + idfactory + "&price=" + price + "&status_shipment=" + status_shipment + "&action=editProduct_orderCompleted";
                 }
             } else if (idUnitOld < idUnit) {
-                var confirms = confirm("คุณต้องการสินค้าที่ลบไปสร้างรอบถัดไปหรือไม่");
-                if (confirms === true) {
-                    var addP = "addP";
-                    var p = "&name_unit=" + idUnit + "&idshipment_period=" + idshipment_period + "&idproduct_order=" + idproduct_order + "&idfactory=" + idfactory + "&amount_product_order=" + amount_product_order + "&price=" + price + "&status_shipment=" + status_shipment + "&addP=" + addP;
+                if (document.getElementById("amount_product_order").value < document.getElementById("amount_total").value) {
+                    var confirms = confirm("คุณต้องการสินค้าที่ลบไปสร้างรอบถัดไปหรือไม่");
+                    if (confirms === true) {
+                        var addP = "addP";
+                        var p = "&name_unit=" + idUnit + "&idshipment_period=" + idshipment_period + "&idproduct_order=" + idproduct_order + "&idfactory=" + idfactory + "&amount_product_order=" + amount_product_order + "&price=" + price + "&status_shipment=" + status_shipment + "&addP=" + addP;
+                        //alert(p);
+                        $.get("action/action_edit_amount_product_order.php?p=editProduct" + p, function (data, status) {
+                            //alert("Data: " + data + "\nStatus: " + status);
+                            if (data == "1") {
+                                $("#alert").html("บันทึกแล้ว");
+                                $("#name_unit").val("");
+                                $("#idUnitOld").val("");
+                                $("#status_shipment_factory").val("");
+                                $("#amount_product_order").val("");
+                                $("#amount_old").val("");
+                            }
+                            else {
+                                $("#name_unit").val("");
+                                $("#idUnitOld").val("");
+                                $("#status_shipment_factory").val("");
+                                $("#amount_product_order").val("");
+                                $("#amount_old").val("");
+                            }
+                        }
+                        );
+                        $('#myModal').modal('hide');
+                        window.location.href = '../interface_add_order/add_order.php?';
+                    }
+                    else {
+                        var p = "&name_unit=" + idUnit + "&idshipment_period=" + idshipment_period + "&idproduct_order=" + idproduct_order + "&idfactory=" + idfactory + "&amount_product_order=" + amount_product_order + "&price=" + price + "&status_shipment=" + status_shipment;
+                        //alert(p);
+                        $.get("action/action_edit_amount_product_order.php?p=editProduct" + p, function (data, status) {
+                            //alert("Data: " + data + "\nStatus: " + status);
+                            if (data == "1") {
+                                $("#alert").html("บันทึกแล้ว");
+                                $("#name_unit").val("");
+                                $("#idUnitOld").val("");
+                                $("#status_shipment_factory").val("");
+                                $("#amount_product_order").val("");
+                                $("#amount_old").val("");
+                            }
+                            else {
+                                $("#name_unit").val("");
+                                $("#idUnitOld").val("");
+                                $("#status_shipment_factory").val("");
+                                $("#amount_product_order").val("");
+                                $("#amount_old").val("");
+                            }
+                        }
+                        );
+                        window.location.href = "add_shipment3.php?idshipment_period=" + idshipment_period + "&idfactory=" + idfactory + "&price=" + price + "&status_shipment=" + status_shipment + "&action=editProduct_orderCompleted";
+
+                    }
+                }
+                else {
+                    var p = "&name_unit=" + idUnit + "&idshipment_period=" + idshipment_period + "&idproduct_order=" + idproduct_order + "&idfactory=" + idfactory + "&amount_product_order=" + amount_product_order + "&price=" + price + "&status_shipment=" + status_shipment;
                     //alert(p);
                     $.get("action/action_edit_amount_product_order.php?p=editProduct" + p, function (data, status) {
                         //alert("Data: " + data + "\nStatus: " + status);
@@ -185,8 +270,63 @@ $status_shipment_factorys = $_GET['status_shipment'];
                         }
                     }
                     );
-                    $('#myModal').modal('hide');
-                    window.location.href = '../interface_add_order/add_order.php?';
+                    window.location.href = "add_shipment3.php?idshipment_period=" + idshipment_period + "&idfactory=" + idfactory + "&price=" + price + "&status_shipment=" + status_shipment + "&action=editProduct_orderCompleted";
+
+                }
+            } else if (idUnitOld > idUnit) {
+                if (document.getElementById("amount_product_order").value < document.getElementById("amount_total").value) {
+                    var confirms = confirm("คุณต้องการสินค้าที่ลบไปสร้างรอบถัดไปหรือไม่");
+                    if (confirms === true) {
+                        var addP = "addP";
+                        var p = "&name_unit=" + idUnit + "&idshipment_period=" + idshipment_period + "&idproduct_order=" + idproduct_order + "&idfactory=" + idfactory + "&amount_product_order=" + amount_product_order + "&price=" + price + "&status_shipment=" + status_shipment + "&addP=" + addP;
+                        //alert(p);
+                        $.get("action/action_edit_amount_product_order.php?p=editProduct" + p, function (data, status) {
+                            //alert("Data: " + data + "\nStatus: " + status);
+                            if (data == "1") {
+                                $("#alert").html("บันทึกแล้ว");
+                                $("#name_unit").val("");
+                                $("#idUnitOld").val("");
+                                $("#status_shipment_factory").val("");
+                                $("#amount_product_order").val("");
+                                $("#amount_old").val("");
+                            }
+                            else {
+                                $("#name_unit").val("");
+                                $("#idUnitOld").val("");
+                                $("#status_shipment_factory").val("");
+                                $("#amount_product_order").val("");
+                                $("#amount_old").val("");
+                            }
+                        }
+                        );
+                        $('#myModal').modal('hide');
+                        window.location.href = '../interface_add_order/add_order.php?';
+                    }
+                    else {
+                        var p = "&name_unit=" + idUnit + "&idshipment_period=" + idshipment_period + "&idproduct_order=" + idproduct_order + "&idfactory=" + idfactory + "&amount_product_order=" + amount_product_order + "&price=" + price + "&status_shipment=" + status_shipment;
+                        //alert(p);
+                        $.get("action/action_edit_amount_product_order.php?p=editProduct" + p, function (data, status) {
+                            //alert("Data: " + data + "\nStatus: " + status);
+                            if (data == "1") {
+                                $("#alert").html("บันทึกแล้ว");
+                                $("#name_unit").val("");
+                                $("#idUnitOld").val("");
+                                $("#status_shipment_factory").val("");
+                                $("#amount_product_order").val("");
+                                $("#amount_old").val("");
+                            }
+                            else {
+                                $("#name_unit").val("");
+                                $("#idUnitOld").val("");
+                                $("#status_shipment_factory").val("");
+                                $("#amount_product_order").val("");
+                                $("#amount_old").val("");
+                            }
+                        }
+                        );
+                        window.location.href = "add_shipment3.php?idshipment_period=" + idshipment_period + "&idfactory=" + idfactory + "&price=" + price + "&status_shipment=" + status_shipment + "&action=editProduct_orderCompleted";
+
+                    }
                 } else {
                     var p = "&name_unit=" + idUnit + "&idshipment_period=" + idshipment_period + "&idproduct_order=" + idproduct_order + "&idfactory=" + idfactory + "&amount_product_order=" + amount_product_order + "&price=" + price + "&status_shipment=" + status_shipment;
                     //alert(p);
