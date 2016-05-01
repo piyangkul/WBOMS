@@ -108,13 +108,15 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                     $val_idorder_product_refunds = $value['idorder_product_refunds'];
                                                     $val_name_shop = $value['name_shop'];
                                                     $val_date_product_refunds = $value['date_product_refunds'];
+                                                    $date_for =  date_create($val_date_product_refunds);
+                                                    $date_for->add(new DateInterval('P543Y0M0DT0H0M0S'));
                                                     $val_price_product_refunds = $value['order_price_product_refunds'];
                                                     $val_idproduct_refunds = $value['idproduct_refunds'];
                                                     ?>
                                                     <tr>
                                                         <td class="text-center"><?php echo $i; ?></td>
                                                         <td class="text-center"><?php echo $val_name_shop; ?></td>
-                                                        <td class="text-center"><?php echo $val_date_product_refunds; ?></td>
+                                                        <td class="text-center"><?php echo date_format($date_for,'d-m-Y'); ?></td>
                                                         <td class="text-center"><?php echo $val_idproduct_refunds; ?></td>
                                                         <td class="text-right"><?php echo number_format($val_price_product_refunds, 2); ?></td>
                                                         <td class="text-center"> 

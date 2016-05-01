@@ -108,6 +108,8 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                     $val_idorder_p = $value['idorder_p'];
                                                     $val_code_order_p = $value['code'];
                                                     $val_date_order_p = $value['date_order_p'];
+                                                    $date_for =  date_create($val_date_order_p);
+                                                    $date_for->add(new DateInterval('P543Y0M0DT0H0M0S'));
                                                     $val_time_order_p = $value['time_order_p'];
                                                     $val_name_shop = $value['name_shop'];
                                                     $val_count_product = $value['count_product'];
@@ -137,7 +139,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                     <tr>
                                                         <td class ="text-center"><?php echo $i; ?></td>
                                                         <td class ="text-center"><?php echo $val_code_order_p; ?></td>
-                                                        <td class ="text-center"><?php echo $val_date_order_p; ?></td>
+                                                        <td class ="text-center"><?php echo date_format($date_for,'d-m-Y'); ?></td>
                                                         <td class ="text-center"><?php echo $val_time_order_p; ?></td>
                                                         <td class ="text-center"><?php echo $val_name_shop; ?></td>
                                                         <td class ="text-center"><?php echo $val_count_product; ?></td>
