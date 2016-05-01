@@ -46,7 +46,7 @@ $total_price_all = 0;
         <script>
 
             /*  $(function () {
-             var data = JSON.stringify(<?php //getShop2();                                                                                 ?>);
+             var data = JSON.stringify(<?php //getShop2();                                                                                      ?>);
              //var www = JSON.parse(data);
              //alert(www);
              alert(data);
@@ -154,6 +154,7 @@ $total_price_all = 0;
                                                         foreach ($getProductOrder as $value) {
                                                             $i++;
                                                             $val_idproduct_order = $value['idproduct_order'];
+                                                            $val_idproduct = $value['idproduct'];
                                                             $val_name_product = $value['name_product'];
                                                             $val_name_unit = $value['name_unit'];
                                                             $val_name_factory = $value['name_factory'];
@@ -165,7 +166,16 @@ $total_price_all = 0;
                                                             $total_open = $val_price_unit * $val_amount_product_order;
                                                             $total_percent = $total_open - ($total_open * ($val_difference_product_order / 100));
                                                             $val_status_checktransport = $value['status_checktransport'];
-                                                            $total_bath = $total_open + ($val_difference_product_order * $val_amount_product_order);
+
+                                                            $val_idunit = $value['idunit'];
+                                                            $amount = 1;
+                                                            $getDiff = getDiffBathaction($val_idproduct, $val_idunit);
+                                                            foreach ($getDiff as $value) {
+                                                                $val_amount_unit = $value['amount_unit'];
+                                                                $val_price = $value['price_unit'];
+                                                                $amount = $val_amount_unit * $amount;
+                                                            }
+                                                            $total_bath = $total_open + (($val_difference_product_order * $val_amount_product_order) / $amount);
                                                             ?>
                                                             <tr>
                                                                 <td><?= $i; ?></td>

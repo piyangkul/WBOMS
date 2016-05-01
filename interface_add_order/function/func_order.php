@@ -30,13 +30,34 @@ function getPricePercent($idorder_p) {
 
 function getPriceBath($idorder_p) {
     $conn = dbconnect();
-    $SQLCommand = "SELECT SUM((product_order.price_product_order+product_order.difference_product_order)*product_order.amount_product_order) AS price_bath FROM product_order WHERE product_order.idorder_p = :idorder_p AND product_order.type_product_order = 'BATH'";
+    $SQLCommand = "SELECT product_order.idproduct_order,product_order.price_product_order,product_order.idunit,product_order.difference_product_order,unit.idproduct,product_order.amount_product_order FROM product_order INNER JOIN unit ON product_order.idunit=unit.idunit WHERE product_order.idorder_p = :idorder_p AND product_order.type_product_order = 'BATH'";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
                 ":idorder_p" => $idorder_p
             )
     );
-    $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
-    return $result;
+    $resultArr = array();
+    while ($result = $SQLPrepare->fetch(PDO::FETCH_ASSOC)) {
+        array_push($resultArr, $result);
+    }
+    return $resultArr;
 }
+
+function getDiffBathactionOrder($idproduct, $idunit) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT * FROM unit WHERE unit.idproduct = :idproduct AND unit.idunit BETWEEN 1 AND :idunit";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idproduct" => $idproduct,
+                ":idunit" => $idunit
+            )
+    );
+    $resultArr = array();
+    while ($result = $SQLPrepare->fetch(PDO::FETCH_ASSOC)) {
+        array_push($resultArr, $result);
+    }
+    return $resultArr;
+}
+

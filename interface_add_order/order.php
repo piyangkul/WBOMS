@@ -115,7 +115,23 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                     $getPrice_percent = getPricePercent($val_idorder_p);
                                                     $price_percent = $getPrice_percent['price_percent'];
                                                     $getPrice_bath = getPriceBath($val_idorder_p);
-                                                    $price_bath = $getPrice_bath['price_bath'];
+                                                    $price_bath = 0; //$getPrice_bath['price_bath'];
+                                                    foreach ($getPrice_bath as $value) {
+                                                        $idproduct = $value['idproduct'];
+                                                        $idunit = $value['idunit'];
+                                                        $price = $value['price_product_order'];
+                                                        $amount_product_order = $value['amount_product_order'];
+                                                        $difference_product_order = $value['difference_product_order'];
+                                                        $amount = 1;
+                                                        $getDiff = getDiffBathactionOrder($idproduct, $idunit);
+                                                        foreach ($getDiff as $value) {
+                                                            $val_amount_unit = $value['amount_unit'];
+                                                            $val_price = $value['price_unit'];
+                                                            $amount = $val_amount_unit * $amount;
+                                                        }
+                                                        $price_bath += ($price * $amount_product_order)+(($difference_product_order*$amount_product_order)/$amount);
+                                                    }
+                                                    //$getPrice_bath['price_bath'];
                                                     //$val_count_idproduct_order = $value['count_idproduct_order'];
                                                     ?>
                                                     <tr>
@@ -168,9 +184,9 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
         <script src="../assets/js/dataTables/jquery.dataTables.js"></script>
         <script src="../assets/js/dataTables/dataTables.bootstrap.js"></script>
         <script>
-                                                                    $(document).ready(function () {
-                                                                        $('#dataTables-example').dataTable();
-                                                                    });
+                                                                $(document).ready(function () {
+                                                                    $('#dataTables-example').dataTable();
+                                                                });
         </script>
         <script>
             $(function () {

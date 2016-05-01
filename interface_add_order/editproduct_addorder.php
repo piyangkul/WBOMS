@@ -25,9 +25,18 @@ $amountProduct = $_GET['amount'];
 $idFactory = $getUnit['idfactory'];
 $diffFac = $getUnit['difference_amount_product'];
 $price = $getUnit['price_unit'];
+
+$amount = 1;
+$getDiff = getDiffBathaction($idProduct, $idunit);
+foreach ($getDiff as $value) {
+    $val_amount_unit = $value['amount_unit'];
+    $val_price = $value['price_unit'];
+    $amount = $val_amount_unit * $amount;
+}
+
 $totaldiff = ($price * $amountProduct) - ((($price * $amountProduct) * $diffFac) / 100);
 $totaldiffPer = ($price * $amountProduct) - ((($price * $amountProduct) * $diffPer) / 100);
-$totaldiffBath = ($price + $diffBath) * $amountProduct;
+$totaldiffBath = ($price + ($diffBath / $amount)) * $amountProduct;
 $nameP = "[" . $code_product . "]" . $nameProduct . " - " . $nameFactory;
 if (isset($_SESSION['idshop'])) {
     $idshop = $_SESSION['idshop'];
@@ -214,7 +223,8 @@ if (isset($_SESSION['idshop'])) {
                                                             <div class="table-responsive ">
                                                                 <label for="name_product"> ขายเพิ่มสุทธิ/หน่วย </label>
                                                                 <input type="text" class="form-control" placeholder="กรอกราคาขายเพิ่มสุทธิ" id="DifferenceBath" value="<?= number_format($diffBath, 2); ?>" onkeyup="updateAmount()"> </input>
-                                                                <input type="hidden" id="type" name="type" value="<?= $type ?>">
+                                                                <input type="hidden" id="type" name="type" value="<?= $type ?>"/>
+                                                                <input type="text" id="diffBath" name="diffBath" value="<?= $amount; ?>"/>
                                                             </div>
                                                         </div>
                                                     <?php } elseif ($type === "PERCENT") { ?>
@@ -408,8 +418,10 @@ if (isset($_SESSION['idshop'])) {
                                     document.getElementById("cal_difference").value = totals.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
                                 }
                                 else if (type === "BATH") {
+                                    var amount_all = document.getElementById('diffBath').value;
                                     var diffbath = document.getElementById("DifferenceBath").value;
-                                    total_all = total + (diffbath * amount);
+                                    total_all = total + ((diffbath * amount) / amount_all);
+                                    document.getElementById("total").value = total_all.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
                                 }
                                 document.getElementById("total_price").value = total.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
                                 document.getElementById("total").value = total_all.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
@@ -477,9 +489,21 @@ if (isset($_SESSION['idshop'])) {
                                                 //$("#total").val((response * amount) + (diffB * amount));
                                             }
                                         });
+                                        $.ajax({type: "GET",
+                                            url: "action/action_diffBath.php",
+                                            async: false,
+                                            data: "q=" + str,
+                                            dataType: 'html',
+                                            success: function (response)
+                                            {
+                                                $("#diffBath").val(response);
+                                            }
+
+                                        });
+                                        var amount_all = document.getElementById('diffBath').value;
                                         var price = document.getElementById('price').value.replace(",", "");
                                         document.getElementById('total_price').value = (price * amount).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
-                                        document.getElementById('total').value = ((price * amount) + (diffB * amount)).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+                                        document.getElementById('total').value = ((price * amount) + ((diffB * amount) / amount_all)).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
                                     }
                                 }
                             }
