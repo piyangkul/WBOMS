@@ -175,7 +175,7 @@ $total_price_all = 0;
                                                                 $val_price = $value['price_unit'];
                                                                 $amount = $val_amount_unit * $amount;
                                                             }
-                                                            $total_bath = $total_open + (($val_difference_product_order * $val_amount_product_order) / $amount);
+                                                            $total_bath = $total_open + (($val_difference_product_order * $val_amount_product_order));
                                                             ?>
                                                             <tr>
                                                                 <td><?= $i; ?></td>
@@ -194,7 +194,7 @@ $total_price_all = 0;
                                                                 ?>
                                                                 <?php if ($val_type_product_order === 'BATH') { ?>
                                                                     <td>-</td>
-                                                                    <td><?= number_format($val_difference_product_order / $amount, 2) . " ฿"; ?></td>                                                                  
+                                                                    <td><?= number_format($val_difference_product_order, 2) . " ฿"; ?></td>                                                                  
                                                                     <td class ="text-right"><?= number_format($total_bath, 2); ?></td> 
                                                                     <?php
                                                                     $total_price_all += $total_bath;

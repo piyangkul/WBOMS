@@ -45,7 +45,17 @@ if (isset($_SESSION["product"])) {//ถามว่า$_SESSION["unit"]ถูก
                 $addDiff[$i] = addDiff($idproduct2, $idshop, $products[$i]['type'], $products[$i]['DifferencePer'], $date_order);
             }
             if ($products[$i]['type'] === "BATH") {
-                $idproduct[$i] = addProductOrder($products[$i]['idUnit'], $idorder, $products[$i]['AmountProduct'], $products[$i]['DifferenceBath'], $products[$i]['type'], $products[$i]['total_price'] / $products[$i]['AmountProduct']);
+
+                $val_idunit = $products[$i]['idUnit'];
+                $val_idproduct = $products[$i]["productName"];
+                $amount = 1;
+                $getDiff = getDiffBathaction($val_idproduct, $val_idunit);
+                foreach ($getDiff as $value) {
+                    $val_amount_unit = $value['amount_unit'];
+                    $val_price = $value['price_unit'];
+                    $amount = $val_amount_unit * $amount;
+                }
+                $idproduct[$i] = addProductOrder($products[$i]['idUnit'], $idorder, $products[$i]['AmountProduct'], $products[$i]['DifferenceBath'] / $amount, $products[$i]['type'], $products[$i]['total_price'] / $products[$i]['AmountProduct']);
                 $getproduct = getIDProduct($products[$i]['idUnit']);
                 $idproduct2 = $getproduct['idproduct'];
                 $delDiff[$i] = deleteDifference($idproduct2, $idshop);

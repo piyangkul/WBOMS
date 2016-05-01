@@ -14,7 +14,7 @@ $idshop = $_POST['idshop'];
 $date_order = $_POST['date_order'];
 $detail_order = $_POST['detail_order'];
 $idshipment_period = $_POST['idShipment'];
-$totalss = str_replace(",","",$_POST['totalss']);
+$totalss = str_replace(",", "", $_POST['totalss']);
 //ส่งข้อมูล หน่วยสินค้า มาหน้านี้
 $products = $_SESSION["productR"];
 //$getIDShipment = getDateShipment();
@@ -31,7 +31,17 @@ if (isset($_SESSION["productR"])) {//ถามว่า$_SESSION["unit"]ถู�
         for ($i = 1; $i <= count($products); $i++) {
             //$under_unit = $units[$i]['under_unit'];
             //$underIdUnit = $idUnit[$under_unit]; 
-            $idproduct[$i] = addProductRefunds($idorder, $products[$i]['idUnit'], $products[$i]['AmountProduct'], $products[$i]['price'],$products[$i]['type_factory'],$products[$i]['diff']);
+
+            $idProduct = $products[$i]['productName'];
+            $amount = 1;
+            $idunit = $products[$i]['idUnit'];
+            $getDiff = getDiffBathaction($idProduct, $idunit);
+            foreach ($getDiff as $value) {
+                $val_amount_unit = $value['amount_unit'];
+                $val_price = $value['price_unit'];
+                $amount = $val_amount_unit * $amount;
+            }
+            $idproduct[$i] = addProductRefunds($idorder, $products[$i]['idUnit'], $products[$i]['AmountProduct'], $products[$i]['price'], $products[$i]['type_factory'], $products[$i]['diff']/$amount);
             echo "555";
         }
         echo "555";

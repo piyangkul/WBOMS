@@ -23,6 +23,15 @@ if ($_GET['p'] == "addProduct") {
 
     echo $type . $idshop;
 
+    $amount = 1;
+    $getDiff = getDiffBathaction($productName, $idUnit);
+    foreach ($getDiff as $value) {
+        $val_amount_unit = $value['amount_unit'];
+        $val_price = $value['price_unit'];
+        $amount = $val_amount_unit * $amount;
+    }
+
+
 
     if ($type === "PERCENT") {
         $idproductE = EditProductOrder($idProduct_order, $idUnit, $AmountProduct, $DifferencePer, $price);
@@ -32,7 +41,7 @@ if ($_GET['p'] == "addProduct") {
         $addDiff = addDiff_edit($idproduct2, $idshop, $type, $DifferencePer, $date_order);
         echo $idshop;
     } elseif ($type === "BATH") {
-        $idproductE = EditProductOrder($idProduct_order, $idUnit, $AmountProduct, $DifferenceBath, $price);
+        $idproductE = EditProductOrder($idProduct_order, $idUnit, $AmountProduct, $DifferenceBath / $amount, $price);
         $getproduct = getIDProduct($idUnit);
         $idproduct2 = $getproduct['idproduct'];
         $delDiff = deleteDifference($idproduct2, $idshop);

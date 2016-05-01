@@ -219,9 +219,9 @@ $totaldiff = ($price * $amount_product_order) - ((($price * $amount_product_orde
                                                         <div class="panel-body">
                                                             <div class="table-responsive ">
                                                                 <label for="name_product"> ขายเพิ่มสุทธิ/หน่วย </label>
-                                                                <input type="text" class="form-control" placeholder="กรอกราคาขายเพิ่มสุทธิ" id="DifferenceBath" value="<?= $difference; ?>" onkeyup="updateAmount()"> </input>
+                                                                <input type="text" class="form-control" placeholder="กรอกราคาขายเพิ่มสุทธิ" id="DifferenceBath" value="<?= $difference*$amount; ?>" onkeyup="updateAmount()"> </input>
                                                                 <input type="hidden" id="type" name="type" value="<?= $type ?>"/>
-                                                                <input type="text" id="diffBath" name="diffBath" value="<?= $amount; ?>"/>
+                                                                <input type="hidden" id="diffBath" name="diffBath" value="<?= $amount; ?>"/>
                                                             </div>
                                                         </div>
                                                     <?php } elseif ($type === "PERCENT") { ?>
@@ -298,7 +298,7 @@ $totaldiff = ($price * $amount_product_order) - ((($price * $amount_product_orde
                                 var idproduct_order = <?= $idproduct_order; ?>;
                                 var idorder = <?= $idorder ?>;
                                 var idUnit = $("#idUnit").val();
-                                var productName = $("#productName").val();
+                                var productName = $("#idproduct").val();
                                 var factoryName = $("#factoryName").val();
                                 var AmountProduct = $("#AmountProduct").val();
                                 var difference = $("#difference").val();

@@ -131,7 +131,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                             $val_price = $value['price_unit'];
                                                             $amount = $val_amount_unit * $amount;
                                                         }
-                                                        $price_bath += ($price * $amount_product_order)+(($difference_product_order*$amount_product_order)/$amount);
+                                                        $price_bath += ($price * $amount_product_order)+($difference_product_order*$amount_product_order);
                                                     }
                                                     //$getPrice_bath['price_bath'];
                                                     //$val_count_idproduct_order = $value['count_idproduct_order'];

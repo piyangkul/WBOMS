@@ -169,8 +169,31 @@ if (isset($_GET['addP'])) {
                 $_SESSION["product"][$_SESSION["countProduct"]]["price"] = ($val_price * 1);
                 $_SESSION["product"][$_SESSION["countProduct"]]["total_price"] = $val_price * $amountKKK;
                 $_SESSION["product"][$_SESSION["countProduct"]]["type"] = $typeOld;
-            } elseif ($amountKKK === 0) {
-                
+            } elseif ($val_idunitBig === 0) {
+                if (floor($amountUnitNew) > 0) {
+                    if (isset($_SESSION["countProduct"])) {
+                        $_SESSION["countProduct"] ++;
+                    } else {
+                        $_SESSION["countProduct"] = 1;
+                    }
+                    $_SESSION["product"][$_SESSION["countProduct"]]["idUnit"] = $idunitS;
+                    $_SESSION["product"][$_SESSION["countProduct"]]["productName"] = $idproductOld;
+                    $_SESSION["product"][$_SESSION["countProduct"]]["factoryName"] = $idfactoryOld;
+                    $_SESSION["product"][$_SESSION["countProduct"]]["AmountProduct"] = floor($amountUnitNew);
+                    $_SESSION["product"][$_SESSION["countProduct"]]["difference"] = $diff;
+                    if ($typeOld === "PERCENT") {
+                        $_SESSION["product"][$_SESSION["countProduct"]]["DifferencePer"] = $diffOld;
+                        $_SESSION["product"][$_SESSION["countProduct"]]["DifferenceBath"] = "";
+                        $_SESSION["product"][$_SESSION["countProduct"]]["total"] = ($val_price - (($val_price * $diffOld) / 100)) * floor($amountUnitNew);
+                    } else {
+                        $_SESSION["product"][$_SESSION["countProduct"]]["DifferencePer"] = "";
+                        $_SESSION["product"][$_SESSION["countProduct"]]["DifferenceBath"] = $diffOld;
+                        $_SESSION["product"][$_SESSION["countProduct"]]["total"] = (($val_price * 1) + ($diffOld * 1)) * floor($amountUnitNew);
+                    }
+                    $_SESSION["product"][$_SESSION["countProduct"]]["price"] = ($val_price * 1);
+                    $_SESSION["product"][$_SESSION["countProduct"]]["total_price"] = $val_price * floor($amountUnitNew);
+                    $_SESSION["product"][$_SESSION["countProduct"]]["type"] = $typeOld;
+                }
             }
             $amountLast = $amountUnitNew;
             if ($amountUnitNew >= 1) {

@@ -12,6 +12,17 @@ if ($_GET['p'] == "editProduct") {
     $total_price_all = $_GET['total_price_all'];
     $idorder = $_GET['idorder'];
     // $total_price = $_GET['total_price'];
+    $idProduct = $_GET['idproduct'];
+    $amount = 1;
+    $idunit = $products[$i]['idUnit'];
+    $getDiff = getDiffBathaction($idProduct, $idUnit);
+    foreach ($getDiff as $value) {
+        $val_amount_unit = $value['amount_unit'];
+        $val_price = $value['price_unit'];
+        $amount = $val_amount_unit * $amount;
+    }
+
+
 
     $idproductE = EditsProductRefunds($idproduct_refunds, $idUnit, $AmountProduct, $price);
     $Edit = editTotal_order($idorder, $total_price_all);

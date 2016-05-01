@@ -169,7 +169,7 @@ foreach ($getDiff as $value) {
             var x = parseFloat(<?= $total_price_all; ?>);
             var total_price_all = x + (AmountProduct * price);
             document.getElementById("total_price_all").value = total_price_all;
-            var p = "&idproduct_refunds=" + idproduct_refunds + "&idUnit=" + idUnit + "&productName=" + productName + "&factoryName=" + factoryName + "&AmountProduct=" + AmountProduct + "&price=" + price + "&total_price=" + total_price + "&total_price_all=" + total_price_all + "&idorder=" + idorder;
+            var p = "&idproduct_refunds=" + idproduct_refunds + "&idproduct=" + productName + "&idUnit=" + idUnit + "&productName=" + productName + "&factoryName=" + factoryName + "&AmountProduct=" + AmountProduct + "&price=" + price + "&total_price=" + total_price + "&total_price_all=" + total_price_all + "&idorder=" + idorder;
             //alert(p);
             $.get("action_editProductE.php?p=editProduct" + p, function (data, status) {
                 //alert("Data: " + data + "\nStatus: " + status);

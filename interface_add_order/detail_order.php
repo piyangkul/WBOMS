@@ -167,7 +167,7 @@ $total_price_all = 0;
                                                                 $amount = $val_amount_unit * $amount;
                                                             }
 
-                                                            $total_bath = $total_open + (($val_difference_product_order * $val_amount_product_order) / $amount);
+                                                            $total_bath = $total_open + ($val_difference_product_order * $val_amount_product_order);
                                                             ?>
                                                             <tr>
                                                                 <td><?= $i; ?></td>

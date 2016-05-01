@@ -232,7 +232,7 @@ require_once 'function/func_addorder.php';
                                             </div>
                                             <div class="panel-body">
                                                 <div class="table-responsive ">
-                                                    <label for="name_product"> ขายเพิ่มสุทธิ/หน่วย </label>
+                                                    <label for="name_product"> ขายเพิ่มสุทธิ/หน่วยใหญ่สุด </label>
                                                     <input type="text" class="form-control" placeholder="กรอกราคาขายเพิ่มสุทธิ" id="DifferenceBath" value="" onkeyup="updateAmount()"> </input>
                                                     <input type="hidden" id="diffBath" name="diffBath" value=""/>
                                                     <input type="hidden" id="type" name="type" value=""/>
