@@ -135,10 +135,20 @@ $dateEnd = $getDateShipment['date_end'];
                                                             $val_amount_product_refunds = $value['amount_product_refunds'];
                                                             $val_status_product_refunds = $value['status_product_refund'];
                                                             $val_price_product_refunds = $value['price_product_refunds'];
+                                                            $val_idunit = $value['idunit'];
+                                                            $val_idproduct = $value['idproduct'];
                                                             $total = $val_price_product_refunds * $val_amount_product_refunds;
                                                             $total_price_all += $total;
                                                             $type_factory = $value['type_product_refunds'];
                                                             $difference_product_refunds = $value['difference_product_refunds'];
+
+                                                            $amount_plus = 1;
+                                                            $getDiff = getDiffBathaction($val_idproduct, $val_idunit);
+                                                            foreach ($getDiff as $value) {
+                                                                $val_amount_unit = $value['amount_unit'];
+                                                                $val_price = $value['price_unit'];
+                                                                $amount_plus = $val_amount_unit * $amount_plus;
+                                                            }
                                                             ?>
                                                             <tr>
                                                                 <tr>
@@ -150,7 +160,7 @@ $dateEnd = $getDateShipment['date_end'];
                                                                     <?php if ($type_factory === "PERCENT") { ?>
                                                                         <td id="price<?= $val_idproduct_refunds; ?>"><?= number_format(($val_price_product_refunds * 100) / (100 - $difference_product_refunds), 2); ?></td>
                                                                     <?php } else { ?>
-                                                                        <td id="price<?= $val_idproduct_refunds; ?>"><?= number_format(($val_price_product_refunds * 1) - ($difference_product_refunds * 1), 2); ?></td>
+                                                                        <td id="price<?= $val_idproduct_refunds; ?>"><?= number_format(($val_price_product_refunds * 1) - ($difference_product_refunds / $amount_plus), 2); ?></td>
                                                                     <?php } ?>
                                                                     <?php if ($type_factory === "PERCENT") { ?>
                                                                         <td id="diff<?= $val_idproduct_refunds; ?>"><?= number_format($difference_product_refunds, 2) . "%"; ?></td>
