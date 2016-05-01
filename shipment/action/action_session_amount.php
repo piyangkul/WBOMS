@@ -5,7 +5,6 @@ require_once dirname(__FILE__) . '/../function/func_shipment.php';
 $idunitNew = $_GET['idunitNew'];
 $idunitOld = $_GET['idunitOld'];
 $idproduct = $_GET['idproduct'];
-
 $amount = $_GET['amount'];
 //$amountUnitNew = $amount;
 if ($idunitOld < $idunitNew) {

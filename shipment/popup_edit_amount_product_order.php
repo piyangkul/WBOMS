@@ -6,7 +6,7 @@ $idproduct_order = $_GET['idproduct_order'];
 $idshipment_period = $_GET['idshipment_period'];
 $idfactory = $_GET['idfactory'];
 $getProduct_order = getProduct_orderByID($idproduct_order);
-$val_name_product = $getProduct_order['name_product'];
+
 $val_amount_product_order = $getProduct_order['amount_product_order'];
 $val_name_unit = $getProduct_order['name_unit'];
 
@@ -15,6 +15,12 @@ $val_idproduct = $getProduct_order['idproduct'];
 $val_idunitOld = $getProduct_order['idunit'];
 $price = $_GET['price'];
 $status_shipment_factorys = $_GET['status_shipment'];
+
+$getCode = getUnit3($val_idunit);
+$code = $getCode['code_product'];
+
+$val_name_product = '['.$code."] ".$getProduct_order['name_product']." - ".$getCode['name_factory'];
+
 /* echo $val_idproduct . " ";
   echo $val_idunitOld . " ";
   echo $val_amount_product_order; */
@@ -24,7 +30,7 @@ $status_shipment_factorys = $_GET['status_shipment'];
     function LoadData(str) {
         var idunitOld = <?= $val_idunitOld; ?>;
         //alert(idunitOld);
-        var idproduct = <?= $val_idproduct; ?>;
+        var idproduct = document.getElementById('idP').value;
         //alert(idproduct);
         var amount = <?= $val_amount_product_order; ?>;
         //alert(amount);
@@ -56,6 +62,7 @@ $status_shipment_factorys = $_GET['status_shipment'];
                 <div class="form-group input-group">
                     <span class="input-group-addon"><i class="fa fa-cube"></i></span>
                     <input type="text" class="form-control" id="name_product" name="name_product" value="<?php echo $val_name_product; ?>" disabled>
+                    <input type="hidden" id="idP" name="idP" value="<?= $val_idproduct; ?>"/>
                 </div>
             </div>
             <div class="form-group col-xs-12" style="float:left;width:50%;">
@@ -91,7 +98,7 @@ $status_shipment_factorys = $_GET['status_shipment'];
                     </select>
                 </div>
             </div>
-            <input id="amount_total" name="amount_total" class="text" value="<?php echo $val_amount_product_order; ?>"/>
+            <input id="amount_total" name="amount_total" class="hidden" value="<?= $val_amount_product_order; ?>"/>
             <input id="idUnitOld" name="idUnitOld" class="hidden" value="<?= $val_idunitOld; ?>"/>
             <input id="status_shipment_factory" name="status_shipment_factory" class="hidden" value="<?= $status_shipment_factorys; ?>"/>
         </div>
@@ -114,8 +121,8 @@ $status_shipment_factorys = $_GET['status_shipment'];
             var price = <?= $price; ?>;
             var status_shipment = $("#status_shipment_factory").val();
             var amount_product_order = $("#amount_product_order").val();
+            amount_product_order = parseFloat(amount_product_order);
             var amountOld = document.getElementById("amount_total").value;
-            //alert(amountOld);
             if (idUnitOld === idUnit) {
                 if (document.getElementById("amount_product_order").value < document.getElementById("amount_total").value) {
                     var confirms = confirm("คุณต้องการสินค้าที่ลบไปสร้างรอบถัดไปหรือไม่");
@@ -124,7 +131,7 @@ $status_shipment_factorys = $_GET['status_shipment'];
                         var p = "&name_unit=" + idUnit + "&idshipment_period=" + idshipment_period + "&idproduct_order=" + idproduct_order + "&idfactory=" + idfactory + "&amount_product_order=" + amount_product_order + "&price=" + price + "&status_shipment=" + status_shipment + "&addP=" + addP;
                         //alert(p);
                         $.get("action/action_edit_amount_product_order.php?p=editProduct" + p, function (data, status) {
-                            alert("Data: " + data + "\nStatus: " + status);
+                            //alert("Data: " + data + "\nStatus: " + status);
                             if (data == "1") {
                                 $("#alert").html("บันทึกแล้ว");
                                 $("#name_unit").val("");
@@ -148,7 +155,7 @@ $status_shipment_factorys = $_GET['status_shipment'];
                         var p = "&name_unit=" + idUnit + "&idshipment_period=" + idshipment_period + "&idproduct_order=" + idproduct_order + "&idfactory=" + idfactory + "&amount_product_order=" + amount_product_order + "&price=" + price + "&status_shipment=" + status_shipment;
                         //alert(p);
                         $.get("action/action_edit_amount_product_order.php?p=editProduct" + p, function (data, status) {
-                            alert("Data: " + data + "\nStatus: " + status);
+                            //alert("Data: " + data + "\nStatus: " + status);
                             if (data == "1") {
                                 $("#alert").html("บันทึกแล้ว");
                                 $("#name_unit").val("");
@@ -173,7 +180,7 @@ $status_shipment_factorys = $_GET['status_shipment'];
                     var p = "&name_unit=" + idUnit + "&idshipment_period=" + idshipment_period + "&idproduct_order=" + idproduct_order + "&idfactory=" + idfactory + "&amount_product_order=" + amount_product_order + "&price=" + price + "&status_shipment=" + status_shipment;
                     //alert(p);
                     $.get("action/action_edit_amount_product_order.php?p=editProduct" + p, function (data, status) {
-                        alert("Data: " + data + "\nStatus: " + status);
+                        //alert("Data: " + data + "\nStatus: " + status);
                         if (data == "1") {
                             $("#alert").html("บันทึกแล้ว");
                             $("#name_unit").val("");
@@ -194,14 +201,16 @@ $status_shipment_factorys = $_GET['status_shipment'];
                     window.location.href = "add_shipment3.php?idshipment_period=" + idshipment_period + "&idfactory=" + idfactory + "&price=" + price + "&status_shipment=" + status_shipment + "&action=editProduct_orderCompleted";
                 }
             } else if (idUnitOld < idUnit) {
-                if (document.getElementById("amount_product_order").value < document.getElementById("amount_total").value) {
+                //alert("789");
+                if (amount_product_order < amountOld) {
+                    //alert(amount_product_order + "<" + amountOld);
                     var confirms = confirm("คุณต้องการสินค้าที่ลบไปสร้างรอบถัดไปหรือไม่");
                     if (confirms === true) {
                         var addP = "addP";
                         var p = "&name_unit=" + idUnit + "&idshipment_period=" + idshipment_period + "&idproduct_order=" + idproduct_order + "&idfactory=" + idfactory + "&amount_product_order=" + amount_product_order + "&price=" + price + "&status_shipment=" + status_shipment + "&addP=" + addP;
                         //alert(p);
                         $.get("action/action_edit_amount_product_order.php?p=editProduct" + p, function (data, status) {
-                            alert("Data: " + data + "\nStatus: " + status);
+                            //alert("Data: " + data + "\nStatus: " + status);
                             if (data == "1") {
                                 $("#alert").html("บันทึกแล้ว");
                                 $("#name_unit").val("");
@@ -221,12 +230,11 @@ $status_shipment_factorys = $_GET['status_shipment'];
                         );
                         $('#myModal').modal('hide');
                         window.location.href = '../interface_add_order/add_order.php?';
-                    }
-                    else {
+                    } else {
                         var p = "&name_unit=" + idUnit + "&idshipment_period=" + idshipment_period + "&idproduct_order=" + idproduct_order + "&idfactory=" + idfactory + "&amount_product_order=" + amount_product_order + "&price=" + price + "&status_shipment=" + status_shipment;
                         //alert(p);
                         $.get("action/action_edit_amount_product_order.php?p=editProduct" + p, function (data, status) {
-                            alert("Data: " + data + "\nStatus: " + status);
+                            // alert("Data: " + data + "\nStatus: " + status);
                             if (data == "1") {
                                 $("#alert").html("บันทึกแล้ว");
                                 $("#name_unit").val("");
@@ -247,12 +255,11 @@ $status_shipment_factorys = $_GET['status_shipment'];
                         window.location.href = "add_shipment3.php?idshipment_period=" + idshipment_period + "&idfactory=" + idfactory + "&price=" + price + "&status_shipment=" + status_shipment + "&action=editProduct_orderCompleted";
 
                     }
-                }
-                else {
+                } else if (amount_product_order >= amountOld) {
                     var p = "&name_unit=" + idUnit + "&idshipment_period=" + idshipment_period + "&idproduct_order=" + idproduct_order + "&idfactory=" + idfactory + "&amount_product_order=" + amount_product_order + "&price=" + price + "&status_shipment=" + status_shipment;
                     //alert(p);
                     $.get("action/action_edit_amount_product_order.php?p=editProduct" + p, function (data, status) {
-                        alert("Data: " + data + "\nStatus: " + status);
+                        //alert("Data: " + data + "\nStatus: " + status);
                         if (data == "1") {
                             $("#alert").html("บันทึกแล้ว");
                             $("#name_unit").val("");
@@ -274,14 +281,15 @@ $status_shipment_factorys = $_GET['status_shipment'];
 
                 }
             } else if (idUnitOld > idUnit) {
-                if (document.getElementById("amount_product_order").value < document.getElementById("amount_total").value) {
+                //alert("555");
+                if (amount_product_order < amountOld) {
                     var confirms = confirm("คุณต้องการสินค้าที่ลบไปสร้างรอบถัดไปหรือไม่");
                     if (confirms === true) {
                         var addP = "addP";
                         var p = "&name_unit=" + idUnit + "&idshipment_period=" + idshipment_period + "&idproduct_order=" + idproduct_order + "&idfactory=" + idfactory + "&amount_product_order=" + amount_product_order + "&price=" + price + "&status_shipment=" + status_shipment + "&addP=" + addP;
                         //alert(p);
                         $.get("action/action_edit_amount_product_order.php?p=editProduct" + p, function (data, status) {
-                            alert("Data: " + data + "\nStatus: " + status);
+                            //alert("Data: " + data + "\nStatus: " + status);
                             if (data == "1") {
                                 $("#alert").html("บันทึกแล้ว");
                                 $("#name_unit").val("");
@@ -306,7 +314,7 @@ $status_shipment_factorys = $_GET['status_shipment'];
                         var p = "&name_unit=" + idUnit + "&idshipment_period=" + idshipment_period + "&idproduct_order=" + idproduct_order + "&idfactory=" + idfactory + "&amount_product_order=" + amount_product_order + "&price=" + price + "&status_shipment=" + status_shipment;
                         //alert(p);
                         $.get("action/action_edit_amount_product_order.php?p=editProduct" + p, function (data, status) {
-                            alert("Data: " + data + "\nStatus: " + status);
+                            //alert("Data: " + data + "\nStatus: " + status);
                             if (data == "1") {
                                 $("#alert").html("บันทึกแล้ว");
                                 $("#name_unit").val("");
@@ -331,7 +339,7 @@ $status_shipment_factorys = $_GET['status_shipment'];
                     var p = "&name_unit=" + idUnit + "&idshipment_period=" + idshipment_period + "&idproduct_order=" + idproduct_order + "&idfactory=" + idfactory + "&amount_product_order=" + amount_product_order + "&price=" + price + "&status_shipment=" + status_shipment;
                     //alert(p);
                     $.get("action/action_edit_amount_product_order.php?p=editProduct" + p, function (data, status) {
-                        alert("Data: " + data + "\nStatus: " + status);
+                        //alert("Data: " + data + "\nStatus: " + status);
                         if (data == "1") {
                             $("#alert").html("บันทึกแล้ว");
                             $("#name_unit").val("");
@@ -356,7 +364,7 @@ $status_shipment_factorys = $_GET['status_shipment'];
                 var p = "&name_unit=" + idUnit + "&idshipment_period=" + idshipment_period + "&idproduct_order=" + idproduct_order + "&idfactory=" + idfactory + "&amount_product_order=" + amount_product_order + "&price=" + price + "&status_shipment=" + status_shipment;
                 //alert(p);
                 $.get("action/action_edit_amount_product_order.php?p=editProduct" + p, function (data, status) {
-                    alert("Data: " + data + "\nStatus: " + status);
+                    //alert("Data: " + data + "\nStatus: " + status);
                     if (data == "1") {
                         $("#alert").html("บันทึกแล้ว");
                         $("#name_unit").val("");

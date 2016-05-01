@@ -476,7 +476,7 @@ function getShipmentByID($idfactory, $idshipment_period) {
             . "ON view_product_order_shipment.idproduct_order = view_transport_shipment.product_order_idproduct_order "
             . "WHERE view_product_order_shipment.idfactory = :idfactory "
             . "AND (view_transport_shipment.idshipment_period = :idshipment_period "
-            . "OR view_transport_shipment.idshipment_period IS NULL ) ORDER BY date_transport,idtransport,volume,number  "; 
+            . "OR view_transport_shipment.idshipment_period IS NULL ) ORDER BY date_transport,idtransport,volume,number  ";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
@@ -765,6 +765,20 @@ function getProduct_orderByID($idproduct_order) {
             )
     );
 
+    $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
+    return $result;
+}
+
+function getUnit3($id) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT idunit,name_unit,price_unit,product.difference_amount_product,unit.price_unit,type_unit,unit.idproduct,factory.name_factory,name_product,product.idfactory,concat(factory.code_factory,product.idproduct) AS code_product FROM `unit` INNER JOIN product ON product.idproduct=unit.idproduct INNER JOIN factory ON factory.idfactory = product.idfactory WHERE type_unit = 'PRIMARY' AND idunit = :id";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":id" => $id
+            )
+    );
+    //$resultArr = array();
     $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
     return $result;
 }
@@ -1176,7 +1190,7 @@ function getPayFactory($idfactory, $idshipment_period) {
     return $result;
 }
 
-function getUnit($idproduct,$idunit) {
+function getUnit($idproduct, $idunit) {
     $conn = dbconnect();
     $SQLCommand = "SELECT * FROM `unit` WHERE idproduct = :idproduct AND idunit != :idunit AND type_unit='PRIMARY' ";
     $SQLPrepare = $conn->prepare($SQLCommand);
@@ -1191,7 +1205,6 @@ function getUnit($idproduct,$idunit) {
     }
     return $resultArr;
 }
-
 
 function editProduct_order($idproduct_order, $idamount_product_order, $idunit, $price_product_order) {
     $conn = dbconnect();
@@ -1228,10 +1241,6 @@ function getTransport() {
     return json_encode($resultArr); //, JSON_UNESCAPED_UNICODE);
     //return "{}";
 }
-
-
-
-
 
 //action edit_amount_product_order
 function getProductOrderOld($idproduct_order) {
@@ -1309,7 +1318,35 @@ function getUnitNewDESC($idproduct, $idunitNew, $idunitOld) {
     return $resultArr;
 }
 
+function getProductdiffBath($idunit) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT * FROM unit WHERE idunit = :idunit";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idunit" => $idunit
+            )
+    );
+    $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
+    return $result;
+}
 
+function getDiffBathaction($idproduct, $idunit) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT * FROM unit WHERE unit.idproduct = :idproduct AND unit.idunit BETWEEN 1 AND :idunit";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idproduct" => $idproduct,
+                ":idunit" => $idunit
+            )
+    );
+    $resultArr = array();
+    while ($result = $SQLPrepare->fetch(PDO::FETCH_ASSOC)) {
+        array_push($resultArr, $result);
+    }
+    return $resultArr;
+}
 
 ////ยังไม่เสร็จเปลี่ยนหน่วยไม่ได้
 //function editProduct_order($idproduct_order, $idamount_product_order) {
@@ -1331,7 +1368,6 @@ function getUnitNewDESC($idproduct, $idunitNew, $idunitOld) {
 //        return false;
 //    }
 //}
-
 //
 //function add($p1, $p2, $p3) {
 //    $conn = dbconnect();
