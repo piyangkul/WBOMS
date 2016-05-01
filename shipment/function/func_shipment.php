@@ -972,9 +972,7 @@ function addPayfactory($idfactory, $idshipment_period, $price_pay_factory, $pric
 //action_addPayfactory[popup_add_payfactory] ค้นหาสินค้าที่รอการอัพเดทสถานะคืนแล้ว
 function getProduct_waitchangeStatusRefund($idfactory, $idshipment_period) {
     $conn = dbconnect();
-    $SQLCommand = "SELECT * FROM shipment_period JOIN order_product_refunds ON shipment_period.idshipment_period=order_product_refunds.shipment_period_idshipment_period "
-            . "JOIN product_refunds ON order_product_refunds.idorder_product_refunds=product_refunds.order_product_refunds_idorder_product_refunds JOIN product ON product_refunds.product_idproduct=product.idproduct JOIN factory ON factory.idfactory=product.idfactory "
-            . "WHERE factory.idfactory=:idfactory  AND shipment_period.idshipment_period=:idshipment_period ";
+    $SQLCommand = "SELECT * FROM shipment_period JOIN order_product_refunds ON shipment_period.idshipment_period=order_product_refunds.shipment_period_idshipment_period JOIN product_refunds ON order_product_refunds.idorder_product_refunds=product_refunds.order_product_refunds_idorder_product_refunds JOIN unit ON product_refunds.idunit=unit.idunit JOIN product ON product.idproduct=unit.idproduct JOIN factory ON factory.idfactory=product.idfactory WHERE factory.idfactory=:idfactory  AND shipment_period.idshipment_period=:idshipment_period ";
 
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
