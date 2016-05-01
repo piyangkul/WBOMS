@@ -26,7 +26,7 @@ if (isset($_GET['year_start'])) {
             <th><div align="center">รอบที่</div></th>
 <th><div align="center">วันที่เริ่มรอบ</div></th>
 <th><div align="center">วันที่สิ้นสุดรอบ</div></th>                                         
-<th><div align="center">รายได้จากร้านค้า</div></th>
+<th><div align="center">รายรับจากร้านค้า</div></th>
 <th><div align="center">รายจ่ายของโรงงาน</div></th>
 <th><div align="center">กำไร/ขาดทุน</div></th>
 </tr>
