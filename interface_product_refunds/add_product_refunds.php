@@ -197,7 +197,7 @@ $dateEnd = $getDateShipment['date_end'];
                                                     <input type = "hidden" id = "idshop" name = "idshop" value = "<?= $idshop; ?>"></input>
 
                                                 </div>
-                                                <label>รอบ</label>
+                                                <label>รอบ</label><font size="1" color ="red"> กำหนดจากวันที่ใบสั่งซื้อล่าสุด</font>
                                                 <div class = "input-group">
                                                     <span class = "input-group-addon"><i class = "fa fa-calendar-o" ></i></span>
                                                     <?php
