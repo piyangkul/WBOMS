@@ -119,6 +119,15 @@ else if ($_GET['p'] == "editProduct") {
                     $idUnitS = $_SESSION["productR"][$i]["idUnit"];
                     $idFactoryS = $_SESSION["productR"][$i]["factoryName"];
                     $idProductS = $_SESSION["productR"][$i]["productName"];
+
+
+                    $amount_plus = 1;
+                    $getDiff = getDiffBathaction($idProductS, $idUnitS);
+                    foreach ($getDiff as $value) {
+                        $val_amount_unit = $value['amount_unit'];
+                        $val_price = $value['price_unit'];
+                        $amount_plus = $val_amount_unit * $amount_plus;
+                    }
                     ?>
                     <tr>
                         <td><?php echo $i ?></td>
@@ -151,7 +160,7 @@ else if ($_GET['p'] == "editProduct") {
                         <?php if ($_SESSION["productR"][$i]["type_factory"] === "PERCENT") { ?>
                             <td><?= number_format($_SESSION["productR"][$i]["diff"], 2) . "%" ?></td>
                         <?php } else { ?>
-                            <td><?= number_format($_SESSION["productR"][$i]["diff"], 2) . " ฿"; ?></td>
+                            <td><?= number_format($_SESSION["productR"][$i]["diff"] / $amount_plus, 2) . " ฿"; ?></td>
                         <?php }
                         ?>
                         <td class="text-right"><?php echo number_format($_SESSION["productR"][$i]["price"], 2); ?></td>

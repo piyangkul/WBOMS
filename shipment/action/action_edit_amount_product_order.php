@@ -133,7 +133,7 @@ if (isset($_GET['addP'])) {
         }
     } else if ($idunit < $idunitOld) {
         $amountUnitNew = $amountOld; //5ห่อ
-
+        $amountLast = $amountOld;
 
         $getAmountNew = getUnitNewDESC($idproductOld, $idunitOld, $idunit);
         $val_price = 0;
@@ -143,11 +143,43 @@ if (isset($_GET['addP'])) {
             $val_amount_unit = $value['amount_unit'];
             $val_price = $value['price_unit'];
             $amountUnitNew = $amountUnitNew / $val_amount_unit;
+            $amountKKK = $amountLast % $val_amount_unit;
+            $val_idunitBig = $value['idunit_big'];
+
+            if ($amountKKK > 0) {
+                if (isset($_SESSION["countProduct"])) {
+                    $_SESSION["countProduct"] ++;
+                } else {
+                    $_SESSION["countProduct"] = 1;
+                }
+                $_SESSION["product"][$_SESSION["countProduct"]]["idUnit"] = $idunitS;
+                $_SESSION["product"][$_SESSION["countProduct"]]["productName"] = $idproductOld;
+                $_SESSION["product"][$_SESSION["countProduct"]]["factoryName"] = $idfactoryOld;
+                $_SESSION["product"][$_SESSION["countProduct"]]["AmountProduct"] = $amountKKK;
+                $_SESSION["product"][$_SESSION["countProduct"]]["difference"] = $diff;
+                if ($typeOld === "PERCENT") {
+                    $_SESSION["product"][$_SESSION["countProduct"]]["DifferencePer"] = $diffOld;
+                    $_SESSION["product"][$_SESSION["countProduct"]]["DifferenceBath"] = "";
+                    $_SESSION["product"][$_SESSION["countProduct"]]["total"] = ($val_price - (($val_price * $diffOld) / 100)) * $amounKKK;
+                } else {
+                    $_SESSION["product"][$_SESSION["countProduct"]]["DifferencePer"] = "";
+                    $_SESSION["product"][$_SESSION["countProduct"]]["DifferenceBath"] = $diffOld;
+                    $_SESSION["product"][$_SESSION["countProduct"]]["total"] = (($val_price * 1) + ($diffOld * 1)) * $amountKKK;
+                }
+                $_SESSION["product"][$_SESSION["countProduct"]]["price"] = ($val_price * 1);
+                $_SESSION["product"][$_SESSION["countProduct"]]["total_price"] = $val_price * $amountKKK;
+                $_SESSION["product"][$_SESSION["countProduct"]]["type"] = $typeOld;
+            } elseif ($amountKKK === 0) {
+                
+            }
+            $amountLast = $amountUnitNew;
             if ($amountUnitNew >= 1) {
                 $count++;
             }
         }
         $amountLatest = $amountUnitNew - $idamount_product_order;
+        echo $amountLatest;
+        echo $count;
     }
 }
 if ($_GET['p'] === "editProduct") {
