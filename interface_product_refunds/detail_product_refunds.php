@@ -197,7 +197,7 @@ $dateEnd = $getDateShipment['date_end'];
                                             <div id="showUnit"></div>
                                             <div class="col-md-6"></div>
                                             <div class="col-md-4">
-                                                <label for="disabled_no">ราคาขายรวมต่อบิล</label>
+                                                <label for="disabled_no">ราคาคืนรวมต่อบิล</label>
                                                 <input type="text" class="form-control" id="total_price_all" name="total_price_all" value="<?= number_format($total_price_all, 2); ?>"  readonly>
                                             </div>   
                                         </div>
