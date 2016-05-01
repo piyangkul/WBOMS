@@ -103,7 +103,7 @@ if (isset($_GET['addP'])) {
                 $_SESSION["product"][$_SESSION["countProduct"]]["type"] = $typeOld;
             }
             if ($idUnitBig === "0") {
-                if ($amountMod > 0) {
+                if ($amountLatest > 0) {
                     if (isset($_SESSION["countProduct"])) {
                         $_SESSION["countProduct"] ++;
                     } else {
