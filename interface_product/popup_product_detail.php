@@ -57,11 +57,9 @@ $val_difference_amount_product = $getProductDetail['difference_amount_product'];
                                        id = "dataTables-example">
                                     <thead>
                                         <tr>
-                                            <th>จำนวนต่อหน่วยใหญ่</th>
-                                            <th>หน่วยใหญ่</th>
-                                            <th>จำนวนต่อหน่วยรอง</th>
-                                            <th>หน่วยรอง</th>
-                                        </tr>
+                                            <th><div align="center">จำนวนหน่วยใหญ่</div></th>
+                                    <th><div align="center">จำนวนต่อหน่วยรอง</div></th>
+                                    </tr>
                                     </thead>
                                     <tbody>
                                         <?php
@@ -74,10 +72,8 @@ $val_difference_amount_product = $getProductDetail['difference_amount_product'];
                                             $valBigUnit = $value['name_big'];
                                             ?>
                                             <tr>
-                                                <td>1</td>
-                                                <td><?php echo $valUnit; ?></td>
-                                                <td><?php echo $valAmount; ?></td>
-                                                <td><?php echo $valBigUnit; ?></td>
+                                                <td><?php echo '1 ' . $valBigUnit; ?></td>
+                                                <td><?php echo $valAmount . ' ' . $valUnit; ?></td>
                                             </tr>
                                         <?php } ?>
                                 </table>
@@ -109,11 +105,10 @@ $val_difference_amount_product = $getProductDetail['difference_amount_product'];
                                        id = "dataTables-example">
                                     <thead>
                                         <tr>
-                                            <th>จำนวนต่อหน่วยใหญ่</th>
-                                            <th>หน่วยใหญ่</th>
-                                            <th>ราคาเปิด</th>
-                                            <th>ราคาต้นทุน</th>
-                                        </tr>
+                                            <th><div align="center">จำนวนหน่วยใหญ่</div></th>
+                                    <th><div align="center">ราคาเปิด</div></th>
+                                    <th><div align="center">ราคาต้นทุน</div></th>
+                                    </tr>
                                     </thead>
                                     <tbody>
                                         <?php
@@ -122,10 +117,9 @@ $val_difference_amount_product = $getProductDetail['difference_amount_product'];
                                             $valPrice = $value['price_unit'];
                                             ?>
                                             <tr>
-                                                <td>1</td>
-                                                <td><?php echo $valUnit; ?></td>
-                                                <td><?php echo number_format($valPrice, 2); ?></td>
-                                                <td><?php echo number_format($valPrice * ((100 - $val_difference_amount_product) / 100.0), 2); ?></td>
+                                                <td><?php echo '1 ' . $valUnit; ?></td>
+                                                <td class="text-right"><?php echo number_format($valPrice, 2); ?></td>
+                                                <td class="text-right"><?php echo number_format($valPrice * ((100 - $val_difference_amount_product) / 100.0), 2); ?></td>
                                             </tr>
                                         <?php } ?>
                                 </table>
