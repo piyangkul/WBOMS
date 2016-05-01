@@ -232,7 +232,8 @@ $idorder = $_GET['idorder'];
                                                 <div class="table-responsive ">
                                                     <label for="name_product"> ขายเพิ่มสุทธิ/หน่วย </label>
                                                     <input type="text" class="form-control" placeholder="กรอกราคาขายเพิ่มสุทธิ" id="DifferenceBath" value="" onkeyup="updateAmount()"> </input>
-                                                    <h id="type"></h>
+                                                    <input type="hidden" id="diffBath" name="diffBath" value=""/>
+                                                    <input type="hidden" id="type" name="type" value=""/>
                                                 </div>
                                             </div>
                                         </div>
@@ -301,8 +302,9 @@ $idorder = $_GET['idorder'];
                                     document.getElementById("cal_difference").value = totals.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
                                 }
                                 else if (type === "BATH") {
+                                    var amount_all = document.getElementById('diffBath').value;
                                     var diffbath = document.getElementById("DifferenceBath").value;
-                                    total_all = total + (diffbath * amount);
+                                    total_all = total + ((diffbath * amount) / amount_all);
                                     document.getElementById("total").value = total_all.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
                                 }
                                 document.getElementById("total_price").value = total.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
@@ -370,9 +372,21 @@ $idorder = $_GET['idorder'];
                                                 //$("#total").val((response * amount) + (diff * amount));
                                             }
                                         });
+                                        $.ajax({type: "GET",
+                                            url: "action/action_diffBath.php",
+                                            async: false,
+                                            data: "q=" + str,
+                                            dataType: 'html',
+                                            success: function (response)
+                                            {
+                                                $("#diffBath").val(response);
+                                            }
+
+                                        });
+                                        var amount_all = document.getElementById('diffBath').value;
                                         var price = document.getElementById('price').value.replace(",", "");
                                         document.getElementById('total_price').value = (price * amount).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
-                                        document.getElementById('total').value = ((price * amount) + (diff * amount)).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+                                        document.getElementById('total').value = ((price * amount) + ((diff * amount) / amount_all)).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
                                     }
                                 }
                             }
