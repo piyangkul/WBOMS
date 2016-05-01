@@ -203,7 +203,7 @@ echo $totaldiffPer;
                                                     <?php if ($type === "BATH") { ?>
                                                         <div class="panel-body">
                                                             <div class="table-responsive ">
-                                                                <label for="name_product"> ขายเพิ่มสุทธิ/หน่วย </label>
+                                                                <label for="name_product"> ขายเพิ่มสุทธิ/หน่วยใหญ่ที่สุด </label>
                                                                 <input type="text" class="form-control" placeholder="กรอกราคาขายเพิ่มสุทธิ" id="DifferenceBath" value="<?= $diffBath; ?>" onkeyup="updateTotalBath()"> </input>
                                                                 <h id="type" value="BATH"></h>
                                                             </div>

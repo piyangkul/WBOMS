@@ -13,8 +13,9 @@ $getUnit = getUnit3($idunit);
 $idProduct = $getUnit['idproduct'];
 $nameUnit = $getUnit['name_unit'];
 $nameFactory = $getUnit['name_factory'];
-$nameProduct = $getUnit['name_product'];
+$nameProduct = "[".$getUnit['code_product']."] ".$getUnit['name_product']." - ".$nameFactory;
 $idFactory = $getUnit['idfactory'];
+$type_factory = $getUnit['type_factory'];
 $total_price_all = 0;
 $idshop = $_GET['idshop'];
 $getProductRefunds = getProductRefunds_total($idorder_product_refunds, $idproduct_refunds);
@@ -104,17 +105,20 @@ foreach ($getDiff as $value) {
             </div>
             <div class="form-group col-xs-12">
                 <label for="name_product">ชื่อสินค้า</label>
-                <input type="text" class="form-control" id="productName" name="productName" placeholder="กรุณาระบุชื่อสินค้า" value ="<?= $nameProduct ?>" disabled=""></input>
-                <input type="hidden" id="idproduct" name="idproduct" value="<?= $idProduct; ?>">
-                <h id="idFactory2"></h>
-                <input type="hidden" class="form-control" id="factoryName" name="factoryName" placeholder="กรุณาระบุชื่อสินค้า" value ="<?= $nameFactory ?>" disabled></input>
-                <input type="hidden" id="idfactory" name="idfactory" value ="<?= $idFactory; ?>">
-                <input type="hidden" class="form-control" id="typefactory" name="typefactory">
-                <input type="hidden" class="form-control" id="idshop" name="idshop" value="<?= $idshop; ?>">
+                <div class="input-group ui-front">
+                    <span class="input-group-addon"><i class="fa fa-cube" ></i></span>
+                    <input type="text" class="form-control" id="productName" name="productName" placeholder="กรุณาระบุชื่อสินค้า" value ="<?= $nameProduct ?>" disabled=""></input>
+                    <input type="hidden" id="idproduct" name="idproduct" value="<?= $idProduct; ?>">
+                    <h id="idFactory2"></h>
+                    <input type="hidden" class="form-control" id="factoryName" name="factoryName" placeholder="กรุณาระบุชื่อสินค้า" value ="<?= $nameFactory ?>" disabled></input>
+                    <input type="hidden" id="idfactory" name="idfactory" value ="<?= $idFactory; ?>">
+                    <input type="hidden" class="form-control" id="typefactory" name="typefactory" value="<?= $type_factory; ?>">
+                    <input type="hidden" class="form-control" id="idshop" name="idshop" value="<?= $idshop; ?>">
+                </div>
             </div>
             <div class="form-group col-xs-12" style="float:left;width:50%;">
                 <label for="amount_product">จำนวน</label>
-                <input type="hidden" class="form-control" id="diff" readonly="true" value="<?= $diff; ?>">
+                <input type="hidden" class="form-control" id="diff" readonly="true" value="<?= $amount_plus * $diff; ?>">
                 <input type="hidden" class="form-control" id="price_factory" readonly="true">
                 <input type="text" class="form-control" id="AmountProduct" placeholder="กรอกจำนวนสินค้า" value ="<?= $amount; ?>" onkeyup="updateAmount()" required>
             </div>
@@ -137,9 +141,8 @@ foreach ($getDiff as $value) {
 
             <div class="form-group col-xs-12">
                 <label for="disabled_price_unit">ราคาคืนต่อหน่วย</label>
-                <input type="hidden" class="form-control" id="diff" readonly="true">
-                <input type="hidden" class="form-control" id="price_factory" readonly="true">
-                <input type="hidden" id="diffBath" name="diffBath" value="<?= $amount_plus; ?>">
+                <input type="hidden" class="form-control" id="price_factory" value="<?= $price; ?>" readonly="true">
+                <input type="hidden" id="diffBath" name="diffBath" value="<?= $diff ?>">
                 <input type="text" class="form-control" id="price" readonly="true" value="<?= number_format($price, 2); ?>">
             </div>
             <div class="form-group col-xs-12">
@@ -164,12 +167,13 @@ foreach ($getDiff as $value) {
             var factoryName = $("#idfactory").val();
             var AmountProduct = $("#AmountProduct").val();
             var price = $("#price").val().replace(",", "");
+            var diff = $("#diff").val();
             var total_price = $("#total_price").val().replace(",", "");
             var idproduct_refunds = <?= $idproduct_refunds ?>;
             var x = parseFloat(<?= $total_price_all; ?>);
             var total_price_all = x + (AmountProduct * price);
             document.getElementById("total_price_all").value = total_price_all;
-            var p = "&idproduct_refunds=" + idproduct_refunds + "&idproduct=" + productName + "&idUnit=" + idUnit + "&productName=" + productName + "&factoryName=" + factoryName + "&AmountProduct=" + AmountProduct + "&price=" + price + "&total_price=" + total_price + "&total_price_all=" + total_price_all + "&idorder=" + idorder;
+            var p = "&idproduct_refunds=" + idproduct_refunds + "&idproduct=" + productName + "&idUnit=" + idUnit + "&productName=" + productName + "&factoryName=" + factoryName + "&AmountProduct=" + AmountProduct + "&price=" + price + "&total_price=" + total_price + "&total_price_all=" + total_price_all + "&idorder=" + idorder + "&diff=" + diff;
             //alert(p);
             $.get("action_editProductE.php?p=editProduct" + p, function (data, status) {
                 //alert("Data: " + data + "\nStatus: " + status);

@@ -191,7 +191,7 @@ $dateEnd = $getDateShipment['date_end'];
                                                                 <?php if ($type_factory === "PERCENT") { ?>
                                                                     <td id="price<?= $val_idproduct_refunds; ?>"><?= number_format(($val_price_product_refunds * 100) / (100 - $difference_product_refunds), 2); ?></td>
                                                                 <?php } else { ?>
-                                                                    <td id="price<?= $val_idproduct_refunds; ?>"><?= number_format(($val_price_product_refunds * 1) - ($difference_product_refunds *1), 2); ?></td>
+                                                                    <td id="price<?= $val_idproduct_refunds; ?>"><?= number_format(($val_price_product_refunds * 1) - ($difference_product_refunds * 1), 2); ?></td>
                                                                 <?php } ?>
                                                                 <?php if ($type_factory === "PERCENT") { ?>
                                                                     <td id="diff<?= $val_idproduct_refunds; ?>"><?= number_format($difference_product_refunds, 2) . "%"; ?></td>
@@ -234,7 +234,7 @@ $dateEnd = $getDateShipment['date_end'];
                                             <div id="showUnit"></div>
                                             <div class="col-md-6"></div>
                                             <div class="col-md-4">
-                                                <label for="disabled_no">ราคาขายรวมต่อบิล</label>
+                                                <label for="disabled_no">ราคาคืนรวมต่อบิล</label>
                                                 <input type="text" class="form-control" id="total_price_all" name="total_price_all" value="<?= number_format($total_price_all, 2); ?>"  readonly>
                                             </div>   
                                         </div>
@@ -392,6 +392,7 @@ $dateEnd = $getDateShipment['date_end'];
         var price = document.getElementById('price_factory').value;
         var diff = document.getElementById('diff').value;
         var amount = document.getElementById('AmountProduct').value;
+        //alert(diff);
 
         var total_percent = price - ((price * diff) / 100)
         if (type === 'PERCENT') {
@@ -410,10 +411,13 @@ $dateEnd = $getDateShipment['date_end'];
                 }
 
             });
+
             var amount_all = document.getElementById('diffBath').value;
             var total_bath = (price * 1) + (diff / amount_all);
-            document.getElementById('total_price').value = (total_bath * amount).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+            //alert(total_bath);
             document.getElementById('price').value = total_bath.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+            document.getElementById('total_price').value = (total_bath * amount).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+
         }
     }
     function LoadFactory(str) {

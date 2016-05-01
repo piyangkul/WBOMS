@@ -184,7 +184,7 @@ else if ($_GET['p'] == "editProduct") {
     </table>
     <div class="col-md-6"></div>
     <div class="col-md-4">
-        <label for="disabled_no">ราคาขายรวมต่อบิล</label>
+        <label for="disabled_no">ราคาคืนรวมต่อบิล</label>
         <input type="text" class="form-control" id="totalss" name="totalss" placeholder=" " value="<?= number_format($sum, 2); ?>" readonly="true">
     </div>
     <?php

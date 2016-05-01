@@ -12,6 +12,7 @@ if ($_GET['p'] == "editProduct") {
     $total_price_all = $_GET['total_price_all'];
     $idorder = $_GET['idorder'];
     // $total_price = $_GET['total_price'];
+    $diff = $_GET['diff'];
     $idProduct = $_GET['idproduct'];
     $amount = 1;
     $idunit = $products[$i]['idUnit'];
@@ -24,7 +25,7 @@ if ($_GET['p'] == "editProduct") {
 
 
 
-    $idproductE = EditsProductRefunds($idproduct_refunds, $idUnit, $AmountProduct, $price);
+    $idproductE = EditsProductRefunds($idproduct_refunds, $idUnit, $AmountProduct, $price, $diff / $amount);
     $Edit = editTotal_order($idorder, $total_price_all);
     echo "1";
 }

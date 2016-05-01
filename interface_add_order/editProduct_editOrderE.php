@@ -218,7 +218,7 @@ $totaldiff = ($price * $amount_product_order) - ((($price * $amount_product_orde
                                                     <?php if ($type === "BATH") { ?>
                                                         <div class="panel-body">
                                                             <div class="table-responsive ">
-                                                                <label for="name_product"> ขายเพิ่มสุทธิ/หน่วย </label>
+                                                                <label for="name_product"> ขายเพิ่มสุทธิ/หน่วยใหญ่ที่สุด </label>
                                                                 <input type="text" class="form-control" placeholder="กรอกราคาขายเพิ่มสุทธิ" id="DifferenceBath" value="<?= $difference*$amount; ?>" onkeyup="updateAmount()"> </input>
                                                                 <input type="hidden" id="type" name="type" value="<?= $type ?>"/>
                                                                 <input type="hidden" id="diffBath" name="diffBath" value="<?= $amount; ?>"/>

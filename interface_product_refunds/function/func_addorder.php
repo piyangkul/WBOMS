@@ -148,7 +148,7 @@ function getUnit2($id) {
 
 function getUnit3($id) {
     $conn = dbconnect();
-    $SQLCommand = "SELECT idunit,name_unit,price_unit,type_unit,unit.idproduct,factory.name_factory,name_product,factory.idfactory,factory.type_factory FROM `unit` INNER JOIN product ON product.idproduct=unit.idproduct INNER JOIN factory ON factory.idfactory = product.idfactory WHERE idunit = :id ";
+    $SQLCommand = "SELECT idunit,name_unit,price_unit,type_unit,unit.idproduct,factory.name_factory,name_product,factory.idfactory,factory.type_factory,concat(factory.code_factory,product.idproduct) AS code_product FROM `unit` INNER JOIN product ON product.idproduct=unit.idproduct INNER JOIN factory ON factory.idfactory = product.idfactory WHERE idunit = :id ";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
@@ -552,9 +552,9 @@ function Gettotal_Order_Del($id) {
     return $result;
 }
 
-function EditsProductRefunds($idproduct_refunds, $idunit, $amount_product_refunds, $price) {
+function EditsProductRefunds($idproduct_refunds, $idunit, $amount_product_refunds, $price, $diff) {
     $conn = dbconnect();
-    $SQLCommand = "UPDATE `product_refunds` SET idunit = :idunit,amount_product_refunds = :amount_product_refunds,price_product_refunds = :price "
+    $SQLCommand = "UPDATE `product_refunds` SET idunit = :idunit,amount_product_refunds = :amount_product_refunds,price_product_refunds = :price ,difference_product_refunds = :difference_product_refunds "
             . "WHERE idproduct_refunds = :idproduct_refunds";
     echo $SQLCommand;
     $SQLPrepare = $conn->prepare($SQLCommand);
@@ -564,6 +564,7 @@ function EditsProductRefunds($idproduct_refunds, $idunit, $amount_product_refund
                 ":idunit" => $idunit,
                 ":amount_product_refunds" => $amount_product_refunds,
                 ":price" => $price,
+                ":difference_product_refunds" => $diff
             )
     );
     if ($SQLPrepare->rowCount() > 0) {
@@ -800,7 +801,8 @@ function getDiffProduct($idprodcut) {
     $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
     return $result;
 }
-function chkAddPR($idorder){
+
+function chkAddPR($idorder) {
     $conn = dbconnect();
     $SQLCommand = "SELECT order_product_refunds.idorder_product_refunds,product_refunds.status_product_refund FROM order_product_refunds INNER JOIN product_refunds ON order_product_refunds.idorder_product_refunds = product_refunds.order_product_refunds_idorder_product_refunds WHERE order_product_refunds.idorder_product_refunds = :idorder AND product_refunds.status_product_refund = 'returned' GROUP BY product_refunds.status_product_refund";
     $SQLPrepare = $conn->prepare($SQLCommand);
@@ -844,6 +846,5 @@ function getDiffBathaction($idproduct, $idunit) {
     }
     return $resultArr;
 }
-
 
 ?>

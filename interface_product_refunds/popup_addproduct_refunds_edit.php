@@ -21,7 +21,7 @@ foreach ($getDiff as $value) {
 
 $nameUnit = $getUnit['name_unit'];
 $nameFactory = $getUnit['name_factory'];
-$nameProduct = $getUnit['name_product'];
+$nameProduct = "[" . $getUnit['code_product'] . "] " . $getUnit['name_product'] . " - " . $nameFactory;
 $idFactory = $getUnit['idfactory'];
 $type_factory = $getUnit['type_factory'];
 ?>
@@ -132,7 +132,7 @@ $type_factory = $getUnit['type_factory'];
             </div>-->
             <div class="form-group col-xs-12">
                 <label>ราคาคืนต่อหน่วย</label>
-                <input type="hidden" id="diffBath" name="diffBath" value="<?=$amount_plus;?>">
+                <input type="hidden" id="diffBath" name="diffBath" value="<?= $amount_plus; ?>">
                 <input type="hidden" class="form-control" id="price_factory" readonly="true" value="<?= number_format($price_factory, 2); ?>">
                 <input type="hidden" class="form-control" id="diff" readonly="true" value="<?= $diff ?>">
 
