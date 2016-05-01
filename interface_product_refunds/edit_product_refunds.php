@@ -167,10 +167,20 @@ $dateEnd = $getDateShipment['date_end'];
                                                             $val_amount_product_refunds = $value['amount_product_refunds'];
                                                             $val_status_product_refunds = $value['status_product_refund'];
                                                             $val_price_product_refunds = $value['price_product_refunds'];
+                                                            $val_idunit = $value['idunit'];
+                                                            $val_idproduct = $value['idproduct'];
                                                             $total = $val_price_product_refunds * $val_amount_product_refunds;
                                                             $total_price_all += $total;
                                                             $type_factory = $value['type_product_refunds'];
                                                             $difference_product_refunds = $value['difference_product_refunds'];
+
+                                                            $amount_plus = 1;
+                                                            $getDiff = getDiffBathaction($val_idproduct, $val_idunit);
+                                                            foreach ($getDiff as $value) {
+                                                                $val_amount_unit = $value['amount_unit'];
+                                                                $val_price = $value['price_unit'];
+                                                                $amount_plus = $val_amount_unit * $amount_plus;
+                                                            }
                                                             ?>
                                                             <tr>
                                                                 <td><?= $i; ?></td>
@@ -181,7 +191,7 @@ $dateEnd = $getDateShipment['date_end'];
                                                                 <?php if ($type_factory === "PERCENT") { ?>
                                                                     <td id="price<?= $val_idproduct_refunds; ?>"><?= number_format(($val_price_product_refunds * 100) / (100 - $difference_product_refunds), 2); ?></td>
                                                                 <?php } else { ?>
-                                                                    <td id="price<?= $val_idproduct_refunds; ?>"><?= number_format(($val_price_product_refunds * 1) - ($difference_product_refunds * 1), 2); ?></td>
+                                                                    <td id="price<?= $val_idproduct_refunds; ?>"><?= number_format(($val_price_product_refunds * 1) - ($difference_product_refunds / $amount_plus), 2); ?></td>
                                                                 <?php } ?>
                                                                 <?php if ($type_factory === "PERCENT") { ?>
                                                                     <td id="diff<?= $val_idproduct_refunds; ?>"><?= number_format($difference_product_refunds, 2) . "%"; ?></td>
@@ -373,7 +383,6 @@ $dateEnd = $getDateShipment['date_end'];
                 dataType: 'html',
                 success: function (response)
                 {
-                    $("#total_price").val(response);
                     $("#price_factory").val(response);
                     $("#idFactory2").val(response);
                 }
@@ -383,13 +392,26 @@ $dateEnd = $getDateShipment['date_end'];
         var price = document.getElementById('price_factory').value;
         var diff = document.getElementById('diff').value;
         var amount = document.getElementById('AmountProduct').value;
-        var total_bath = (price * 1) + (diff * 1);
+
         var total_percent = price - ((price * diff) / 100)
         if (type === 'PERCENT') {
             document.getElementById('total_price').value = (total_percent * amount).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
             document.getElementById('price').value = total_percent.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
         }
         else {
+            $.ajax({type: "GET",
+                url: "action/action_diffBath.php",
+                async: false,
+                data: "q=" + str,
+                dataType: 'html',
+                success: function (response)
+                {
+                    $("#diffBath").val(response);
+                }
+
+            });
+            var amount_all = document.getElementById('diffBath').value;
+            var total_bath = (price * 1) + (diff / amount_all);
             document.getElementById('total_price').value = (total_bath * amount).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
             document.getElementById('price').value = total_bath.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
         }

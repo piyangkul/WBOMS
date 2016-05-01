@@ -400,13 +400,26 @@ $dateEnd = $getDateShipment['date_end'];
                                                         var price = document.getElementById('price_factory').value;
                                                         var diff = document.getElementById('diff').value;
                                                         var amount = document.getElementById('AmountProduct').value;
-                                                        var total_bath = (price * 1) + (diff * 1);
+
                                                         var total_percent = price - ((price * diff) / 100)
                                                         if (type === 'PERCENT') {
                                                             document.getElementById('total_price').value = (total_percent * amount).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
                                                             document.getElementById('price').value = total_percent.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
                                                         }
                                                         else {
+                                                            $.ajax({type: "GET",
+                                                                url: "action/action_diffBath.php",
+                                                                async: false,
+                                                                data: "q=" + str,
+                                                                dataType: 'html',
+                                                                success: function (response)
+                                                                {
+                                                                    $("#diffBath").val(response);
+                                                                }
+
+                                                            });
+                                                            var amount_all = document.getElementById('diffBath').value;
+                                                            var total_bath = (price * 1) + (diff / amount_all);
                                                             document.getElementById('total_price').value = (total_bath * amount).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
                                                             document.getElementById('price').value = total_bath.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
                                                         }

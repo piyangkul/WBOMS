@@ -10,6 +10,15 @@ $diff = $_GET['diff'];
 $price_factory = $_GET['price_factory'];
 $getUnit = getUnit3($idunit);
 $idProduct = $getUnit['idproduct'];
+
+$amount_plus = 1;
+$getDiff = getDiffBathaction($idProduct, $idunit);
+foreach ($getDiff as $value) {
+    $val_amount_unit = $value['amount_unit'];
+    $val_price = $value['price_unit'];
+    $amount_plus = $val_amount_unit * $amount;
+}
+
 $nameUnit = $getUnit['name_unit'];
 $nameFactory = $getUnit['name_factory'];
 $nameProduct = $getUnit['name_product'];
@@ -123,6 +132,7 @@ $type_factory = $getUnit['type_factory'];
             </div>-->
             <div class="form-group col-xs-12">
                 <label>ราคาคืนต่อหน่วย</label>
+                <input type="hidden" id="diffBath" name="diffBath" value="<?=$amount_plus;?>">
                 <input type="hidden" class="form-control" id="price_factory" readonly="true" value="<?= number_format($price_factory, 2); ?>">
                 <input type="hidden" class="form-control" id="diff" readonly="true" value="<?= $diff ?>">
 

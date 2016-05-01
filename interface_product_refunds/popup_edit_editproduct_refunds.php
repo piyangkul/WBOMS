@@ -26,6 +26,17 @@ foreach ($getProductRefunds as $value) {
 //echo $total_price_all;
 $getHisdiff = hisDiff($idProduct, $idshop);
 $diff = $_GET['diff'];
+
+$amount_plus = 1;
+$getDiff = getDiffBathaction($idProduct, $idunit);
+foreach ($getDiff as $value) {
+    $val_amount_unit = $value['amount_unit'];
+    $val_price = $value['price_unit'];
+    $amount_plus = $val_amount_unit * $amount_plus;
+}
+
+
+
 //$getTotal =
 ?>
 <script>
@@ -126,7 +137,9 @@ $diff = $_GET['diff'];
 
             <div class="form-group col-xs-12">
                 <label for="disabled_price_unit">ราคาคืนต่อหน่วย</label>
-
+                <input type="hidden" class="form-control" id="diff" readonly="true">
+                <input type="hidden" class="form-control" id="price_factory" readonly="true">
+                <input type="hidden" id="diffBath" name="diffBath" value="<?= $amount_plus; ?>">
                 <input type="text" class="form-control" id="price" readonly="true" value="<?= number_format($price, 2); ?>">
             </div>
             <div class="form-group col-xs-12">

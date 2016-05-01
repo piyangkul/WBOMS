@@ -491,7 +491,7 @@ function getEditProductRefunds($id) {
 
 function getProductRefunds($id) {
     $conn = dbconnect();
-    $SQLCommand = "SELECT product_refunds.idproduct_refunds,product_refunds.amount_product_refunds,product_refunds.idunit,unit.name_unit,price_product_refunds,product_refunds.amount_product_refunds,factory.name_factory,product.name_product,product_refunds.status_product_refund,factory.type_factory,product_refunds.type_product_refunds,product_refunds.difference_product_refunds FROM product_refunds INNER JOIN unit ON unit.idunit = product_refunds.idunit INNER JOIN product ON product.idproduct = unit.idproduct INNER JOIN factory ON factory.idfactory = product.idfactory WHERE order_product_refunds_idorder_product_refunds = :id ";
+    $SQLCommand = "SELECT product_refunds.idproduct_refunds,product.idproduct,product_refunds.amount_product_refunds,product_refunds.idunit,unit.name_unit,price_product_refunds,product_refunds.amount_product_refunds,factory.name_factory,product.name_product,product_refunds.status_product_refund,factory.type_factory,product_refunds.type_product_refunds,product_refunds.difference_product_refunds FROM product_refunds INNER JOIN unit ON unit.idunit = product_refunds.idunit INNER JOIN product ON product.idproduct = unit.idproduct INNER JOIN factory ON factory.idfactory = product.idfactory WHERE order_product_refunds_idorder_product_refunds = :id ";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
@@ -812,5 +812,38 @@ function chkAddPR($idorder){
     $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
     return $result;
 }
+
+//action_diffbath
+
+function getProductdiffBath($idunit) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT * FROM unit WHERE idunit = :idunit";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idunit" => $idunit
+            )
+    );
+    $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
+    return $result;
+}
+
+function getDiffBathaction($idproduct, $idunit) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT * FROM unit WHERE unit.idproduct = :idproduct AND unit.idunit BETWEEN 1 AND :idunit";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idproduct" => $idproduct,
+                ":idunit" => $idunit
+            )
+    );
+    $resultArr = array();
+    while ($result = $SQLPrepare->fetch(PDO::FETCH_ASSOC)) {
+        array_push($resultArr, $result);
+    }
+    return $resultArr;
+}
+
 
 ?>

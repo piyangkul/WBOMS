@@ -109,6 +109,9 @@ $idshop = $_GET['idshop'];
             </div>
             <div class="form-group col-xs-12">
                 <label for="disabled_price_unit">ราคาคืนต่อหน่วย</label>
+                <input type="hidden" class="form-control" id="diff" readonly="true">
+                <input type="hidden" class="form-control" id="price_factory" readonly="true">
+                <input type="hidden" id="diffBath" name="diffBath" value="">
                 <input type="text" class="form-control" id="price" readonly="true">
             </div>
             <div class="form-group col-xs-12">
