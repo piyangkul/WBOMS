@@ -117,7 +117,7 @@ $val_debt_before_shipment = $getPayDetailByID['debt']; //ยอดค้าง�
                                                 $val_date_product_refunds = $value['date_product_refunds'];
                                                 $date_product_refunds = date_create($val_date_product_refunds);
                                                 $date_product_refunds->add(new DateInterval('P543Y0M0DT0H0M0S'));
-                                                $val_price_difference = $value['price_difference']; //ขายลด
+                                                $val_price_difference = $value['difference_product_refunds']; //ขายลด
                                                 $val_type_money = $value['type_money'];
                                                 if ($value['type_money'] == "PERCENT") {
                                                     $cost2 = $val_price_unit - (($val_price_difference / 100.0) * $val_price_unit);
