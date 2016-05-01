@@ -1231,6 +1231,10 @@ function getTransport() {
     //return "{}";
 }
 
+
+
+
+
 //action edit_amount_product_order
 function getProductOrderOld($idproduct_order) {
     $conn = dbconnect();
@@ -1263,13 +1267,13 @@ function getUnitNew($idproduct, $idunitNew, $idunitOld) {
     return $resultArr;
 }
 
-function getUnitCal($idproduct) {
+function getUnitCal($idunit) {
     $conn = dbconnect();
-    $SQLCommand = "SELECT * FROM unit WHERE unit.idproduct = :idproduct";
+    $SQLCommand = "SELECT * FROM `unit` WHERE unit.idunit = :idunit";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
-                ":idproduct" => $idproduct
+                ":idunit" => $idunit
             )
     );
     $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
@@ -1288,6 +1292,25 @@ function getedit_price_unit($idunit) {
     $result = $SQLPrepare->fetch(PDO::FETCH_ASSOC);
     return $result;
 }
+
+function getUnitNewDESC($idproduct, $idunitNew, $idunitOld) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT * FROM unit WHERE unit.idproduct = :idproduct AND unit.idunit BETWEEN :idunitOld AND :idunitNew ORDER BY idunit DESC";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idproduct" => $idproduct,
+                ":idunitNew" => $idunitNew,
+                ":idunitOld" => $idunitOld
+            )
+    );
+    $resultArr = array();
+    while ($result = $SQLPrepare->fetch(PDO::FETCH_ASSOC)) {
+        array_push($resultArr, $result);
+    }
+    return $resultArr;
+}
+
 
 
 ////ยังไม่เสร็จเปลี่ยนหน่วยไม่ได้
