@@ -3,6 +3,9 @@
 require_once dirname(__FILE__) . '/../function/func_shipment.php';
 session_start();
 
+unset($_SESSION['date']);
+unset($_SESSION['time']);
+
 $idproduct_order = $_GET['idproduct_order'];
 $idshipment_period = $_GET['idshipment_period'];
 $idfactory = $_GET['idfactory'];

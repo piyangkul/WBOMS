@@ -105,7 +105,9 @@ if (isset($_SESSION["product"])) {//ถามว่า$_SESSION["unit"]ถูก
         header("location: ../order.php?p=history_order&action=addErrorNotHaveProduct");
     }
 }
-
+unset($_SESSION['idshop']);
+unset($_SESSION['date']);
+unset($_SESSION['time']);
 
 
     
