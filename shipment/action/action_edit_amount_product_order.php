@@ -195,7 +195,7 @@ if (isset($_GET['addP'])) {
                 $_SESSION["product"][$_SESSION["countProduct"]]["price"] = ($val_price * 1);
                 $_SESSION["product"][$_SESSION["countProduct"]]["total_price"] = $val_price * $amountKKK;
                 $_SESSION["product"][$_SESSION["countProduct"]]["type"] = $typeOld;
-            } else {
+            } elseif (!isset($idUnitBig)) {
                 if (floor($amountUnitNew) > 0) {
                     $amountUnitNew -= $idamount_product_order;
                     if ($amountUnitNew >= 1) {
