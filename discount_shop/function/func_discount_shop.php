@@ -18,7 +18,7 @@ function getCostProductByID($idproduct) {
 
 function getDiscountByID($idproduct) {
     $conn = dbconnect();
-    $SQLCommand = "SELECT * FROM view_getDiscountByID WHERE `idproduct`= :idproduct ";
+    $SQLCommand = "SELECT iddifference,product.name_product,concat(region.code_region,province.code_province,shop.idshop) AS code_shop,difference.date_difference,shop.name_shop,difference.price_difference,difference.type_money,unit.idunit,product.idproduct,MAX(unit.price_unit) AS price_unit FROM `difference` INNER JOIN shop ON difference.idshop = shop.idshop INNER JOIN product ON difference.idproduct = product.idproduct INNER JOIN province ON shop.idprovince = province.idprovince INNER JOIN region ON province.idregion = region.idregion INNER JOIN unit ON difference.idproduct = unit.idproduct WHERE difference.idproduct = :idproduct GROUP BY product.idproduct,shop.idshop";
 
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(

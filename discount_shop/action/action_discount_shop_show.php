@@ -21,7 +21,7 @@ require_once dirname(__FILE__) . '/../function/func_discount_shop.php';
     $i = 0;
     foreach ($getDiscountByID as $value) {
         $i++;
-        $val_shop_code = $value['shop_code'];
+        $val_shop_code = $value['code_shop'];
         $val_name_shop = $value['name_shop'];
         $val_price_difference = $value['price_difference']; //ขายลด
         $val_type_money = $value['type_money'];
