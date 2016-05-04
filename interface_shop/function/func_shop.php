@@ -2,16 +2,16 @@
 
 require_once dirname(__FILE__) . '/../../config/connect.php';
 //ยังไม่เสร็จ
-function checkDuplicateShop($name_product, $idfactory) {
+function checkDuplicateShop($idprovince, $name_shop) {
     $conn = dbconnect();
-    $SQLCommand = "SELECT * FROM `view_product` WHERE `name_product`LIKE :name_product AND `idfactory` LIKE :idfactory ";
+    $SQLCommand = "SELECT * FROM shop WHERE idprovince=:idprovince AND name_shop LIKE :name_shop  ";
 //$SQLCommand = "SELECT name_product FROM view_product WHERE `name_product`=:name_product AND `name_factory`=:name_factory ";
     echo $SQLCommand;
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
-                ":name_product" => $name_product,
-                ":idfactory" => $idfactory
+                ":idprovince" => $idprovince,
+                ":name_shop" => $name_shop
             )
     );
 

@@ -56,6 +56,8 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                         echo '<center><h4 class="text-success">คุณได้ทำการเพิ่มสำเร็จแล้ว</h4></center>';
                                     } else if ($_GET['action'] == "addShopError") {
                                         echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถเพิ่มได้</h4></center>';
+                                    } else if ($_GET['action'] == "addShopDuplicateError") {
+                                        echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถเพิ่มได้ เนื่องจากเพิ่มชื่อร้านค้าซ้ำในจังหวัดเดียวกัน</h4></center>';
                                     } else if ($_GET['action'] == "editCompleted") {
                                         echo '<center><h4 class="text-success">คุณได้ทำการแก้ไขสำเร็จแล้ว</h4></center>';
                                     } else if ($_GET['action'] == "editError") {

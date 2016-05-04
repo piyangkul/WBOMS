@@ -15,11 +15,15 @@ $detail_shop = $_POST['detail_shop'];
 //สิ้นสุดกลุ่มรับค่า
 //
 //กลุ่มคำสั่งทำอะไร
-$idshop = addShop($name_shop, $idprovince, $tel_shop, $address_shop, $detail_shop);
-if ($idshop > 0) {
-    header("location: ../shop.php?p=shop&action=addShopCompleted");
+if (!checkDuplicateShop($idprovince, $name_shop)) {
+    $idshop = addShop($name_shop, $idprovince, $tel_shop, $address_shop, $detail_shop);
+    if ($idshop > 0) {
+        header("location: ../shop.php?p=shop&action=addShopCompleted");
+    } else {
+        header("location: ../shop.php?p=shop&action=addShopError");
+    }
 } else {
-    header("location: ../shop.php?p=shop&action=addShopError");
+    header("location: ../shop.php?p=shop&action=addShopDuplicateError");
 }
 //สิ้นสุดกลุ่มคำสั่งทำอะไร
 /* 
