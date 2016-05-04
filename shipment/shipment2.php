@@ -247,7 +247,7 @@ $val_name_factory = $getFactoryByID['name_factory'];
                                                                                             }
                                                                                         }
                                                                                         ?>
-                                                                                        <?php if ($check == TRUE && $leftArr["$val_idfactory"]['count_left'] == 0) { ?> <!--สถานะรอการจ่ายเงินโรงงาน และ ไม่มีข้อมูลการจ่ายเงิน&& $val_idpay_factory == NULL-->
+                                                                                        <?php if ($check == TRUE && $leftArr["$val_idfactory"]['count_left'] === "0") { ?> <!--สถานะรอการจ่ายเงินโรงงาน และ ไม่มีข้อมูลการจ่ายเงิน&& $val_idpay_factory == NULL-->
                                                                                             <a href = "popup_add_payfactory.php?page=shipment2&idshipment_period=<?php echo $idshipment_period; ?>&idfactory=<?php echo $val_idfactory2; ?>&price=<?php echo $total_price; ?>&status_shipment=<?php echo $val_status_shipment; ?>" class = "btn btn-info " data-toggle = "modal" data-target = "#myModal-lg" data-toggle = "tooltip" title = "เพิ่มการจ่ายเงินโรงงาน">
                                                                                                 <span class = "fa fa-plus fa-lg fa-fw"></span><span class = "fa fa-building-o fa-lg"></span>
                                                                                             </a>

@@ -63,7 +63,7 @@ $price = $_GET['price']; //ใช้ไม่ได้
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">เพิ่มข้อมูลการส่งสินค้า</h4>
     </div>
-
+    <input type="hidden" id="idfactory" value="<?php echo $idfactory; ?>">
     <div class="row">
         <div class="col-md-12 col-sm-12 ">
             <div class="form-group col-xs-12">
@@ -73,10 +73,9 @@ $price = $_GET['price']; //ใช้ไม่ได้
                     <label for="date_transport">วันที่ส่งสินค้า</label><label class="text-danger">*</label>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-calendar-o"  ></i></span>
-                        <input type="date" class="form-control" min="<?php echo date("$val_date_start"); ?>" max="<?php echo date("$val_date_end"); ?>" name="date_transport" id="date_transport" required/>
+                        <input type="date" class="form-control" min="<?php echo date("$val_date_start"); ?>" max="<?php echo date("$val_date_end"); ?>" name="date_transport" id="date_transport" onchange="show_product_order()" required/>
                     </div>
                 </div>
-
                 <div class="form-group col-xs-12">
                     <label for="name_transport">รหัสหรือชื่อบริษัทขนส่ง</label><label class="text-danger">*</label>
                     <div class="form-group input-group">
@@ -85,26 +84,6 @@ $price = $_GET['price']; //ใช้ไม่ได้
                         <input type="hidden" id="id" name="idtransport" required>
                     </div>
                 </div>
-
-                <!--                <div class="form-group col-xs-12">
-                                    <label for="name_transport">ชื่อบริษัทขนส่ง</label><label class="text-danger">*</label>
-                                    <div class="form-group input-group">
-                                        <span class="input-group-addon"><i class="fa fa-truck"  ></i></span>
-                                        <select class="form-control" id="idtransport" name="idtransport" id="idtransport" required >
-                                            <option selected value="">กรุณาเลือกบริษัทขนส่ง</option>
-                <?php
-//                            require_once '../transport/function/func_transport.php';
-//                            $getTransports = getTransports();
-//                            foreach ($getTransports as $value) {
-//                                $val_idtransport = $value['idtransport'];
-//                                $val_name_transport = $value['name_transport'];
-                ?>
-                                                <option value="<?php echo $val_idtransport; ?>"><?php echo $val_name_transport; ?></option>
-                <?php //} ?>
-                                        </select>
-                                    </div>
-                                </div>-->
-
                 <div class="form-group col-xs-12">
                     <label for="volume">เล่มที่</label><label class="text-danger">*กรณีไม่มี ใส่00</label>
                     <div class="form-group input-group">
@@ -124,19 +103,8 @@ $price = $_GET['price']; //ใช้ไม่ได้
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-dollar" ></i></span>
                         <input type="text" class="form-control" id="price_transport" name ="price_transport" value="0" onkeypress='return event.charCode >= 48 && event.charCode <= 57;' />
-                        <span class="input-group-addon">.00</span>
                     </div>
                 </div>
-                <!--                <div class="form-group col-xs-12">
-                                    <input type="checkbox" onchange="chkPrice_transport()" id="check_price" value="" />
-                                    <label for="price_transport">ค่าส่งสินค้า</label>
-                                    <div class="form-group input-group">
-                                        <span class="input-group-addon"><i class="fa fa-dollar" ></i></span>
-                                        <input type="text" onchange="chkPrice_transport()" class="form-control" id="price_transport" placeholder="กรุณากรอกค่าส่งสินค้า" name ="price_transport" value="0" disabled/>
-                                        <span class="input-group-addon">.00</span>
-                                    </div>
-                                </div>-->
-
             </div>
         </div>
 
@@ -148,50 +116,8 @@ $price = $_GET['price']; //ใช้ไม่ได้
                     <div class="panel-heading">
                         <label>ตารางรายการสินค้าที่สั่ง</label>
                     </div>
-                    <div class="panel-body">
-                        <div class="table-responsive">
-                            <table class="table table-striped table-bordered table-hover text-center " id="dataTables-example">
-                                <thead>
-                                    <tr>
-                                        <th  valign="middle"><div align="center">เลือก</div></th>
-                                <th><div align="center">วันที่สั่ง</div></th>
-                                <th><div align="center">ร้านค้า</div></th>
-                                <th><div align="center">ชื่อสินค้า</div></th>
-                                <th><div align="center">ราคาเปิดต่อหน่วย</div></th>
-                                <th><div align="center">จำนวน</div></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
-                                    //มีเงื่อนไข การกำหนดช่วงเวลาที่สั่ง
-                                    $getShipmentsByID = getProduct_order_shipmentByID($idfactory);
-                                    $i = 0;
-                                    foreach ($getShipmentsByID as $value) {
-                                        $i++;
-                                        $val_idproduct_order = $value['idproduct_order'];
-                                        $val_date_order_p = $value['date_order_p'];
-                                        $date_order_p = date_create($val_date_order_p);
-                                        $date_order_p->add(new DateInterval('P543Y0M0DT0H0M0S'));
-                                        $val_name_shop = $value['name_shop'];
-                                        $val_name_product = $value['name_product'];
-                                        $val_price_unit = $value['price_unit'];
-                                        $val_amount_product_order = $value['amount_product_order'];
-                                        $val_name_unit = $value['name_unit'];
-//                                            
-                                        ?>
-                                        <tr>
-                                            <td><input type="checkbox" name="check_shipment[]" id="check_shipment_<?php echo $i; ?>" value="<?php echo $val_idproduct_order; ?>" onclick="chkCount('<?php echo $i; ?>')"></td>
-                                            <td><?php echo date_format($date_order_p, 'd-m-Y'); ?></td>
-                                            <td><?php echo $val_name_shop; ?></td>
-                                            <td><?php echo $val_name_product; ?></td>
-                                            <td><?php echo $val_price_unit; ?></td>
-                                            <td><?php echo $val_amount_product_order . " " . $val_name_unit; ?></td>
-                                        </tr>
-                                    <?php } ?> 
-                                </tbody>
-                            </table>
-
-                        </div>
+                    <div class="table-responsive" id="show_product_order">
+                        <!-- action_product_order_show -->
                     </div>
                 </div>
                 <!--End ตารางรายการสินค้า -->
@@ -200,12 +126,19 @@ $price = $_GET['price']; //ใช้ไม่ได้
     </div>
 
     <div class="modal-footer">
-<!--        <p id="alertPass"></p>-->
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button type="submit" id="btn_save" disabled name="sumbit" class="btn btn-primary">Save changes</button>
     </div>
 </form>
 <script>
+    show_product_order();
+    function show_product_order() {
+        var idfactory = $("#idfactory").val();
+        var date_transport = $("#date_transport").val();
+        $.get('action/action_product_order_show.php?idfactory=' + idfactory + '&date_transport=' + date_transport, function (data, status) {//+"&id="+
+            $("#show_product_order").html(data);
+        });
+    }
     var cc = 0;
     function chkCount(id) {
         if ($("#check_shipment_" + id).prop("checked")) {
@@ -221,6 +154,8 @@ $price = $_GET['price']; //ใช้ไม่ได้
             $("#btn_save").prop("disabled", false);
         }
     }
+
+
 </script>
 <!--<button type="submit" id="btn_save" disabled name="sumbit" class="btn btn-primary" onclick="return confirm('กรุณาตรวจสอบความถูกต้องข้อมูลการส่งสินค้าเนื่องจากจะไม่สามารถแก้ไขข้อมูลการส่งได้');">Save changes</button>-->
 <!--<script>
