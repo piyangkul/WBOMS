@@ -77,8 +77,8 @@ function getProvinceByIDRegion($idregion) {
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
-                    ":idregion" => $idregion
-                )
+                ":idregion" => $idregion
+            )
     );
     $resultArr = array();
     while ($result = $SQLPrepare->fetch(PDO::FETCH_ASSOC)) {
@@ -209,7 +209,20 @@ function editStatus_finish_payShop($idshop, $idshipment_period) {
     }
 }
 
-//docket_paper แสดงสินค้า
+//action_unpay_shop_show
+function getShop_notPay() {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT A.idshop,A.name_shop,A.idshipment_period,A.date_start,A.date_end,pay.date_pay,pay.debt,pay.price_pay,pay.status_pay,pay.status_process FROM (SELECT shop.idshop,shop.name_shop,shop.idprovince,shipment_period.idshipment_period,shipment_period.date_start,shipment_period.date_end FROM shop,shipment_period) AS A left JOIN pay on A.idshop=pay.shop_idshop and A.idshipment_period=pay.idshipment_period WHERE pay.date_pay IS NULL ORDER BY date_start DESC ";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute();
+    $resultArr = array();
+    while ($result = $SQLPrepare->fetch(PDO::FETCH_ASSOC)) {
+        array_push($resultArr, $result);
+    }
+    return $resultArr;
+}
+
+//docket_paper แสดงสินค้า ,action_docket_show, action_docket_period_show, action_unpay_shop_show
 function getProductDocketByID($idshop, $idshipment_period) {
     $conn = dbconnect();
     $SQLCommand = "SELECT * FROM view_product_order_shipment LEFT JOIN view_transport_shipment ON view_product_order_shipment.idproduct_order = view_transport_shipment.product_order_idproduct_order WHERE view_product_order_shipment.idshop=:idshop AND view_transport_shipment.idshipment_period=:idshipment_period ORDER BY date_transport ASC ";
@@ -331,6 +344,7 @@ function addPayshop($idshop, $idshipment_period, $price_order_total, $debt, $pri
         return false;
     }
 }
+
 //autoComplete ชื่อธนาคาร popup_add_payshop
 function getNamebank_shop() {
     $conn = dbconnect();

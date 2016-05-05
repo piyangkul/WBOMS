@@ -42,10 +42,19 @@ if (isset($_GET['idshipment_period'])and isset($_GET['idshop'])) {
     $date2 = str_replace('-', '/', $val_next_date_end);
     $endNextdate = date('Y-m-d', strtotime($date2 . "0 days"));
 
-    $Nextid_cheque = getNextid($idshipment_period + 1);
-    $val_next_date_end_cheque = $Nextid_cheque['date_end'];
-    $date_cheque = str_replace('-', '/', $val_next_date_end_cheque);
-    $endNextdate_cheque = date('Y-m-d', strtotime($date_cheque . "0 days"));
+    $val_next_date_end2 = $getShipment_period['date_end'];
+    $date_shop2 = str_replace('-', '/', $val_next_date_end2);
+    $endNextdate2 = date('Y-m-d', strtotime($date_shop2 . "1 months"));
+
+    //ไม่ต้องตรวจสอบวันที่เช็ค ของ2รอบถัดไป --> ใช้ fix 2เดือนถัดไปแทน($endNextdate_cheque2)
+//    $Nextid_cheque = getNextid($idshipment_period + 1);
+//    $val_next_date_end_cheque = $Nextid_cheque['date_end'];
+//    $date_cheque = str_replace('-', '/', $val_next_date_end_cheque);
+//    $endNextdate_cheque = date('Y-m-d', strtotime($date_cheque . "0 days"));
+    
+    $val_next_date_end_cheque2 = $getShipment_period['date_end'];
+    $date_cheque2 = str_replace('-', '/', $val_next_date_end_cheque2);
+    $endNextdate_cheque2 = date('Y-m-d', strtotime($date_cheque2 . "2 months"));
 
     $getPayDetailByID_before_idshipment_period = getPayDetailByID($idshop, $val_before_idshipment_period);
     $val_debt_before_shipment = $getPayDetailByID_before_idshipment_period['debt']; //ยอดค้างชำระ(รอบที่แล้ว)
@@ -86,12 +95,7 @@ if (isset($_GET['idshipment_period'])and isset($_GET['idshop'])) {
         <h4 class="modal-title" id="myModalLabel">เพิ่มการเก็บเงินร้านค้า</h4>
     </div>
     <div class="row">
-        <div class="col-md-12 col-sm-12 ">
-            <?php if ($val_next_date_end == "") { ?>
-            <input type="hidden" id="next_date_end" value="<?php echo $val_next_date_end; ?>">
-                <h4 class="alert alert-danger text-center" role="alert"> แจ้งเตือน!! ระบบไม่สามารถวิเคราะห์การเก็บเงินร้านค้านี้ได้ กรุณาเพิ่มรอบถัดไปก่อน </h4>
-            <?php }
-            ?>
+        <div class="col-md-12 col-sm-12 ">          
             <div class="form-group col-xs-12">
                 <div class="form-group col-xs-12">
                     <center><h4 class="text text-info"><b>รอบการส่งที่</b> <?php echo date_format($date_start, 'd-m-Y'); ?> ถึง <?php echo date_format($date_end, 'd-m-Y'); ?></h4></center>
@@ -197,8 +201,8 @@ if (isset($_GET['idshipment_period'])and isset($_GET['idshop'])) {
                     <center><h4>ยอดค้างชำระ(จากรอบที่แล้ว) <input type="text" class="form-control" value="<?php echo number_format($val_debt_before_shipment, 2); ?>" readonly> </h4></center>
                     <center><h4>ยอดเงินสินค้าคืนรวม <input type="text" class="form-control" value="<?php echo number_format($sum_refund, 2); ?>" readonly> </h4></center>
                     <center><h4 class="text text-danger">ยอดเงินเรียกเก็บสุทธิ <input type="text" class="form-control"  value="<?php echo number_format($price_pay, 2); ?>" readonly></h4></center>
-                    <center><h4>วันที่จ่ายเงินร้านค้า <input type="date" class="form-control" id="date_pay" name="date_pay" min="<?php echo $val_date_end; ?>" max="<?php echo $endNextdate; ?>" required></h4></center><!-- value="<?php //echo $date->format('Y-m-d');     ?>" -->
-                    <label class="text-danger"> * วันที่จ่ายเงินร้านค้า เริ่มจ่ายได้ตั้งแต่วันที่สิ้นสุดของรอบปัจจุบัน จนถึงวันที่สิ้นสุดของรอบถัดไป</label>
+                    <center><h4>วันที่เก็บเงินร้านค้า <input type="date" class="form-control" id="date_pay" name="date_pay" min="<?php echo $val_date_end; ?>" max="<?php echo $endNextdate2; ?>" required></h4></center><!-- value="<?php //echo $date->format('Y-m-d');     ?>" -->
+                    <label class="text-danger"> * วันที่เก็บเงินร้านค้า มีเวลา1เดือน เริ่มจ่ายได้ตั้งแต่วันที่สิ้นสุดของรอบปัจจุบัน จนถึงเดือนถัดไป</label>
                 </div>
 
                 <div class = "form-group col-md-4"></div>
@@ -232,7 +236,7 @@ if (isset($_GET['idshipment_period'])and isset($_GET['idshop'])) {
                                 <div class="form-group input-group">
                                     <label class="radio-inline">
                                         <input type="radio" onclick="chkCredit_pay()" name="type_pay_get" id="credit_get" value="credit" > <label>เช็ค</label>
-                                        <input type="date" class="form-control" id="date_pay_credit" max="<?php echo $endNextdate_cheque; ?>" min="<?php echo $val_date_end; ?>" name="date_pay_credit" disabled>
+                                        <input type="date" class="form-control" id="date_pay_credit" max="<?php echo $endNextdate_cheque2; ?>" min="<?php echo $val_date_end; ?>" name="date_pay_credit" disabled>
                                     </label>
                                 </div>
                                 <div class="form-group input-group">
@@ -254,10 +258,9 @@ if (isset($_GET['idshipment_period'])and isset($_GET['idshop'])) {
                                     </label>
                                 </div>
                                 <label class="text-danger">* วันที่จ่ายเช็ค </label>
-                                <label class="text-danger">เริ่มตั้งแต่วันที่สิ้นสุดของรอบนี้ ถึงวันที่สิ้นสุด2รอบถัดไป</label> 
-                                <label class="text-danger">แต่ถ้าไม่มี2รอบถัดไป ระบบจะบังคับให้เป็นวันที่ปัจจุบัน(วันนี้)</label>
-                                <label class="text-danger">กรณีลงวันที่ภายในรอบเดือนถัดไป : จ่ายตรงเวลา</label>
-                                <label class="text-danger">กรณีลงวันที่เลยรอบเดือนถัดไป : จ่ายเกินเวลา</label>
+                                <label class="text-danger">เริ่มตั้งแต่วันที่สิ้นสุดของรอบนี้จนถึง2เดือนถัดไป</label> 
+                                <label class="text-danger">กรณีลงวันที่ภายในเดือนถัดไป : จ่ายตรงเวลา</label>
+                                <label class="text-danger">กรณีลงวันที่เลยเดือนถัดไป : จ่ายเกินเวลา</label>
                             </div>
                             <!--show_lack-->
                             <div class="table-responsive" id="show_lack" style="display:none;">
@@ -269,7 +272,7 @@ if (isset($_GET['idshipment_period'])and isset($_GET['idshop'])) {
                                 <div class="form-group input-group">
                                     <label class="radio-inline">
                                         <input type="radio" onclick="chkCredit_pay2()" name="type_pay_lack" id="credit_lack" value="credit" > <label>เช็ค</label>
-                                        <input type="date" class="form-control" id="date_pay_credit2" max="<?php echo $endNextdate_cheque; ?>" min="<?php echo $val_date_end; ?>" name="date_pay_credit" disabled>
+                                        <input type="date" class="form-control" id="date_pay_credit2" max="<?php echo $endNextdate_cheque2; ?>" min="<?php echo $val_date_end; ?>" name="date_pay_credit" disabled>
                                     </label>
                                 </div>
                                 <div class="form-group input-group">
@@ -304,10 +307,9 @@ if (isset($_GET['idshipment_period'])and isset($_GET['idshop'])) {
                                     </label>
                                 </div>
                                 <label class="text-danger">* วันที่จ่ายเช็ค </label>
-                                <label class="text-danger">เริ่มตั้งแต่วันที่สิ้นสุดของรอบนี้ ถึงวันที่สิ้นสุด2รอบถัดไป</label> 
-                                <label class="text-danger">แต่ถ้าไม่มี2รอบถัดไป ระบบจะบังคับให้เป็นวันที่ปัจจุบัน(วันนี้)</label>
-                                <label class="text-danger">กรณีลงวันที่ภายในรอบเดือนถัดไป : จ่ายตรงเวลา</label>
-                                <label class="text-danger">กรณีลงวันที่เลยรอบเดือนถัดไป : จ่ายเกินเวลา</label>
+                                <label class="text-danger">เริ่มตั้งแต่วันที่สิ้นสุดของรอบนี้ จนถึง2เดือนถัดไป</label> 
+                                <label class="text-danger">กรณีลงวันที่ภายในเดือนถัดไป : จ่ายตรงเวลา</label>
+                                <label class="text-danger">กรณีลงวันที่เลยเดือนถัดไป : จ่ายเกินเวลา</label>
                             </div>
                             <!--show_unget-->
                             <div class="table-responsive" id="show_unget" style="display:none;">
@@ -527,11 +529,12 @@ if (isset($_GET['idshipment_period'])and isset($_GET['idshop'])) {
             return false;
         }
         
-        var next_date_end = Number(document.getElementById("next_date_end").value);
-        if(next_date_end==""){
-            alert("แจ้งเตือน!! ระบบไม่สามารถวิเคราะห์การเก็บเงินร้านค้านี้ได้ กรุณาเพิ่มรอบถัดไปก่อน");
-            return false;
-        }
+        //ไม่ต้องตรวจสอบวันที่เช็ค ของ2รอบถัดไป --> ใช้ fix 2เดือนถัดไปแทน
+//        var next_date_end = Number(document.getElementById("next_date_end").value);
+//        if(next_date_end==""){
+//            alert("แจ้งเตือน!! ระบบไม่สามารถวิเคราะห์การเก็บเงินร้านค้านี้ได้ กรุณาเพิ่มรอบถัดไปก่อน");
+//            return false;
+//        }
         //alert("validations passed");
         return true;
 

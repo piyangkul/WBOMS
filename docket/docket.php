@@ -140,6 +140,7 @@ if (isset($_GET['idshop'])) {
                         <ul class="nav nav-pills nav-justified">
                             <li class="active"><a data-toggle="tab" href="#tab_shop">ค้นหาร้านค้า</a></li>
                             <li><a data-toggle="tab" href="#tab_shipment_period">ค้นหารอบการส่ง</a></li>
+                            <li><a data-toggle="tab" href="#tab_unpay">ค้นหาร้านค้าที่ค้างชำระทั้งหมด</a></li>
                         </ul>
 
                         <div class="tab-content">
@@ -260,6 +261,27 @@ if (isset($_GET['idshop'])) {
                                 </div>
                                 <!-- End ข้อมูลการจ่ายเงินโรงงานรายเดือน-ปี -->
                             </div>
+                            <div id="tab_unpay" class="tab-pane fade">
+                                </br>                               
+                                <!-- ข้อมูลร้านค้าที่ค้างชำระทั้งหมด -->
+                                <div class="row">
+                                    <!--<div class="col-md-1"></div>-->                        
+                                    <div class="col-md-12 ">
+                                        <div class="panel panel-primary">
+                                            <div class="panel-heading">
+                                                <h4>ข้อมูลร้านค้าที่ค้างชำระทั้งหมด</h4>
+                                            </div>
+                                            <div class="panel-body">
+                                                <div class="table-responsive" id="show_unpay_shop_table">
+                                                    <!--show_unpay_shop_table--> 
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End ข้อมูลร้านค้าที่ค้างชำระทั้งหมด -->
+                            </div>
+                            
                         </div>
                     </div>
 
@@ -334,6 +356,13 @@ if (isset($_GET['idshop'])) {
             function show_docket_table_shop() {
                 $.get("action/action_docket_show.php?idshop=" + idshop, function (data, status) {//+"&id="+
                     $("#show_docket_table_shop").html(data);
+                });
+            }
+            
+            show_unpay_shop_table();
+            function show_unpay_shop_table(){
+                $.get("action/action_unpay_shop_show.php" , function (data, status) {//+"&id="+
+                    $("#show_unpay_shop_table").html(data);
                 });
             }
         </script>
