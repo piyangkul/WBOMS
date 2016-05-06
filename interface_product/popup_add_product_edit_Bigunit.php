@@ -68,32 +68,36 @@ $type = $_SESSION['unit'][$idUnit]['type'];
 
 <script>
     function editUnit() {
-        var idUnit = "<?php echo $idUnit; ?>";
-        var NameUnit = $("#NameUnit").val();
-        var AmountPerUnit = $("#AmountPerUnit").val();
-        var under_unit = $("#under_unit").val();
-        var price = $("#price").val();
-        var type = $("input:radio[name=type]:checked").val();
-        var p = "&NameUnit=" + NameUnit + "&AmountPerUnit=" + AmountPerUnit + "&under_unit=" + under_unit + "&price=" + price + "&type=" + type + "&idUnit=" + idUnit;
+        if (document.getElementById('NameUnit').value.length > 0 && document.getElementById('AmountPerUnit').value.length > 0 && document.getElementById('price').value.length > 0) {
+            var idUnit = "<?php echo $idUnit; ?>";
+            var NameUnit = $("#NameUnit").val();
+            var AmountPerUnit = $("#AmountPerUnit").val();
+            var under_unit = $("#under_unit").val();
+            var price = $("#price").val();
+            var type = $("input:radio[name=type]:checked").val();
+            var p = "&NameUnit=" + NameUnit + "&AmountPerUnit=" + AmountPerUnit + "&under_unit=" + under_unit + "&price=" + price + "&type=" + type + "&idUnit=" + idUnit;
 //        alert(p);
-        $.get("action_addUnit.php?p=editUnit" + p, function (data, status) {
-            //alert("Data: " + data + "\nStatus: " + status);
-            if (data == "1") {
+            $.get("action_addUnit.php?p=editUnit" + p, function (data, status) {
+                //alert("Data: " + data + "\nStatus: " + status);
+                if (data == "1") {
 //                $("#alert").html("บันทึกแล้ว")
-                $("#NameUnit").val("");
-                $("#AmountPerUnit").val("");
-                $("#under_unit").val("");
-                showUnit();
-            }
-            else {
-                $("#NameUnit").val("");
-                $("#AmountPerUnit").val("");
-                $("#under_unit").val("");
-                showUnit();
-            }
-        });
-        getBigestUnit();
-        getBigestPrice();
+                    $("#NameUnit").val("");
+                    $("#AmountPerUnit").val("");
+                    $("#under_unit").val("");
+                    showUnit();
+                }
+                else {
+                    $("#NameUnit").val("");
+                    $("#AmountPerUnit").val("");
+                    $("#under_unit").val("");
+                    showUnit();
+                }
+            });
+            getBigestUnit();
+            getBigestPrice();
+        } else {
+            alert('กรุณากรอกข้อมูลให้ครบถ้วน');
+        }
     }
     /*chkUnitAdd();
      function chkUnitAdd() { // Check to add the first time 

@@ -76,38 +76,43 @@ $getAllUnit = getProductUnit($idProduct);
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-    <button type="button" class="btn btn-primary" onclick="editUnit();" data-dismiss="modal">Save changes</button>
+    <button type="button" class="btn btn-primary" onclick="editUnit();" >Save changes</button>
     <!--<button type="button" onclick="addUnit();" class="btn btn-primary">Save changes</button>-->
 </div>
 
 
 <script>
     function editUnit() {
-        var idUnit = "<?php echo $unitID; ?>";
-        var numUnit = "<?= $numUnit; ?>";
-        var NameUnit = $("#NameUnit").val();
-        var AmountPerUnit = 1;
-        var price = $("#price").val();
-        var type = $("input:radio[name=type]:checked").val();
-        var idproduct = "<?= $validproduct; ?>";
-        // alert(idUnit);
-        var p = "&NameUnit=" + NameUnit + "&AmountPerUnit=" + AmountPerUnit + "&price=" + price + "&type=" + type + "&idUnit=" + idUnit + "&numUnit=" + numUnit;
-        // alert(p);
-        $.get("action_editUnitEBig.php?p=editUnit" + p, function (data, status) {
-            //alert("Data: " + data + "\nStatus: " + status);
-            if (data == "1") {
-                $("#alert").html("บันทึกแล้ว")
-                $("#NameUnit").val("");
-                $("#AmountPerUnit").val("");
-                $("#under_unit").val("");
-            }
-            else {
-                $("#NameUnit").val("");
-                $("#AmountPerUnit").val("");
-                $("#under_unit").val("");
-            }
-        });
-        window.location.href = 'edit_product.php?idproduct=' + idproduct;
+        if (document.getElementById('NameUnit').value.length > 0 && document.getElementById('AmountPerUnit').value.length > 0 && document.getElementById('price').value.length > 0) {
+            var idUnit = "<?php echo $unitID; ?>";
+            var numUnit = "<?= $numUnit; ?>";
+            var NameUnit = $("#NameUnit").val();
+            var AmountPerUnit = 1;
+            var price = $("#price").val();
+            var type = $("input:radio[name=type]:checked").val();
+            var idproduct = "<?= $validproduct; ?>";
+            // alert(idUnit);
+            var p = "&NameUnit=" + NameUnit + "&AmountPerUnit=" + AmountPerUnit + "&price=" + price + "&type=" + type + "&idUnit=" + idUnit + "&numUnit=" + numUnit;
+            // alert(p);
+            $.get("action_editUnitEBig.php?p=editUnit" + p, function (data, status) {
+                //alert("Data: " + data + "\nStatus: " + status);
+                if (data == "1") {
+                    $("#alert").html("บันทึกแล้ว")
+                    $("#NameUnit").val("");
+                    $("#AmountPerUnit").val("");
+                    $("#under_unit").val("");
+                }
+                else {
+                    $("#NameUnit").val("");
+                    $("#AmountPerUnit").val("");
+                    $("#under_unit").val("");
+                }
+            });
+            window.location.href = 'edit_product.php?idproduct=' + idproduct;
+            $('#myModal').modal('hide');
+        } else {
+            alert('กรุณากรอกข้อมูลให้ครบถ้วน');
+        }
     }
     /*chkUnitAdd();
      function chkUnitAdd() { // Check to add the first time 

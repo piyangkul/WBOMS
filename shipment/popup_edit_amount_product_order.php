@@ -19,7 +19,7 @@ $status_shipment_factorys = $_GET['status_shipment'];
 $getCode = getUnit3($val_idunit);
 $code = $getCode['code_product'];
 
-$val_name_product = '['.$code."] ".$getProduct_order['name_product']." - ".$getCode['name_factory'];
+$val_name_product = '[' . $code . "] " . $getProduct_order['name_product'] . " - " . $getCode['name_factory'];
 
 /* echo $val_idproduct . " ";
   echo $val_idunitOld . " ";
@@ -121,10 +121,15 @@ $val_name_product = '['.$code."] ".$getProduct_order['name_product']." - ".$getC
             var price = <?= $price; ?>;
             var status_shipment = $("#status_shipment_factory").val();
             var amount_product_order = $("#amount_product_order").val();
-            
+
             var amountOld = document.getElementById("amount_total").value;
+            amount_product_order = parseFloat(amount_product_order);
+            amountOld = parseFloat(amountOld);
             if (idUnitOld === idUnit) {
-                if (document.getElementById("amount_product_order").value < document.getElementById("amount_total").value) {
+                amount_product_order = parseFloat(amount_product_order);
+                amountOld = parseFloat(amountOld);
+                if (amount_product_order < amountOld) {
+
                     var confirms = confirm("คุณต้องการสินค้าที่ลบไปสร้างรอบถัดไปหรือไม่");
                     if (confirms === true) {
                         var addP = "addP";
@@ -202,6 +207,7 @@ $val_name_product = '['.$code."] ".$getProduct_order['name_product']." - ".$getC
                 }
             } else if (idUnitOld < idUnit) {
                 amount_product_order = parseFloat(amount_product_order);
+                amountOld = parseFloat(amountOld);
                 //alert("789");
                 if (amount_product_order < amountOld) {
                     //alert(amount_product_order + "<" + amountOld);
@@ -258,6 +264,7 @@ $val_name_product = '['.$code."] ".$getProduct_order['name_product']." - ".$getC
                     }
                 } else if (amount_product_order >= amountOld) {
                     amount_product_order = parseFloat(amount_product_order);
+                    amountOld = parseFloat(amountOld);
                     var p = "&name_unit=" + idUnit + "&idshipment_period=" + idshipment_period + "&idproduct_order=" + idproduct_order + "&idfactory=" + idfactory + "&amount_product_order=" + amount_product_order + "&price=" + price + "&status_shipment=" + status_shipment;
                     //alert(p);
                     $.get("action/action_edit_amount_product_order.php?p=editProduct" + p, function (data, status) {
@@ -283,6 +290,8 @@ $val_name_product = '['.$code."] ".$getProduct_order['name_product']." - ".$getC
 
                 }
             } else if (idUnitOld > idUnit) {
+                amount_product_order = parseFloat(amount_product_order);
+                amountOld = parseFloat(amountOld);
                 //alert("555");
                 if (amount_product_order < amountOld) {
                     var confirms = confirm("คุณต้องการสินค้าที่ลบไปสร้างรอบถัดไปหรือไม่");
