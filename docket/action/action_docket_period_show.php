@@ -117,7 +117,7 @@ require_once dirname(__FILE__) . '/../function/func_docket.php';
         $val_debt_before_shipment = $getPayDetailByID['debt']; //ยอดค้างชำระ(รอบที่แล้ว)
         $price = $val_debt_before_shipment + $sum_order - $val_order_price_product_refunds;
         ?>
-        <?php if ($sum_order != 0) { ?>
+        <?php if ($sum_order != 0 || $val_debt_before_shipment != 0) { ?>
             <tr>
                 <td><?php echo $val_name_shop; ?></td>
                 <td><?php echo $date_pay; ?></td>

@@ -125,7 +125,7 @@ require_once dirname(__FILE__) . '/../function/func_docket.php';
         $val_debt_before_shipment = $getPayDetailByID['debt']; //ยอดค้างชำระ(รอบที่แล้ว)
         $price = $val_debt_before_shipment + $sum_order - $val_order_price_product_refunds;
         ?>
-        <?php if ($sum_order != 0) { ?>
+        <?php if ($sum_order != 0 || $val_debt_before_shipment != 0) { ?>
             <tr>
                 <td><?php echo date_format($date_start, 'd-m-Y'); ?></td>
                 <td><?php echo date_format($date_end, 'd-m-Y'); ?></td>
@@ -272,15 +272,15 @@ require_once dirname(__FILE__) . '/../function/func_docket.php';
                         <?php if ($val_status_process == "add") { ?>
                             <!-- ลบการเก็บเงินร้านค้า -->
                             <a href="action/action_delPayshop.php?idshipment_period=<?php echo $val_idshipment_period; ?>&idshop=<?php echo $idshop; ?>" onclick="if (!confirm('คุณต้องการลบหรือไม่')) {
-                                        return false;
-                                    }" class="btn btn-danger " title="ลบการเก็บเงินร้านค้า">
+                                                        return false;
+                                                    }" class="btn btn-danger " title="ลบการเก็บเงินร้านค้า">
                                 <span class="fa fa-trash fa-lg fa-fw"></span><span class = "fa fa-shopping-cart fa-lg"></span>
                             </a>
 
                             <!-- เปลี่ยนสถานะเก็บเงินร้านค้าเป็นเสร็จสิ้น -->
                             <a href="action/action_finishPayshop.php?idshipment_period=<?php echo $val_idshipment_period; ?>&idshop=<?php echo $idshop; ?>" onclick="if (!confirm('คุณต้องการกดเสร็จสิ้นหรือไม่')) {
-                                        return false;
-                                    }" class="btn btn-outline " title="เปลี่ยนสถานะเก็บเงินร้านค้าเป็นเสร็จสิ้น">
+                                                        return false;
+                                                    }" class="btn btn-outline " title="เปลี่ยนสถานะเก็บเงินร้านค้าเป็นเสร็จสิ้น">
                                 <span class="fa fa-check fa-lg fa-fw"></span><span class = "fa fa-shopping-cart fa-lg"></span>
                             </a>
 

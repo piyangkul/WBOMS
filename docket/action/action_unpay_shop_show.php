@@ -16,6 +16,7 @@ require_once dirname(__FILE__) . '/../function/func_docket.php';
 </thead>
 <tbody>
     <?php
+    $check_popup_addShop = TRUE;
     $getShop_notPay = getShop_notPay();
     foreach ($getShop_notPay as $value) {
         $val_idshipment_period = $value['idshipment_period'];
@@ -92,7 +93,7 @@ require_once dirname(__FILE__) . '/../function/func_docket.php';
         $val_debt_before_shipment = $getPayDetailByID['debt']; //ยอดค้างชำระ(รอบที่แล้ว)
         $price = $val_debt_before_shipment + $sum_order - $val_order_price_product_refunds;
         ?>
-        <?php if ($sum_order != 0) { ?>
+        <?php if ($sum_order != 0 || $val_debt_before_shipment != 0) { ?>
             <tr>
                 <td><?php echo date_format($date_start, 'd-m-Y'); ?></td>
                 <td><?php echo date_format($date_end, 'd-m-Y'); ?></td>
@@ -125,7 +126,7 @@ require_once dirname(__FILE__) . '/../function/func_docket.php';
                         <?php
                         $getPayByID_check_add_payshop = getPayByIDcheckStatus($val_idshop, $val_idshipment_period);
                         $val_status_check_add_payshop = $getPayByID_check_add_payshop['status_process'];
-
+                        
                         $Beforeid2 = getBeforeid($val_idshipment_period); //ได้ค่าidรอบถัดไป --> อัพเดทรอบนี้ด้วย
                         $val_before_idshipment_period_check = $Beforeid2['idshipment_period'];
 
