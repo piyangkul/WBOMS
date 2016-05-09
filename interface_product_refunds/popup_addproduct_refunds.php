@@ -17,7 +17,7 @@ session_start();
         factoryName["'" + "[" + ProductP[i].product_code + "] " + ProductP[i].name_product + " - " + ProductP[i].name_factory + "'"] = ProductP[i].name_factory;
         factoryId["'" + "[" + ProductP[i].product_code + "] " + ProductP[i].name_product + " - " + ProductP[i].name_factory + "'"] = ProductP[i].idfactory;
         factoryDiff["'" + "[" + ProductP[i].product_code + "] " + ProductP[i].name_product + " - " + ProductP[i].name_factory + "'"] = ProductP[i].difference_amount_factory;
-        factoryType["'" + "[" + ProductP[i].product_code + "] " + ProductP[i].name_product + " - " + ProductP[i].name_factory + "'"] = ProductP[i].type_factory
+        factoryType["'" + "[" + ProductP[i].product_code + "] " + ProductP[i].name_product + " - " + ProductP[i].name_factory + "'"] = ProductP[i].type_factory;
     }
     $(function () {
         $("#name_product").autocomplete({
@@ -68,6 +68,16 @@ session_start();
                 //alert(response);
             }
         });
+        $.ajax({type: "GET",
+            url: "action/action_ajax_table_product_order.php",
+            async: false,
+            data: "idproduct=" + id + "&idshop=" + idshop,
+            dataType: 'html',
+            success: function (www)
+            {
+                $("#table_product_order").html(www);
+            }
+        });
 
     }
 
@@ -104,10 +114,13 @@ session_start();
                 </select>
                 <div id="tee"></div>
             </div>
+            <div class="form-group col-xs-12">
+                <label>ส่วนลดสินค้าคืน</label>
+                <input type="text" class="form-control" id="diff" onkeyup="updateAmount()">
+            </div>
 
             <div class="form-group col-xs-12">
-                <label>ราคาคืนต่อหน่วย</label>
-                <input type="hidden" class="form-control" id="diff" readonly="true">
+                <label>ราคาคืนต่อหน่วย</label> 
                 <input type="hidden" class="form-control" id="price_factory" readonly="true">
                 <input type="hidden" id="diffBath" name="diffBath" value="">
                 <input type="text" class="form-control" id="price" readonly="true" onkeyup="updateAmount()">
@@ -115,6 +128,36 @@ session_start();
             <div class="form-group col-xs-12">
                 <label>ราคาคืนทั้งหมด</label>
                 <input type="text" class="form-control" id="total_price" readonly="true" onkeyup="updateAmount()">
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            ประวัติคำสั่งสินค้าคืน
+                        </div>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover" id="dataTables-example" >
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">ลำดับ</th>
+                                            <th class="text-center">วันที่สั่งซื้อ</th>
+                                            <th class="text-center">จำนวนสินค้า</th>
+                                            <th class="text-center">ราคาต่อหน่วย</th>
+                                            <th class="text-center">ต้นทุนลด%</th>
+                                            <th class="text-center">ส่วนลด</th>
+                                            <th class="text-center">ราคาขาย</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table_product_order">
+                                    </tbody>
+                                </table>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -163,7 +206,7 @@ session_start();
             }
 
             );
-            $('#myModal').modal('hide');
+            $('#myModal-lg').modal('hide');
         } else {
             alert("กรุณากรอกข้อมูลให้ครบ");
         }

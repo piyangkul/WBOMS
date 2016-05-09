@@ -155,7 +155,7 @@ $val_name_product = '[' . $code . "] " . $getProduct_order['name_product'] . " -
                         }
                         );
                         $('#myModal').modal('hide');
-                        window.location.href = '../interface_add_order/add_order.php?';
+                        window.location.href = '../interface_add_order/add_order.php?ship=ship';
                     } else {
                         var p = "&name_unit=" + idUnit + "&idshipment_period=" + idshipment_period + "&idproduct_order=" + idproduct_order + "&idfactory=" + idfactory + "&amount_product_order=" + amount_product_order + "&price=" + price + "&status_shipment=" + status_shipment;
                         //alert(p);
@@ -236,7 +236,7 @@ $val_name_product = '[' . $code . "] " . $getProduct_order['name_product'] . " -
                         }
                         );
                         $('#myModal').modal('hide');
-                        window.location.href = '../interface_add_order/add_order.php?';
+                        window.location.href = '../interface_add_order/add_order.php?ship=ship';
                     } else {
                         var p = "&name_unit=" + idUnit + "&idshipment_period=" + idshipment_period + "&idproduct_order=" + idproduct_order + "&idfactory=" + idfactory + "&amount_product_order=" + amount_product_order + "&price=" + price + "&status_shipment=" + status_shipment;
                         //alert(p);
@@ -319,7 +319,7 @@ $val_name_product = '[' . $code . "] " . $getProduct_order['name_product'] . " -
                         }
                         );
                         $('#myModal').modal('hide');
-                        window.location.href = '../interface_add_order/add_order.php?';
+                        window.location.href = '../interface_add_order/add_order.php?ship=ship';
                     }
                     else {
                         var p = "&name_unit=" + idUnit + "&idshipment_period=" + idshipment_period + "&idproduct_order=" + idproduct_order + "&idfactory=" + idfactory + "&amount_product_order=" + amount_product_order + "&price=" + price + "&status_shipment=" + status_shipment;

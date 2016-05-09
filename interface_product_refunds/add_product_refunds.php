@@ -261,11 +261,11 @@ $dateEnd = $getDateShipment['date_end'];
                                         <div class = "panel-body">
                                             <div class = "table-responsive">
                                                 <?php if (isset($_SESSION['idshopP'])) { ?>
-                                                    <button type = "button" href = "popup_addproduct_refunds.php" id = "add_p" name = "add_p" class = "btn btn-info btn-lg" data-toggle = "modal" data-target = "#myModal">
+                                                    <button type = "button" href = "popup_addproduct_refunds.php" id = "add_p" name = "add_p" class = "btn btn-info btn-lg" data-toggle = "modal" data-target = "#myModal-lg">
                                                         <span class = "glyphicon glyphicon-plus"></span> เพิ่มสินค้า
                                                     </button>
                                                 <?php } else { ?>
-                                                    <button type = "button" href = "popup_addproduct_refunds.php" id = "add_p" name = "add_p" class = "btn btn-info btn-lg" data-toggle = "modal" data-target = "#myModal" disabled>
+                                                    <button type = "button" href = "popup_addproduct_refunds.php" id = "add_p" name = "add_p" class = "btn btn-info btn-lg" data-toggle = "modal" data-target = "#myModal-lg" disabled>
                                                         <span class = "glyphicon glyphicon-plus"></span> เพิ่มสินค้า
                                                     </button>
                                                 <?php } ?>
@@ -355,11 +355,21 @@ $dateEnd = $getDateShipment['date_end'];
                                                     }
 
                                                     function updateAmount() {
-                                                        var price = document.getElementById("price").value.replace(',', '');
+                                                        var price = document.getElementById("price_factory").value.replace(',', '');
                                                         var amount = document.getElementById("AmountProduct").value;
+                                                        var diff = document.getElementById("diff").value;
+                                                        var type_factory = document.getElementById("typefactory").value;
                                                         //var diff = document.getElementById("diff").value
-                                                        var total = price * amount;
-                                                        document.getElementById("total_price").value = total.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+                                                        if (type_factory === "PERCENT") {
+                                                            var total = (price - ((price * diff)) / 100) * amount;
+                                                            document.getElementById("price").value = (price - ((price * diff)) / 100).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+                                                            document.getElementById("total_price").value = total.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+                                                        } else {
+                                                            var amount_all = document.getElementById("diffBath").value;
+                                                            var total = ((price * 1) + (diff / amount_all)) * amount;
+                                                            document.getElementById("price").value = ((price * 1) + (diff / amount_all)).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+                                                            document.getElementById("total_price").value = total.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+                                                        }
                                                     }
 
                                                     function ChangeProduct() {

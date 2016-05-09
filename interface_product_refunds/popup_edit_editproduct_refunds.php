@@ -13,7 +13,8 @@ $getUnit = getUnit3($idunit);
 $idProduct = $getUnit['idproduct'];
 $nameUnit = $getUnit['name_unit'];
 $nameFactory = $getUnit['name_factory'];
-$nameProduct = "[".$getUnit['code_product']."] ".$getUnit['name_product']." - ".$nameFactory;
+$price_unit = $getUnit['price_unit'];
+$nameProduct = "[" . $getUnit['code_product'] . "] " . $getUnit['name_product'] . " - " . $nameFactory;
 $idFactory = $getUnit['idfactory'];
 $type_factory = $getUnit['type_factory'];
 $total_price_all = 0;
@@ -118,8 +119,6 @@ foreach ($getDiff as $value) {
             </div>
             <div class="form-group col-xs-12" style="float:left;width:50%;">
                 <label for="amount_product">จำนวน</label>
-                <input type="hidden" class="form-control" id="diff" readonly="true" value="<?= $amount_plus * $diff; ?>">
-                <input type="hidden" class="form-control" id="price_factory" readonly="true">
                 <input type="text" class="form-control" id="AmountProduct" placeholder="กรอกจำนวนสินค้า" value ="<?= $amount; ?>" onkeyup="updateAmount()" required>
             </div>
             <div class="form-group col-xs-12" style="float:left;width:50%;">
@@ -138,17 +137,82 @@ foreach ($getDiff as $value) {
                 </select>                
                 <div id="tee"></div>
             </div>
-
+            <div class="form-group col-xs-12">
+                <label>ส่วนลดสินค้าคืน</label>
+                <input type="text" class="form-control" id="diff" onkeyup="updateAmount()" value="<?= $amount_plus * $diff; ?>">
+            </div>
             <div class="form-group col-xs-12">
                 <label for="disabled_price_unit">ราคาคืนต่อหน่วย</label>
-                <input type="hidden" class="form-control" id="price_factory" value="<?= $price; ?>" readonly="true">
-                <input type="hidden" id="diffBath" name="diffBath" value="<?= $diff ?>">
+                <input type="hidden" class="form-control" id="price_factory" value="<?= $price_unit; ?>" readonly="true">
+                <input type="hidden" id="diffBath" name="diffBath" value="<?= $amount_plus; ?>">
                 <input type="text" class="form-control" id="price" readonly="true" value="<?= number_format($price, 2); ?>">
             </div>
             <div class="form-group col-xs-12">
                 <label for="disabled_price_unit">ราคาคืนทั้งหมด</label>
                 <input type="text" class="form-control" id="total_price" readonly="true" value ="<?= number_format($total, 2); ?>">
             </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            ประวัติคำสั่งสินค้าคืน
+                        </div>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover" id="dataTables-example" >
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">ลำดับ</th>
+                                            <th class="text-center">วันที่สั่งซื้อ</th>
+                                            <th class="text-center">จำนวนสินค้า</th>
+                                            <th class="text-center">ราคาต่อหน่วย</th>
+                                            <th class="text-center">ต้นทุนลด%</th>
+                                            <th class="text-center">ส่วนลด</th>
+                                            <th class="text-center">ราคาขาย</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table_product_order">
+                                        <?php
+                                        $getTable = getTableProduct($idProduct, $idshop);
+
+                                        $i = 1;
+                                        foreach ($getTable as $value) {
+                                            $val_date = $value['date_order_p'];
+                                            $val_name_unit = $value['name_unit'];
+                                            $val_amount_unit = $value['amount_product_order'];
+                                            $val_price_unit = $value['price_unit'];
+                                            $val_type_product_order = $value['type_product_order'];
+                                            $val_difference_amount = $value['difference_amount_product'];
+                                            $val_difference_product_order = $value['difference_product_order'];
+                                            $total_price_per = ($val_price_unit - (($val_price_unit * $val_difference_product_order) / 100)) * $val_amount_unit;
+                                            $total_price_bath = ($val_price_unit - $val_difference_product_order) * $val_amount_unit;
+                                            echo "<tr><td class ='text-center'>{$i}</td>";
+                                            echo "<td class ='text-center'>{$val_date}</td>";
+                                            echo "<td class ='text-center'>{$val_amount_unit} {$val_name_unit}</td>";
+                                            echo "<td class ='text-center'>{$val_price_unit}</td>";
+                                            if ($val_type_product_order === "PERCENT") {
+                                                echo "<td class ='text-center'>{$val_difference_amount}</td>";
+                                                echo "<td class ='text-center'>{$val_difference_product_order} %</td>";
+                                                echo "<td class ='text-center'>{$total_price_per} </td></tr>";
+                                            } else {
+                                                echo "<td class ='text-center'>-</td>";
+                                                echo "<td class ='text-center'>{$val_difference_product_order}฿</td>";
+                                                echo "<td class ='text-center'>{$total_price_bath} </td></tr>";
+                                            }
+                                            $i++;
+                                        }
+                                        ?>
+                                    </tbody>
+                                </table>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
         </div>
     </div>
 

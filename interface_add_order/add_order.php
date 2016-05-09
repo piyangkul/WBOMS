@@ -237,7 +237,76 @@ if (isset($_SESSION['idshop'])) {
                                                         }">
                                                     <span class="glyphicon glyphicon-trash"></span> ลบสินค้าทั้งหมด
                                                 </button>
-
+                                                <?php if (isset($_GET['ship'])) { ?>
+                                                    <br/>
+                                                    <br/>
+                                                    <label>สินค้าถูกแก้ไข</label>
+                                                    <br/>
+                                                    <table class="table table-striped table-bordered table-hover text-center" id="dataTables-example">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>ลำดับ</th>
+                                                                <th>ชื่อสินค้า</th>
+                                                                <th>ชื่อโรงงาน</th>
+                                                                <th>จำนวน</th>
+                                                                <th>ราคาต่อหน่วย</th>
+                                                                <th>ต้นทุนลด%</th>
+                                                                <th>ส่วนลด</th>
+                                                                <th>ราคาขาย</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>1</td>
+                                                                <td>
+                                                                    <?php
+                                                                    $getProduct = getProduct2($_SESSION['shipment_edit_idproduct']);
+                                                                    foreach ($getProduct as $value) {
+                                                                        $val_name_product = $value['name_product'];
+                                                                        echo $val_name_product;
+                                                                    }
+                                                                    ?>
+                                                                </td>
+                                                                <td>
+                                                                    <?php
+                                                                    $getFactory = getFactory2($_SESSION['shipment_edit_idfactory']);
+                                                                    foreach ($getFactory as $value) {
+                                                                        $val_name_factory = $value['name_factory'];
+                                                                        echo $val_name_factory;
+                                                                    }
+                                                                    ?>
+                                                                </td>
+                                                                <td>
+                                                                    <?php
+                                                                    echo $_SESSION['shipment_edit_amount'] . " ";
+                                                                    $getUnit = getUnit2($_SESSION['shipment_edit_idunit']);
+                                                                    //print_r($getUnit);;
+                                                                    foreach ($getUnit as $value) {
+                                                                        $val_name_unit = $value['name_unit'];
+                                                                        echo $val_name_unit;
+                                                                    }
+                                                                    ?>
+                                                                </td>
+                                                                <td>
+                                                                    <?= number_format($_SESSION['shipment_edit_price'], 2); ?>
+                                                                </td>
+                                                                <?php if ($_SESSION['shipment_edit_type'] === 'PERCENT') { ?>
+                                                                    <td><?= number_format($_SESSION['shipment_edit_diff'], 2) . "%"; ?></td>
+                                                                    <td><?= number_format($_SESSION['shipment_edit_diff_amount_product'], 2) . "%"; ?></td>
+                                                                    <td><?= number_format(($_SESSION['shipment_edit_price'] - (($_SESSION['shipment_edit_price'] * $_SESSION['shipment_edit_diff_amount_product']) / 100)) * $_SESSION['shipment_edit_amount'], 2) ?></td>
+                                                                <?php } else { ?>
+                                                                    <td>-</td>
+                                                                    <td><?= number_format($_SESSION['shipment_edit_diff'], 2) . " ฿"; ?></td>
+                                                                    <td><?= number_format(($_SESSION['shipment_edit_price'] * $_SESSION['shipment_edit_amount']) + ($_SESSION['shipment_edit_diff_amount_product'] * 1), 2); ?></td>
+                                                                    <?php
+                                                                }
+                                                                ?>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    <?php
+                                                }
+                                                ?>
                                                 <br></br>
                                                 <div id="showUnit"></div>
                                             </div>

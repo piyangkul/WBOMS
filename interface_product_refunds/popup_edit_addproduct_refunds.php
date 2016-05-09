@@ -65,6 +65,16 @@ $idshop = $_GET['idshop'];
                 }
             }
         });
+        $.ajax({type: "GET",
+            url: "action/action_ajax_table_product_order.php",
+            async: false,
+            data: "idproduct=" + id + "&idshop=" + idshop,
+            dataType: 'html',
+            success: function (www)
+            {
+                $("#table_product_order").html(www);
+            }
+        });
 
 
         //alert(idshop);
@@ -85,7 +95,7 @@ $idshop = $_GET['idshop'];
                 <div class="input-group ui-front">
                     <span class="input-group-addon"><i class="fa fa-cube" ></i></span>
                     <input type="text" class="form-control" id="name_product" name="name_product" placeholder="กรุณาระบุชื่อสินค้า" onblur="getProductID()" autocomplete= "on" ></input>
-                    <input type="hidden" id="idproduct" name="idproduct"></input>
+                    <input type="hidden" id="idproduct" name="idproduct">
                     <input type="hidden" class="form-control" id="name_factory" name="name_factory" disabled>
                     <input type="hidden" class="form-control" id="idfactory" name="idfactory">
                     <input type="hidden" class="form-control" id="typefactory" name="typefactory">
@@ -97,8 +107,6 @@ $idshop = $_GET['idshop'];
 
             <div class="form-group col-xs-12" style="float:left;width:50%;">
                 <label for="amount_product">จำนวน</label>
-                <input type="hidden" class="form-control" id="diff" readonly="true">
-                <input type="hidden" class="form-control" id="price_factory" readonly="true">
                 <input type="text" class="form-control" id="AmountProduct" placeholder="กรอกจำนวนสินค้า" onkeyup="updateAmount()" required>
             </div>
             <div class="form-group col-xs-12" style="float:left;width:50%;">
@@ -108,15 +116,49 @@ $idshop = $_GET['idshop'];
                 <div id="tee"></div>
             </div>
             <div class="form-group col-xs-12">
-                <label for="disabled_price_unit">ราคาคืนต่อหน่วย</label>
-                <input type="hidden" class="form-control" id="diff" readonly="true">
+                <label>ส่วนลดสินค้าคืน</label>
+                <input type="text" class="form-control" id="diff" onkeyup="updateAmount()">
+            </div>
+
+            <div class="form-group col-xs-12">
+                <label>ราคาคืนต่อหน่วย</label> 
                 <input type="hidden" class="form-control" id="price_factory" readonly="true">
                 <input type="hidden" id="diffBath" name="diffBath" value="">
-                <input type="text" class="form-control" id="price" readonly="true">
+                <input type="text" class="form-control" id="price" readonly="true" onkeyup="updateAmount()">
             </div>
             <div class="form-group col-xs-12">
-                <label for="disabled_price_unit">ราคาคืนทั้งหมด</label>
-                <input type="text" class="form-control" id="total_price" readonly="true">
+                <label>ราคาคืนทั้งหมด</label>
+                <input type="text" class="form-control" id="total_price" readonly="true" onkeyup="updateAmount()">
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            ประวัติคำสั่งสินค้าคืน
+                        </div>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover" id="dataTables-example" >
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">ลำดับ</th>
+                                            <th class="text-center">วันที่สั่งซื้อ</th>
+                                            <th class="text-center">จำนวนสินค้า</th>
+                                            <th class="text-center">ราคาต่อหน่วย</th>
+                                            <th class="text-center">ต้นทุนลด%</th>
+                                            <th class="text-center">ส่วนลด</th>
+                                            <th class="text-center">ราคาขาย</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table_product_order">
+                                    </tbody>
+                                </table>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -166,7 +208,7 @@ $idshop = $_GET['idshop'];
                     showUnit();
                 }
             });
-            $('#myModal').modal('hide');
+            $('#myModal-lg').modal('hide');
             window.location.href = 'edit_product_refunds.php?idorder=' + idorder;
         } else {
             alert("กรุณากรอกข้อมูลให้ครบ");

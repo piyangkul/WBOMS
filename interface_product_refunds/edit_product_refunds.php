@@ -131,7 +131,7 @@ $dateEnd = $getDateShipment['date_end'];
                                                 $statusCk = $chkAddPr['status_product_refund'];
                                                 if ($statusCk !== 'returned') {
                                                     ?>
-                                                    <a href="popup_edit_addproduct_refunds.php?idorder=<?= $val_idorder; ?>&idshop=<?= $idshop; ?>" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">
+                                                    <a href="popup_edit_addproduct_refunds.php?idorder=<?= $val_idorder; ?>&idshop=<?= $idshop; ?>" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal-lg">
                                                         <span class="glyphicon glyphicon-plus"></span> เพิ่มสินค้า </a>
                                                     <br/>
                                                     <br/>
@@ -211,7 +211,7 @@ $dateEnd = $getDateShipment['date_end'];
                                                                     <td>
                                                                         <!--Button trigger modal -->
 
-                                                                        <a href = "popup_edit_editproduct_refunds.php?idproduct_refunds=<?= $val_idproduct_refunds; ?>&idorder_product_refunds=<?= $val_idorder; ?>&idshop=<?= $idshop; ?>&type_factory=<?= $type_factory; ?>&diff=<?= $difference_product_refunds; ?>" id="editProduct<?= $val_idproduct_refunds; ?>" name="editProduct<?= $val_idproduct_refunds; ?>" class="btn btn-warning " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="แก้ไข">
+                                                                        <a href = "popup_edit_editproduct_refunds.php?idproduct_refunds=<?= $val_idproduct_refunds; ?>&idorder_product_refunds=<?= $val_idorder; ?>&idshop=<?= $idshop; ?>&type_factory=<?= $type_factory; ?>&diff=<?= $difference_product_refunds; ?>" id="editProduct<?= $val_idproduct_refunds; ?>" name="editProduct<?= $val_idproduct_refunds; ?>" class="btn btn-warning " data-toggle="modal" data-target="#myModal-lg" data-toggle="tooltip" title="แก้ไข">
                                                                             <span class = "glyphicon glyphicon-edit"></span>
                                                                         </a>
                                                                         <a class = "btn btn-danger" data-toggle = "modal" data-target = "#myModal3" data-toggle = "tooltip" title = "ลบ" id="deleteProduct<?= $val_idproduct_refunds; ?>" name="deleteProduct<?= $val_idproduct_refunds; ?>" onclick="delProduct(<?= $val_idproduct_refunds; ?>,<?= $val_price_product_refunds * $val_amount_product_refunds; ?>);">
@@ -347,11 +347,21 @@ $dateEnd = $getDateShipment['date_end'];
     }
 
     function updateAmount() {
-        var price = document.getElementById("price").value;
+        var price = document.getElementById("price_factory").value.replace(',', '');
         var amount = document.getElementById("AmountProduct").value;
-        var x = price.replace(",", "");
-        var total = amount * x;
-        document.getElementById("total_price").value = total.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+        var diff = document.getElementById("diff").value;
+        var type_factory = document.getElementById("typefactory").value;
+        //var diff = document.getElementById("diff").value
+        if (type_factory === "PERCENT") {
+            var total = (price - ((price * diff)) / 100) * amount;
+            document.getElementById("price").value = (price - ((price * diff)) / 100).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+            document.getElementById("total_price").value = total.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+        } else {
+            var amount_all = document.getElementById("diffBath").value;
+            var total = ((price * 1) + (diff / amount_all)) * amount;
+            document.getElementById("price").value = ((price * 1) + (diff / amount_all)).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+            document.getElementById("total_price").value = total.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+        }
     }
 
     function ChangeProduct() {
@@ -392,7 +402,6 @@ $dateEnd = $getDateShipment['date_end'];
         var price = document.getElementById('price_factory').value;
         var diff = document.getElementById('diff').value;
         var amount = document.getElementById('AmountProduct').value;
-        //alert(diff);
 
         var total_percent = price - ((price * diff) / 100)
         if (type === 'PERCENT') {
@@ -411,13 +420,10 @@ $dateEnd = $getDateShipment['date_end'];
                 }
 
             });
-
             var amount_all = document.getElementById('diffBath').value;
             var total_bath = (price * 1) + (diff / amount_all);
-            //alert(total_bath);
-            document.getElementById('price').value = total_bath.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
             document.getElementById('total_price').value = (total_bath * amount).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
-
+            document.getElementById('price').value = total_bath.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
         }
     }
     function LoadFactory(str) {

@@ -148,7 +148,7 @@ function getUnit2($id) {
 
 function getUnit3($id) {
     $conn = dbconnect();
-    $SQLCommand = "SELECT idunit,name_unit,price_unit,type_unit,unit.idproduct,factory.name_factory,name_product,factory.idfactory,factory.type_factory,concat(factory.code_factory,product.idproduct) AS code_product FROM `unit` INNER JOIN product ON product.idproduct=unit.idproduct INNER JOIN factory ON factory.idfactory = product.idfactory WHERE idunit = :id ";
+    $SQLCommand = "SELECT idunit,name_unit,price_unit,type_unit,unit.idproduct,factory.name_factory,name_product,factory.idfactory,factory.type_factory,concat(factory.code_factory,product.idproduct) AS code_product,price_unit FROM `unit` INNER JOIN product ON product.idproduct=unit.idproduct INNER JOIN factory ON factory.idfactory = product.idfactory WHERE idunit = :id ";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(
@@ -838,6 +838,23 @@ function getDiffBathaction($idproduct, $idunit) {
             array(
                 ":idproduct" => $idproduct,
                 ":idunit" => $idunit
+            )
+    );
+    $resultArr = array();
+    while ($result = $SQLPrepare->fetch(PDO::FETCH_ASSOC)) {
+        array_push($resultArr, $result);
+    }
+    return $resultArr;
+}
+
+function getTableProduct($idproduct,$idshop) {
+    $conn = dbconnect();
+    $SQLCommand = "SELECT * FROM view_getproduct_orderbyid WHERE idproduct = :idproduct AND idshop = :idshop";
+    $SQLPrepare = $conn->prepare($SQLCommand);
+    $SQLPrepare->execute(
+            array(
+                ":idproduct" => $idproduct,
+                ":idshop" => $idshop
             )
     );
     $resultArr = array();

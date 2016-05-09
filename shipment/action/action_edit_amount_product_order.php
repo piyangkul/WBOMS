@@ -26,6 +26,7 @@ $_SESSION['idfactory'] = $idfactory;
 
 
 
+
 if (isset($_GET['addP'])) {
     $_SESSION['addProductShipment'] = "Chk";
     $getproduct_orderOld = getProductOrderOld($idproduct_order);
@@ -38,6 +39,16 @@ if (isset($_GET['addP'])) {
     $diffOld = $getproduct_orderOld['difference_product_order'];
     $diff = $getproduct_orderOld['difference_amount_product'];
     $typeOld = $getproduct_orderOld['type_product_order'];
+
+    $_SESSION['shipment_edit_idunit'] = $idunitOld;
+    $_SESSION['shipment_edit_idproduct'] = $idproductOld;
+    $_SESSION['shipment_edit_idfactory'] = $idfactoryOld;
+    $_SESSION['shipment_edit_amount'] = $amountOld;
+    $_SESSION['shipment_edit_price'] = $priceOld;
+    $_SESSION['shipment_edit_diff'] = $diffOld;
+    $_SESSION['shipment_edit_diff_amount_product'] = $diff;
+    $_SESSION['shipment_edit_type'] = $typeOld;
+
     $_SESSION['idshop'] = $idshopOld;
     if ($idunit === $idunitOld) {
         if (isset($_SESSION["countProduct"])) {
@@ -62,7 +73,7 @@ if (isset($_GET['addP'])) {
                 $amountSSS = $val_amount_unit * $amountSSS;
             }
             $_SESSION["product"][$_SESSION["countProduct"]]["DifferencePer"] = "";
-            $_SESSION["product"][$_SESSION["countProduct"]]["DifferenceBath"] = $diffOld;
+            $_SESSION["product"][$_SESSION["countProduct"]]["DifferenceBath"] = $diffOld * $amountSSS;
             $_SESSION["product"][$_SESSION["countProduct"]]["total"] = (($price_unit * 1) + ($diffOld / $amountSSS)) * ($amountOld - $idamount_product_order);
         }
 
@@ -111,7 +122,7 @@ if (isset($_GET['addP'])) {
                         $amountSSS = $val_amount_unit * $amountSSS;
                     }
                     $_SESSION ["product"][$_SESSION["countProduct"]]["DifferencePer"] = "";
-                    $_SESSION["product"][$_SESSION ["countProduct"]]["DifferenceBath"] = $diffOld;
+                    $_SESSION["product"][$_SESSION ["countProduct"]]["DifferenceBath"] = $diffOld * $amountSSS;
                     $_SESSION["product"][$_SESSION ["countProduct"]]["total"] = (($priceMod * 1) + ($diffOld / $amountSSS)) * $amountMod;
                 }
                 $_SESSION["product"][$_SESSION ["countProduct"]]["price"] = ($priceMod * 1);

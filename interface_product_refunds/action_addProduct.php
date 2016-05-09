@@ -166,7 +166,7 @@ else if ($_GET['p'] == "editProduct") {
                         <td class="text-right"><?php echo number_format($_SESSION["productR"][$i]["price"], 2); ?></td>
                         <td class="text-right"><?php echo number_format($_SESSION["productR"][$i]["total_price"], 2); ?></td>
                         <td>
-                            <a href="popup_addproduct_refunds_edit.php?idproduct_refunds=<?= $i; ?>&idunit=<?php echo $idUnitS; ?>&amount=<?= $_SESSION["productR"][$i]["AmountProduct"]; ?>&price=<?= $_SESSION["productR"][$i]["price"]; ?>&total_price=<?= $_SESSION["productR"][$i]["total_price"]; ?>&price_factory=<?= $_SESSION["productR"][$i]["price_factory"]; ?>&diff=<?= $_SESSION["productR"][$i]["diff"]; ?>" class="btn btn-warning " data-toggle="modal" data-target="#myModal" data-toggle="tooltip" title="แก้ไข">
+                            <a href="popup_addproduct_refunds_edit.php?idproduct_refunds=<?= $i; ?>&idunit=<?php echo $idUnitS; ?>&amount=<?= $_SESSION["productR"][$i]["AmountProduct"]; ?>&price=<?= $_SESSION["productR"][$i]["price"]; ?>&total_price=<?= $_SESSION["productR"][$i]["total_price"]; ?>&price_factory=<?= $_SESSION["productR"][$i]["price_factory"]; ?>&diff=<?= $_SESSION["productR"][$i]["diff"]; ?>" class="btn btn-warning " data-toggle="modal" data-target="#myModal-lg" data-toggle="tooltip" title="แก้ไข">
                                 <span class="glyphicon glyphicon-edit"></span>
                             </a>
                             <a class = "btn btn-danger" data-toggle = "modal" data-toggle = "tooltip" title = "ลบ" id="deleteProduct<?= $i; ?>" name="deleteProduct<?= $i; ?>" onclick="if (confirm('คุณต้องการลบหน่วยสินค้าหรือไม่')) {

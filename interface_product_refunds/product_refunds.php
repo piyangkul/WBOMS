@@ -45,40 +45,40 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                     </div>
                     <!-- /. ROW  -->
                     <hr />
-
+                    <?php
+                    if (isset($_GET['action'])) {
+                        if ($_GET['action'] == "addCompleted") {
+                            echo '<center><h4 class="text-success">คุณได้ทำการเพิ่มสำเร็จแล้ว</h4></center>';
+                        } else if ($_GET['action'] == "addError") {
+                            echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถเพิ่มได้</h4></center>';
+                        } else if ($_GET['action'] == "editCompleted") {
+                            echo '<center><h4 class="text-success">คุณได้ทำการแก้ไขสำเร็จแล้ว</h4></center>';
+                        } else if ($_GET['action'] == "editError") {
+                            echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถแก้ไขได้</h4></center>';
+                        } else if ($_GET['action'] == "delCompleted") {
+                            echo '<center><h4 class="text-success">คุณได้ทำการลบสำเร็จแล้ว</h4></center>';
+                        } else if ($_GET['action'] == "delError") {
+                            echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถลบได้</h4></center>';
+                        } else if ($_GET['action'] == "addErrorDuplicateCode") {
+                            echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถเพิ่มได้เนื่องจากรหัสสินค้าซ้ำ</h4></center>';
+                        } else if ($_GET['action'] == "delProductdError") {
+                            echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถลบได้เนื่องจากมีคำสั่งซื้ออยู่</h4></center>';
+                        } else if ($_GET['action'] == "addErrorDuplicateProduct") {
+                            echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถเพิ่มได้เนื่องจากคุณได้เพิ่มชื่อสินค้าสินค้าไปแล้ว</h4></center>';
+                        } else if ($_GET['action'] == "addErrorNotHaveProduct") {
+                            echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถเพิ่มได้เนื่องจากคุณไม่ได้กรอกสินค้า</h4></center>';
+                        } else if ($_GET['action'] == "delErrorStatus") {
+                            echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถลบได้เพราะมีสินค้าที่ถูกคืนไปแล้ว</h4></center>';
+                        }
+                    }
+                    ?>
                     <div class="row">
                         <div class="col-md-12">
                             <a href="action/action_reset.php?cancel=addorder" class="btn btn-info btn-lg">
                                 <span class="glyphicon glyphicon-plus"></span> เพิ่มสินค้าคืน
                             </a>
                             <br/><br/>
-                            <?php
-                            if (isset($_GET['action'])) {
-                                if ($_GET['action'] == "addCompleted") {
-                                    echo '<center><h4 class="text-success">คุณได้ทำการเพิ่มสำเร็จแล้ว</h4></center>';
-                                } else if ($_GET['action'] == "addError") {
-                                    echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถเพิ่มได้</h4></center>';
-                                } else if ($_GET['action'] == "editCompleted") {
-                                    echo '<center><h4 class="text-success">คุณได้ทำการแก้ไขสำเร็จแล้ว</h4></center>';
-                                } else if ($_GET['action'] == "editError") {
-                                    echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถแก้ไขได้</h4></center>';
-                                } else if ($_GET['action'] == "delCompleted") {
-                                    echo '<center><h4 class="text-success">คุณได้ทำการลบสำเร็จแล้ว</h4></center>';
-                                } else if ($_GET['action'] == "delError") {
-                                    echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถลบได้</h4></center>';
-                                } else if ($_GET['action'] == "addErrorDuplicateCode") {
-                                    echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถเพิ่มได้เนื่องจากรหัสสินค้าซ้ำ</h4></center>';
-                                } else if ($_GET['action'] == "delProductdError") {
-                                    echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถลบได้เนื่องจากมีคำสั่งซื้ออยู่</h4></center>';
-                                } else if ($_GET['action'] == "addErrorDuplicateProduct") {
-                                    echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถเพิ่มได้เนื่องจากคุณได้เพิ่มชื่อสินค้าสินค้าไปแล้ว</h4></center>';
-                                } else if ($_GET['action'] == "addErrorNotHaveProduct") {
-                                    echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถเพิ่มได้เนื่องจากคุณไม่ได้กรอกสินค้า</h4></center>';
-                                } else if ($_GET['action'] == "delErrorStatus") {
-                                    echo '<center><h4 class="text-danger">ผิดพลาด!! ไม่สามารถลบได้เพราะมีสินค้าที่ถูกคืนไปแล้ว</h4></center>';
-                                }
-                            }
-                            ?>
+
                             <!-- ตารางประวัติคำสั่งซื้อ -->
                             <div class="panel panel-primary">
                                 <div class="panel-heading">
@@ -108,7 +108,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                     $val_idorder_product_refunds = $value['idorder_product_refunds'];
                                                     $val_name_shop = $value['name_shop'];
                                                     $val_date_product_refunds = $value['date_product_refunds'];
-                                                    $date_for =  date_create($val_date_product_refunds);
+                                                    $date_for = date_create($val_date_product_refunds);
                                                     $date_for->add(new DateInterval('P543Y0M0DT0H0M0S'));
                                                     $val_price_product_refunds = $value['order_price_product_refunds'];
                                                     $val_idproduct_refunds = $value['idproduct_refunds'];
@@ -116,7 +116,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
                                                     <tr>
                                                         <td class="text-center"><?php echo $i; ?></td>
                                                         <td class="text-center"><?php echo $val_name_shop; ?></td>
-                                                        <td class="text-center"><?php echo date_format($date_for,'d-m-Y'); ?></td>
+                                                        <td class="text-center"><?php echo date_format($date_for, 'd-m-Y'); ?></td>
                                                         <td class="text-center"><?php echo $val_idproduct_refunds; ?></td>
                                                         <td class="text-right"><?php echo number_format($val_price_product_refunds, 2); ?></td>
                                                         <td class="text-center"> 
