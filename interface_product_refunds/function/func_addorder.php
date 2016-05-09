@@ -849,7 +849,7 @@ function getDiffBathaction($idproduct, $idunit) {
 
 function getTableProduct($idproduct,$idshop) {
     $conn = dbconnect();
-    $SQLCommand = "SELECT * FROM view_getproduct_orderbyid WHERE idproduct = :idproduct AND idshop = :idshop";
+    $SQLCommand = "SELECT * FROM view_getproduct_orderbyid WHERE idproduct = :idproduct AND idshop = :idshop ORDER BY date_order_p DESC";
     $SQLPrepare = $conn->prepare($SQLCommand);
     $SQLPrepare->execute(
             array(

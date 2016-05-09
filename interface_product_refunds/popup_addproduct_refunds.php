@@ -133,7 +133,7 @@ session_start();
                 <div class="col-md-12">
                     <div class="panel panel-primary">
                         <div class="panel-heading">
-                            ประวัติคำสั่งสินค้าคืน
+                            ประวัติคำสั่งสินค้า
                         </div>
                         <div class="panel-body">
                             <div class="table-responsive">
