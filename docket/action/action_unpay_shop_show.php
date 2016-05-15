@@ -191,7 +191,7 @@ require_once dirname(__FILE__) . '/../function/func_docket.php';
                             <a href="popup_add_payshop.php?idshipment_period=<?php echo $val_idshipment_period; ?>&idshop=<?php echo $val_idshop; ?>&sum_order=<?php echo $sum_order; ?>&debt=<?php echo $val_debt; ?>&price_product_refunds=<?php echo $val_order_price_product_refunds; ?>" class="btn btn-info" data-toggle = "modal" data-target = "#myModal-lg" data-toggle="tooltip" title="เพิ่มการเก็บเงินร้านค้า">
                                 <span class = "fa fa-plus fa-fw"></span><span class = "fa fa-shopping-cart fa-lg"></span>
                             </a><?php
-                        } elseif ($sum_order != 0 && $val_status_check_add_payshop != "finish" && $sum_order2 != 0) {
+                        } elseif ($sum_order != 0 && $val_status_check_add_payshop != "finish" && $sum_order2 == 0) {
                             ?><!-- สั่งซื้อไม่ใช่0 รอบมันเองไม่ใช่finish ยอดสั่งซื้อก่อนหน้า=0 -->
                             <a href="popup_add_payshop.php?idshipment_period=<?php echo $val_idshipment_period; ?>&idshop=<?php echo $val_idshop; ?>&sum_order=<?php echo $sum_order; ?>&debt=<?php echo $val_debt; ?>&price_product_refunds=<?php echo $val_order_price_product_refunds; ?>" class="btn btn-info" data-toggle = "modal" data-target = "#myModal-lg" data-toggle="tooltip" title="เพิ่มการเก็บเงินร้านค้า">
                                 <span class = "fa fa-plus fa-fw"></span><span class = "fa fa-shopping-cart fa-lg"></span>
