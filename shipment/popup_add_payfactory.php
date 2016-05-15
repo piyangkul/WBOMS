@@ -175,7 +175,7 @@ $price_product_refund_factory = 0;
                     <center><h4>ยอดสั่งซื้อรวม(สั่งซื้อ+ค่าขนส่ง) <input type="text" class="form-control" value="<?php echo number_format($price, 2); ?>" readonly> </h4></center>
                     <center><h4>ยอดเงินสินค้าคืนรวม <input type="text" class="form-control" value="<?php echo number_format($price_product_refund_factory, 2); ?>" readonly> </h4></center>
                     <center><h4 class="text text-danger">สรุปยอดเงินที่จ่ายโรงงาน <input type="text" class="form-control" value="<?php echo number_format($real_price_pay_factory, 2); ?>" readonly></h4></center>
-                    <center><h4>วันที่จ่ายเงินโรงงาน <input type="date" class="form-control" id="date_pay_factory" name="date_pay_factory" value="<?php echo $date->format('Y-m-d'); ?>" required></h4></center>
+                    <center><h4>วันที่จ่ายเงินโรงงาน <input type="date" class="form-control" id="date_pay_factory" name="date_pay_factory" value="<?php echo $date->format('Y-m-d'); ?>" min="<?php echo $val_date_end;?>" required></h4></center>
                 </div>
 
                 <div class = "form-group col-md-4"></div>
@@ -194,7 +194,7 @@ $price_product_refund_factory = 0;
                                 <div class="form-group input-group">
                                     <label class="radio-inline">
                                         <input type="radio" onclick="chkCredit_pay_factory()" name="type_pay_factory" id="credit" value="credit" > <label>เช็ค</label>
-                                        <input type="date" class="form-control" id="date_pay_factory_credit" min="<?php echo $val_date_end; ?>" max="<?php echo $endNextdate; ?>" name="date_pay_factory_credit" disabled>
+                                        <input type="date" class="form-control" id="date_pay_factory_credit" min="<?php echo $val_date_end;?>" name="date_pay_factory_credit" disabled> <!-- max="<?php //echo $endNextdate; ?>"-->
                                     </label>
                                 </div>
                                 <div class="form-group input-group">
@@ -216,9 +216,9 @@ $price_product_refund_factory = 0;
                                     </label>
                                 </div>
                             </div>
-                            <label class="text-danger">* วันที่จ่ายเช็ค </label>
+<!--                            <label class="text-danger">* วันที่จ่ายเช็ค </label>
                             <label class="text-danger">เริ่มตั้งแต่วันที่สิ้นสุดของรอบนี้ ถึงวันที่สิ้นสุดรอบถัดไป</label> 
-                            <label class="text-danger">แต่ถ้าไม่มีรอบถัดไประบบจะบังคับให้เป็นวันที่ปัจจุบัน(วันนี้)</label>
+                            <label class="text-danger">แต่ถ้าไม่มีรอบถัดไประบบจะบังคับให้เป็นวันที่ปัจจุบัน(วันนี้)</label>-->
                         </div>
                     </div>
                 </div>

@@ -1,5 +1,6 @@
 ﻿<?php
 require_once 'function/func_stat.php';
+require_once '../shipment/function/func_shipment.php';
 session_start();
 if (!isset($_SESSION['member']))
     header('Location: ../index.php');
@@ -39,9 +40,8 @@ $month_end = $_GET['month_end'];
         <script src="../high_chart_table/highchartTable-min.js" type="text/javascript"></script>
         <script src="../high_chart_table/highchartTable.js" type="text/javascript"></script>
 
-        <!--        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" />
-                <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-                <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>-->
+<!--        <script src="https://code.highcharts.com/highcharts.js"></script>
+        <script src="https://code.highcharts.com/modules/exporting.js"></script>-->
 
     </head>
     <body>
@@ -64,51 +64,8 @@ $month_end = $_GET['month_end'];
                     <a class="btn btn-danger btn-lg" onclick="Back()"><span class="fa fa-arrow-circle-left"></span> Back</a>
                     <br/>
                     <!-- ข้อมูลการเงินรายเดือน-ปี -->
-                    <table class="highchart" data-graph-container-before="1" data-graph-type="column" style="display:none" data-graph-xaxis-end-on-tick="1" data-graph-height="550" data-graph-subtitle-text="ประกอบด้วย 1.รายรับ 2.รายจ่าย 3.กำไร/ขาดทุน แต่ละรอบ">
-                        <caption>กราฟแสดงข้อมูลการเงินรายเดือน-ปี</caption>
-                        <thead>
-                            <tr>                                  
-                                <th>รอบที่</th><!-- เดือน -->                                      
-                                <th>รายรับจากร้านค้า</th>
-                                <th>รายจ่ายของโรงงาน</th>
-                                <th>กำไร/ขาดทุน</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                            //ดึงข้อมูลจากตาราง
-                            $getIncome_Outcome = getIncome_Outcome($month_start, $year_start, $month_end, $year_end);
-                            foreach ($getIncome_Outcome as $value) {
-                                $val_date_start = $value['date_start'];
-                                $date_start = date_create($val_date_start);
-                                $date_start->add(new DateInterval('P543Y0M0DT0H0M0S'));
-                                $val_date_end = $value['date_end'];
-                                $date_end = date_create($val_date_end);
-                                $date_end->add(new DateInterval('P543Y0M0DT0H0M0S'));
-                                $val_income = $value['income'];
-                                $val_outcome = $value['outcome'];
-                                $profit = $val_income - $val_outcome;
-                                ?>
-                                <tr>
-                                    <td><?php
-                            echo date_format($date_start, 'd-m-Y');
-                            echo" ถึง ";
-                            echo date_format($date_end, 'd-m-Y');
-                                ?>
-                                    </td>
-                                    <td><?php echo $val_income; ?></td>   
-                                    <td><?php echo $val_outcome; ?></td>   
-                                    <td><?php echo $profit; ?></td> 
-                                </tr>
-
-                                <?php
-                            }
-                            ?>
-
-                        </tbody>
-                    </table>
+                    <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
                     <!-- End ข้อมูลการเงินรายเดือน-ปี -->
-
                 </div>
                 <!-- /. PAGE INNER  -->
             </div>
@@ -125,26 +82,120 @@ $month_end = $_GET['month_end'];
         <!-- DATA TABLE SCRIPTS -->
         <script src="../assets/js/dataTables/jquery.dataTables.js"></script>
         <script src="../assets/js/dataTables/dataTables.bootstrap.js"></script>
-
+        <pre>
+            <?php
+            $getIncome_Outcome_JSON = getIncome_Outcome_JSON($month_start, $year_start, $month_end, $year_end);
+            $getIncome_Outcome = getIncome_Outcome($month_start, $year_start, $month_end, $year_end);
+//        $getIncome_Outcome_total = getIncome_Outcome_total($getIncome_Outcome);
+//        print_r($getIncome_Outcome_total);
+            $getIncome_Outcome_total_JSON = getIncome_Outcome_total_JSON($getIncome_Outcome);
+            //print_r($getIncome_Outcome_total_JSON);
+            ?>
+        </pre>
         <script>
-                        $(document).ready(function () {
-                            $('#dataTables-example').dataTable();
+                        $(function () {
+                            $('[data-toggle="tooltip"]').tooltip();
+                            $('table.highchart').highchartTable();
                         });
+
+                        var idshop;
+                        var data = JSON.stringify(<?php echo $getIncome_Outcome_total_JSON; ?>);//ดึงค่า
+                        var Obj = JSON.parse(data);//Objตามจำนวนข้อมูล
+                        //alert(Obj);
+                        var Arr_idperiod = new Array();
+                        var Arr_period = new Array();
+                        var Arr_income = new Array();
+                        var Arr_outcome = new Array();
+                        var Arr_profit = new Array();
+                        //var Arr_all_outcome = new Array();
+                        var Arr_outcome_lack = new Array();
+                        var Arr_income_lack = new Array();
+                        //pushข้อมูลลงArray
+                        for (var i = 0; i < Obj.length; i++) {
+                            //Arr_idperiod.push(Obj[i].idshipment_period);
+                            Arr_period.push(Obj[i].date_start + ' ถึง ' + Obj[i].date_end);
+                            Arr_income.push(Obj[i].income);
+                            Arr_outcome.push(Obj[i].outcome);
+                            //Arr_all_outcome.push(Obj[i].all_outcome);
+                            Arr_outcome_lack.push(Obj[i].all_outcome - Obj[i].outcome);
+                            Arr_income_lack.push(Obj[i].all_income - Obj[i].income);
+                            Arr_profit.push(Obj[i].income - Obj[i].outcome);
+                            console.log(Arr_income);
+
+
+                            $(function () {
+                                $('#container').highcharts({
+                                    chart: {
+                                        type: 'column',
+                                        width: '1000',
+                                        height: '550'
+                                    },
+                                    colors: ["#7cb5ec", "#7798BF", "#90ee7e", "#55BF3B", "#f7a35c"],
+                                    title: {
+                                        text: 'กราฟแสดงข้อมูลการเงินรายเดือน-ปี'
+                                    },
+                                    xAxis: {
+                                        categories: Arr_period
+                                    },
+                                    yAxis: {
+                                        allowDecimals: false,
+                                        min: -1,
+                                        title: {
+                                            text: 'จำนวนเงิน (บาท)'
+                                        }
+                                    },
+                                    tooltip: {
+                                        formatter: function () {
+                                            return '<b>' + this.x + '</b><br/>' +
+                                                    this.series.name + ': ' + this.y + '<br/>' +
+                                                    'Total: ' + this.point.stackTotal;
+                                        }
+                                    },
+                                    plotOptions: {
+                                        column: {
+                                            stacking: 'normal'
+                                        }
+                                    },
+                                    series: [{
+                                            name: 'รายรับคงค้าง(ยังไม่ได้เก็บร้านค้า)',
+                                            data: Arr_income_lack,
+                                            stack: 'income'
+                                        }, {
+                                            name: 'รายรับจริง',
+                                            data: Arr_income,
+                                            stack: 'income'
+                                        }, {
+                                            name: 'รายจ่ายคงค้าง(ยังไม่ได้จ่ายโรงงาน)',
+                                            data: Arr_outcome_lack,
+                                            stack: 'outcome'
+                                        }, {
+                                            name: 'รายจ่ายจริง',
+                                            data: Arr_outcome,
+                                            stack: 'outcome'
+                                        }, {
+                                            name: 'กำไร/ขาดทุนจริง',
+                                            data: Arr_profit,
+                                            stack: 'profit'
+                                        }]
+                                });
+                            });
+                        }
+                        function Back() {
+                            window.location.assign("stat.php?year_start=<?php echo $year_start; ?>&month_start=<?php echo $month_start; ?>&year_end=<?php echo $year_end; ?>&month_end=<?php echo $month_end; ?>");
+                        }
         </script>
         <script>
-            $(function () {
-                $('[data-toggle="tooltip"]').tooltip();
-                $('table.highchart').highchartTable();
-            });
-
-            $(document.body).on('hidden.bs.modal', function () {
-                $('#myModal').removeData('bs.modal');
-            });
-            function Back() {
-                window.location.assign("stat.php?year_start=<?php echo $year_start; ?>&month_start=<?php echo $month_start; ?>&year_end=<?php echo $year_end; ?>&month_end=<?php echo $month_end; ?>");
-            }
+            $(document).ready(function () {
+            $('#dataTables-example').dataTable();
+////                $.post('../shipment/function/func_shipment.php', {idshipment_period: Arr_idperiod}, function (data) {
+////                    alert(data);
+////                });
+//                $.get('../shipment/function/func_shipment.php?idshipment_period=' + Arr_idperiod, function (data, status) {//+"&id="+
+//                    //$("#show_send_table").html(data);
+//                    alert(data);
+//                });
+//            });
         </script>
-
     </body>
 </html>
 <div class="modal fade" id="myModal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
