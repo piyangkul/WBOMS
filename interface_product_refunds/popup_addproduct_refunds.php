@@ -135,9 +135,9 @@ session_start();
                         <div class="panel-heading">
                             ประวัติคำสั่งสินค้า
                         </div>
-                        <div class="panel-body">
+                        <div class="panel-body" style="overflow:scroll;width:100%;height: 400px;">
                             <div class="table-responsive">
-                                <table class="table table-striped table-bordered table-hover" id="dataTables-example" >
+                                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
                                             <th class="text-center">ลำดับ</th>

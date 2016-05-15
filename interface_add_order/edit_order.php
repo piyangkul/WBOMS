@@ -262,7 +262,6 @@ $total_price_all = 0;
                         </div>
                     </form>
                 </div>
-
                 <!-- /. PAGE INNER  -->
             </div>
             <!-- /. PAGE WRAPPER  -->

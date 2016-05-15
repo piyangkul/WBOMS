@@ -87,13 +87,6 @@ $val_name_product = '[' . $code . "] " . $getProduct_order['name_product'] . " -
                             ?>
                             <option value="<?= $val_idunit; ?>"><?= $val_name_unit; ?></option><?php
                         }
-                        /*  $amountUnitNew = $val_amount_product_order;
-                          $getAmountNew = getUnitNew($val_idproduct, $idunitOld, $idunit);
-                          foreach ($getAmountNew as $value) {
-                          $val_amount_unit = $value['amount_unit'];
-                          $val_price = $value['price_unit'];
-                          $amountUnitNew = $val_amount_unit * $amountUnitNew;
-                          } */
                         ?>
                     </select>
                 </div>
@@ -130,7 +123,7 @@ $val_name_product = '[' . $code . "] " . $getProduct_order['name_product'] . " -
                 amountOld = parseFloat(amountOld);
                 if (amount_product_order < amountOld) {
 
-                    var confirms = confirm("คุณต้องการสินค้าที่ลบไปสร้างรอบถัดไปหรือไม่");
+                    var confirms = confirm("คุณต้องการเพิ่มสินค้าที่ยังคงค้างไปในรอบถัดไปหรือไม่");
                     if (confirms === true) {
                         var addP = "addP";
                         var p = "&name_unit=" + idUnit + "&idshipment_period=" + idshipment_period + "&idproduct_order=" + idproduct_order + "&idfactory=" + idfactory + "&amount_product_order=" + amount_product_order + "&price=" + price + "&status_shipment=" + status_shipment + "&addP=" + addP;
@@ -211,7 +204,7 @@ $val_name_product = '[' . $code . "] " . $getProduct_order['name_product'] . " -
                 //alert("789");
                 if (amount_product_order < amountOld) {
                     //alert(amount_product_order + "<" + amountOld);
-                    var confirms = confirm("คุณต้องการสินค้าที่ลบไปสร้างรอบถัดไปหรือไม่");
+                    var confirms = confirm("คุณต้องการเพิ่มสินค้าที่ยังคงค้างไปในรอบถัดไปหรือไม่");
                     if (confirms === true) {
                         var addP = "addP";
                         var p = "&name_unit=" + idUnit + "&idshipment_period=" + idshipment_period + "&idproduct_order=" + idproduct_order + "&idfactory=" + idfactory + "&amount_product_order=" + amount_product_order + "&price=" + price + "&status_shipment=" + status_shipment + "&addP=" + addP;
@@ -294,7 +287,7 @@ $val_name_product = '[' . $code . "] " . $getProduct_order['name_product'] . " -
                 amountOld = parseFloat(amountOld);
                 //alert("555");
                 if (amount_product_order < amountOld) {
-                    var confirms = confirm("คุณต้องการสินค้าที่ลบไปสร้างรอบถัดไปหรือไม่");
+                    var confirms = confirm("คุณต้องการเพิ่มสินค้าที่ยังคงค้างไปในรอบถัดไปหรือไม่");
                     if (confirms === true) {
                         var addP = "addP";
                         var p = "&name_unit=" + idUnit + "&idshipment_period=" + idshipment_period + "&idproduct_order=" + idproduct_order + "&idfactory=" + idfactory + "&amount_product_order=" + amount_product_order + "&price=" + price + "&status_shipment=" + status_shipment + "&addP=" + addP;

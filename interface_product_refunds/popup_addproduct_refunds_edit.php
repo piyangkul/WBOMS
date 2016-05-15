@@ -148,7 +148,7 @@ $type_factory = $getUnit['type_factory'];
                         <div class="panel-heading">
                             ประวัติคำสั่งสินค้า
                         </div>
-                        <div class="panel-body">
+                        <div class="panel-body" style="overflow:scroll;width:100%;height: 400px;">
                             <div class="table-responsive">
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example" >
                                     <thead>
@@ -172,24 +172,24 @@ $type_factory = $getUnit['type_factory'];
                                             $val_date = $value['date_order_p'];
                                             $val_name_unit = $value['name_unit'];
                                             $val_amount_unit = $value['amount_product_order'];
-                                            $val_price_unit = $value['price_unit'];
+                                            $val_price_unit = number_format($value['price_unit'], 2);
                                             $val_type_product_order = $value['type_product_order'];
-                                            $val_difference_amount = $value['difference_amount_product'];
-                                            $val_difference_product_order = $value['difference_product_order'];
-                                            $total_price_per = ($val_price_unit - (($val_price_unit * $val_difference_product_order) / 100)) * $val_amount_unit;
-                                            $total_price_bath = ($val_price_unit - $val_difference_product_order) * $val_amount_unit;
+                                            $val_difference_amount = number_format($value['difference_amount_product'], 2);
+                                            $val_difference_product_order = number_format($value['difference_product_order'], 2);
+                                            $total_price_per = number_format(($val_price_unit - (($val_price_unit * $val_difference_product_order) / 100)) * $val_amount_unit, 2);
+                                            $total_price_bath = number_format(($val_price_unit - $val_difference_product_order) * $val_amount_unit, 2);
                                             echo "<tr><td class ='text-center'>{$i}</td>";
                                             echo "<td class ='text-center'>{$val_date}</td>";
                                             echo "<td class ='text-center'>{$val_amount_unit} {$val_name_unit}</td>";
-                                            echo "<td class ='text-center'>{$val_price_unit}</td>";
+                                            echo "<td class ='text-right'>{$val_price_unit}</td>";
                                             if ($val_type_product_order === "PERCENT") {
-                                                echo "<td class ='text-center'>{$val_difference_amount}</td>";
-                                                echo "<td class ='text-center'>{$val_difference_product_order} %</td>";
-                                                echo "<td class ='text-center'>{$total_price_per} </td></tr>";
+                                                echo "<td class ='text-center'>{$val_difference_amount}%</td>";
+                                                echo "<td class ='text-center'>{$val_difference_product_order}%</td>";
+                                                echo "<td class ='text-right'>{$total_price_per} </td></tr>";
                                             } else {
                                                 echo "<td class ='text-center'>-</td>";
-                                                echo "<td class ='text-center'>{$val_difference_product_order}฿</td>";
-                                                echo "<td class ='text-center'>{$total_price_bath} </td></tr>";
+                                                echo "<td class ='text-center'>{$val_difference_product_order} ฿</td>";
+                                                echo "<td class ='text-right'>{$total_price_bath} </td></tr>";
                                             }
                                             $i++;
                                         }

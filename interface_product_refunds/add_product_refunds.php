@@ -292,9 +292,9 @@ $dateEnd = $getDateShipment['date_end'];
                                     </div>
                                     <div class = "row">
                                         <div class = "col-md-4"></div>
-                                        <a href="action/action_reset.php?cancel=cancel" class = "btn btn-danger btn-lg text-center">
-                                            <span class = "glyphicon glyphicon-floppy-remove"></span> ยกเลิก
-                                        </a>
+                                       <button type='button' class="btn btn-danger btn-lg text-center" onclick="cancel_order()">
+                                            <span class="glyphicon glyphicon-floppy-remove"></span> ยกเลิก
+                                        </button>
                                         <button type="submit" class="btn btn-info btn-lg text-center">
                                             <span class = "glyphicon glyphicon-floppy-save"></span> บันทึก
                                         </button>
@@ -353,7 +353,12 @@ $dateEnd = $getDateShipment['date_end'];
                                                             $("#showUnit").html(data);
                                                         });
                                                     }
-
+                                                    function cancel_order() {
+                                                        var confirms = confirm("คุณต้องการยกเลิกรายการสินค้าคืนนี้หรือไม่");
+                                                        if (confirms === true) {
+                                                            window.location.href = "action/action_reset.php?cancel=cancel";
+                                                        }
+                                                    }
                                                     function updateAmount() {
                                                         var price = document.getElementById("price_factory").value.replace(',', '');
                                                         var amount = document.getElementById("AmountProduct").value;

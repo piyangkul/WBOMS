@@ -313,7 +313,7 @@ $dateEnd = $getDateShipment['date_end'];
         var price_p = price;
         var idorder = <?= $val_idorder; ?>;
 
-        if (confirm("คุณต้องการลบสินค้าตัวนี้ใช่ไหม" + price_p + idorder) == true) {
+        if (confirm("คุณต้องการลบสินค้าตัวนี้ใช่ไหม") == true) {
             x = "You pressed OK!";
             var p = "&idproduct_refunds=" + idproduct_refunds + "&price_product_refunds=" + price_p + "&idorder=" + idorder;
             //alert(p);

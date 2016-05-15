@@ -152,9 +152,7 @@ if (isset($_SESSION['idshop'])) {
                 <div id="page-inner">
                     <form action="action/action_addOrder.php" method="post"> 
                         <div class="row">
-
                             <div class="col-md-12">
-
                                 <h2> Add Order </h2>   
                                 <h5> เพิ่มคำสั่งซื้อ </h5>
 
@@ -162,11 +160,10 @@ if (isset($_SESSION['idshop'])) {
                         </div>
                         <!-- /. ROW  -->
                         <hr />
-                        <a href="action/action_reset.php?cancel=cancel" class="btn btn-danger btn-lg">
+                        <!--<a href="action/action_reset.php?cancel=cancel" class="btn btn-danger btn-lg">
                             <span class="fa fa-arrow-circle-left"></span> Back
-                        </a>
+                        </a>-->
                         <div class="row">
-
                             <div class="col-md-3"></div>
                             <div class="col-md-5">
                                 <!-- บิล -->
@@ -240,7 +237,7 @@ if (isset($_SESSION['idshop'])) {
                                                 <?php if (isset($_GET['ship'])) { ?>
                                                     <br/>
                                                     <br/>
-                                                    <label>สินค้าถูกแก้ไข</label>
+                                                    <label>รายการสั่งสินค้าเดิม</label>
                                                     <br/>
                                                     <table class="table table-striped table-bordered table-hover text-center" id="dataTables-example">
                                                         <thead>
@@ -304,10 +301,11 @@ if (isset($_SESSION['idshop'])) {
                                                             </tr>
                                                         </tbody>
                                                     </table>
+                                                    <br/>
+                                                    <label>รายการสั่งสินค้าคงค้าง/ใหม่</label>
                                                     <?php
                                                 }
                                                 ?>
-                                                <br></br>
                                                 <div id="showUnit"></div>
                                             </div>
                                         </div>
@@ -321,11 +319,10 @@ if (isset($_SESSION['idshop'])) {
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-4"></div>                              
-
-                                        <a href="action/action_reset.php?cancel=cancel" class="btn btn-danger btn-lg text-center">
+                                        <div class="col-md-4"></div>
+                                        <button type='button' class="btn btn-danger btn-lg text-center" onclick="cancel_order()">
                                             <span class="glyphicon glyphicon-floppy-remove"></span> ยกเลิก
-                                        </a>
+                                        </button>
                                         <button type="submit" class="btn btn-info btn-lg text-center">
                                             <span class="glyphicon glyphicon-floppy-save"></span> บันทึก
                                         </button>
@@ -380,7 +377,12 @@ if (isset($_SESSION['idshop'])) {
                                                     $('#myModal').removeData('bs.modal');
                                                 });
                                                 showUnit();
-
+                                                function cancel_order() {
+                                                    var confirms = confirm("คุณต้องการยกเลิกรายการสินค้านี้หรือไม่");
+                                                    if (confirms === true) {
+                                                        window.location.href = "action/action_reset.php?cancel=cancel";
+                                                    }
+                                                }
                                                 function showUnit() {
                                                     $.get("action_addProduct.php?p=showUnit", function (data, status) {
                                                         $("#showUnit").html(data);
