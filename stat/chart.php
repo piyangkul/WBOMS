@@ -130,7 +130,7 @@ $month_end = $_GET['month_end'];
                                         width: '1000',
                                         height: '550'
                                     },
-                                    colors: ["#7cb5ec", "#7798BF", "#90ee7e", "#55BF3B", "#f7a35c"],
+                                    colors: ["#96c3ef", "#536a85", "#90ee7e", "#3b8529", "#f7a35c"],
                                     title: {
                                         text: 'กราฟแสดงข้อมูลการเงินรายเดือน-ปี'
                                     },

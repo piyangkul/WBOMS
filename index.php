@@ -72,7 +72,7 @@
                                 <?php
                                 if (isset($_REQUEST['error'])) {
                                     if ($_REQUEST['error'] == 2) {
-                                        echo '<br>Username หรือ Password ผิดนะ';
+                                        echo '<br>Username หรือ Password ไม่ถูกต้อง กรุณากรอกใหม่อีกครั้ง';
                                     } /*elseif ($_REQUEST['error'] == 3) {
                                         echo '<br>ลืมใส่อะไรป่าว  Login ใหม่จ้า';
                                     }*/
