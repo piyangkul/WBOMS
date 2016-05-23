@@ -69,6 +69,7 @@ if (isset($_SESSION["product"])) {//ถามว่า$_SESSION["unit"]ถูก
         unset($_SESSION["countProduct"]);
         if (isset($_SESSION['addProductShipment'])) {
             header("location: ../../shipment/add_shipment3.php?idshipment_period=" . $_SESSION['idshipment_period'] . "&idfactory=" . $_SESSION['idfactory'] . "&price=" . $_SESSION['price'] . "&status_shipment=" . $_SESSION['status_shipment'] . "&action=editProduct_orderCompleted");
+            unset($_SESSION['ship']);
             unset($_SESSION['addProductShipment']);
             unset($_SESSION['idshipment_period']);
             unset($_SESSION['idfactory']);
@@ -82,6 +83,7 @@ if (isset($_SESSION["product"])) {//ถามว่า$_SESSION["unit"]ถูก
         unset($_SESSION["countProduct"]);
         if (isset($_SESSION['addProductShipment'])) {
             header("location: ../../shipment/add_shipment3.php?idshipment_period=" . $_SESSION['idshipment_period'] . "&idfactory=" . $_SESSION['idfactory'] . "&price=" . $_SESSION['price'] . "&status_shipment=" . $_SESSION['status_shipment'] . "&action=editProduct_orderCompleted");
+            unset($_SESSION['ship']);
             unset($_SESSION['addProductShipment']);
             unset($_SESSION['idshipment_period']);
             unset($_SESSION['idfactory']);
@@ -96,6 +98,7 @@ if (isset($_SESSION["product"])) {//ถามว่า$_SESSION["unit"]ถูก
     unset($_SESSION["countProduct"]);
     if (isset($_SESSION['addProductShipment'])) {
         header("location: ../../shipment/add_shipment3.php?idshipment_period=" . $_SESSION['idshipment_period'] . "&idfactory=" . $_SESSION['idfactory'] . "&price=" . $_SESSION['price'] . "&status_shipment=" . $_SESSION['status_shipment'] . "&action=editProduct_orderCompleted");
+        unset($_SESSION['ship']);
         unset($_SESSION['addProductShipment']);
         unset($_SESSION['idshipment_period']);
         unset($_SESSION['idfactory']);
