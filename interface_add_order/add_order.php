@@ -29,6 +29,9 @@ if (isset($_SESSION['idshop'])) {
 }if (isset($_SESSION['detail'])) {
     $detail = $_SESSION['detail'];
 }
+if (isset($_GET['ship'])) {
+    $_SESSION['ship'] = $_GET['ship'];
+}
 
 /* if (isset($_GET['idshop'])) {
   $idshop = $_GET['idshop'];
@@ -234,7 +237,7 @@ if (isset($_SESSION['idshop'])) {
                                                         }">
                                                     <span class="glyphicon glyphicon-trash"></span> ลบสินค้าทั้งหมด
                                                 </button>
-                                                <?php if (isset($_GET['ship'])) { ?>
+                                                <?php if (isset($_SESSION['ship'])) { ?>
                                                     <br/>
                                                     <br/>
                                                     <label>รายการสั่งสินค้าเดิม</label>
@@ -373,103 +376,103 @@ if (isset($_SESSION['idshop'])) {
     </div>
 </div>
 <script>
-                                                $(document.body).on('hidden.bs.modal', function () {
-                                                    $('#myModal').removeData('bs.modal');
+                                            $(document.body).on('hidden.bs.modal', function () {
+                                                $('#myModal').removeData('bs.modal');
+                                            });
+                                            showUnit();
+                                            function cancel_order() {
+                                                var confirms = confirm("คุณต้องการยกเลิกรายการสินค้านี้หรือไม่");
+                                                if (confirms === true) {
+                                                    window.location.href = "action/action_reset.php?cancel=cancel";
+                                                }
+                                            }
+                                            function showUnit() {
+                                                $.get("action_addProduct.php?p=showUnit", function (data, status) {
+                                                    $("#showUnit").html(data);
                                                 });
-                                                showUnit();
-                                                function cancel_order() {
-                                                    var confirms = confirm("คุณต้องการยกเลิกรายการสินค้านี้หรือไม่");
-                                                    if (confirms === true) {
-                                                        window.location.href = "action/action_reset.php?cancel=cancel";
-                                                    }
+                                            }
+                                            function updateTotalPer() {
+                                                var x = document.getElementById("DifferencePer").value;
+                                                var price = document.getElementById("total_price").value;
+                                                var total = price - (price * (x / 100));
+                                                document.getElementById("total").value = total;
+                                                document.getElementById("DifferenceBath").disabled = true;
+                                                document.getElementById("type").value = "PERCENT";
+                                                if (x === "") {
+                                                    document.getElementById("DifferenceBath").disabled = false;
                                                 }
-                                                function showUnit() {
-                                                    $.get("action_addProduct.php?p=showUnit", function (data, status) {
-                                                        $("#showUnit").html(data);
-                                                    });
+                                            }
+                                            function updateTotalBath() {
+                                                var x = document.getElementById("DifferenceBath").value;
+                                                var price = document.getElementById("total_price").value;
+                                                var qwer = document.getElementById("idFactory2").value;
+                                                var amount = document.getElementById("AmountProduct").value;
+                                                var total = (qwer - x) * amount;
+                                                document.getElementById("total").value = total;
+                                                document.getElementById("type").value = "BATH";
+                                                document.getElementById("DifferencePer").disabled = true;
+                                                if (x === "") {
+                                                    document.getElementById("DifferencePer").disabled = false;
                                                 }
-                                                function updateTotalPer() {
-                                                    var x = document.getElementById("DifferencePer").value;
-                                                    var price = document.getElementById("total_price").value;
-                                                    var total = price - (price * (x / 100));
-                                                    document.getElementById("total").value = total;
-                                                    document.getElementById("DifferenceBath").disabled = true;
-                                                    document.getElementById("type").value = "PERCENT";
-                                                    if (x === "") {
-                                                        document.getElementById("DifferenceBath").disabled = false;
-                                                    }
+                                            }
+                                            function updateAmount() {
+                                                var price = document.getElementById("idFactory2").value;
+                                                var amount = document.getElementById("AmountProduct").value;
+                                                var difference = document.getElementById("difference").value;
+                                                var total = amount * price;
+                                                var totals = total - (total * (difference / 100))
+                                                document.getElementById("total_price").value = total;
+                                                document.getElementById("cal_difference").value = totals;
+                                            }
+                                            function ChangeProduct() {
+                                                var x = document.getElementById("factoryName").value;
+                                                document.getElementById("idFactory2").innerHTML = "You selected: " + x;
+                                                if (x === "Choose") {
+                                                    document.getElementById("productName").disabled = true;
                                                 }
-                                                function updateTotalBath() {
-                                                    var x = document.getElementById("DifferenceBath").value;
-                                                    var price = document.getElementById("total_price").value;
-                                                    var qwer = document.getElementById("idFactory2").value;
-                                                    var amount = document.getElementById("AmountProduct").value;
-                                                    var total = (qwer - x) * amount;
-                                                    document.getElementById("total").value = total;
-                                                    document.getElementById("type").value = "BATH";
-                                                    document.getElementById("DifferencePer").disabled = true;
-                                                    if (x === "") {
-                                                        document.getElementById("DifferencePer").disabled = false;
-                                                    }
+                                                else {
+                                                    document.getElementById("productName").disabled = false;
                                                 }
-                                                function updateAmount() {
-                                                    var price = document.getElementById("idFactory2").value;
-                                                    var amount = document.getElementById("AmountProduct").value;
-                                                    var difference = document.getElementById("difference").value;
-                                                    var total = amount * price;
-                                                    var totals = total - (total * (difference / 100))
-                                                    document.getElementById("total_price").value = total;
-                                                    document.getElementById("cal_difference").value = totals;
-                                                }
-                                                function ChangeProduct() {
-                                                    var x = document.getElementById("factoryName").value;
-                                                    document.getElementById("idFactory2").innerHTML = "You selected: " + x;
-                                                    if (x === "Choose") {
-                                                        document.getElementById("productName").disabled = true;
-                                                    }
-                                                    else {
-                                                        document.getElementById("productName").disabled = false;
-                                                    }
-                                                }
-                                                function resetUnit() {
-                                                    $.get("action_addProduct.php?p=resetUnit", function (data, status) {
-                                                        if (data !== "-1") {
-                                                            showUnit();
-                                                            alert("ลบสินค้าสั่งซื้อทั้งหมดแล้ว");
-                                                        }
-                                                        else {
-                                                            alert("ไม่สามารถลบสินค้าสั่งซื้อได้");
-
-                                                        }
-                                                    });
-                                                }
-                                                function resetInfo() {
-                                                    $.get("action_addProduct.php?p=resetInfo", function (data, status) {
-                                                        if (data !== "-1") {
-                                                            showUnit();
-                                                            alert("ลบข้อมูลทั้งหมดแล้ว");
-                                                        }
-                                                        else {
-                                                            alert("ลบข้อมูลทั้งหมดแล้ว");
-
-                                                        }
-                                                    });
-                                                    document.getElementById('name_shop').value = "";
-                                                    document.getElementById('name_shop').disabled = false;
-                                                    document.getElementById('add_p').disabled = true;
-                                                }
-                                                function addProduct_Order() {
-                                                    if (document.getElementById("name_shop").value.length > 0) {
-                                                        var idshop = document.getElementById("idshop").value;
-                                                        var detail = document.getElementById("detail_order").value;
-                                                        var date = document.getElementById("date_order").value;
-                                                        var time = document.getElementById("time_order").value
-                                                        window.location.href = 'addproduct_addorder.php?idshop=' + idshop + "&detail=" + detail + "&date=" + date + "&time=" + time;
+                                            }
+                                            function resetUnit() {
+                                                $.get("action_addProduct.php?p=resetUnit", function (data, status) {
+                                                    if (data !== "-1") {
+                                                        showUnit();
+                                                        alert("ลบสินค้าสั่งซื้อทั้งหมดแล้ว");
                                                     }
                                                     else {
-                                                        alert("กรุณากรอกชื่อร้านค้า");
+                                                        alert("ไม่สามารถลบสินค้าสั่งซื้อได้");
+
                                                     }
+                                                });
+                                            }
+                                            function resetInfo() {
+                                                $.get("action_addProduct.php?p=resetInfo", function (data, status) {
+                                                    if (data !== "-1") {
+                                                        showUnit();
+                                                        alert("ลบข้อมูลทั้งหมดแล้ว");
+                                                    }
+                                                    else {
+                                                        alert("ลบข้อมูลทั้งหมดแล้ว");
+
+                                                    }
+                                                });
+                                                document.getElementById('name_shop').value = "";
+                                                document.getElementById('name_shop').disabled = false;
+                                                document.getElementById('add_p').disabled = true;
+                                            }
+                                            function addProduct_Order() {
+                                                if (document.getElementById("name_shop").value.length > 0) {
+                                                    var idshop = document.getElementById("idshop").value;
+                                                    var detail = document.getElementById("detail_order").value;
+                                                    var date = document.getElementById("date_order").value;
+                                                    var time = document.getElementById("time_order").value
+                                                    window.location.href = 'addproduct_addorder.php?idshop=' + idshop + "&detail=" + detail + "&date=" + date + "&time=" + time;
                                                 }
+                                                else {
+                                                    alert("กรุณากรอกชื่อร้านค้า");
+                                                }
+                                            }
 
 
 </script>

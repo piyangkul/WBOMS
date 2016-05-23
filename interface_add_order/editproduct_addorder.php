@@ -224,7 +224,7 @@ if (isset($_SESSION['idshop'])) {
                                                                 <label for="name_product"> ขายเพิ่มสุทธิ/หน่วย </label>
                                                                 <input type="text" class="form-control" placeholder="กรอกราคาขายเพิ่มสุทธิ" id="DifferenceBath" value="<?= number_format($diffBath, 2); ?>" onkeyup="updateAmount()"> </input>
                                                                 <input type="hidden" id="type" name="type" value="<?= $type ?>"/>
-                                                                <input type="text" id="diffBath" name="diffBath" value="<?= $amount; ?>"/>
+                                                                <input type="hidden" id="diffBath" name="diffBath" value="<?= $amount; ?>"/>
                                                             </div>
                                                         </div>
                                                     <?php } elseif ($type === "PERCENT") { ?>
